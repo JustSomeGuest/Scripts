@@ -1,9 +1,3 @@
---[[
-════════════〔 Loader 〕════════════
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.lua"))()
-Init.PolariaRM()
-]]
-
 getgenv().PolariaRM = getgenv().PolariaRM or {}
 
 if getgenv().PolariaRM.isLoaded then
