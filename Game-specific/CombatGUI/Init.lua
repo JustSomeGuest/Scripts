@@ -1,26 +1,26 @@
-local function load(URL)
-    local ok, res = pcall(game.HttpGetAsync, game, URL)
-    return loadstring(ok and res or game:HttpGet(URL))()
+local function load(u)
+    local s,r = pcall(game.HttpGetAsync, game, u)
+    return loadstring(s and r or game:HttpGet(u))()
 end
 
 if game.GameId ~= 3808081382 then
-    local WindUI = load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
+    local ui = load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
 
-    WindUI:Notify({
+    ui:Notify({
         Title = "CombatGUI+",
-        Content = "CombatGUI+ only supports The Strongest Battlegrounds",
+        Content = "This only works in The Strongest Battlegrounds",
         Duration = 3
     })
 
     return
 end
 
-local ok = pcall(function()
-    local Disclaimer = load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Disclaimer.lua")
-    Disclaimer.Script = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Game-specific/CombatGUI/Script.lua"
-    Disclaimer:Start()
+local worked = pcall(function()
+    local d = load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Disclaimer.lua")
+    d.Script = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Game-specific/CombatGUI/Script.lua"
+    d:Start()
 end)
 
-if not ok then
+if not worked then
     load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Game-specific/CombatGUI/Script.lua")
 end
