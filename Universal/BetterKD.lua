@@ -1,9 +1,3 @@
---[[
-════════════〔 Loader 〕════════════
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.lua"))()
-Init.BetterKD()
-]]
-
 getgenv().BetterKD = getgenv().BetterKD or {}
 
 if getgenv().BetterKD.isLoaded then
