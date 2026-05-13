@@ -1,9 +1,3 @@
---[[
-════════════〔 Loader 〕════════════
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.lua"))()
-Init.MusicPLR()
-]]
-
 getgenv().MusicPLR = getgenv().MusicPLR or {}
 
 if getgenv().MusicPLR.isLoaded then
