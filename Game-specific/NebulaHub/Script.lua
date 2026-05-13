@@ -1,14 +1,11 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
-local function load(URL)
-    local ok, res = pcall(game.HttpGetAsync, game, URL)
-    local src = ok and res or game:HttpGet(URL)
-    local fn = loadstring(src)
-    if fn then
-        local ok2, val = pcall(fn)
-        return ok2 and val or nil
-    end
+local function load(url)
+    local success, source = pcall(game.HttpGetAsync, game, url)
+    if not success then source = game:HttpGet(url) end
+    local result, err = pcall(loadstring(source))
+    return result and err or nil
 end
 
 local WindUI = load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
