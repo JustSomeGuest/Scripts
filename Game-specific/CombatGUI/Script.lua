@@ -1,16 +1,3 @@
---[[
-════════════〔 Game 〕════════════
-The Strongest Battlegrounds
-
-════════════〔 Credits 〕════════════
-Original Script: Notpaki 
-UI Redesign: JustAGuest
-
-════════════〔 Loader 〕════════════
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.lua"))()
-Init.CombatGUI()
-]]
-
 getgenv().CombatGUI = getgenv().CombatGUI or {}
 
 if getgenv().CombatGUI.isLoaded then
