@@ -1,9 +1,3 @@
---[[
-════════════〔 Loader 〕════════════
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.lua"))()
-Init.DeltaKD()
-]]
-
 local UI = {};
 
 UI["1"] = Instance.new("ScreenGui", gethui());
