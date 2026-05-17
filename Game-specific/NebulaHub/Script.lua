@@ -1,23 +1,30 @@
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
+if not game:IsLoaded() then game.Loaded:Wait() end
 
-local function load(u)
-    local s,r = pcall(game.HttpGetAsync, game, u)
-    return loadstring(s and r or game:HttpGet(u))()
+local function GetService(Service)
+	repeat task.wait() until pcall(game.GetService, game, Service) 
+	return game:GetService(Service)
 end
 
-local ui = load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
-local lp = Players.LocalPlayer
+local Players = GetService("Players")
+local RunService = GetService("RunService")
+
+local function Load(url)
+    local s,r = pcall(game.HttpGetAsync, game, url)
+    return loadstring(s and r or game:HttpGet(url))()
+end
+
+local WindUI = Load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
+local Player = Players.LocalPlayer
 
 local function Notify(txt)
-    ui:Notify({
+    WindUI:Notify({
         Title = "Nebula Hub",
         Content = txt,
         Duration = 3
     })
 end
 
-ui:AddTheme({
+WindUI:AddTheme({
     Name = "Nebula",
     Accent = Color3.fromRGB(170,85,255),
     Outline = Color3.fromRGB(40,20,60),
@@ -30,7 +37,7 @@ ui:AddTheme({
     Toggle = Color3.fromRGB(170,85,255)
 })
 
-local win = ui:CreateWindow({
+local win = WindUI:CreateWindow({
     Title = "Nebula Hub",
     Author = "Just A Guest",
     Folder = "NebulaHub",
@@ -51,32 +58,32 @@ win:EditOpenButton({
 
 Notify('press "P" to open/close')
 
-local saitama = win:Tab({
+local SaitamaTab = win:Tab({
     Title = "Saitama",
     Icon = "sword"
 })
 
-local garou = win:Tab({
+local GarouTab = win:Tab({
     Title = "Garou",
     Icon = "flame"
 })
 
-local sonic = win:Tab({
+local SonicTab = win:Tab({
     Title = "Sonic",
     Icon = "zap"
 })
 
-local genos = win:Tab({
+local GenosTab = win:Tab({
     Title = "Genos",
     Icon = "cpu"
 })
 
-local any = win:Tab({
+local AnyTab = win:Tab({
     Title = "Any",
     Icon = "star"
 })
 
-local other = win:Tab({
+local OtherTab = win:Tab({
     Title = "Other",
     Icon = "settings"
 })
@@ -87,7 +94,7 @@ local antifling = {
     Parts = {}
 }
 
-local function clearCons()
+local function ClearCons()
     for _,v in pairs(antifling.Cons) do
         v:Disconnect()
     end
@@ -95,7 +102,7 @@ local function clearCons()
     table.clear(antifling.Cons)
 end
 
-local function clearParts()
+local function ClearParts()
     for v in pairs(antifling.Parts) do
         if v and v.Parent then
             v.CanCollide = true
@@ -105,12 +112,12 @@ local function clearParts()
     table.clear(antifling.Parts)
 end
 
-local function setupPart(v)
+local function SetupPart(v)
     if not v:IsA("BasePart") then
         return
     end
 
-    if lp.Character and v:IsDescendantOf(lp.Character) then
+    if Player.Character and v:IsDescendantOf(Player.Character) then
         return
     end
 
@@ -124,27 +131,27 @@ local function setupPart(v)
     end))
 end
 
-local function setupChar(char)
+local function SetupChar(char)
     for _,v in ipairs(char:GetDescendants()) do
-        setupPart(v)
+        SetupPart(v)
     end
 
-    table.insert(antifling.Cons, char.DescendantAdded:Connect(setupPart))
+    table.insert(antifling.Cons, char.DescendantAdded:Connect(SetupPart))
 end
 
-local function setupPlayer(plr)
-    if plr == lp then
+local function SetupPlayer(plr)
+    if plr == Player then
         return
     end
 
     if plr.Character then
-        setupChar(plr.Character)
+        SetupChar(plr.Character)
     end
 
-    table.insert(antifling.Cons, plr.CharacterAdded:Connect(setupChar))
+    table.insert(antifling.Cons, plr.CharacterAdded:Connect(SetupChar))
 end
 
-local function enableAF()
+local function EnableAF()
     if antifling.Enabled then
         return
     end
@@ -152,10 +159,10 @@ local function enableAF()
     antifling.Enabled = true
 
     for _,p in ipairs(Players:GetPlayers()) do
-        setupPlayer(p)
+        SetupPlayer(p)
     end
 
-    table.insert(antifling.Cons, Players.PlayerAdded:Connect(setupPlayer))
+    table.insert(antifling.Cons, Players.PlayerAdded:Connect(SetupPlayer))
 
     table.insert(antifling.Cons, RunService.PreSimulation:Connect(function()
         for v in pairs(antifling.Parts) do
@@ -170,39 +177,39 @@ local function enableAF()
     Notify("antifling on")
 end
 
-local function disableAF()
+local function DisableAF()
     antifling.Enabled = false
 
-    clearCons()
-    clearParts()
+    ClearCons()
+    ClearParts()
 
     Notify("antifling off")
 end
 
-other:Toggle({
+OtherTab:Toggle({
     Title = "AntiFling",
     Default = false,
     Callback = function(v)
         if v then
-            enableAF()
+            EnableAF()
         else
-            disableAF()
+            DisableAF()
         end
     end
 })
 
-other:Button({
+OtherTab:Button({
     Title = "Fix Camera",
     Callback = function()
         local ok = pcall(function()
             local cam = workspace.CurrentCamera
-            local char = lp.Character or lp.CharacterAdded:Wait()
+            local char = Player.Character or Player.CharacterAdded:Wait()
             local hum = char:WaitForChild("Humanoid")
 
             cam.CameraType = Enum.CameraType.Custom
             cam.CameraSubject = hum
 
-            lp.CameraMode = Enum.CameraMode.Classic
+            Player.CameraMode = Enum.CameraMode.Classic
             hum.AutoRotate = true
         end)
 
@@ -212,150 +219,164 @@ other:Button({
     end
 })
 
-saitama:Button({
+SaitamaTab:Button({
+    Title = "Omni Man",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/UnVdDWcf"))()
+    end
+})
+
+SaitamaTab:Button({
+    Title = "Invincible",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastefy.app/BtDQqi2c/raw"))()
+    end
+})
+
+SaitamaTab:Button({
     Title = "Naruto Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/LolnotaKid/NarutoBeatUpSasukeAss/main/NarutoCums")
+        Load("https://raw.githubusercontent.com/LolnotaKid/NarutoBeatUpSasukeAss/main/NarutoCums")
     end
 })
 
-saitama:Button({
+SaitamaTab:Button({
     Title = "Kratos Moveset",
     Callback = function()
-        load("https://rawscripts.net/raw/KJ-The-Strongest-Battlegrounds-Kratos-By-Me-saitama-btw-29150")
+        Load("https://rawscripts.net/raw/KJ-The-Strongest-Battlegrounds-Kratos-By-Me-saitama-btw-29150")
     end
 })
 
-saitama:Button({
+SaitamaTab:Button({
     Title = "Vexor Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/Reapvitalized/TSB/main/VEXOR.lua")
+        Load("https://raw.githubusercontent.com/Reapvitalized/TSB/main/VEXOR.lua")
     end
 })
 
-saitama:Button({
+SaitamaTab:Button({
     Title = "Yuji X Sukuna Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Sigma%20v2%20vessel%20tp")
+        Load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Sigma%20v2%20vessel%20tp")
     end
 })
 
-saitama:Button({
+SaitamaTab:Button({
     Title = "Jun Moveset",
     Callback = function()
-        load("https://gist.githubusercontent.com/GoldenHeads2/f66279000c58a020e894a6db44914838/raw/62e53e1acacec0b38b43cd0f594292c32e09c39b/gistfile1.txt")
+        Load("https://gist.githubusercontent.com/GoldenHeads2/f66279000c58a020e894a6db44914838/raw/62e53e1acacec0b38b43cd0f594292c32e09c39b/gistfile1.txt")
     end
 })
 
-saitama:Button({
+SaitamaTab:Button({
     Title = "Shinji Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Shinji%20tp%20exploit")
+        Load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Shinji%20tp%20exploit")
     end
 })
 
-saitama:Button({
+SaitamaTab:Button({
     Title = "GoldenHead Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Saitama%20to%20golden%20sigma")
+        Load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Saitama%20to%20golden%20sigma")
     end
 })
 
-saitama:Button({
+SaitamaTab:Button({
     Title = "Trashcan Man Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/yes1nt/yes/main/Trashcan%20Man")
+        Load("https://raw.githubusercontent.com/yes1nt/yes/main/Trashcan%20Man")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "Garou X Suiryu Moveset",
     Callback = function()
-        load("https://gist.githubusercontent.com/kjremaker/b092496fc11a57e2c50477154176fa3e/raw/2148f00a036a1799118541765675f3f6a0f8adae/GAROU%20TO%20SURIYU%20BETTER%20THAN%20THE%20OTHERS%20FR")
+        Load("https://gist.githubusercontent.com/kjremaker/b092496fc11a57e2c50477154176fa3e/raw/2148f00a036a1799118541765675f3f6a0f8adae/GAROU%20TO%20SURIYU%20BETTER%20THAN%20THE%20OTHERS%20FR")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "Void Garou Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/yes1nt/yes/main/Void%20Reaper%20Obfuscated.txt")
+        Load("https://raw.githubusercontent.com/yes1nt/yes/main/Void%20Reaper%20Obfuscated.txt")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "Mastery Deku Moveset",
     Callback = function()
-        load("https://pastebin.com/raw/xKextYP5")
+        Load("https://pastebin.com/raw/xKextYP5")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "Chainsaw-Man Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/yes1nt/yes/main/CHAINSAW%20MAN/Chainsaw%20Man%20(Obfuscated).txt")
+        Load("https://raw.githubusercontent.com/yes1nt/yes/main/CHAINSAW%20MAN/Chainsaw%20Man%20(Obfuscated).txt")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "Dio Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/ThanakritScript/StandUserCilent/main/DioBeta.lua")
+        Load("https://raw.githubusercontent.com/ThanakritScript/StandUserCilent/main/DioBeta.lua")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "A-Train Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/skibiditoiletfan2007/ATrainSounds/main/ATrain.lua")
+        Load("https://raw.githubusercontent.com/skibiditoiletfan2007/ATrainSounds/main/ATrain.lua")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "Teleport Guy Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/yes1nt/yes/main/Teleport%20Guy.txt")
+        Load("https://raw.githubusercontent.com/yes1nt/yes/main/Teleport%20Guy.txt")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "Akaza Moveset",
     Callback = function()
-        load("https://paste.ee/r/zzvAH")
+        Load("https://paste.ee/r/zzvAH")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "Angel V 1.0 Moveset",
     Callback = function()
-        load("https://gist.githubusercontent.com/GoldenHeads2/93ddb1b1e2935bc76fbc37aae8985ad2/raw/47dfa45e1e8f1933a1c031b198d40c3cd1499fa2/gistfile1.txt")
+        Load("https://gist.githubusercontent.com/GoldenHeads2/93ddb1b1e2935bc76fbc37aae8985ad2/raw/47dfa45e1e8f1933a1c031b198d40c3cd1499fa2/gistfile1.txt")
     end
 })
 
-garou:Button({
+GarouTab:Button({
     Title = "Light Yagami Moveset",
     Callback = function()
-        load("https://gist.githubusercontent.com/GoldenHeads2/35ca43410a2e96102f73dca904137973/raw/c4cb113194c35e0439151b06ea82dcc8053ff2c3/gistfile1.txt")
+        Load("https://gist.githubusercontent.com/GoldenHeads2/35ca43410a2e96102f73dca904137973/raw/c4cb113194c35e0439151b06ea82dcc8053ff2c3/gistfile1.txt")
     end
 })
 
-sonic:Button({
+SonicTab:Button({
     Title = "1x1x1x1 Moveset (Low-key trash)",
     Callback = function()
-        load("https://gist.githubusercontent.com/GoldenHeads2/900e87ffc32f3c740930ccb106dd6abf/raw/358c5bf0f0a6aa25946718288dab006e3ae7e1d4/gistfile1.txt")
+        Load("https://gist.githubusercontent.com/GoldenHeads2/900e87ffc32f3c740930ccb106dd6abf/raw/358c5bf0f0a6aa25946718288dab006e3ae7e1d4/gistfile1.txt")
     end
 })
 
-genos:Button({
+GenosTab:Button({
     Title = "Genos Mastery",
     Callback = function()
-        load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-mastery-32213")
-        load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-Mastery-ULT-32214")
+        Load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-mastery-32213")
+        Load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-Mastery-ULT-32214")
     end
 })
 
-any:Button({
+AnyTab:Button({
     Title = "Star Glitcher Moveset",
     Callback = function()
-        load("https://raw.githubusercontent.com/Reapvitalized/TSB/main/SG_DEMO.lua")
+        Load("https://raw.githubusercontent.com/Reapvitalized/TSB/main/SG_DEMO.lua")
     end
 })
