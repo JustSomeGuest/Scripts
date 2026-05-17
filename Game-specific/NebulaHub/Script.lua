@@ -15,6 +15,7 @@ end
 
 local WindUI = Load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
 local Player = Players.LocalPlayer
+local Wait = task.wait
 
 local function Notify(txt)
     WindUI:Notify({
@@ -370,6 +371,7 @@ GenosTab:Button({
     Title = "Genos Mastery",
     Callback = function()
         Load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-mastery-32213")
+		Wait()
         Load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-Mastery-ULT-32214")
     end
 })
