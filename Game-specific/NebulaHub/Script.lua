@@ -174,7 +174,7 @@ local function EnableAF()
         end
     end))
 
-    Notify("antifling on")
+    Notify("AntiFling: On")
 end
 
 local function DisableAF()
@@ -183,7 +183,7 @@ local function DisableAF()
     ClearCons()
     ClearParts()
 
-    Notify("antifling off")
+    Notify("AntiFling: Off")
 end
 
 OtherTab:Toggle({
@@ -214,20 +214,20 @@ OtherTab:Button({
         end)
 
         if ok then
-            Notify("fixed")
+            Notify("Camera: Fixed")
         end
     end
 })
 
 SaitamaTab:Button({
-    Title = "Omni Man",
+    Title = "Omni Man Moveset",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/UnVdDWcf"))()
     end
 })
 
 SaitamaTab:Button({
-    Title = "Invincible",
+    Title = "Invincible Moveset",
     Callback = function()
         loadstring(game:HttpGet("https://pastefy.app/BtDQqi2c/raw"))()
     end
