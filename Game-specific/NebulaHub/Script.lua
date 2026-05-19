@@ -57,7 +57,7 @@ win:EditOpenButton({
     OnlyMobile = true
 })
 
-Notify('press "P" to open/close')
+Notify('Press "P" to Open/Close')
 
 local SaitamaTab = win:Tab({
     Title = "Saitama",
@@ -199,20 +199,53 @@ OtherTab:Toggle({
     end
 })
 
-OtherTab:Button({
+local cameraFixConnection = nil
+
+local function FixCamera()
+    local cam = workspace.CurrentCamera
+    local char = Player.Character or Player.CharacterAdded:Wait()
+    local hum = char:WaitForChild("Humanoid")
+
+    cam.CameraType = Enum.CameraType.Custom
+    cam.CameraSubject = hum
+
+    Player.CameraMode = Enum.CameraMode.Classic
+    hum.AutoRotate = true
+end
+
+OtherTab:Toggle({
     Title = "Fix Camera",
+    Default = false,
+    Callback = function(v)
+        if v then
+
+            cameraFixConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraType"):Connect(function()
+                if workspace.CurrentCamera.CameraType ~= Enum.CameraType.Custom then
+                    pcall(FixCamera)
+                end
+            end)
+            
+            cameraFixConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraMode"):Connect(function()
+                pcall(FixCamera)
+            end)
+            
+            pcall(FixCamera)
+            Notify("Camera Fix: Auto mode enabled")
+        else
+
+            if cameraFixConnection then
+                cameraFixConnection:Disconnect()
+                cameraFixConnection = nil
+            end
+            Notify("Camera Fix: Auto mode disabled")
+        end
+    end
+})
+
+OtherTab:Button({
+    Title = "Fix Camera (Once)",
     Callback = function()
-        local ok = pcall(function()
-            local cam = workspace.CurrentCamera
-            local char = Player.Character or Player.CharacterAdded:Wait()
-            local hum = char:WaitForChild("Humanoid")
-
-            cam.CameraType = Enum.CameraType.Custom
-            cam.CameraSubject = hum
-
-            Player.CameraMode = Enum.CameraMode.Classic
-            hum.AutoRotate = true
-        end)
+        local ok = pcall(FixCamera)
 
         if ok then
             Notify("Camera: Fixed")
@@ -246,6 +279,13 @@ SaitamaTab:Button({
     Callback = function()
         Load("https://rawscripts.net/raw/KJ-The-Strongest-Battlegrounds-Kratos-By-Me-saitama-btw-29150")
     end
+})
+
+SaitamaTab:Button({
+	Title = "Anti-Spiral Moveset",
+	Callback = function()
+		Load("https://raw.githubusercontent.com/sparksnaps/Anti-Spiral./main/Lua")
+	end
 })
 
 SaitamaTab:Button({
