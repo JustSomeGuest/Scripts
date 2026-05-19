@@ -401,7 +401,7 @@ GarouTab:Button({
 })
 
 SonicTab:Button({
-    Title = "1x1x1x1 Moveset (Low-key trash)",
+    Title = "1x1x1x1 Moveset (Buns)",
     Callback = function()
         Load("https://gist.githubusercontent.com/GoldenHeads2/900e87ffc32f3c740930ccb106dd6abf/raw/358c5bf0f0a6aa25946718288dab006e3ae7e1d4/gistfile1.txt")
 	end
