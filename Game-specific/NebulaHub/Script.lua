@@ -40,7 +40,7 @@ WindUI:AddTheme({
 
 local win = WindUI:CreateWindow({
     Title = "Nebula Hub",
-    Author = "Just A Guest",
+    Author = "JustAGuest",
     Folder = "NebulaHub",
     Transparent = true,
     Theme = "Nebula",
@@ -296,6 +296,22 @@ SaitamaTab:Button({
 })
 
 SaitamaTab:Button({
+    Title = "Gojo V2 (Morph: On)",
+    Callback = function()
+        getgenv().morph = true 
+        Load("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/refs/heads/main/LatestV2.lua")
+    end
+})
+
+SaitamaTab:Button({
+    Title = "Gojo V2 (Morph: Off)",
+    Callback = function()
+        getgenv().morph = false
+        Load("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/refs/heads/main/LatestV2.lua")
+    end
+})
+
+SaitamaTab:Button({
     Title = "Yuji X Sukuna Moveset",
     Callback = function()
         Load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Sigma%20v2%20vessel%20tp")
@@ -387,7 +403,7 @@ GarouTab:Button({
 })
 
 GarouTab:Button({
-    Title = "Angel V 1.0 Moveset",
+    Title = "Angel V1.0 Moveset",
     Callback = function()
         Load("https://gist.githubusercontent.com/GoldenHeads2/93ddb1b1e2935bc76fbc37aae8985ad2/raw/47dfa45e1e8f1933a1c031b198d40c3cd1499fa2/gistfile1.txt")
     end
