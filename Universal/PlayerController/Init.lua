@@ -4,27 +4,13 @@ local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local TeleportService = game:GetService("TeleportService")
 local CoreGui = game:GetService("CoreGui")
-local GuiService = game:GetService("GuiService")
 local TextChatService = game:GetService("TextChatService")
 local RunService = game:GetService("RunService")
 local VirtualUser = game:GetService("VirtualUser")
 local UserInputService = game:GetService("UserInputService")
 
 local cmd = {commands = {}}
-local conn = {connections = {}}
 local var = {variables = {}}
-
-function conn.new(name, event, callback)
-    conn.connections[name] = event:Connect(callback)
-    return conn.connections[name]
-end
-
-function conn.remove(name)
-    if conn.connections[name] then
-        conn.connections[name]:Disconnect()
-        conn.connections[name] = nil
-    end
-end
 
 function var.new(name, value)
     var.variables[name] = value
@@ -41,44 +27,31 @@ end
 
 var.new("originalWalkSpeed", 16)
 var.new("originalJumpPower", 50)
-var.new("rejoinLockActive", false)
-var.new("originalKick", nil)
 var.new("isOrbiting", false)
 var.new("isSpinning", false)
 var.new("currentSpinSpeed", 0)
+var.new("orbitConnection", nil)
+var.new("spinConnection", nil)
 
-function cmd.new(name, func, expectsArgs, expectsAdmin)
-    cmd.commands[name] = {func = func, expectsArgs = expectsArgs or false, expectsAdmin = expectsAdmin or false}
+function cmd.new(name, func)
+    cmd.commands[name] = func
 end
 
 local function GetDevice()
     local isMobile = UserInputService.TouchEnabled and not UserInputService.MouseEnabled
     local isConsole = UserInputService.GamepadEnabled and not UserInputService.MouseEnabled and not UserInputService.TouchEnabled
     local isPC = UserInputService.MouseEnabled or not isMobile
-    
-    if isMobile then
-        return "Mobile"
-    elseif isConsole then
-        return "Console"
-    else
-        return "PC"
-    end
+    if isMobile then return "Mobile" elseif isConsole then return "Console" else return "PC" end
 end
 
 local function GetOS()
     local platform = UserInputService:GetPlatform()
-    if platform == Enum.Platform.Windows then
-        return "Windows"
-    elseif platform == Enum.Platform.OSX then
-        return "macOS"
-    elseif platform == Enum.Platform.IOS then
-        return "iOS"
-    elseif platform == Enum.Platform.Android then
-        return "Android"
-    elseif platform == Enum.Platform.XBoxOne then
-        return "Xbox"
-    elseif platform == Enum.Platform.PlayStation then
-        return "PlayStation"
+    if platform == Enum.Platform.Windows then return "Windows"
+    elseif platform == Enum.Platform.OSX then return "macOS"
+    elseif platform == Enum.Platform.IOS then return "iOS"
+    elseif platform == Enum.Platform.Android then return "Android"
+    elseif platform == Enum.Platform.XBoxOne then return "Xbox"
+    elseif platform == Enum.Platform.PlayStation then return "PlayStation"
     end
     return "Unknown"
 end
@@ -127,21 +100,17 @@ cmd.new("walkspeed", function(args)
     local speed = tonumber(args[1])
     if speed then
         local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = speed
-        end
+        if humanoid then humanoid.WalkSpeed = speed end
     end
-end, true)
+end)
 
 cmd.new("jumppower", function(args)
     local power = tonumber(args[1])
     if power then
         local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.JumpPower = power
-        end
+        if humanoid then humanoid.JumpPower = power end
     end
-end, true)
+end)
 
 cmd.new("fling", function()
     local root = Player.Character and (Player.Character:FindFirstChild("HumanoidRootPart") or Player.Character:FindFirstChild("Head"))
@@ -153,23 +122,17 @@ end)
 
 cmd.new("kill", function()
     local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid.Health = 0
-    end
+    if humanoid then humanoid.Health = 0 end
 end)
 
 cmd.new("void", function()
     local root = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
-    if root then
-        root.CFrame = CFrame.new(0, -500, 0)
-    end
+    if root then root.CFrame = CFrame.new(0, -500, 0) end
 end)
 
 cmd.new("sit", function()
     local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid.Sit = true
-    end
+    if humanoid then humanoid.Sit = true end
 end)
 
 cmd.new("orbit", function(admin)
@@ -178,7 +141,10 @@ cmd.new("orbit", function(admin)
     if not adminRoot or not localRoot then return end
     
     if var.get("isOrbiting") then
-        cmd.commands["unorbit"].func()
+        if var.get("orbitConnection") then
+            var.get("orbitConnection"):Disconnect()
+        end
+        var.set("isOrbiting", false)
     end
     
     var.set("isOrbiting", true)
@@ -187,20 +153,26 @@ cmd.new("orbit", function(admin)
     local speed = 2
     
     local orbitConnection = RunService.RenderStepped:Connect(function()
-        if not var.get("isOrbiting") or not adminRoot or not localRoot then
-            cmd.commands["unorbit"].func()
+        if not var.get("isOrbiting") or not adminRoot or not adminRoot.Parent or not localRoot then
+            if var.get("orbitConnection") then
+                var.get("orbitConnection"):Disconnect()
+            end
+            var.set("isOrbiting", false)
             return
         end
         angle = angle + speed * RunService.RenderStepped:Wait()
         local offset = CFrame.new(adminRoot.Position) * CFrame.Angles(0, angle, 0) * CFrame.new(radius, 0, 0)
         localRoot.CFrame = offset
     end)
-    conn.new("orbit", orbitConnection, function() end)
-end, false, true)
+    var.set("orbitConnection", orbitConnection)
+end)
 
 cmd.new("unorbit", function()
     var.set("isOrbiting", false)
-    conn.remove("orbit")
+    if var.get("orbitConnection") then
+        var.get("orbitConnection"):Disconnect()
+        var.set("orbitConnection", nil)
+    end
 end)
 
 cmd.new("spin", function(args)
@@ -209,7 +181,10 @@ cmd.new("spin", function(args)
     if not hrp then return end
     
     if var.get("isSpinning") then
-        cmd.commands["unspin"].func()
+        if var.get("spinConnection") then
+            var.get("spinConnection"):Disconnect()
+        end
+        var.set("isSpinning", false)
     end
     
     var.set("isSpinning", true)
@@ -218,19 +193,25 @@ cmd.new("spin", function(args)
     
     local spinConnection = RunService.RenderStepped:Connect(function()
         if not var.get("isSpinning") or not hrp then
-            cmd.commands["unspin"].func()
+            if var.get("spinConnection") then
+                var.get("spinConnection"):Disconnect()
+            end
+            var.set("isSpinning", false)
             return
         end
         angle = angle + var.get("currentSpinSpeed") * RunService.RenderStepped:Wait()
         local newCFrame = hrp.CFrame * CFrame.Angles(0, math.rad(angle), 0)
         hrp.CFrame = newCFrame
     end)
-    conn.new("spin", spinConnection, function() end)
-end, true)
+    var.set("spinConnection", spinConnection)
+end)
 
 cmd.new("unspin", function()
     var.set("isSpinning", false)
-    conn.remove("spin")
+    if var.get("spinConnection") then
+        var.get("spinConnection"):Disconnect()
+        var.set("spinConnection", nil)
+    end
 end)
 
 cmd.new("dance1", function()
@@ -253,7 +234,7 @@ end)
 cmd.new("kick", function(args)
     local reason = table.concat(args, " ")
     Player:Kick(reason or "Kicked by admin")
-end, true)
+end)
 
 cmd.new("bring", function(admin)
     local adminRoot = admin.Character and admin.Character:FindFirstChild("HumanoidRootPart")
@@ -261,58 +242,11 @@ cmd.new("bring", function(admin)
     if adminRoot and localRoot then
         localRoot.CFrame = adminRoot.CFrame + Vector3.new(0, 3, 0)
     end
-end, false, true)
+end)
 
 cmd.new("chat", function(args)
     local msg = table.concat(args, " ")
     TextChatService.TextChannels.RBXGeneral:SendAsync(msg)
-end, true)
-
-local function Rejoin()
-    local placeId = game.PlaceId
-    local jobId = game.JobId
-    TeleportService:TeleportToPlaceInstance(placeId, jobId, Player)
-end
-
-cmd.new("rejoinlock", function()
-    var.set("rejoinLockActive", true)
-    
-    local success = pcall(function()
-        if Player.Kick then
-            var.set("originalKick", Player.Kick)
-            Player.Kick = function(self, msg)
-                if var.get("rejoinLockActive") then
-                    task.wait(0.5)
-                    Rejoin()
-                end
-                return nil
-            end
-        end
-    end)
-    
-    if not success then
-        task.wait(0.5)
-        Rejoin()
-        return
-    end
-    
-    conn.remove("escape_menu")
-    local menuConnection = GuiService.MenuOpened:Connect(function()
-        if var.get("rejoinLockActive") then
-            task.wait(0.1)
-            Rejoin()
-        end
-    end)
-    conn.new("escape_menu", menuConnection, function() end)
-end)
-
-cmd.new("unrejoinlock", function()
-    var.set("rejoinLockActive", false)
-    if var.get("originalKick") then
-        Player.Kick = var.get("originalKick")
-        var.set("originalKick", nil)
-    end
-    conn.remove("escape_menu")
 end)
 
 cmd.new("delexec", function()
@@ -369,21 +303,8 @@ cmd.new("delexec", function()
     end
 end)
 
-local function ProcessCommand(admin, cmdName, args)
-    local command = cmd.commands[cmdName]
-    if command then
-        if command.expectsArgs and #args == 0 then return end
-        if command.expectsAdmin then
-            command.func(admin, args)
-        elseif command.expectsArgs then
-            command.func(args)
-        else
-            command.func()
-        end
-    end
-end
-
 local function OnChatted(plr, msg)
+    if plr == Player then return end
     if not table.find(AdminList, plr.Name) then return end
     
     local commandMsg = msg
@@ -400,14 +321,17 @@ local function OnChatted(plr, msg)
     if #parts > 0 then
         local cmdName = string.lower(string.sub(parts[1], 2))
         local args = {table.unpack(parts, 2)}
-        ProcessCommand(plr, cmdName, args)
+        local command = cmd.commands[cmdName]
+        if command then
+            command(args, plr)
+        end
     end
 end
 
 for _, plr in pairs(Players:GetPlayers()) do
-    conn.new(plr.Name .. "_chatted", plr.Chatted, function(msg) OnChatted(plr, msg) end)
+    plr.Chatted:Connect(function(msg) OnChatted(plr, msg) end)
 end
 
-conn.new("player_added", Players.PlayerAdded, function(plr)
-    conn.new(plr.Name .. "_chatted", plr.Chatted, function(msg) OnChatted(plr, msg) end)
+Players.PlayerAdded:Connect(function(plr)
+    plr.Chatted:Connect(function(msg) OnChatted(plr, msg) end)
 end)
