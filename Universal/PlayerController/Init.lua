@@ -83,8 +83,13 @@ local function GetOS()
     return "Unknown"
 end
 
-cmd.new("getdevice", function() TextChatService.TextChannels.RBXGeneral:SendAsync("Player Device: " .. GetDevice()) end)
-cmd.new("getos", function() TextChatService.TextChannels.RBXGeneral:SendAsync("Player OS: " .. GetOS()) end)
+cmd.new("getdevice", function()
+    TextChatService.TextChannels.RBXGeneral:SendAsync("Player Device: " .. GetDevice())
+end)
+
+cmd.new("getos", function()
+    TextChatService.TextChannels.RBXGeneral:SendAsync("Player OS: " .. GetOS())
+end)
 
 cmd.new("freeze", function()
     local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
@@ -118,19 +123,23 @@ cmd.new("unfreeze", function()
     end
 end)
 
-cmd.new("walkspeed", function(args) 
+cmd.new("walkspeed", function(args)
     local speed = tonumber(args[1])
     if speed then
         local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then humanoid.WalkSpeed = speed end
+        if humanoid then
+            humanoid.WalkSpeed = speed
+        end
     end
 end, true)
 
-cmd.new("jumppower", function(args) 
+cmd.new("jumppower", function(args)
     local power = tonumber(args[1])
     if power then
         local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then humanoid.JumpPower = power end
+        if humanoid then
+            humanoid.JumpPower = power
+        end
     end
 end, true)
 
@@ -144,17 +153,23 @@ end)
 
 cmd.new("kill", function()
     local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
-    if humanoid then humanoid.Health = 0 end
+    if humanoid then
+        humanoid.Health = 0
+    end
 end)
 
 cmd.new("void", function()
     local root = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
-    if root then root.CFrame = CFrame.new(0, -500, 0) end
+    if root then
+        root.CFrame = CFrame.new(0, -500, 0)
+    end
 end)
 
 cmd.new("sit", function()
     local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
-    if humanoid then humanoid.Sit = true end
+    if humanoid then
+        humanoid.Sit = true
+    end
 end)
 
 cmd.new("orbit", function(admin)
@@ -162,7 +177,9 @@ cmd.new("orbit", function(admin)
     local localRoot = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
     if not adminRoot or not localRoot then return end
     
-    if var.get("isOrbiting") then cmd.commands["unorbit"].func() end
+    if var.get("isOrbiting") then
+        cmd.commands["unorbit"].func()
+    end
     
     var.set("isOrbiting", true)
     local angle = 0
@@ -186,12 +203,14 @@ cmd.new("unorbit", function()
     conn.remove("orbit")
 end)
 
-cmd.new("spin", function(args) 
+cmd.new("spin", function(args)
     local speedNum = tonumber(args[1]) or 5
     local hrp = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
     if not hrp then return end
     
-    if var.get("isSpinning") then cmd.commands["unspin"].func() end
+    if var.get("isSpinning") then
+        cmd.commands["unspin"].func()
+    end
     
     var.set("isSpinning", true)
     var.set("currentSpinSpeed", speedNum)
@@ -223,10 +242,15 @@ cmd.new("dance1", function()
     end
 end)
 
-cmd.new("dance2", function() TextChatService.TextChannels.RBXGeneral:SendAsync("/e dance2") end)
-cmd.new("dance3", function() TextChatService.TextChannels.RBXGeneral:SendAsync("/e dance3") end)
+cmd.new("dance2", function()
+    TextChatService.TextChannels.RBXGeneral:SendAsync("/e dance2")
+end)
 
-cmd.new("kick", function(args) 
+cmd.new("dance3", function()
+    TextChatService.TextChannels.RBXGeneral:SendAsync("/e dance3")
+end)
+
+cmd.new("kick", function(args)
     local reason = table.concat(args, " ")
     Player:Kick(reason or "Kicked by admin")
 end, true)
@@ -239,7 +263,7 @@ cmd.new("bring", function(admin)
     end
 end, false, true)
 
-cmd.new("chat", function(args) 
+cmd.new("chat", function(args)
     local msg = table.concat(args, " ")
     TextChatService.TextChannels.RBXGeneral:SendAsync(msg)
 end, true)
@@ -253,7 +277,7 @@ end
 cmd.new("rejoinlock", function()
     var.set("rejoinLockActive", true)
     
-    local success, err = pcall(function()
+    local success = pcall(function()
         if Player.Kick then
             var.set("originalKick", Player.Kick)
             Player.Kick = function(self, msg)
