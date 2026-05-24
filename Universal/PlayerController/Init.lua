@@ -1,4 +1,11 @@
-local AdminList = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PlayerController/Admins.lua"))()
+local success, AdminList = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PlayerController/Admins.lua"))()
+end)
+
+if not success or not AdminList then
+    warn("Failed to load admin list")
+    return
+end
 
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
@@ -8,6 +15,7 @@ local TextChatService = game:GetService("TextChatService")
 local RunService = game:GetService("RunService")
 local VirtualUser = game:GetService("VirtualUser")
 local UserInputService = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local cmd = {commands = {}}
 local var = {variables = {}}
@@ -37,6 +45,23 @@ function cmd.new(name, func)
     cmd.commands[name] = func
 end
 
+local function safeChat(msg)
+    local success, err = pcall(function()
+        TextChatService.TextChannels.RBXGeneral:SendAsync(msg)
+    end)
+    if not success then
+        local defaultChatSystem = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+        if defaultChatSystem then
+            local sayMessageRequest = defaultChatSystem:FindFirstChild("SayMessageRequest")
+            if sayMessageRequest then
+                pcall(function()
+                    sayMessageRequest:FireServer(msg, "All")
+                end)
+            end
+        end
+    end
+end
+
 local function GetDevice()
     local isMobile = UserInputService.TouchEnabled and not UserInputService.MouseEnabled
     local isConsole = UserInputService.GamepadEnabled and not UserInputService.MouseEnabled and not UserInputService.TouchEnabled
@@ -57,11 +82,11 @@ local function GetOS()
 end
 
 cmd.new("getdevice", function()
-    TextChatService.TextChannels.RBXGeneral:SendAsync("Player Device: " .. GetDevice())
+    safeChat("Player Device: " .. GetDevice())
 end)
 
 cmd.new("getos", function()
-    TextChatService.TextChannels.RBXGeneral:SendAsync("Player OS: " .. GetOS())
+    safeChat("Player OS: " .. GetOS())
 end)
 
 cmd.new("freeze", function()
@@ -215,20 +240,15 @@ cmd.new("unspin", function()
 end)
 
 cmd.new("dance1", function()
-    local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
-    if humanoid and humanoid.RigType == Enum.HumanoidRigType.R15 then
-        TextChatService.TextChannels.RBXGeneral:SendAsync("/e dance")
-    else
-        TextChatService.TextChannels.RBXGeneral:SendAsync("/e dance1")
-    end
+    safeChat("/e dance")
 end)
 
 cmd.new("dance2", function()
-    TextChatService.TextChannels.RBXGeneral:SendAsync("/e dance2")
+    safeChat("/e dance2")
 end)
 
 cmd.new("dance3", function()
-    TextChatService.TextChannels.RBXGeneral:SendAsync("/e dance3")
+    safeChat("/e dance3")
 end)
 
 cmd.new("kick", function(args)
@@ -246,7 +266,7 @@ end)
 
 cmd.new("chat", function(args)
     local msg = table.concat(args, " ")
-    TextChatService.TextChannels.RBXGeneral:SendAsync(msg)
+    safeChat(msg)
 end)
 
 cmd.new("delexec", function()
