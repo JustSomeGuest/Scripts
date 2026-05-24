@@ -1,808 +1,1292 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+  
+function default(expected, value, fallback)
+	if type(value) == expected then
+		return value
+	end
+	return fallback
+end
+
+cloneref = default("function", cloneref, function(...) return ... end)
+
+Services = setmetatable({}, {
+	__index = function(self, name)
+		local success, cache = pcall(function()
+			return cloneref(game:GetService(name))
+		end)
+		if success then
+			rawset(self, name, cache)
+			return cache
+		else
+			error("Invalid Service: " .. tostring(name))
+		end
+	end
+})
+
 getgenv().PolariaRM = getgenv().PolariaRM or {}
 
 if getgenv().PolariaRM.isLoaded then
-    game:GetService("StarterGui"):SetCore("SendNotification", {
+    Services.StarterGui:SetCore("SendNotification", {
         Title = "Polaria Remastered",
         Text = "Polaria Remastered is already running!",
         Duration = 4
     })
-    error("Polaria Remastered is already running", 0)
+    return
 end
 
 getgenv().PolariaRM.isLoaded = true
 
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local HttpService = game:GetService("HttpService")
-local TweenService = game:GetService("TweenService")
-local UIS = game:GetService("UserInputService")
-local localPlayer = Players.LocalPlayer
-local Stats = game:GetService("Stats")
-local CoreGui = game:GetService("CoreGui")
+local Players = Services.Players
+local RunService = Services.RunService
+local HttpService = Services.HttpService
+local TweenService = Services.TweenService
+local UserInputService = Services.UserInputService
+local Player = Players.LocalPlayer
+local Stats = Services.Stats
+local MarketplaceService = Services.MarketplaceService
+local CoreGui
 
-local UI = {};
+if gethui then
+	local Success, Hui = pcall(gethui)
+	CoreGui = Success and Hui or Services.CoreGui
+else
+	CoreGui = Services.CoreGui
+end
 
-UI["ScreenGui_1"] = Instance.new("ScreenGui")
-UI["ScreenGui_1"]["Name"] = "PRMD"
-UI["ScreenGui_1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
-UI["ScreenGui_1"]["ResetOnSpawn"] = false
+local WriteFile = default("function", writefile, function() end)
+local IsFile = default("function", isfile, function() return false end)
+local IsFolder = default("function", isfolder, function() return false end)
+local MakeFolder = default("function", makefolder, function() end)
 
-local parents = {
-	gethui,
-	get_hidden_gui,
-	gethiddengui,
-	get_hidden_gui or gethiddengui,
-	function() return Players.LocalPlayer:WaitForChild("PlayerGui") end,
-	function() return cloneref and cloneref(CoreGui) or CoreGui end,
-	function() return CoreGui end
+local Assets = {
+	["PolariaRM/assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/refs/heads/main/Universal/PolariaRM/Assets/logo.png",
+	["PolariaRM/assets/dev.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/refs/heads/main/Universal/PolariaRM/Assets/dev.png",
+	["PolariaRM/assets/shadow.png"] = "rbxassetid://15298624572",
 }
 
-for _, f in ipairs(parents) do
-	pcall(function()
-		local p = type(f) == "function" and f() or f
-		if p then
-			UI["ScreenGui_1"]["Parent"] = p
-			error()
+local loadasset = default("function", getcustomasset, default("function", getsynasset, nil))
+
+local function HttpGet(url)
+    local RequestFunc = default("function", syn and syn.request, 
+        default("function", request, 
+            default("function", http_request, nil)))
+    
+    if not RequestFunc then
+        return nil
+    end
+    
+    local success, result = pcall(function()
+        return RequestFunc({
+            Url = url,
+            Method = "GET"
+        })
+    end)
+    
+    return success and result or nil
+end
+
+local function GetAsset(Path)
+	if not loadasset then
+		return nil
+	end
+
+	local Asset = Assets[Path]
+	if not Asset then
+		return nil
+	end
+
+	if not IsFolder("PolariaRM") then
+		MakeFolder("PolariaRM")
+	end
+
+	if not IsFolder("PolariaRM/assets") then
+		MakeFolder("PolariaRM/assets")
+	end
+
+	if Asset:match("^rbxassetid://") then
+		return Asset
+	end
+
+	if not IsFile(Path) then
+		local Success, Response = pcall(function()
+			return HttpGet(Asset)
+		end)
+
+		if not Success or not Response or not Response.Success or not Response.Body then
+			return nil
+		end
+
+		WriteFile(Path, Response.Body)
+	end
+
+	return loadasset(Path)
+end
+
+local UI = {}
+
+UI["PolariaRM"] = Instance.new("ScreenGui")
+UI["PolariaRM"]["Name"] = "PolariaRM"
+UI["PolariaRM"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
+UI["PolariaRM"]["ResetOnSpawn"] = false
+UI["PolariaRM"]["Parent"] = CoreGui
+
+UI["Show"] = Instance.new("ImageButton")
+UI["Show"]["Name"] = "Show"
+UI["Show"]["BorderSizePixel"] = 0
+UI["Show"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["Show"]["Size"] = UDim2.new(0,40,0,40)
+UI["Show"]["Visible"] = false
+UI["Show"]["Position"] = UDim2.new(0, 20, 0, 6)
+UI["Show"]["Parent"] = UI["PolariaRM"]
+
+UI["ShowIcon"] = Instance.new("ImageLabel")
+UI["ShowIcon"]["Image"] = GetAsset("PolariaRM/assets/logo.png")
+UI["ShowIcon"]["ImageColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ShowIcon"]["BackgroundTransparency"] = 1
+UI["ShowIcon"]["Size"] = UDim2.new(1,0,1,0)
+UI["ShowIcon"]["Position"] = UDim2.new(0,0,0,0)
+UI["ShowIcon"]["Parent"] = UI["Show"]
+
+UI["ShowIconGradient"] = Instance.new("UIGradient")
+UI["ShowIconGradient"]["Name"] = "ShowGradient"
+UI["ShowIconGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ShowIconGradient"]["Parent"] = UI["ShowIcon"]
+
+UI["ShowStroke"] = Instance.new("UIStroke")
+UI["ShowStroke"]["Name"] = "ShowStroke"
+UI["ShowStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["ShowStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["ShowStroke"]["Parent"] = UI["Show"]
+
+UI["ShowStrokeGradient"] = Instance.new("UIGradient")
+UI["ShowStrokeGradient"]["Name"] = "ShowStrokeGradient"
+UI["ShowStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ShowStrokeGradient"]["Parent"] = UI["ShowStroke"]
+
+UI["ShowCorner"] = Instance.new("UICorner")
+UI["ShowCorner"]["Name"] = "ShowCorner"
+UI["ShowCorner"]["CornerRadius"] = UDim.new(1, 0)
+UI["ShowCorner"]["Parent"] = UI["Show"]
+
+UI["ShowGradient"] = Instance.new("UIGradient")
+UI["ShowGradient"]["Name"] = "ShowGradient"
+UI["ShowGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ShowGradient"]["Parent"] = UI["Show"]
+
+UI["ShowPadding"] = Instance.new("UIPadding")
+UI["ShowPadding"]["Name"] = "ShowPadding"
+UI["ShowPadding"]["PaddingTop"] = UDim.new(0, 5)
+UI["ShowPadding"]["PaddingRight"] = UDim.new(0, 5)
+UI["ShowPadding"]["PaddingLeft"] = UDim.new(0, 5)
+UI["ShowPadding"]["PaddingBottom"] = UDim.new(0, 5)
+UI["ShowPadding"]["Parent"] = UI["Show"]
+
+UI["Container"] = Instance.new("Frame")
+UI["Container"]["Name"] = "Container"
+UI["Container"]["BorderSizePixel"] = 0
+UI["Container"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Container"]["Size"] = UDim2.new(0.7, 0, 0.9, 0)
+UI["Container"]["Position"] = UDim2.new(0, 20, 0, 6)
+UI["Container"]["BackgroundTransparency"] = 1
+UI["Container"]["Parent"] = UI["PolariaRM"]
+
+UI["Shadow"] = Instance.new("ImageLabel")
+UI["Shadow"]["Name"] = "Shadow"
+UI["Shadow"]["BorderSizePixel"] = 0
+UI["Shadow"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Shadow"]["ImageTransparency"] = 0.2
+UI["Shadow"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+UI["Shadow"]["Image"] = GetAsset("PolariaRM/assets/shadow.png")
+UI["Shadow"]["Size"] = UDim2.new(1.059, 0, 1.088, 0)
+UI["Shadow"]["BackgroundTransparency"] = 1
+UI["Shadow"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
+UI["Shadow"]["Parent"] = UI["Container"]
+
+UI["MainFrame"] = Instance.new("Frame")
+UI["MainFrame"]["Name"] = "MainFrame"
+UI["MainFrame"]["BorderSizePixel"] = 0
+UI["MainFrame"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["MainFrame"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+UI["MainFrame"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["MainFrame"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
+UI["MainFrame"]["Parent"] = UI["Container"]
+
+UI["MainFramePadding"] = Instance.new("UIPadding")
+UI["MainFramePadding"]["Name"] = "MainFramePadding"
+UI["MainFramePadding"]["PaddingTop"] = UDim.new(0, 4)
+UI["MainFramePadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["MainFramePadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["MainFramePadding"]["PaddingBottom"] = UDim.new(0, 4)
+UI["MainFramePadding"]["Parent"] = UI["MainFrame"]
+
+UI["Contents"] = Instance.new("Frame")
+UI["Contents"]["Name"] = "Contents"
+UI["Contents"]["BorderSizePixel"] = 0
+UI["Contents"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Contents"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["Contents"]["LayoutOrder"] = 3
+UI["Contents"]["BackgroundTransparency"] = 1
+UI["Contents"]["Parent"] = UI["MainFrame"]
+
+UI["HomeContent"] = Instance.new("Frame")
+UI["HomeContent"]["Name"] = "HomeContent"
+UI["HomeContent"]["BorderSizePixel"] = 0
+UI["HomeContent"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["HomeContent"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["HomeContent"]["LayoutOrder"] = 1
+UI["HomeContent"]["BackgroundTransparency"] = 1
+UI["HomeContent"]["Parent"] = UI["Contents"]
+
+UI["HomeStats"] = Instance.new("TextLabel")
+UI["HomeStats"]["Name"] = "HomeStats"
+UI["HomeStats"]["TextWrapped"] = true
+UI["HomeStats"]["BorderSizePixel"] = 0
+UI["HomeStats"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["HomeStats"]["TextYAlignment"] = Enum.TextYAlignment.Top
+UI["HomeStats"]["TextScaled"] = true
+UI["HomeStats"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["HomeStats"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["HomeStats"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["HomeStats"]["BackgroundTransparency"] = 1
+UI["HomeStats"]["RichText"] = true
+UI["HomeStats"]["Size"] = UDim2.new(0, 410, 0, 184)
+UI["HomeStats"]["Text"] = "Welcome, DisplayName! (@Username)\nFPS:\nPing:\nServer age:\nDevice:\nOS:\nExecutor:"
+UI["HomeStats"]["LayoutOrder"] = 2
+UI["HomeStats"]["Position"] = UDim2.new(0, 94, 0, 54)
+UI["HomeStats"]["Parent"] = UI["HomeContent"]
+
+UI["HomeStatsGradient"] = Instance.new("UIGradient")
+UI["HomeStatsGradient"]["Name"] = "HomeStatsGradient"
+UI["HomeStatsGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["HomeStatsGradient"]["Parent"] = UI["HomeStats"]
+
+UI["Headshot"] = Instance.new("ImageLabel")
+UI["Headshot"]["Name"] = "Headshot"
+UI["Headshot"]["BorderSizePixel"] = 0
+UI["Headshot"]["ScaleType"] = Enum.ScaleType.Fit
+UI["Headshot"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["Headshot"]["Size"] = UDim2.new(0, 90, 0, 90)
+UI["Headshot"]["BackgroundTransparency"] = 1
+UI["Headshot"]["LayoutOrder"] = 1
+UI["Headshot"]["Parent"] = UI["HomeContent"]
+
+UI["HeadshotSC"] = Instance.new("UISizeConstraint")
+UI["HeadshotSC"]["Name"] = "HeadshotSC"
+UI["HeadshotSC"]["MinSize"] = Vector2.new(80, 80)
+UI["HeadshotSC"]["MaxSize"] = Vector2.new(100, 100)
+UI["HeadshotSC"]["Parent"] = UI["Headshot"]
+
+UI["HeadshotStroke"] = Instance.new("UIStroke")
+UI["HeadshotStroke"]["Name"] = "HeadshotStroke"
+UI["HeadshotStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["HeadshotStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["HeadshotStroke"]["Parent"] = UI["Headshot"]
+
+UI["HeadshotStrokeGradient"] = Instance.new("UIGradient")
+UI["HeadshotStrokeGradient"]["Name"] = "HeadshotStrokeGradient"
+UI["HeadshotStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["HeadshotStrokeGradient"]["Parent"] = UI["HeadshotStroke"]
+
+UI["HeadshotRatio"] = Instance.new("UIAspectRatioConstraint")
+UI["HeadshotRatio"]["Name"] = "HeadshotRatio"
+UI["HeadshotRatio"]["Parent"] = UI["Headshot"]
+
+UI["HeadshotCorner"] = Instance.new("UICorner")
+UI["HeadshotCorner"]["Name"] = "HeadshotCorner"
+UI["HeadshotCorner"]["CornerRadius"] = UDim.new(1, 0)
+UI["HeadshotCorner"]["Parent"] = UI["Headshot"]
+
+UI["HomeContentList"] = Instance.new("UIListLayout")
+UI["HomeContentList"]["Name"] = "HomeContentList"
+UI["HomeContentList"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["HomeContentList"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["HomeContentList"]["Padding"] = UDim.new(0, 4)
+UI["HomeContentList"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["HomeContentList"]["FillDirection"] = Enum.FillDirection.Horizontal
+UI["HomeContentList"]["Parent"] = UI["HomeContent"]
+
+UI["ExeContent"] = Instance.new("Frame")
+UI["ExeContent"]["Name"] = "ExeContent"
+UI["ExeContent"]["Visible"] = false
+UI["ExeContent"]["BorderSizePixel"] = 0
+UI["ExeContent"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ExeContent"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ExeContent"]["LayoutOrder"] = 4
+UI["ExeContent"]["BackgroundTransparency"] = 1
+UI["ExeContent"]["Parent"] = UI["Contents"]
+
+UI["ExeContentBtns"] = Instance.new("Frame")
+UI["ExeContentBtns"]["Name"] = "ExeContentBtns"
+UI["ExeContentBtns"]["BorderSizePixel"] = 0
+UI["ExeContentBtns"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ExeContentBtns"]["Size"] = UDim2.new(0, 0, 0, 34)
+UI["ExeContentBtns"]["LayoutOrder"] = 2
+UI["ExeContentBtns"]["BackgroundTransparency"] = 1
+UI["ExeContentBtns"]["Parent"] = UI["ExeContent"]
+
+UI["ExeContentBtnsList"] = Instance.new("UIListLayout")
+UI["ExeContentBtnsList"]["Name"] = "ExeContentBtnsList"
+UI["ExeContentBtnsList"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["ExeContentBtnsList"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["ExeContentBtnsList"]["Padding"] = UDim.new(0, 6)
+UI["ExeContentBtnsList"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["ExeContentBtnsList"]["FillDirection"] = Enum.FillDirection.Horizontal
+UI["ExeContentBtnsList"]["Parent"] = UI["ExeContentBtns"]
+
+UI["Re"] = Instance.new("TextButton")
+UI["Re"]["Name"] = "Re"
+UI["Re"]["TextWrapped"] = true
+UI["Re"]["BorderSizePixel"] = 0
+UI["Re"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Re"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Re"]["Size"] = UDim2.new(0, 120, 0, 36)
+UI["Re"]["LayoutOrder"] = 3
+UI["Re"]["Text"] = ""
+UI["Re"]["Parent"] = UI["ExeContentBtns"]
+
+UI["ReCorner"] = Instance.new("UICorner")
+UI["ReCorner"]["Name"] = "ReCorner"
+UI["ReCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["ReCorner"]["Parent"] = UI["Re"]
+
+UI["ReGradient"] = Instance.new("UIGradient")
+UI["ReGradient"]["Name"] = "ReGradient"
+UI["ReGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ReGradient"]["Parent"] = UI["Re"]
+
+UI["ReStroke"] = Instance.new("UIStroke")
+UI["ReStroke"]["Name"] = "ReStroke"
+UI["ReStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["ReStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["ReStroke"]["Parent"] = UI["Re"]
+
+UI["ReStrokeGradient"] = Instance.new("UIGradient")
+UI["ReStrokeGradient"]["Name"] = "ReStrokeGradient"
+UI["ReStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ReStrokeGradient"]["Parent"] = UI["ReStroke"]
+
+UI["ReContainer"] = Instance.new("Frame")
+UI["ReContainer"]["Name"] = "ReContainer"
+UI["ReContainer"]["Interactable"] = false
+UI["ReContainer"]["BorderSizePixel"] = 0
+UI["ReContainer"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ReContainer"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ReContainer"]["BackgroundTransparency"] = 1
+UI["ReContainer"]["Parent"] = UI["Re"]
+
+UI["ReLabel"] = Instance.new("TextLabel")
+UI["ReLabel"]["Name"] = "ReLabel"
+UI["ReLabel"]["TextWrapped"] = true
+UI["ReLabel"]["BorderSizePixel"] = 0
+UI["ReLabel"]["TextScaled"] = true
+UI["ReLabel"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ReLabel"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["ReLabel"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ReLabel"]["BackgroundTransparency"] = 1
+UI["ReLabel"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ReLabel"]["Text"] = "Refresh"
+UI["ReLabel"]["Parent"] = UI["ReContainer"]
+
+UI["ReLabelPadding"] = Instance.new("UIPadding")
+UI["ReLabelPadding"]["Name"] = "ReLabelPadding"
+UI["ReLabelPadding"]["PaddingTop"] = UDim.new(0, 4)
+UI["ReLabelPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["ReLabelPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["ReLabelPadding"]["PaddingBottom"] = UDim.new(0, 4)
+UI["ReLabelPadding"]["Parent"] = UI["ReLabel"]
+
+UI["ExeContentBtnsSC"] = Instance.new("UISizeConstraint")
+UI["ExeContentBtnsSC"]["Name"] = "ExeContentBtnsSC"
+UI["ExeContentBtnsSC"]["MinSize"] = Vector2.new(0, 30)
+UI["ExeContentBtnsSC"]["MaxSize"] = Vector2.new(math.huge, 34)
+UI["ExeContentBtnsSC"]["Parent"] = UI["ExeContentBtns"]
+
+UI["Exe"] = Instance.new("TextButton")
+UI["Exe"]["Name"] = "Exe"
+UI["Exe"]["TextWrapped"] = true
+UI["Exe"]["BorderSizePixel"] = 0
+UI["Exe"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Exe"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Exe"]["Size"] = UDim2.new(0, 120, 0, 36)
+UI["Exe"]["LayoutOrder"] = 1
+UI["Exe"]["Text"] = ""
+UI["Exe"]["Parent"] = UI["ExeContentBtns"]
+
+UI["ExeCorner"] = Instance.new("UICorner")
+UI["ExeCorner"]["Name"] = "ExeCorner"
+UI["ExeCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["ExeCorner"]["Parent"] = UI["Exe"]
+
+UI["ExeGradient"] = Instance.new("UIGradient")
+UI["ExeGradient"]["Name"] = "ExeGradient"
+UI["ExeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ExeGradient"]["Parent"] = UI["Exe"]
+
+UI["ExeStroke"] = Instance.new("UIStroke")
+UI["ExeStroke"]["Name"] = "ExeStroke"
+UI["ExeStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["ExeStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["ExeStroke"]["Parent"] = UI["Exe"]
+
+UI["ExeStrokeGradient"] = Instance.new("UIGradient")
+UI["ExeStrokeGradient"]["Name"] = "ExeStrokeGradient"
+UI["ExeStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ExeStrokeGradient"]["Parent"] = UI["ExeStroke"]
+
+UI["ExeContainer"] = Instance.new("Frame")
+UI["ExeContainer"]["Name"] = "ExeContainer"
+UI["ExeContainer"]["Interactable"] = false
+UI["ExeContainer"]["BorderSizePixel"] = 0
+UI["ExeContainer"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ExeContainer"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ExeContainer"]["BackgroundTransparency"] = 1
+UI["ExeContainer"]["Parent"] = UI["Exe"]
+
+UI["ExeLabel"] = Instance.new("TextLabel")
+UI["ExeLabel"]["Name"] = "ExeLabel"
+UI["ExeLabel"]["TextWrapped"] = true
+UI["ExeLabel"]["BorderSizePixel"] = 0
+UI["ExeLabel"]["TextScaled"] = true
+UI["ExeLabel"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ExeLabel"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["ExeLabel"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ExeLabel"]["BackgroundTransparency"] = 1
+UI["ExeLabel"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ExeLabel"]["Text"] = "Execute"
+UI["ExeLabel"]["Parent"] = UI["ExeContainer"]
+
+UI["ExeLabelPadding"] = Instance.new("UIPadding")
+UI["ExeLabelPadding"]["Name"] = "ExeLabelPadding"
+UI["ExeLabelPadding"]["PaddingTop"] = UDim.new(0, 4)
+UI["ExeLabelPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["ExeLabelPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["ExeLabelPadding"]["PaddingBottom"] = UDim.new(0, 4)
+UI["ExeLabelPadding"]["Parent"] = UI["ExeLabel"]
+
+UI["Clr"] = Instance.new("TextButton")
+UI["Clr"]["Name"] = "Clr"
+UI["Clr"]["TextWrapped"] = true
+UI["Clr"]["BorderSizePixel"] = 0
+UI["Clr"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Clr"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Clr"]["Size"] = UDim2.new(0, 120, 0, 36)
+UI["Clr"]["LayoutOrder"] = 2
+UI["Clr"]["Text"] = ""
+UI["Clr"]["Parent"] = UI["ExeContentBtns"]
+
+UI["ClrCorner"] = Instance.new("UICorner")
+UI["ClrCorner"]["Name"] = "ClrCorner"
+UI["ClrCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["ClrCorner"]["Parent"] = UI["Clr"]
+
+UI["ClrGradient"] = Instance.new("UIGradient")
+UI["ClrGradient"]["Name"] = "ClrGradient"
+UI["ClrGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ClrGradient"]["Parent"] = UI["Clr"]
+
+UI["ClrStroke"] = Instance.new("UIStroke")
+UI["ClrStroke"]["Name"] = "ClrStroke"
+UI["ClrStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["ClrStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["ClrStroke"]["Parent"] = UI["Clr"]
+
+UI["ClrStrokeGradient"] = Instance.new("UIGradient")
+UI["ClrStrokeGradient"]["Name"] = "ClrStrokeGradient"
+UI["ClrStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ClrStrokeGradient"]["Parent"] = UI["ClrStroke"]
+
+UI["ClrContainer"] = Instance.new("Frame")
+UI["ClrContainer"]["Name"] = "ClrContainer"
+UI["ClrContainer"]["Interactable"] = false
+UI["ClrContainer"]["BorderSizePixel"] = 0
+UI["ClrContainer"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ClrContainer"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ClrContainer"]["BackgroundTransparency"] = 1
+UI["ClrContainer"]["Parent"] = UI["Clr"]
+
+UI["ClrLabel"] = Instance.new("TextLabel")
+UI["ClrLabel"]["Name"] = "ClrLabel"
+UI["ClrLabel"]["TextWrapped"] = true
+UI["ClrLabel"]["BorderSizePixel"] = 0
+UI["ClrLabel"]["TextScaled"] = true
+UI["ClrLabel"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ClrLabel"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["ClrLabel"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ClrLabel"]["BackgroundTransparency"] = 1
+UI["ClrLabel"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ClrLabel"]["Text"] = "Clear"
+UI["ClrLabel"]["Parent"] = UI["ClrContainer"]
+
+UI["ClrLabelPadding"] = Instance.new("UIPadding")
+UI["ClrLabelPadding"]["Name"] = "ClrLabelPadding"
+UI["ClrLabelPadding"]["PaddingTop"] = UDim.new(0, 4)
+UI["ClrLabelPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["ClrLabelPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["ClrLabelPadding"]["PaddingBottom"] = UDim.new(0, 4)
+UI["ClrLabelPadding"]["Parent"] = UI["ClrLabel"]
+
+UI["ExeContentList"] = Instance.new("UIListLayout")
+UI["ExeContentList"]["Name"] = "ExeContentList"
+UI["ExeContentList"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["ExeContentList"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["ExeContentList"]["Padding"] = UDim.new(0, 6)
+UI["ExeContentList"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["ExeContentList"]["Parent"] = UI["ExeContent"]
+
+UI["InputFrame"] = Instance.new("ScrollingFrame")
+UI["InputFrame"]["Name"] = "InputFrame"
+UI["InputFrame"]["BorderSizePixel"] = 0
+UI["InputFrame"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["InputFrame"]["Size"] = UDim2.new(0.2, 0, 0.3, 0)
+UI["InputFrame"]["BackgroundTransparency"] = 1
+UI["InputFrame"]["AutomaticCanvasSize"] = Enum.AutomaticSize.Y
+UI["InputFrame"]["ScrollingDirection"] = Enum.ScrollingDirection.Y
+UI["InputFrame"]["ScrollBarThickness"] = 0
+UI["InputFrame"]["Parent"] = UI["ExeContent"]
+
+UI["InputFrameStroke"] = Instance.new("UIStroke")
+UI["InputFrameStroke"]["Name"] = "InputFrameStroke"
+UI["InputFrameStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["InputFrameStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["InputFrameStroke"]["Parent"] = UI["InputFrame"]
+
+UI["InputFrameStrokeGradient"] = Instance.new("UIGradient")
+UI["InputFrameStrokeGradient"]["Name"] = "InputFrameStrokeGradient"
+UI["InputFrameStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["InputFrameStrokeGradient"]["Parent"] = UI["InputFrameStroke"]
+
+UI["InputFrameCorner"] = Instance.new("UICorner")
+UI["InputFrameCorner"]["Name"] = "InputFrameCorner"
+UI["InputFrameCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["InputFrameCorner"]["Parent"] = UI["InputFrame"]
+
+UI["InputBox"] = Instance.new("TextBox")
+UI["InputBox"]["Name"] = "InputBox"
+UI["InputBox"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["InputBox"]["PlaceholderColor3"] = Color3.fromRGB(83, 0, 255)
+UI["InputBox"]["BorderSizePixel"] = 0
+UI["InputBox"]["TextWrapped"] = true
+UI["InputBox"]["TextSize"] = 18
+UI["InputBox"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["InputBox"]["TextYAlignment"] = Enum.TextYAlignment.Top
+UI["InputBox"]["TextScaled"] = true
+UI["InputBox"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["InputBox"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["InputBox"]["AutomaticSize"] = Enum.AutomaticSize.Y
+UI["InputBox"]["PlaceholderText"] = "Server-side code here..."
+UI["InputBox"]["Size"] = UDim2.new(1, 0, 0, 0)
+UI["InputBox"]["Text"] = ""
+UI["InputBox"]["BackgroundTransparency"] = 1
+UI["InputBox"]["Parent"] = UI["InputFrame"]
+
+UI["InputBoxPadding"] = Instance.new("UIPadding")
+UI["InputBoxPadding"]["Name"] = "InputBoxPadding"
+UI["InputBoxPadding"]["PaddingTop"] = UDim.new(0, 4)
+UI["InputBoxPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["InputBoxPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["InputBoxPadding"]["PaddingBottom"] = UDim.new(0, 4)
+UI["InputBoxPadding"]["Parent"] = UI["InputBox"]
+
+UI["InputBoxTextSC"] = Instance.new("UITextSizeConstraint")
+UI["InputBoxTextSC"]["Name"] = "InputBoxTextSC"
+UI["InputBoxTextSC"]["MaxTextSize"] = 20
+UI["InputBoxTextSC"]["MinTextSize"] = 18
+UI["InputBoxTextSC"]["Parent"] = UI["InputBox"]
+
+UI["ScannerContent"] = Instance.new("Frame")
+UI["ScannerContent"]["Name"] = "ScannerContent"
+UI["ScannerContent"]["Visible"] = false
+UI["ScannerContent"]["BorderSizePixel"] = 0
+UI["ScannerContent"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScannerContent"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ScannerContent"]["LayoutOrder"] = 2
+UI["ScannerContent"]["BackgroundTransparency"] = 1
+UI["ScannerContent"]["Parent"] = UI["Contents"]
+
+UI["ScannerContentList"] = Instance.new("UIListLayout")
+UI["ScannerContentList"]["Name"] = "ScannerContentList"
+UI["ScannerContentList"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["ScannerContentList"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["ScannerContentList"]["Padding"] = UDim.new(0, 4)
+UI["ScannerContentList"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["ScannerContentList"]["Parent"] = UI["ScannerContent"]
+
+UI["ScanBtn"] = Instance.new("TextButton")
+UI["ScanBtn"]["Name"] = "ScanBtn"
+UI["ScanBtn"]["TextWrapped"] = true
+UI["ScanBtn"]["BorderSizePixel"] = 0
+UI["ScanBtn"]["TextScaled"] = true
+UI["ScanBtn"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScanBtn"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScanBtn"]["Size"] = UDim2.new(0, 48, 0, 48)
+UI["ScanBtn"]["LayoutOrder"] = 1
+UI["ScanBtn"]["Text"] = ""
+UI["ScanBtn"]["Parent"] = UI["ScannerContent"]
+
+UI["ScanBtnCorner"] = Instance.new("UICorner")
+UI["ScanBtnCorner"]["Name"] = "ScanBtnCorner"
+UI["ScanBtnCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["ScanBtnCorner"]["Parent"] = UI["ScanBtn"]
+
+UI["ScanBtnGradient"] = Instance.new("UIGradient")
+UI["ScanBtnGradient"]["Name"] = "ScanBtnGradient"
+UI["ScanBtnGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ScanBtnGradient"]["Parent"] = UI["ScanBtn"]
+
+UI["ScanBtnContainer"] = Instance.new("Frame")
+UI["ScanBtnContainer"]["Name"] = "ScanBtnContainer"
+UI["ScanBtnContainer"]["Interactable"] = false
+UI["ScanBtnContainer"]["BorderSizePixel"] = 0
+UI["ScanBtnContainer"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScanBtnContainer"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ScanBtnContainer"]["BackgroundTransparency"] = 1
+UI["ScanBtnContainer"]["Parent"] = UI["ScanBtn"]
+
+UI["ScanLabel"] = Instance.new("TextLabel")
+UI["ScanLabel"]["Name"] = "ScanLabel"
+UI["ScanLabel"]["TextWrapped"] = true
+UI["ScanLabel"]["BorderSizePixel"] = 0
+UI["ScanLabel"]["TextScaled"] = true
+UI["ScanLabel"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScanLabel"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["ScanLabel"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScanLabel"]["BackgroundTransparency"] = 1
+UI["ScanLabel"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ScanLabel"]["Text"] = "Scan"
+UI["ScanLabel"]["Parent"] = UI["ScanBtnContainer"]
+
+UI["ScanLabelPadding"] = Instance.new("UIPadding")
+UI["ScanLabelPadding"]["Name"] = "ScanLabelPadding"
+UI["ScanLabelPadding"]["PaddingTop"] = UDim.new(0, 6)
+UI["ScanLabelPadding"]["PaddingRight"] = UDim.new(0, 6)
+UI["ScanLabelPadding"]["PaddingLeft"] = UDim.new(0, 6)
+UI["ScanLabelPadding"]["PaddingBottom"] = UDim.new(0, 6)
+UI["ScanLabelPadding"]["Parent"] = UI["ScanLabel"]
+
+UI["ScanBtnStroke"] = Instance.new("UIStroke")
+UI["ScanBtnStroke"]["Name"] = "ScanBtnStroke"
+UI["ScanBtnStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["ScanBtnStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["ScanBtnStroke"]["Parent"] = UI["ScanBtn"]
+
+UI["ScanBtnStrokeGradient"] = Instance.new("UIGradient")
+UI["ScanBtnStrokeGradient"]["Name"] = "ScanBtnStrokeGradient"
+UI["ScanBtnStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ScanBtnStrokeGradient"]["Parent"] = UI["ScanBtnStroke"]
+
+UI["ScanBtnSC"] = Instance.new("UISizeConstraint")
+UI["ScanBtnSC"]["Name"] = "ScanBtnSC"
+UI["ScanBtnSC"]["MinSize"] = Vector2.new(0, 46)
+UI["ScanBtnSC"]["MaxSize"] = Vector2.new(math.huge, 50)
+UI["ScanBtnSC"]["Parent"] = UI["ScanBtn"]
+
+UI["ScanStatus"] = Instance.new("TextLabel")
+UI["ScanStatus"]["Name"] = "ScanStatus"
+UI["ScanStatus"]["TextWrapped"] = true
+UI["ScanStatus"]["BorderSizePixel"] = 0
+UI["ScanStatus"]["TextSize"] = 22
+UI["ScanStatus"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["ScanStatus"]["TextYAlignment"] = Enum.TextYAlignment.Top
+UI["ScanStatus"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["ScanStatus"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["ScanStatus"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScanStatus"]["BackgroundTransparency"] = 1
+UI["ScanStatus"]["Size"] = UDim2.new(0, 456, 0, 184)
+UI["ScanStatus"]["Text"] = "Ready to scan for backdoors..."
+UI["ScanStatus"]["LayoutOrder"] = 2
+UI["ScanStatus"]["Position"] = UDim2.new(0, 0, 0, 54)
+UI["ScanStatus"]["Parent"] = UI["ScannerContent"]
+
+UI["ScanStatusGradient"] = Instance.new("UIGradient")
+UI["ScanStatusGradient"]["Name"] = "ScanStatusGradient"
+UI["ScanStatusGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ScanStatusGradient"]["Parent"] = UI["ScanStatus"]
+
+UI["CreditsContent"] = Instance.new("Frame")
+UI["CreditsContent"]["Name"] = "CreditsContent"
+UI["CreditsContent"]["Visible"] = false
+UI["CreditsContent"]["BorderSizePixel"] = 0
+UI["CreditsContent"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["CreditsContent"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["CreditsContent"]["LayoutOrder"] = 5
+UI["CreditsContent"]["BackgroundTransparency"] = 1
+UI["CreditsContent"]["Parent"] = UI["Contents"]
+
+UI["CreditsContentList"] = Instance.new("UIListLayout")
+UI["CreditsContentList"]["Name"] = "CreditsContentList"
+UI["CreditsContentList"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["CreditsContentList"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["CreditsContentList"]["Padding"] = UDim.new(0, 4)
+UI["CreditsContentList"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["CreditsContentList"]["FillDirection"] = Enum.FillDirection.Horizontal
+UI["CreditsContentList"]["Parent"] = UI["CreditsContent"]
+
+UI["DevHeadshot"] = Instance.new("ImageLabel")
+UI["DevHeadshot"]["Name"] = "DevHeadshot"
+UI["DevHeadshot"]["Image"] = GetAsset("PolariaRM/assets/dev.png")
+UI["DevHeadshot"]["BorderSizePixel"] = 0
+UI["DevHeadshot"]["ScaleType"] = Enum.ScaleType.Fit
+UI["DevHeadshot"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["DevHeadshot"]["Size"] = UDim2.new(0, 90, 0, 90)
+UI["DevHeadshot"]["BackgroundTransparency"] = 1
+UI["DevHeadshot"]["LayoutOrder"] = 1
+UI["DevHeadshot"]["Parent"] = UI["CreditsContent"]
+
+UI["DevHeadshotStroke"] = Instance.new("UIStroke")
+UI["DevHeadshotStroke"]["Name"] = "DevHeadshotStroke"
+UI["DevHeadshotStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["DevHeadshotStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["DevHeadshotStroke"]["Parent"] = UI["DevHeadshot"]
+
+UI["DevHeadshotStrokeGradient"] = Instance.new("UIGradient")
+UI["DevHeadshotStrokeGradient"]["Name"] = "DevHeadshotStrokeGradient"
+UI["DevHeadshotStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["DevHeadshotStrokeGradient"]["Parent"] = UI["DevHeadshotStroke"]
+
+UI["DevHeadshotCorner"] = Instance.new("UICorner")
+UI["DevHeadshotCorner"]["Name"] = "DevHeadshotCorner"
+UI["DevHeadshotCorner"]["CornerRadius"] = UDim.new(1, 0)
+UI["DevHeadshotCorner"]["Parent"] = UI["DevHeadshot"]
+
+UI["DevHeadshotSC"] = Instance.new("UISizeConstraint")
+UI["DevHeadshotSC"]["Name"] = "DevHeadshotSC"
+UI["DevHeadshotSC"]["MinSize"] = Vector2.new(80, 80)
+UI["DevHeadshotSC"]["MaxSize"] = Vector2.new(100, 100)
+UI["DevHeadshotSC"]["Parent"] = UI["DevHeadshot"]
+
+UI["DevHeadshotRatio"] = Instance.new("UIAspectRatioConstraint")
+UI["DevHeadshotRatio"]["Name"] = "DevHeadshotRatio"
+UI["DevHeadshotRatio"]["Parent"] = UI["DevHeadshot"]
+
+UI["Desc"] = Instance.new("TextLabel")
+UI["Desc"]["Name"] = "Desc"
+UI["Desc"]["TextWrapped"] = true
+UI["Desc"]["BorderSizePixel"] = 0
+UI["Desc"]["TextSize"] = 20
+UI["Desc"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["Desc"]["TextYAlignment"] = Enum.TextYAlignment.Top
+UI["Desc"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["Desc"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["Desc"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Desc"]["BackgroundTransparency"] = 1
+UI["Desc"]["RichText"] = true
+UI["Desc"]["Size"] = UDim2.new(0, 410, 0, 184)
+UI["Desc"]["Text"] = "Fully made by JustAGuest."
+UI["Desc"]["LayoutOrder"] = 2
+UI["Desc"]["Position"] = UDim2.new(0, 94, 0, 54)
+UI["Desc"]["Parent"] = UI["CreditsContent"]
+
+UI["DescGradient"] = Instance.new("UIGradient")
+UI["DescGradient"]["Name"] = "DescGradient"
+UI["DescGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["DescGradient"]["Parent"] = UI["Desc"]
+
+UI["ScriptsContent"] = Instance.new("ScrollingFrame")
+UI["ScriptsContent"]["Name"] = "ScriptsContent"
+UI["ScriptsContent"]["Visible"] = false
+UI["ScriptsContent"]["AutomaticCanvasSize"] = Enum.AutomaticSize.Y
+UI["ScriptsContent"]["ScrollingDirection"] = Enum.ScrollingDirection.Y
+UI["ScriptsContent"]["BorderSizePixel"] = 0
+UI["ScriptsContent"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScriptsContent"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["ScriptsContent"]["ScrollBarThickness"] = 0
+UI["ScriptsContent"]["LayoutOrder"] = 3
+UI["ScriptsContent"]["BackgroundTransparency"] = 1
+UI["ScriptsContent"]["Parent"] = UI["Contents"]
+
+UI["ScriptsContentGrid"] = Instance.new("UIGridLayout")
+UI["ScriptsContentGrid"]["Name"] = "ScriptsContentGrid"
+UI["ScriptsContentGrid"]["CellSize"] = UDim2.new(0, 102, 0, 34)
+UI["ScriptsContentGrid"]["CellPadding"] = UDim2.new(0, 4, 0, 4)
+UI["ScriptsContentGrid"]["Parent"] = UI["ScriptsContent"]
+
+UI["BtnExample"] = Instance.new("TextButton")
+UI["BtnExample"]["Name"] = "BtnExample"
+UI["BtnExample"]["TextWrapped"] = true
+UI["BtnExample"]["BorderSizePixel"] = 0
+UI["BtnExample"]["TextScaled"] = true
+UI["BtnExample"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["BtnExample"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["BtnExample"]["Size"] = UDim2.new(0, 32, 0, 32)
+UI["BtnExample"]["Text"] = ""
+UI["BtnExample"]["Parent"] = UI["ScriptsContent"]
+
+UI["BtnExampleCorner"] = Instance.new("UICorner")
+UI["BtnExampleCorner"]["Name"] = "BtnExampleCorner"
+UI["BtnExampleCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["BtnExampleCorner"]["Parent"] = UI["BtnExample"]
+
+UI["BtnExampleGradient"] = Instance.new("UIGradient")
+UI["BtnExampleGradient"]["Name"] = "BtnExampleGradient"
+UI["BtnExampleGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["BtnExampleGradient"]["Parent"] = UI["BtnExample"]
+
+UI["BtnExampleContainer"] = Instance.new("Frame")
+UI["BtnExampleContainer"]["Name"] = "BtnExampleContainer"
+UI["BtnExampleContainer"]["Interactable"] = false
+UI["BtnExampleContainer"]["BorderSizePixel"] = 0
+UI["BtnExampleContainer"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["BtnExampleContainer"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["BtnExampleContainer"]["BackgroundTransparency"] = 1
+UI["BtnExampleContainer"]["Parent"] = UI["BtnExample"]
+
+UI["BtnExampleLabel"] = Instance.new("TextLabel")
+UI["BtnExampleLabel"]["Name"] = "BtnExampleLabel"
+UI["BtnExampleLabel"]["TextWrapped"] = true
+UI["BtnExampleLabel"]["BorderSizePixel"] = 0
+UI["BtnExampleLabel"]["TextScaled"] = true
+UI["BtnExampleLabel"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["BtnExampleLabel"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["BtnExampleLabel"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["BtnExampleLabel"]["BackgroundTransparency"] = 1
+UI["BtnExampleLabel"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["BtnExampleLabel"]["Text"] = "Script name"
+UI["BtnExampleLabel"]["Parent"] = UI["BtnExampleContainer"]
+
+UI["BtnExampleLabelPadding"] = Instance.new("UIPadding")
+UI["BtnExampleLabelPadding"]["Name"] = "BtnExampleLabelPadding"
+UI["BtnExampleLabelPadding"]["PaddingTop"] = UDim.new(0, 6)
+UI["BtnExampleLabelPadding"]["PaddingRight"] = UDim.new(0, 6)
+UI["BtnExampleLabelPadding"]["PaddingLeft"] = UDim.new(0, 6)
+UI["BtnExampleLabelPadding"]["PaddingBottom"] = UDim.new(0, 6)
+UI["BtnExampleLabelPadding"]["Parent"] = UI["BtnExampleLabel"]
+
+UI["MainFrameStroke"] = Instance.new("UIStroke")
+UI["MainFrameStroke"]["Name"] = "MainFrameStroke"
+UI["MainFrameStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["MainFrameStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["MainFrameStroke"]["Parent"] = UI["MainFrame"]
+
+UI["MainFrameStrokeGradient"] = Instance.new("UIGradient")
+UI["MainFrameStrokeGradient"]["Name"] = "MainFrameStrokeGradient"
+UI["MainFrameStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["MainFrameStrokeGradient"]["Parent"] = UI["MainFrameStroke"]
+
+UI["MainFrameGradient"] = Instance.new("UIGradient")
+UI["MainFrameGradient"]["Name"] = "MainFrameGradient"
+UI["MainFrameGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["MainFrameGradient"]["Parent"] = UI["MainFrame"]
+
+UI["Topbar"] = Instance.new("Frame")
+UI["Topbar"]["Name"] = "Topbar"
+UI["Topbar"]["BorderSizePixel"] = 0
+UI["Topbar"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Topbar"]["Size"] = UDim2.new(1, 0, 0, 30)
+UI["Topbar"]["LayoutOrder"] = 1
+UI["Topbar"]["BackgroundTransparency"] = 1
+UI["Topbar"]["Parent"] = UI["MainFrame"]
+
+UI["TopbarSC"] = Instance.new("UISizeConstraint")
+UI["TopbarSC"]["Name"] = "TopbarSC"
+UI["TopbarSC"]["MinSize"] = Vector2.new(0, 30)
+UI["TopbarSC"]["MaxSize"] = Vector2.new(math.huge, 34)
+UI["TopbarSC"]["Parent"] = UI["Topbar"]
+
+UI["TopbarButtons"] = Instance.new("Frame")
+UI["TopbarButtons"]["Name"] = "TopbarButtons"
+UI["TopbarButtons"]["BorderSizePixel"] = 0
+UI["TopbarButtons"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["TopbarButtons"]["AutomaticSize"] = Enum.AutomaticSize.X
+UI["TopbarButtons"]["Size"] = UDim2.new(0, 0, 0, 10)
+UI["TopbarButtons"]["Position"] = UDim2.new(0, 108, 0, 0)
+UI["TopbarButtons"]["LayoutOrder"] = 2
+UI["TopbarButtons"]["BackgroundTransparency"] = 1
+UI["TopbarButtons"]["Parent"] = UI["Topbar"]
+
+UI["Close"] = Instance.new("TextButton")
+UI["Close"]["Name"] = "Close"
+UI["Close"]["TextWrapped"] = true
+UI["Close"]["BorderSizePixel"] = 0
+UI["Close"]["TextScaled"] = true
+UI["Close"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Close"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["Close"]["FontFace"] = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+UI["Close"]["BackgroundTransparency"] = 1
+UI["Close"]["Size"] = UDim2.new(0, 32, 0, 32)
+UI["Close"]["LayoutOrder"] = 2
+UI["Close"]["Text"] = "X"
+UI["Close"]["Parent"] = UI["TopbarButtons"]
+
+UI["CloseCorner"] = Instance.new("UICorner")
+UI["CloseCorner"]["Name"] = "CloseCorner"
+UI["CloseCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["CloseCorner"]["Parent"] = UI["Close"]
+
+UI["CloseGradient"] = Instance.new("UIGradient")
+UI["CloseGradient"]["Name"] = "CloseGradient"
+UI["CloseGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["CloseGradient"]["Parent"] = UI["Close"]
+
+UI["TopbarButtonsList"] = Instance.new("UIListLayout")
+UI["TopbarButtonsList"]["Name"] = "TopbarButtonsList"
+UI["TopbarButtonsList"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Right
+UI["TopbarButtonsList"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["TopbarButtonsList"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["TopbarButtonsList"]["Padding"] = UDim.new(0, 4)
+UI["TopbarButtonsList"]["VerticalAlignment"] = Enum.VerticalAlignment.Center
+UI["TopbarButtonsList"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["TopbarButtonsList"]["FillDirection"] = Enum.FillDirection.Horizontal
+UI["TopbarButtonsList"]["Parent"] = UI["TopbarButtons"]
+
+UI["Hide"] = Instance.new("TextButton")
+UI["Hide"]["Name"] = "Hide"
+UI["Hide"]["TextWrapped"] = true
+UI["Hide"]["BorderSizePixel"] = 0
+UI["Hide"]["TextScaled"] = true
+UI["Hide"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Hide"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["Hide"]["FontFace"] = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+UI["Hide"]["BackgroundTransparency"] = 1
+UI["Hide"]["Size"] = UDim2.new(0, 32, 0, 32)
+UI["Hide"]["LayoutOrder"] = 1
+UI["Hide"]["Text"] = "-"
+UI["Hide"]["Parent"] = UI["TopbarButtons"]
+
+UI["HideCorner"] = Instance.new("UICorner")
+UI["HideCorner"]["Name"] = "HideCorner"
+UI["HideCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["HideCorner"]["Parent"] = UI["Hide"]
+
+UI["HideGradient"] = Instance.new("UIGradient")
+UI["HideGradient"]["Name"] = "HideGradient"
+UI["HideGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["HideGradient"]["Parent"] = UI["Hide"]
+
+UI["TopbarButtonsSC"] = Instance.new("UISizeConstraint")
+UI["TopbarButtonsSC"]["Name"] = "TopbarButtonsSC"
+UI["TopbarButtonsSC"]["MinSize"] = Vector2.new(68, 0)
+UI["TopbarButtonsSC"]["MaxSize"] = Vector2.new(72, math.huge)
+UI["TopbarButtonsSC"]["Parent"] = UI["TopbarButtons"]
+
+UI["Title"] = Instance.new("TextLabel")
+UI["Title"]["Name"] = "Title"
+UI["Title"]["TextWrapped"] = true
+UI["Title"]["BorderSizePixel"] = 0
+UI["Title"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["Title"]["TextScaled"] = true
+UI["Title"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Title"]["FontFace"] = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+UI["Title"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Title"]["BackgroundTransparency"] = 1
+UI["Title"]["Size"] = UDim2.new(0, 586, 0, 30)
+UI["Title"]["Text"] = "Polaria Remastered"
+UI["Title"]["LayoutOrder"] = 1
+UI["Title"]["Parent"] = UI["Topbar"]
+
+UI["TitleGradient"] = Instance.new("UIGradient")
+UI["TitleGradient"]["Name"] = "TitleGradient"
+UI["TitleGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["TitleGradient"]["Parent"] = UI["Title"]
+
+UI["TopbarList"] = Instance.new("UIListLayout")
+UI["TopbarList"]["Name"] = "TopbarList"
+UI["TopbarList"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["TopbarList"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["TopbarList"]["Padding"] = UDim.new(0, 4)
+UI["TopbarList"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["TopbarList"]["FillDirection"] = Enum.FillDirection.Horizontal
+UI["TopbarList"]["Parent"] = UI["Topbar"]
+
+UI["Tabs"] = Instance.new("Frame")
+UI["Tabs"]["Name"] = "Tabs"
+UI["Tabs"]["BorderSizePixel"] = 0
+UI["Tabs"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Tabs"]["Size"] = UDim2.new(1, 0, 0, 34)
+UI["Tabs"]["LayoutOrder"] = 2
+UI["Tabs"]["BackgroundTransparency"] = 1
+UI["Tabs"]["Parent"] = UI["MainFrame"]
+
+UI["ScriptsTab"] = Instance.new("TextButton")
+UI["ScriptsTab"]["Name"] = "ScriptsTab"
+UI["ScriptsTab"]["TextWrapped"] = true
+UI["ScriptsTab"]["BorderSizePixel"] = 0
+UI["ScriptsTab"]["TextScaled"] = true
+UI["ScriptsTab"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScriptsTab"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["ScriptsTab"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["ScriptsTab"]["BackgroundTransparency"] = 1
+UI["ScriptsTab"]["Size"] = UDim2.new(0, 32, 0, 32)
+UI["ScriptsTab"]["LayoutOrder"] = 3
+UI["ScriptsTab"]["Text"] = "Scripts"
+UI["ScriptsTab"]["Parent"] = UI["Tabs"]
+
+UI["ScriptsTabStroke"] = Instance.new("UIStroke")
+UI["ScriptsTabStroke"]["Name"] = "ScriptsTabStroke"
+UI["ScriptsTabStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["ScriptsTabStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["ScriptsTabStroke"]["Parent"] = UI["ScriptsTab"]
+
+UI["ScriptsTabStrokeGradient"] = Instance.new("UIGradient")
+UI["ScriptsTabStrokeGradient"]["Name"] = "ScriptsTabStrokeGradient"
+UI["ScriptsTabStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ScriptsTabStrokeGradient"]["Parent"] = UI["ScriptsTabStroke"]
+
+UI["ScriptsTabGradient"] = Instance.new("UIGradient")
+UI["ScriptsTabGradient"]["Name"] = "ScriptsTabGradient"
+UI["ScriptsTabGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ScriptsTabGradient"]["Parent"] = UI["ScriptsTab"]
+
+UI["ScriptsTabCorner"] = Instance.new("UICorner")
+UI["ScriptsTabCorner"]["Name"] = "ScriptsTabCorner"
+UI["ScriptsTabCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["ScriptsTabCorner"]["Parent"] = UI["ScriptsTab"]
+
+UI["ScriptsTabPadding"] = Instance.new("UIPadding")
+UI["ScriptsTabPadding"]["Name"] = "ScriptsTabPadding"
+UI["ScriptsTabPadding"]["PaddingTop"] = UDim.new(0, 2)
+UI["ScriptsTabPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["ScriptsTabPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["ScriptsTabPadding"]["PaddingBottom"] = UDim.new(0, 2)
+UI["ScriptsTabPadding"]["Parent"] = UI["ScriptsTab"]
+
+UI["HomeTab"] = Instance.new("TextButton")
+UI["HomeTab"]["Name"] = "HomeTab"
+UI["HomeTab"]["TextWrapped"] = true
+UI["HomeTab"]["BorderSizePixel"] = 0
+UI["HomeTab"]["TextScaled"] = true
+UI["HomeTab"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["HomeTab"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["HomeTab"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["HomeTab"]["BackgroundTransparency"] = 1
+UI["HomeTab"]["Size"] = UDim2.new(0, 32, 0, 32)
+UI["HomeTab"]["LayoutOrder"] = 1
+UI["HomeTab"]["Text"] = "Home"
+UI["HomeTab"]["Parent"] = UI["Tabs"]
+
+UI["HomeTabCorner"] = Instance.new("UICorner")
+UI["HomeTabCorner"]["Name"] = "HomeTabCorner"
+UI["HomeTabCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["HomeTabCorner"]["Parent"] = UI["HomeTab"]
+
+UI["HomeTabGradient"] = Instance.new("UIGradient")
+UI["HomeTabGradient"]["Name"] = "HomeTabGradient"
+UI["HomeTabGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["HomeTabGradient"]["Parent"] = UI["HomeTab"]
+
+UI["HomeTabStroke"] = Instance.new("UIStroke")
+UI["HomeTabStroke"]["Name"] = "HomeTabStroke"
+UI["HomeTabStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["HomeTabStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["HomeTabStroke"]["Parent"] = UI["HomeTab"]
+
+UI["HomeTabStrokeGradient"] = Instance.new("UIGradient")
+UI["HomeTabStrokeGradient"]["Name"] = "HomeTabStrokeGradient"
+UI["HomeTabStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["HomeTabStrokeGradient"]["Parent"] = UI["HomeTabStroke"]
+
+UI["HomeTabPadding"] = Instance.new("UIPadding")
+UI["HomeTabPadding"]["Name"] = "HomeTabPadding"
+UI["HomeTabPadding"]["PaddingTop"] = UDim.new(0, 2)
+UI["HomeTabPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["HomeTabPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["HomeTabPadding"]["PaddingBottom"] = UDim.new(0, 2)
+UI["HomeTabPadding"]["Parent"] = UI["HomeTab"]
+
+UI["TabsSC"] = Instance.new("UISizeConstraint")
+UI["TabsSC"]["Name"] = "TabsSC"
+UI["TabsSC"]["MinSize"] = Vector2.new(0, 32)
+UI["TabsSC"]["MaxSize"] = Vector2.new(math.huge, 36)
+UI["TabsSC"]["Parent"] = UI["Tabs"]
+
+UI["TabsList"] = Instance.new("UIListLayout")
+UI["TabsList"]["Name"] = "TabsList"
+UI["TabsList"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Center
+UI["TabsList"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["TabsList"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["TabsList"]["Padding"] = UDim.new(0, 6)
+UI["TabsList"]["VerticalAlignment"] = Enum.VerticalAlignment.Center
+UI["TabsList"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["TabsList"]["FillDirection"] = Enum.FillDirection.Horizontal
+UI["TabsList"]["Parent"] = UI["Tabs"]
+
+UI["ScanTab"] = Instance.new("TextButton")
+UI["ScanTab"]["Name"] = "ScanTab"
+UI["ScanTab"]["TextWrapped"] = true
+UI["ScanTab"]["BorderSizePixel"] = 0
+UI["ScanTab"]["TextScaled"] = true
+UI["ScanTab"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ScanTab"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["ScanTab"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["ScanTab"]["BackgroundTransparency"] = 1
+UI["ScanTab"]["Size"] = UDim2.new(0, 32, 0, 32)
+UI["ScanTab"]["LayoutOrder"] = 2
+UI["ScanTab"]["Text"] = "Scanner"
+UI["ScanTab"]["Parent"] = UI["Tabs"]
+
+UI["ScanTabGradient"] = Instance.new("UIGradient")
+UI["ScanTabGradient"]["Name"] = "ScanTabGradient"
+UI["ScanTabGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ScanTabGradient"]["Parent"] = UI["ScanTab"]
+
+UI["ScanTabCorner"] = Instance.new("UICorner")
+UI["ScanTabCorner"]["Name"] = "ScanTabCorner"
+UI["ScanTabCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["ScanTabCorner"]["Parent"] = UI["ScanTab"]
+
+UI["ScanTabStroke"] = Instance.new("UIStroke")
+UI["ScanTabStroke"]["Name"] = "ScanTabStroke"
+UI["ScanTabStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["ScanTabStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["ScanTabStroke"]["Parent"] = UI["ScanTab"]
+
+UI["ScanTabStrokeGradient"] = Instance.new("UIGradient")
+UI["ScanTabStrokeGradient"]["Name"] = "ScanTabStrokeGradient"
+UI["ScanTabStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ScanTabStrokeGradient"]["Parent"] = UI["ScanTabStroke"]
+
+UI["ScanTabPadding"] = Instance.new("UIPadding")
+UI["ScanTabPadding"]["Name"] = "ScanTabPadding"
+UI["ScanTabPadding"]["PaddingTop"] = UDim.new(0, 2)
+UI["ScanTabPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["ScanTabPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["ScanTabPadding"]["PaddingBottom"] = UDim.new(0, 2)
+UI["ScanTabPadding"]["Parent"] = UI["ScanTab"]
+
+UI["CreditsTab"] = Instance.new("TextButton")
+UI["CreditsTab"]["Name"] = "CreditsTab"
+UI["CreditsTab"]["TextWrapped"] = true
+UI["CreditsTab"]["BorderSizePixel"] = 0
+UI["CreditsTab"]["TextScaled"] = true
+UI["CreditsTab"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["CreditsTab"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["CreditsTab"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["CreditsTab"]["BackgroundTransparency"] = 1
+UI["CreditsTab"]["Size"] = UDim2.new(0, 32, 0, 32)
+UI["CreditsTab"]["LayoutOrder"] = 5
+UI["CreditsTab"]["Text"] = "Credits"
+UI["CreditsTab"]["Parent"] = UI["Tabs"]
+
+UI["CreditsTabCorner"] = Instance.new("UICorner")
+UI["CreditsTabCorner"]["Name"] = "CreditsTabCorner"
+UI["CreditsTabCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["CreditsTabCorner"]["Parent"] = UI["CreditsTab"]
+
+UI["CreditsTabStroke"] = Instance.new("UIStroke")
+UI["CreditsTabStroke"]["Name"] = "CreditsTabStroke"
+UI["CreditsTabStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["CreditsTabStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["CreditsTabStroke"]["Parent"] = UI["CreditsTab"]
+
+UI["CreditsTabStrokeGradient"] = Instance.new("UIGradient")
+UI["CreditsTabStrokeGradient"]["Name"] = "CreditsTabStrokeGradient"
+UI["CreditsTabStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["CreditsTabStrokeGradient"]["Parent"] = UI["CreditsTabStroke"]
+
+UI["CreditsTabGradient"] = Instance.new("UIGradient")
+UI["CreditsTabGradient"]["Name"] = "CreditsTabGradient"
+UI["CreditsTabGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["CreditsTabGradient"]["Parent"] = UI["CreditsTab"]
+
+UI["CreditsTabPadding"] = Instance.new("UIPadding")
+UI["CreditsTabPadding"]["Name"] = "CreditsTabPadding"
+UI["CreditsTabPadding"]["PaddingTop"] = UDim.new(0, 2)
+UI["CreditsTabPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["CreditsTabPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["CreditsTabPadding"]["PaddingBottom"] = UDim.new(0, 2)
+UI["CreditsTabPadding"]["Parent"] = UI["CreditsTab"]
+
+UI["ExeTab"] = Instance.new("TextButton")
+UI["ExeTab"]["Name"] = "ExeTab"
+UI["ExeTab"]["TextWrapped"] = true
+UI["ExeTab"]["BorderSizePixel"] = 0
+UI["ExeTab"]["TextScaled"] = true
+UI["ExeTab"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["ExeTab"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
+UI["ExeTab"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["ExeTab"]["BackgroundTransparency"] = 1
+UI["ExeTab"]["Size"] = UDim2.new(0, 32, 0, 32)
+UI["ExeTab"]["LayoutOrder"] = 4
+UI["ExeTab"]["Text"] = "Executor"
+UI["ExeTab"]["Parent"] = UI["Tabs"]
+
+UI["ExeTabCorner"] = Instance.new("UICorner")
+UI["ExeTabCorner"]["Name"] = "ExeTabCorner"
+UI["ExeTabCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["ExeTabCorner"]["Parent"] = UI["ExeTab"]
+
+UI["ExeTabStroke"] = Instance.new("UIStroke")
+UI["ExeTabStroke"]["Name"] = "ExeTabStroke"
+UI["ExeTabStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["ExeTabStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+UI["ExeTabStroke"]["Parent"] = UI["ExeTab"]
+
+UI["ExeTabStrokeGradient"] = Instance.new("UIGradient")
+UI["ExeTabStrokeGradient"]["Name"] = "ExeTabStrokeGradient"
+UI["ExeTabStrokeGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ExeTabStrokeGradient"]["Parent"] = UI["ExeTabStroke"]
+
+UI["ExeTabGradient"] = Instance.new("UIGradient")
+UI["ExeTabGradient"]["Name"] = "ExeTabGradient"
+UI["ExeTabGradient"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))}
+UI["ExeTabGradient"]["Parent"] = UI["ExeTab"]
+
+UI["ExeTabPadding"] = Instance.new("UIPadding")
+UI["ExeTabPadding"]["Name"] = "ExeTabPadding"
+UI["ExeTabPadding"]["PaddingTop"] = UDim.new(0, 2)
+UI["ExeTabPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["ExeTabPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["ExeTabPadding"]["PaddingBottom"] = UDim.new(0, 2)
+UI["ExeTabPadding"]["Parent"] = UI["ExeTab"]
+
+UI["MainFrameList"] = Instance.new("UIListLayout")
+UI["MainFrameList"]["Name"] = "MainFrameList"
+UI["MainFrameList"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["MainFrameList"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["MainFrameList"]["Padding"] = UDim.new(0, 6)
+UI["MainFrameList"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["MainFrameList"]["Parent"] = UI["MainFrame"]
+
+UI["MainFrameCorner"] = Instance.new("UICorner")
+UI["MainFrameCorner"]["Name"] = "MainFrameCorner"
+UI["MainFrameCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["MainFrameCorner"]["Parent"] = UI["MainFrame"]
+
+local backdoorRemote = nil
+
+local function Dragify(DragObject, MoveObject)
+	MoveObject = MoveObject or DragObject
+
+	local dragging = false
+	local dragInput
+	local dragStart
+	local startPos
+
+	DragObject.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1
+			or input.UserInputType == Enum.UserInputType.Touch then
+
+			dragging = true
+			dragInput = input
+			dragStart = input.Position
+			startPos = MoveObject.Position
+		end
+	end)
+
+	UserInputService.InputChanged:Connect(function(input)
+		if dragging and input == dragInput then
+			local delta = input.Position - dragStart
+
+			MoveObject.Position = UDim2.new(
+				startPos.X.Scale,
+				startPos.X.Offset + delta.X,
+				startPos.Y.Scale,
+				startPos.Y.Offset + delta.Y
+			)
+		end
+	end)
+
+	UserInputService.InputEnded:Connect(function(input)
+		if input == dragInput then
+			dragging = false
+			dragInput = nil
 		end
 	end)
 end
 
-pcall(function()
-	if syn and syn.protect_gui then
-		syn.protect_gui(UI["ScreenGui_1"])
-		UI["ScreenGui_1"]["Parent"] = CoreGui
-	end
-end)
+Dragify(UI["MainFrame"], UI["Container"])
+Dragify(UI["Show"])
 
-UI["Show_2"] = Instance.new("TextButton", UI["ScreenGui_1"]);
-UI["Show_2"]["TextWrapped"] = true;
-UI["Show_2"]["BorderSizePixel"] = 0;
-UI["Show_2"]["TextScaled"] = true;
-UI["Show_2"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Show_2"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["Show_2"]["FontFace"] = Font.new([[rbxasset://fonts/families/Zekton.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-UI["Show_2"]["Size"] = UDim2.new(0, 38, 0, 40);
-UI["Show_2"]["Text"] = "P"
-UI["Show_2"]["Name"] = "Show"
-UI["Show_2"]["Visible"] = false;
-UI["Show_2"]["Position"] = UDim2.new(0, 20, 0, 2);
-
-
-UI["UICorner_3"] = Instance.new("UICorner", UI["Show_2"]);
-UI["UICorner_3"]["CornerRadius"] = UDim.new(0, 99);
-
-
-UI["UIGradient_4"] = Instance.new("UIGradient", UI["Show_2"]);
-UI["UIGradient_4"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_5"] = Instance.new("UIStroke", UI["Show_2"]);
-UI["UIStroke_5"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_5"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_6"] = Instance.new("UIGradient", UI["UIStroke_5"]);
-UI["UIGradient_6"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["MainFrame_7"] = Instance.new("Frame", UI["ScreenGui_1"]);
-UI["MainFrame_7"]["BorderSizePixel"] = 0;
-UI["MainFrame_7"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["MainFrame_7"]["Size"] = UDim2.new(0, 512, 0, 324);
-UI["MainFrame_7"]["Position"] = UDim2.new(0, 20, 0, 2);
-UI["MainFrame_7"]["Name"] = "MainFrame"
-
-
-UI["HomeContent_8"] = Instance.new("Frame", UI["MainFrame_7"]);
-UI["HomeContent_8"]["BorderSizePixel"] = 0;
-UI["HomeContent_8"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-UI["HomeContent_8"]["Size"] = UDim2.new(0, 504, 0, 238);
-UI["HomeContent_8"]["Position"] = UDim2.new(0, 4, 0, 82);
-UI["HomeContent_8"]["Name"] = "HomeContent"
-UI["HomeContent_8"]["BackgroundTransparency"] = 1;
-
-
-UI["Stats_9"] = Instance.new("TextLabel", UI["HomeContent_8"]);
-UI["Stats_9"]["TextWrapped"] = true;
-UI["Stats_9"]["BorderSizePixel"] = 0;
-UI["Stats_9"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-UI["Stats_9"]["TextYAlignment"] = Enum.TextYAlignment.Top;
-UI["Stats_9"]["TextScaled"] = true;
-UI["Stats_9"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["Stats_9"]["FontFace"] = Font.new([[rbxasset://fonts/families/Ubuntu.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-UI["Stats_9"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Stats_9"]["BackgroundTransparency"] = 1;
-UI["Stats_9"]["Size"] = UDim2.new(0, 410, 0, 184);
-UI["Stats_9"]["Text"] = "FPS:\nPing:\nServer age:\nDevice:\nOS:\nExecutor:"
-UI["Stats_9"]["Name"] = "Stats"
-UI["Stats_9"]["Position"] = UDim2.new(0, 94, 0, 54);
-
-
-UI["UIGradient_a"] = Instance.new("UIGradient", UI["Stats_9"]);
-UI["UIGradient_a"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["WelcomeLabel_b"] = Instance.new("TextLabel", UI["HomeContent_8"]);
-UI["WelcomeLabel_b"]["TextWrapped"] = true;
-UI["WelcomeLabel_b"]["BorderSizePixel"] = 0;
-UI["WelcomeLabel_b"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-UI["WelcomeLabel_b"]["TextScaled"] = true;
-UI["WelcomeLabel_b"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["WelcomeLabel_b"]["FontFace"] = Font.new([[rbxasset://fonts/families/Ubuntu.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-UI["WelcomeLabel_b"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["WelcomeLabel_b"]["BackgroundTransparency"] = 1;
-UI["WelcomeLabel_b"]["Size"] = UDim2.new(0, 410, 0, 50);
-UI["WelcomeLabel_b"]["Text"] = "Welcome to Polaria Remastered, DisplayName!"
-UI["WelcomeLabel_b"]["Name"] = "WelcomeLabel"
-UI["WelcomeLabel_b"]["Position"] = UDim2.new(0, 94, 0, 0);
-
-
-UI["UIGradient_c"] = Instance.new("UIGradient", UI["WelcomeLabel_b"]);
-UI["UIGradient_c"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UserHeadshot_d"] = Instance.new("ImageLabel", UI["HomeContent_8"]);
-UI["UserHeadshot_d"]["BorderSizePixel"] = 0;
-UI["UserHeadshot_d"]["ScaleType"] = Enum.ScaleType.Fit;
-UI["UserHeadshot_d"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["UserHeadshot_d"]["Size"] = UDim2.new(0, 90, 0, 90);
-UI["UserHeadshot_d"]["BackgroundTransparency"] = 1;
-UI["UserHeadshot_d"]["Name"] = "UserHeadshot"
-
-
-UI["UICorner_e"] = Instance.new("UICorner", UI["UserHeadshot_d"]);
-UI["UICorner_e"]["CornerRadius"] = UDim.new(0, 99);
-
-
-UI["UIStroke_f"] = Instance.new("UIStroke", UI["UserHeadshot_d"]);
-UI["UIStroke_f"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_f"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_10"] = Instance.new("UIGradient", UI["UIStroke_f"]);
-UI["UIGradient_10"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["ExeContent_11"] = Instance.new("Frame", UI["MainFrame_7"]);
-UI["ExeContent_11"]["Visible"] = false;
-UI["ExeContent_11"]["BorderSizePixel"] = 0;
-UI["ExeContent_11"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-UI["ExeContent_11"]["Size"] = UDim2.new(0, 504, 0, 238);
-UI["ExeContent_11"]["Position"] = UDim2.new(0, 4, 0, 82);
-UI["ExeContent_11"]["Name"] = "ExeContent"
-UI["ExeContent_11"]["BackgroundTransparency"] = 1;
-
-
-UI["Clr_12"] = Instance.new("TextButton", UI["ExeContent_11"]);
-UI["Clr_12"]["TextWrapped"] = true;
-UI["Clr_12"]["BorderSizePixel"] = 0;
-UI["Clr_12"]["TextScaled"] = true;
-UI["Clr_12"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Clr_12"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["Clr_12"]["BackgroundTransparency"] = 1;
-UI["Clr_12"]["Size"] = UDim2.new(0, 120, 0, 36);
-UI["Clr_12"]["Text"] = "Clear"
-UI["Clr_12"]["Name"] = "Clr"
-UI["Clr_12"]["Position"] = UDim2.new(0, 126, 0, 202);
-
-
-UI["UICorner_13"] = Instance.new("UICorner", UI["Clr_12"]);
-UI["UICorner_13"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_14"] = Instance.new("UIGradient", UI["Clr_12"]);
-UI["UIGradient2_14"]["Name"] = "UIGradient2"
-UI["UIGradient2_14"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_15"] = Instance.new("UIStroke", UI["Clr_12"]);
-UI["UIStroke_15"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_15"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_16"] = Instance.new("UIGradient", UI["UIStroke_15"]);
-UI["UIGradient_16"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["Exe_17"] = Instance.new("TextButton", UI["ExeContent_11"]);
-UI["Exe_17"]["TextWrapped"] = true;
-UI["Exe_17"]["BorderSizePixel"] = 0;
-UI["Exe_17"]["TextScaled"] = true;
-UI["Exe_17"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Exe_17"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["Exe_17"]["BackgroundTransparency"] = 1;
-UI["Exe_17"]["Size"] = UDim2.new(0, 120, 0, 36);
-UI["Exe_17"]["Text"] = "Execute"
-UI["Exe_17"]["Name"] = "Exe"
-UI["Exe_17"]["Position"] = UDim2.new(0, 0, 0, 202);
-
-
-UI["UICorner_18"] = Instance.new("UICorner", UI["Exe_17"]);
-UI["UICorner_18"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_19"] = Instance.new("UIGradient", UI["Exe_17"]);
-UI["UIGradient2_19"]["Name"] = "UIGradient2"
-UI["UIGradient2_19"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_1a"] = Instance.new("UIStroke", UI["Exe_17"]);
-UI["UIStroke_1a"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_1a"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_1b"] = Instance.new("UIGradient", UI["UIStroke_1a"]);
-UI["UIGradient_1b"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["Re_1c"] = Instance.new("TextButton", UI["ExeContent_11"]);
-UI["Re_1c"]["TextWrapped"] = true;
-UI["Re_1c"]["BorderSizePixel"] = 0;
-UI["Re_1c"]["TextScaled"] = true;
-UI["Re_1c"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Re_1c"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["Re_1c"]["BackgroundTransparency"] = 1;
-UI["Re_1c"]["Size"] = UDim2.new(0, 120, 0, 36);
-UI["Re_1c"]["Text"] = "Refresh"
-UI["Re_1c"]["Name"] = "Re"
-UI["Re_1c"]["Position"] = UDim2.new(0, 252, 0, 202);
-
-
-UI["UICorner_1d"] = Instance.new("UICorner", UI["Re_1c"]);
-UI["UICorner_1d"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_1e"] = Instance.new("UIGradient", UI["Re_1c"]);
-UI["UIGradient2_1e"]["Name"] = "UIGradient2"
-UI["UIGradient2_1e"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_1f"] = Instance.new("UIStroke", UI["Re_1c"]);
-UI["UIStroke_1f"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_1f"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_20"] = Instance.new("UIGradient", UI["UIStroke_1f"]);
-UI["UIGradient_20"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["Input_21"] = Instance.new("ScrollingFrame", UI["ExeContent_11"]);
-UI["Input_21"]["ScrollingDirection"] = Enum.ScrollingDirection.Y;
-UI["Input_21"]["BorderSizePixel"] = 0;
-UI["Input_21"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Input_21"]["Name"] = "Input"
-UI["Input_21"]["Size"] = UDim2.new(0, 507, 0, 200);
-UI["Input_21"]["Position"] = UDim2.new(0, -2, 0, -2);
-UI["Input_21"]["ScrollBarThickness"] = 0;
-UI["Input_21"]["BackgroundTransparency"] = 1;
-
-
-UI["UIPadding_22"] = Instance.new("UIPadding", UI["Input_21"]);
-UI["UIPadding_22"]["PaddingTop"] = UDim.new(0, 2);
-UI["UIPadding_22"]["PaddingRight"] = UDim.new(0, 2);
-UI["UIPadding_22"]["PaddingLeft"] = UDim.new(0, 2);
-UI["UIPadding_22"]["PaddingBottom"] = UDim.new(0, 2);
-
-
-UI["UIListLayout_23"] = Instance.new("UIListLayout", UI["Input_21"]);
-UI["UIListLayout_23"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill;
-
-
-UI["TextBox_24"] = Instance.new("TextBox", UI["Input_21"]);
-UI["TextBox_24"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-UI["TextBox_24"]["TextYAlignment"] = Enum.TextYAlignment.Top;
-UI["TextBox_24"]["BorderSizePixel"] = 0;
-UI["TextBox_24"]["TextWrapped"] = true;
-UI["TextBox_24"]["TextSize"] = 18;
-UI["TextBox_24"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["TextBox_24"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["TextBox_24"]["FontFace"] = Font.new([[rbxasset://fonts/families/Inconsolata.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-UI["TextBox_24"]["PlaceholderText"] = "Server-side script here...";
-UI["TextBox_24"]["Size"] = UDim2.new(0, 92, 0, 196);
-UI["TextBox_24"]["Position"] = UDim2.new(0, 182, 0, 2);
-UI["TextBox_24"]["Text"] = "";
-UI["TextBox_24"]["BackgroundTransparency"] = 1;
-UI["TextBox_24"]["ClearTextOnFocus"] = false;
-UI["TextBox_24"]["MultiLine"] = true;
-UI["TextBox_24"]["AutomaticSize"] = Enum.AutomaticSize.Y;
-
-
-UI["UIStroke_25"] = Instance.new("UIStroke", UI["TextBox_24"]);
-UI["UIStroke_25"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_25"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_26"] = Instance.new("UIGradient", UI["UIStroke_25"]);
-UI["UIGradient_26"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UICorner_27"] = Instance.new("UICorner", UI["TextBox_24"]);
-UI["UICorner_27"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["Close_28"] = Instance.new("TextButton", UI["MainFrame_7"]);
-UI["Close_28"]["TextWrapped"] = true;
-UI["Close_28"]["BorderSizePixel"] = 0;
-UI["Close_28"]["TextScaled"] = true;
-UI["Close_28"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Close_28"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["Close_28"]["FontFace"] = Font.new([[rbxasset://fonts/families/Ubuntu.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-UI["Close_28"]["BackgroundTransparency"] = 1;
-UI["Close_28"]["Size"] = UDim2.new(0, 32, 0, 32);
-UI["Close_28"]["Text"] = "X"
-UI["Close_28"]["Name"] = "Close"
-UI["Close_28"]["Position"] = UDim2.new(0, 476, 0, 4);
-
-
-UI["UICorner_29"] = Instance.new("UICorner", UI["Close_28"]);
-UI["UICorner_29"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_2a"] = Instance.new("UIGradient", UI["Close_28"]);
-UI["UIGradient2_2a"]["Name"] = "UIGradient2"
-UI["UIGradient2_2a"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-UI["ScriptsContent_2d"] = Instance.new("ScrollingFrame", UI["MainFrame_7"]);
-UI["ScriptsContent_2d"]["Visible"] = false;
-UI["ScriptsContent_2d"]["ScrollingDirection"] = Enum.ScrollingDirection.Y;
-UI["ScriptsContent_2d"]["BorderSizePixel"] = 0;
-UI["ScriptsContent_2d"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-UI["ScriptsContent_2d"]["Name"] = "ScriptsContent"
-UI["ScriptsContent_2d"]["Size"] = UDim2.new(0, 512, 0, 242);
-UI["ScriptsContent_2d"]["Position"] = UDim2.new(0, 1, 0, 80);
-UI["ScriptsContent_2d"]["ScrollBarThickness"] = 0;
-UI["ScriptsContent_2d"]["BackgroundTransparency"] = 1;
-
-
-UI["UIPadding_2e"] = Instance.new("UIPadding", UI["ScriptsContent_2d"]);
-UI["UIPadding_2e"]["PaddingTop"] = UDim.new(0, 2);
-UI["UIPadding_2e"]["PaddingRight"] = UDim.new(0, 2);
-UI["UIPadding_2e"]["PaddingLeft"] = UDim.new(0, 2);
-UI["UIPadding_2e"]["PaddingBottom"] = UDim.new(0, 2);
-
-
-UI["UIGridLayout_2f"] = Instance.new("UIGridLayout", UI["ScriptsContent_2d"]);
-UI["UIGridLayout_2f"]["CellSize"] = UDim2.new(0, 97, 0, 34);
-
-UI["ButtonExample_30"] = Instance.new("TextButton", UI["ScriptsContent_2d"]);
-UI["ButtonExample_30"]["TextWrapped"] = true;
-UI["ButtonExample_30"]["BorderSizePixel"] = 0;
-UI["ButtonExample_30"]["TextScaled"] = true;
-UI["ButtonExample_30"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["ButtonExample_30"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["ButtonExample_30"]["BackgroundTransparency"] = 1;
-UI["ButtonExample_30"]["Size"] = UDim2.new(0, 32, 0, 32);
-UI["ButtonExample_30"]["Text"] = "Script name"
-UI["ButtonExample_30"]["Name"] = "ButtonExample"
-UI["ButtonExample_30"]["Position"] = UDim2.new(0, 390, 0, 4);
-
-
-UI["UICorner_31"] = Instance.new("UICorner", UI["ButtonExample_30"]);
-UI["UICorner_31"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_32"] = Instance.new("UIGradient", UI["ButtonExample_30"]);
-UI["UIGradient2_32"]["Name"] = "UIGradient2"
-UI["UIGradient2_32"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_33"] = Instance.new("UIStroke", UI["ButtonExample_30"]);
-UI["UIStroke_33"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_33"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_34"] = Instance.new("UIGradient", UI["UIStroke_33"]);
-UI["UIGradient_34"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_35"] = Instance.new("UIStroke", UI["MainFrame_7"]);
-UI["UIStroke_35"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_35"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_36"] = Instance.new("UIGradient", UI["UIStroke_35"]);
-UI["UIGradient_36"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["ScannerContent_37"] = Instance.new("Frame", UI["MainFrame_7"]);
-UI["ScannerContent_37"]["Visible"] = false;
-UI["ScannerContent_37"]["BorderSizePixel"] = 0;
-UI["ScannerContent_37"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-UI["ScannerContent_37"]["Size"] = UDim2.new(0, 504, 0, 238);
-UI["ScannerContent_37"]["Position"] = UDim2.new(0, 4, 0, 82);
-UI["ScannerContent_37"]["Name"] = "ScannerContent"
-UI["ScannerContent_37"]["BackgroundTransparency"] = 1;
-
-
-UI["ScanTab_38"] = Instance.new("TextButton", UI["ScannerContent_37"]);
-UI["ScanTab_38"]["TextWrapped"] = true;
-UI["ScanTab_38"]["BorderSizePixel"] = 0;
-UI["ScanTab_38"]["TextScaled"] = true;
-UI["ScanTab_38"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["ScanTab_38"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["ScanTab_38"]["BackgroundTransparency"] = 1;
-UI["ScanTab_38"]["Size"] = UDim2.new(0, 48, 0, 48);
-UI["ScanTab_38"]["LayoutOrder"] = 2;
-UI["ScanTab_38"]["Text"] = "Scan"
-UI["ScanTab_38"]["Name"] = "ScanTab"
-UI["ScanTab_38"]["Position"] = UDim2.new(0, 102, 0, 22);
-
-
-UI["UICorner_39"] = Instance.new("UICorner", UI["ScanTab_38"]);
-UI["UICorner_39"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_3a"] = Instance.new("UIGradient", UI["ScanTab_38"]);
-UI["UIGradient2_3a"]["Name"] = "UIGradient2"
-UI["UIGradient2_3a"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_3b"] = Instance.new("UIStroke", UI["ScanTab_38"]);
-UI["UIStroke_3b"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_3b"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_3c"] = Instance.new("UIGradient", UI["UIStroke_3b"]);
-UI["UIGradient_3c"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIListLayout_3d"] = Instance.new("UIListLayout", UI["ScannerContent_37"]);
-UI["UIListLayout_3d"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill;
-UI["UIListLayout_3d"]["Padding"] = UDim.new(0, 4);
-
-
-UI["Status_3e"] = Instance.new("TextLabel", UI["ScannerContent_37"]);
-UI["Status_3e"]["TextWrapped"] = true;
-UI["Status_3e"]["BorderSizePixel"] = 0;
-UI["Status_3e"]["TextSize"] = 22;
-UI["Status_3e"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-UI["Status_3e"]["TextYAlignment"] = Enum.TextYAlignment.Top;
-UI["Status_3e"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["Status_3e"]["FontFace"] = Font.new([[rbxasset://fonts/families/Ubuntu.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-UI["Status_3e"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Status_3e"]["BackgroundTransparency"] = 1;
-UI["Status_3e"]["Size"] = UDim2.new(0, 456, 0, 184);
-UI["Status_3e"]["Text"] = "Ready to scan for backdoors..."
-UI["Status_3e"]["Name"] = "Status"
-UI["Status_3e"]["Position"] = UDim2.new(0, 0, 0, 54);
-
-
-UI["UIGradient_3f"] = Instance.new("UIGradient", UI["Status_3e"]);
-UI["UIGradient_3f"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UICorner_40"] = Instance.new("UICorner", UI["MainFrame_7"]);
-UI["UICorner_40"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["Tabs_41"] = Instance.new("Frame", UI["MainFrame_7"]);
-UI["Tabs_41"]["BorderSizePixel"] = 0;
-UI["Tabs_41"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Tabs_41"]["Size"] = UDim2.new(0, 504, 0, 34);
-UI["Tabs_41"]["Position"] = UDim2.new(0, 4, 0, 42);
-UI["Tabs_41"]["Name"] = "Tabs"
-UI["Tabs_41"]["BackgroundTransparency"] = 1;
-
-
-UI["ScanTab_42"] = Instance.new("TextButton", UI["Tabs_41"]);
-UI["ScanTab_42"]["TextWrapped"] = true;
-UI["ScanTab_42"]["BorderSizePixel"] = 0;
-UI["ScanTab_42"]["TextScaled"] = true;
-UI["ScanTab_42"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["ScanTab_42"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["ScanTab_42"]["BackgroundTransparency"] = 1;
-UI["ScanTab_42"]["Size"] = UDim2.new(0, 32, 0, 32);
-UI["ScanTab_42"]["LayoutOrder"] = 2;
-UI["ScanTab_42"]["Text"] = "Scanner"
-UI["ScanTab_42"]["Name"] = "ScanTab"
-UI["ScanTab_42"]["Position"] = UDim2.new(0, 390, 0, 4);
-
-
-UI["UICorner_43"] = Instance.new("UICorner", UI["ScanTab_42"]);
-UI["UICorner_43"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_44"] = Instance.new("UIGradient", UI["ScanTab_42"]);
-UI["UIGradient2_44"]["Name"] = "UIGradient2"
-UI["UIGradient2_44"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_45"] = Instance.new("UIStroke", UI["ScanTab_42"]);
-UI["UIStroke_45"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_45"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_46"] = Instance.new("UIGradient", UI["UIStroke_45"]);
-UI["UIGradient_46"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["ScriptsTab_47"] = Instance.new("TextButton", UI["Tabs_41"]);
-UI["ScriptsTab_47"]["TextWrapped"] = true;
-UI["ScriptsTab_47"]["BorderSizePixel"] = 0;
-UI["ScriptsTab_47"]["TextScaled"] = true;
-UI["ScriptsTab_47"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["ScriptsTab_47"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["ScriptsTab_47"]["BackgroundTransparency"] = 1;
-UI["ScriptsTab_47"]["Size"] = UDim2.new(0, 32, 0, 32);
-UI["ScriptsTab_47"]["LayoutOrder"] = 3;
-UI["ScriptsTab_47"]["Text"] = "Scripts"
-UI["ScriptsTab_47"]["Name"] = "ScriptsTab"
-UI["ScriptsTab_47"]["Position"] = UDim2.new(0, 390, 0, 4);
-
-
-UI["UICorner_48"] = Instance.new("UICorner", UI["ScriptsTab_47"]);
-UI["UICorner_48"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_49"] = Instance.new("UIGradient", UI["ScriptsTab_47"]);
-UI["UIGradient2_49"]["Name"] = "UIGradient2"
-UI["UIGradient2_49"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_4a"] = Instance.new("UIStroke", UI["ScriptsTab_47"]);
-UI["UIStroke_4a"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_4a"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_4b"] = Instance.new("UIGradient", UI["UIStroke_4a"]);
-UI["UIGradient_4b"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["HomeTab_4c"] = Instance.new("TextButton", UI["Tabs_41"]);
-UI["HomeTab_4c"]["TextWrapped"] = true;
-UI["HomeTab_4c"]["BorderSizePixel"] = 0;
-UI["HomeTab_4c"]["TextScaled"] = true;
-UI["HomeTab_4c"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["HomeTab_4c"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["HomeTab_4c"]["BackgroundTransparency"] = 1;
-UI["HomeTab_4c"]["Size"] = UDim2.new(0, 32, 0, 32);
-UI["HomeTab_4c"]["LayoutOrder"] = 1;
-UI["HomeTab_4c"]["Text"] = "Home"
-UI["HomeTab_4c"]["Name"] = "HomeTab"
-UI["HomeTab_4c"]["Position"] = UDim2.new(0, 390, 0, 4);
-
-
-UI["UICorner_4d"] = Instance.new("UICorner", UI["HomeTab_4c"]);
-UI["UICorner_4d"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_4e"] = Instance.new("UIGradient", UI["HomeTab_4c"]);
-UI["UIGradient2_4e"]["Name"] = "UIGradient2"
-UI["UIGradient2_4e"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_4f"] = Instance.new("UIStroke", UI["HomeTab_4c"]);
-UI["UIStroke_4f"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_4f"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_50"] = Instance.new("UIGradient", UI["UIStroke_4f"]);
-UI["UIGradient_50"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIListLayout_51"] = Instance.new("UIListLayout", UI["Tabs_41"]);
-UI["UIListLayout_51"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Center;
-UI["UIListLayout_51"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill;
-UI["UIListLayout_51"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill;
-UI["UIListLayout_51"]["Padding"] = UDim.new(0, 6);
-UI["UIListLayout_51"]["VerticalAlignment"] = Enum.VerticalAlignment.Center;
-UI["UIListLayout_51"]["SortOrder"] = Enum.SortOrder.LayoutOrder;
-UI["UIListLayout_51"]["FillDirection"] = Enum.FillDirection.Horizontal;
-
-
-UI["CreditsTab_52"] = Instance.new("TextButton", UI["Tabs_41"]);
-UI["CreditsTab_52"]["TextWrapped"] = true;
-UI["CreditsTab_52"]["BorderSizePixel"] = 0;
-UI["CreditsTab_52"]["TextScaled"] = true;
-UI["CreditsTab_52"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["CreditsTab_52"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["CreditsTab_52"]["BackgroundTransparency"] = 1;
-UI["CreditsTab_52"]["Size"] = UDim2.new(0, 32, 0, 32);
-UI["CreditsTab_52"]["LayoutOrder"] = 5;
-UI["CreditsTab_52"]["Text"] = "Credits"
-UI["CreditsTab_52"]["Name"] = "CreditsTab"
-UI["CreditsTab_52"]["Position"] = UDim2.new(0, 390, 0, 4);
-
-
-UI["UICorner_53"] = Instance.new("UICorner", UI["CreditsTab_52"]);
-UI["UICorner_53"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_54"] = Instance.new("UIGradient", UI["CreditsTab_52"]);
-UI["UIGradient2_54"]["Name"] = "UIGradient2"
-UI["UIGradient2_54"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_55"] = Instance.new("UIStroke", UI["CreditsTab_52"]);
-UI["UIStroke_55"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_55"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_56"] = Instance.new("UIGradient", UI["UIStroke_55"]);
-UI["UIGradient_56"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["ExeTab_57"] = Instance.new("TextButton", UI["Tabs_41"]);
-UI["ExeTab_57"]["TextWrapped"] = true;
-UI["ExeTab_57"]["BorderSizePixel"] = 0;
-UI["ExeTab_57"]["TextScaled"] = true;
-UI["ExeTab_57"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["ExeTab_57"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["ExeTab_57"]["BackgroundTransparency"] = 1;
-UI["ExeTab_57"]["Size"] = UDim2.new(0, 32, 0, 32);
-UI["ExeTab_57"]["LayoutOrder"] = 4;
-UI["ExeTab_57"]["Text"] = "Executor"
-UI["ExeTab_57"]["Name"] = "ExeTab"
-UI["ExeTab_57"]["Position"] = UDim2.new(0, 390, 0, 4);
-
-
-UI["UICorner_58"] = Instance.new("UICorner", UI["ExeTab_57"]);
-UI["UICorner_58"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_59"] = Instance.new("UIGradient", UI["ExeTab_57"]);
-UI["UIGradient2_59"]["Name"] = "UIGradient2"
-UI["UIGradient2_59"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["UIStroke_5a"] = Instance.new("UIStroke", UI["ExeTab_57"]);
-UI["UIStroke_5a"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_5a"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_5b"] = Instance.new("UIGradient", UI["UIStroke_5a"]);
-UI["UIGradient_5b"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["Hide_5c"] = Instance.new("TextButton", UI["MainFrame_7"]);
-UI["Hide_5c"]["TextWrapped"] = true;
-UI["Hide_5c"]["BorderSizePixel"] = 0;
-UI["Hide_5c"]["TextScaled"] = true;
-UI["Hide_5c"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Hide_5c"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["Hide_5c"]["FontFace"] = Font.new([[rbxasset://fonts/families/Ubuntu.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-UI["Hide_5c"]["BackgroundTransparency"] = 1;
-UI["Hide_5c"]["Size"] = UDim2.new(0, 32, 0, 32);
-UI["Hide_5c"]["Text"] = "-"
-UI["Hide_5c"]["Name"] = "Hide"
-UI["Hide_5c"]["Position"] = UDim2.new(0, 440, 0, 4);
-
-
-UI["UICorner_5d"] = Instance.new("UICorner", UI["Hide_5c"]);
-UI["UICorner_5d"]["CornerRadius"] = UDim.new(0, 4);
-
-
-UI["UIGradient2_5e"] = Instance.new("UIGradient", UI["Hide_5c"]);
-UI["UIGradient2_5e"]["Name"] = "UIGradient2"
-UI["UIGradient2_5e"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-UI["CreditsContent_61"] = Instance.new("Frame", UI["MainFrame_7"]);
-UI["CreditsContent_61"]["Visible"] = false;
-UI["CreditsContent_61"]["BorderSizePixel"] = 0;
-UI["CreditsContent_61"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-UI["CreditsContent_61"]["Size"] = UDim2.new(0, 504, 0, 238);
-UI["CreditsContent_61"]["Position"] = UDim2.new(0, 4, 0, 82);
-UI["CreditsContent_61"]["Name"] = "CreditsContent"
-UI["CreditsContent_61"]["BackgroundTransparency"] = 1;
-
-
-UI["Stats_62"] = Instance.new("TextLabel", UI["CreditsContent_61"]);
-UI["Stats_62"]["TextWrapped"] = true;
-UI["Stats_62"]["BorderSizePixel"] = 0;
-UI["Stats_62"]["TextSize"] = 22;
-UI["Stats_62"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-UI["Stats_62"]["TextYAlignment"] = Enum.TextYAlignment.Top;
-UI["Stats_62"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["Stats_62"]["FontFace"] = Font.new([[rbxasset://fonts/families/Ubuntu.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-UI["Stats_62"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Stats_62"]["BackgroundTransparency"] = 1;
-UI["Stats_62"]["Size"] = UDim2.new(0, 410, 0, 236);
-UI["Stats_62"]["Text"] = "Fully made by JustAGuest."
-UI["Stats_62"]["Name"] = "Stats"
-UI["Stats_62"]["Position"] = UDim2.new(0, 94, 0, 0);
-
-
-UI["UIGradient_63"] = Instance.new("UIGradient", UI["Stats_62"]);
-UI["UIGradient_63"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["CreatorHeadshot_64"] = Instance.new("ImageLabel", UI["CreditsContent_61"]);
-UI["CreatorHeadshot_64"]["BorderSizePixel"] = 0;
-UI["CreatorHeadshot_64"]["ScaleType"] = Enum.ScaleType.Fit;
-UI["CreatorHeadshot_64"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-UI["CreatorHeadshot_64"]["Size"] = UDim2.new(0, 90, 0, 90);
-UI["CreatorHeadshot_64"]["BackgroundTransparency"] = 1;
-UI["CreatorHeadshot_64"]["Name"] = "CreatorHeadshot"
-
-
-UI["UICorner_65"] = Instance.new("UICorner", UI["CreatorHeadshot_64"]);
-UI["UICorner_65"]["CornerRadius"] = UDim.new(0, 99);
-
-
-UI["UIStroke_66"] = Instance.new("UIStroke", UI["CreatorHeadshot_64"]);
-UI["UIStroke_66"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
-UI["UIStroke_66"]["Color"] = Color3.fromRGB(255, 255, 255);
-
-
-UI["UIGradient_67"] = Instance.new("UIGradient", UI["UIStroke_66"]);
-UI["UIGradient_67"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-
-UI["Title_68"] = Instance.new("TextLabel", UI["MainFrame_7"]);
-UI["Title_68"]["TextWrapped"] = true;
-UI["Title_68"]["BorderSizePixel"] = 0;
-UI["Title_68"]["TextXAlignment"] = Enum.TextXAlignment.Left;
-UI["Title_68"]["TextScaled"] = true;
-UI["Title_68"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Title_68"]["FontFace"] = Font.new([[rbxasset://fonts/families/Ubuntu.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-UI["Title_68"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-UI["Title_68"]["BackgroundTransparency"] = 1;
-UI["Title_68"]["Size"] = UDim2.new(0, 242, 0, 32);
-UI["Title_68"]["Text"] = "Polaria Remastered"
-UI["Title_68"]["Name"] = "Title"
-UI["Title_68"]["Position"] = UDim2.new(0, 4, 0, 4);
-
-
-UI["UIGradient_69"] = Instance.new("UIGradient", UI["Title_68"]);
-UI["UIGradient_69"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))};
-
-local backdoorRemote = nil
-local isDragging = false
-local dragStart, startPos
-
-local function Dragify(obj)
-    if obj:IsA("Frame") then
-        if not obj:FindFirstChildOfClass("UIDragDetector") then
-            local d = Instance.new("UIDragDetector")
-            d.Parent = obj
-        end
-        return
-    end
-
-    if not (obj:IsA("TextButton") or obj:IsA("ImageButton")) then
-        return
-    end
-
-    local dragging = false
-    local dragStart
-    local startPos
-
-    obj.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1
-        or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = input.Position
-            startPos = obj.Position
-        end
-    end)
-
-    obj.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1
-        or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = false
-        end
-    end)
-
-    UIS.InputChanged:Connect(function(input)
-        if dragging and (
-            input.UserInputType == Enum.UserInputType.MouseMovement
-            or input.UserInputType == Enum.UserInputType.Touch
-        ) then
-            local delta = input.Position - dragStart
-            obj.Position = UDim2.new(
-                startPos.X.Scale,
-                startPos.X.Offset + delta.X,
-                startPos.Y.Scale,
-                startPos.Y.Offset + delta.Y
-            )
-        end
-    end)
-end
-
-Dragify(UI["MainFrame_7"])
-Dragify(UI["Show_2"])
-
-local currentContent = UI["HomeContent_8"]
+local currentContent = UI["HomeContent"]
 
 local function showContent(contentFrame)
     if currentContent then
@@ -812,50 +1296,55 @@ local function showContent(contentFrame)
     currentContent = contentFrame
 end
 
-UI["HomeTab_4c"].MouseButton1Click:Connect(function()
-    showContent(UI["HomeContent_8"])
+UI["HomeTab"].MouseButton1Click:Connect(function()
+    showContent(UI["HomeContent"])
 end)
 
-UI["ScanTab_42"].MouseButton1Click:Connect(function()
-    showContent(UI["ScannerContent_37"])
+UI["ScanTab"].MouseButton1Click:Connect(function()
+    showContent(UI["ScannerContent"])
 end)
 
-UI["ScriptsTab_47"].MouseButton1Click:Connect(function()
-    showContent(UI["ScriptsContent_2d"])
+UI["ScriptsTab"].MouseButton1Click:Connect(function()
+    showContent(UI["ScriptsContent"])
 end)
 
-UI["ExeTab_57"].MouseButton1Click:Connect(function()
-    showContent(UI["ExeContent_11"])
+UI["ExeTab"].MouseButton1Click:Connect(function()
+    showContent(UI["ExeContent"])
 end)
 
-UI["CreditsTab_52"].MouseButton1Click:Connect(function()
-    showContent(UI["CreditsContent_61"])
+UI["CreditsTab"].MouseButton1Click:Connect(function()
+    showContent(UI["CreditsContent"])
 end)
 
-UI["Close_28"].MouseButton1Click:Connect(function()
-    UI["ScreenGui_1"]:Destroy()
+UI["Close"].MouseButton1Click:Connect(function()
+    UI["PolariaRM"]:Destroy()
     getgenv().PolariaRM.isLoaded = false
 end)
 
-UI["Hide_5c"].MouseButton1Click:Connect(function()
-    UI["MainFrame_7"].Visible = false
-    UI["Show_2"].Visible = true
+UI["Hide"].MouseButton1Click:Connect(function()
+    UI["Container"].Visible = false
+    UI["Show"].Visible = true
 end)
 
-UI["Show_2"].MouseButton1Click:Connect(function()
-    UI["MainFrame_7"].Visible = true
-    UI["Show_2"].Visible = false
+UI["Show"].MouseButton1Click:Connect(function()
+    UI["Container"].Visible = true
+    UI["Show"].Visible = false
 end)
 
-UI["MainFrame_7"].Visible = false
-UI["Show_2"].Visible = true
+UI["Container"].Visible = false
+UI["Show"].Visible = true
 
 coroutine.wrap(function()
-    local headshot = Players:GetUserThumbnailAsync(localPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
-    UI["UserHeadshot_d"].Image = headshot
+    local GetThumbnail = default("function", Players.GetUserThumbnailAsync, nil)
+    if GetThumbnail then
+        local success, headshot = pcall(function()
+            return GetThumbnail(Players, Player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+        end)
+        if success and headshot then
+            UI["Headshot"]["Image"] = headshot
+        end
+    end
 end)()
-
-UI["WelcomeLabel_b"].Text = "Welcome to Polaria Remastered, " .. localPlayer.DisplayName .. "!"
 
 local lastDT = 0
 RunService.RenderStepped:Connect(function(dt)
@@ -865,13 +1354,16 @@ end)
 local serverStartTime = workspace:GetServerTimeNow()
 
 local function getOS()
-    local p = UIS:GetPlatform()
-    if p == Enum.Platform.Windows then return "Windows" end
-    if p == Enum.Platform.OSX then return "macOS" end
-    if p == Enum.Platform.IOS then return "iOS" end
-    if p == Enum.Platform.Android then return "Android" end
-    if p == Enum.Platform.XBoxOne then return "Xbox" end
-    if p == Enum.Platform.PlayStation then return "PlayStation" end
+    local GetPlatform = default("function", UserInputService.GetPlatform, nil)
+    if GetPlatform then
+        local p = GetPlatform(UserInputService)
+        if p == Enum.Platform.Windows then return "Windows" end
+        if p == Enum.Platform.OSX then return "macOS" end
+        if p == Enum.Platform.IOS then return "iOS" end
+        if p == Enum.Platform.Android then return "Android" end
+        if p == Enum.Platform.XBoxOne then return "Xbox" end
+        if p == Enum.Platform.PlayStation then return "PlayStation" end
+    end
     return "Unknown"
 end
 
@@ -883,37 +1375,41 @@ local function updateStats()
     if net then
         local item = net:FindFirstChild("ServerStatsItem")
         if item and item:FindFirstChild("Data Ping") then
-            ping = math.floor(item["Data Ping"]:GetValue())
+            local GetValue = default("function", item["Data Ping"].GetValue, nil)
+            if GetValue then
+                ping = math.floor(GetValue(item["Data Ping"]))
+            end
         end
     end
 
     local serverAge = math.floor(workspace:GetServerTimeNow() - serverStartTime)
 
-    local device = UIS.TouchEnabled and not UIS.KeyboardEnabled and "Mobile" or "PC"
+    local device = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and "Mobile" or "PC"
     local osName = getOS()
 
     local executor = "Unknown"
-    if syn and syn.request then
-        executor = "Synapse X"
-    elseif KRNL_isLoaded then
-        executor = "KRNL"
-    elseif fluxus then
-        executor = "Fluxus"
-    elseif is_sirhurt_closure then
-        executor = "SirHurt"
-    elseif identifyexecutor then
-        executor = identifyexecutor()
-    elseif getexecutorname then
-        executor = getexecutorname()
-    elseif PROTOSMASHER_isLoaded then
-        executor = "ProtoSmasher"
-    elseif ELECTRON_isLoaded then
-        executor = "Electron"
-    elseif is_synapse_function then
-        executor = "Synapse X"
+    
+    local executorChecks = {
+        {cond = default("boolean", syn and syn.request, false), name = "Synapse X"},
+        {cond = default("boolean", KRNL_isLoaded, false), name = "KRNL"},
+        {cond = default("boolean", fluxus, false), name = "Fluxus"},
+        {cond = default("boolean", is_sirhurt_closure, false), name = "SirHurt"},
+        {cond = default("boolean", PROTOSMASHER_isLoaded, false), name = "ProtoSmasher"},
+        {cond = default("boolean", ELECTRON_isLoaded, false), name = "Electron"},
+        {cond = default("boolean", is_synapse_function, false), name = "Synapse X"},
+        {cond = default("function", identifyexecutor, nil), name = identifyexecutor and identifyexecutor() or nil},
+        {cond = default("function", getexecutorname, nil), name = getexecutorname and getexecutorname() or nil}
+    }
+    
+    for _, check in ipairs(executorChecks) do
+        if check.cond and check.name then
+            executor = check.name
+            break
+        end
     end
 
-    UI["Stats_9"].Text =
+    UI["HomeStats"].Text =
+        "Welcome, " .. Player.DisplayName .. " (@" .. Player.Name .. ")\n" ..
         "FPS: " .. fps ..
         "\nPing: " .. ping .. "ms" ..
         "\nServer age: " .. serverAge .. "s" ..
@@ -923,7 +1419,7 @@ local function updateStats()
 end
 
 task.spawn(function()
-    while UI["ScreenGui_1"].Parent do
+    while UI["PolariaRM"].Parent do
         updateStats()
         task.wait(0.5)
     end
@@ -943,61 +1439,74 @@ local function generateName(lenght)
 end
 
 local function runRemote(remote, data)
-    if remote and remote:IsA('RemoteEvent') then
-        remote:FireServer(data)
-    elseif remote and remote:IsA('RemoteFunction') then
-        spawn(function() 
-            remote:InvokeServer(data) 
-        end)
+    if remote then
+        local isRemoteEvent = default("boolean", remote:IsA("RemoteEvent"), false)
+        local isRemoteFunction = default("boolean", remote:IsA("RemoteFunction"), false)
+        
+        if isRemoteEvent then
+            local FireServer = default("function", remote.FireServer, nil)
+            if FireServer then
+                FireServer(remote, data)
+            end
+        elseif isRemoteFunction then
+            local InvokeServer = default("function", remote.InvokeServer, nil)
+            if InvokeServer then
+                spawn(function() 
+                    InvokeServer(remote, data)
+                end)
+            end
+        end
     end
 end
 
 local function findRemote()
-    UI["Status_3e"].Text = "Scanning for backdoors..."
+    UI["ScanStatus"].Text = "Scanning for backdoors..."
     
     local timee = os.clock()
     local remotes = {}
     local code
     
-    local executor = "Unknown"
-    
-    if syn then
-        executor = "Synapse X"
-    elseif PROTOSMASHER_isLoaded then
-        executor = "ProtoSmasher"
-    elseif Krnl then
-        executor = "Krnl"
-    elseif fluxus then
-        executor = "Fluxus"
-    elseif is_sirhurt_closure then
-        executor = "SirHurt"
-    elseif identifyexecutor then
-        executor = identifyexecutor()
+    local GetProductInfo = default("function", MarketplaceService and MarketplaceService.GetProductInfo, nil)
+    local gameName = "Unknown Game"
+    if GetProductInfo then
+        local success, info = pcall(function()
+            return GetProductInfo(MarketplaceService, game.PlaceId)
+        end)
+        if success and info then
+            gameName = info.Name
+        end
     end
     
-    local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
     local placeId = game.PlaceId
-    local player = game:GetService('Players').LocalPlayer
-    local playerName = player.Name
-    local userId = player.UserId
-    local accountAge = player.AccountAge
+    local PlayerName = Player.Name
+    local userId = Player.UserId
+    local accountAge = Player.AccountAge
     
-    local protected_backdoor = game:GetService('ReplicatedStorage'):FindFirstChild('lh'..game.PlaceId/6666*1337*game.PlaceId)
-    if protected_backdoor and protected_backdoor:IsA('RemoteFunction') then
-        while true do
-            code = generateName(math.random(12,30))
-            if not remotes[code] then 
-                break 
+    local ReplicatedStorage = Services.ReplicatedStorage
+    if ReplicatedStorage then
+        local protected_backdoor = ReplicatedStorage:FindFirstChild('lh'..game.PlaceId/6666*1337*game.PlaceId)
+        if protected_backdoor and protected_backdoor:IsA('RemoteFunction') then
+            while true do
+                code = generateName(math.random(12,30))
+                if not remotes[code] then 
+                    break 
+                end
             end
+            spawn(function() 
+                local InvokeServer = default("function", protected_backdoor.InvokeServer, nil)
+                if InvokeServer then
+                    InvokeServer(protected_backdoor, '.', "a=Instance.new('Model',workspace)a.Name='"..code.."'")
+                end
+            end)
+            remotes[code] = protected_backdoor
         end
-        spawn(function() 
-            protected_backdoor:InvokeServer('.', "a=Instance.new('Model',workspace)a.Name='"..code.."'") 
-        end)
-        remotes[code] = protected_backdoor
     end
     
     for i, remote in game:GetDescendants() do
-        if not remote:IsA('RemoteEvent') and not remote:IsA('RemoteFunction') then 
+        local isRemoteEvent = default("boolean", remote:IsA("RemoteEvent"), false)
+        local isRemoteFunction = default("boolean", remote:IsA("RemoteFunction"), false)
+        
+        if not isRemoteEvent and not isRemoteFunction then 
             continue 
         end
         
@@ -1005,19 +1514,19 @@ local function findRemote()
             continue
         end
         
-        if remote.Parent == game:GetService("ReplicatedStorage") or 
-           remote.Parent.Parent == game:GetService("ReplicatedStorage") or 
-           remote.Parent.Parent.Parent == game:GetService("ReplicatedStorage") then
+        if ReplicatedStorage and (remote.Parent == ReplicatedStorage or 
+           remote.Parent.Parent == ReplicatedStorage or 
+           remote.Parent.Parent.Parent == ReplicatedStorage) then
             
             if remote:FindFirstChild('__FUNCTION') or remote.Name == '__FUNCTION' then
                 continue
             end
             
-            if remote.Parent.Parent.Name == 'HDAdminClient' and remote.Parent.Name == 'Signals' then
+            if remote.Parent and remote.Parent.Parent and remote.Parent.Parent.Name == 'HDAdminClient' and remote.Parent.Name == 'Signals' then
                 continue
             end
             
-            if remote.Parent.Name == 'DefaultChatSystemChatEvents' then
+            if remote.Parent and remote.Parent.Name == 'DefaultChatSystemChatEvents' then
                 continue
             end
         end
@@ -1039,127 +1548,134 @@ local function findRemote()
                 runRemote(remote, "require(171016405.1884*69)")
                 
                 backdoorRemote = remote
-                UI["Status_3e"].Text = "Backdoor found at: " .. remote:GetFullName()
+                UI["ScanStatus"].Text = "Backdoor found at: " .. remote:GetFullName()
                 return remote
             end
         end
         wait()
     end
     
-    UI["Status_3e"].Text = "No backdoor found"
+    UI["ScanStatus"].Text = "No backdoor found"
     return false
 end
 
-UI["ScanTab_38"].MouseButton1Click:Connect(function()
+UI["ScanBtn"].MouseButton1Click:Connect(function()
     findRemote()
 end)
 
 local function CreateButton(name, code)
-    local newButton = UI["ButtonExample_30"]:Clone()
+    local newButton = UI["BtnExample"]:Clone()
     newButton.Name = name
-    newButton.Text = name
     newButton.Visible = true
-    newButton.Parent = UI["ScriptsContent_2d"]
+    newButton.Parent = UI["ScriptsContent"]
+    
+    local label = newButton:FindFirstChild("BtnExampleLabel",true)
+    if label then
+        label.Text = name
+    end
     
     newButton.MouseButton1Click:Connect(function()
         if backdoorRemote then
             runRemote(backdoorRemote, code)
         else
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Error",
-                Text = "No backdoor found! Scan first.",
-                Duration = 3
-            })
+            local SetCore = default("function", Services.StarterGui.SetCore, nil)
+            if SetCore then
+                SetCore(Services.StarterGui, "SendNotification", {
+                    Title = "Error",
+                    Text = "No backdoor found! Scan first.",
+                    Duration = 3
+                })
+            end
         end
     end)
 end
 
-CreateButton("Horseman", "require(3737497650).load('" .. localPlayer.Name .. "')")
-CreateButton("The Hotline", "require(5813879549).load('" .. localPlayer.Name .. "')")
-CreateButton("Potato man", "require(4618428149).load('" .. localPlayer.Name .. "')")
-CreateButton("Master chief", "require(5812973403).Halo('" .. localPlayer.Name .. "')")
-CreateButton("Oculus", "require(5813695241).load('" .. localPlayer.Name .. "')")
-CreateButton("Hypercar", "require(5874393699).load('" .. localPlayer.Name .. "')")
-CreateButton("Neon Overlord", "require(5876551530).load('" .. localPlayer.Name .. "')")
-CreateButton("Clown Kidnap", "require(5591099977)('" .. localPlayer.Name .. "')")
-CreateButton("Thanos", "require(4920151387).load('" .. localPlayer.Name .. "')")
-CreateButton("The sun is a deadly lazer", "require(5751710030).Sun('" .. localPlayer.Name .. "')")
-CreateButton("Ying yang", "require(4875966146).load('" .. localPlayer.Name .. "')")
-CreateButton("Titanium runner", "require(5375511885).Player('" .. localPlayer.Name .. "')")
-CreateButton("Crypt", "require(5455352803).crypt('" .. localPlayer.Name .. "')")
-CreateButton("Rainbow factory", "require(4823100870).HowRainbowsAreMade('" .. localPlayer.Name .. "')")
-CreateButton("Ares the bladist", "require(5813806760).load('" .. localPlayer.Name .. "')")
-CreateButton("Visualizer", "require(5684993096).load('" .. localPlayer.Name .. "')")
-CreateButton("Hacker X", "require(5641200549).load('" .. localPlayer.Name .. "')")
-CreateButton("Fallen angel", "require(4490557105).load('" .. localPlayer.Name .. "')")
-CreateButton("Dodge Charger", "require(4697572245).load('" .. localPlayer.Name .. "')")
-CreateButton("Soldier", "require(5177488826).Soldier('" .. localPlayer.Name .. "')")
-CreateButton("Grab knife", "require(5516594078)('" .. localPlayer.Name .. "')")
-CreateButton("Pizza Guy", "require(4657036575).load('" .. localPlayer.Name .. "')")
-CreateButton("Darth Vader", "require(5441060212).load('" .. localPlayer.Name .. "')")
-CreateButton("Ban hammer", "require(5448035802).Hammer('" .. localPlayer.Name .. "', 'BanHammer')")
-CreateButton("Crescendo", "require(4328810253).load('" .. localPlayer.Name .. "')")
-CreateButton("Hell Robotics", "require(5813792606).load('" .. localPlayer.Name .. "')")
-CreateButton("Cyber knight", "require(5617200606).Cyber('" .. localPlayer.Name .. "')")
-CreateButton("Articulacy", "require(5730283203).Articulacy('" .. localPlayer.Name .. "')")
-CreateButton("Neptunian V", "require(4453491513).load('" .. localPlayer.Name .. "')")
-CreateButton("Obliterator", "require(5375491266).Player('" .. localPlayer.Name .. "')")
-CreateButton("Rainbow Stand", "require(5367599184).Dark('" .. localPlayer.Name .. "')")
-CreateButton("Tron Bike", "require(4021975182).load('" .. localPlayer.Name .. "')")
-CreateButton("Infinity Gauntlet", "require(5375537557).Dark('" .. localPlayer.Name .. "')")
-CreateButton("Templar", "require(5313663424).Dark('" .. localPlayer.Name .. "')")
-CreateButton("Baseball Bat", "require(4559977647).load('" .. localPlayer.Name .. "')")
-CreateButton("Dominus Venari", "require(3256686965).load('" .. localPlayer.Name .. "')")
-CreateButton("Blind Reaper", "require(4185644819).a('" .. localPlayer.Name .. "')")
-CreateButton("SCP 106", "require(4935275557):Subaru112('" .. localPlayer.Name .. "', 'Subaru112's SCP-106')")
-CreateButton("Dubstep Gun", "require(4442010059).load('" .. localPlayer.Name .. "')")
-CreateButton("Karambit", "require(5970744588).load('" .. localPlayer.Name .. "')")
-CreateButton("Infinite Yield", "require(13716575182)('" .. localPlayer.Name .. "')")
-CreateButton("Death Sheriff", "require(6056559552).load('" .. localPlayer.Name .. "')")
-CreateButton("Dominus Frigidus", "require(6054361648).load('" .. localPlayer.Name .. "')")
-CreateButton("Piano", "require(5983549520).load('" .. localPlayer.Name .. "')")
-CreateButton("Chat control gui", "require(5903403087).load('" .. localPlayer.Name .. "')")
-CreateButton("Echo", "require(5374597845).Dark('" .. localPlayer.Name .. "')")
-CreateButton("KFC", "require(3615713971).load('" .. localPlayer.Name .. "')")
-CreateButton("Legake Glove", "require(5187166380)('" .. localPlayer.Name .. "')")
-CreateButton("Chainsaw", "require(4560014954).load('" .. localPlayer.Name .. "')")
-CreateButton("Dark Eccentric Wrench", "require(5712519660).load('" .. localPlayer.Name .. "')")
-CreateButton("Alpha Gattling Gun", "require(5451379778).Gun('" .. localPlayer.Name .. "')")
-CreateButton("Frisk", "require(5849995364).load('" .. localPlayer.Name .. "')")
-CreateButton("Gentleman Killbot", "require(5430831931).Dark('" .. localPlayer.Name .. "')")
-CreateButton("Despacito Mech", "require(4105428725).load('" .. localPlayer.Name .. "')")
-CreateButton("Sirenhead", "require(5239955586).Dark('" .. localPlayer.Name .. "')")
-CreateButton("Lost Soul", "require(5390158029).Dark('" .. localPlayer.Name .. "')")
-CreateButton("Betty Noire", "require(5139373601).load('" .. localPlayer.Name .. "')")
-CreateButton("Hallow Slayer", "require(2675506369).hal('" .. localPlayer.Name .. "')")
-CreateButton("Skid Beater", "require(3530402272)('" .. localPlayer.Name .. "')")
-CreateButton("Chronos Sentinel", "require(3089107241).naenae('" .. localPlayer.Name .. "')")
-CreateButton("Pity Hub", "require(3253460334)('" .. localPlayer.Name .. "')")
+CreateButton("Horseman", "require(3737497650).load('" .. Player.Name .. "')")
+CreateButton("The Hotline", "require(5813879549).load('" .. Player.Name .. "')")
+CreateButton("Potato Man", "require(4618428149).load('" .. Player.Name .. "')")
+CreateButton("Master Chief", "require(5812973403).Halo('" .. Player.Name .. "')")
+CreateButton("Oculus", "require(5813695241).load('" .. Player.Name .. "')")
+CreateButton("Hypercar", "require(5874393699).load('" .. Player.Name .. "')")
+CreateButton("Neon Overlord", "require(5876551530).load('" .. Player.Name .. "')")
+CreateButton("Clown Kidnap", "require(5591099977)('" .. Player.Name .. "')")
+CreateButton("Thanos", "require(4920151387).load('" .. Player.Name .. "')")
+CreateButton("The sun is a deadly lazer", "require(5751710030).Sun('" .. Player.Name .. "')")
+CreateButton("Ying Yang", "require(4875966146).load('" .. Player.Name .. "')")
+CreateButton("Titanium Runner", "require(5375511885).Player('" .. Player.Name .. "')")
+CreateButton("Crypt", "require(5455352803).crypt('" .. Player.Name .. "')")
+CreateButton("Rainbow Factory", "require(4823100870).HowRainbowsAreMade('" .. Player.Name .. "')")
+CreateButton("Ares The Bladist", "require(5813806760).load('" .. Player.Name .. "')")
+CreateButton("Visualizer", "require(5684993096).load('" .. Player.Name .. "')")
+CreateButton("Hacker X", "require(5641200549).load('" .. Player.Name .. "')")
+CreateButton("Fallen Angel", "require(4490557105).load('" .. Player.Name .. "')")
+CreateButton("Dodge Charger", "require(4697572245).load('" .. Player.Name .. "')")
+CreateButton("Soldier", "require(5177488826).Soldier('" .. Player.Name .. "')")
+CreateButton("Grab Knife", "require(5516594078)('" .. Player.Name .. "')")
+CreateButton("Pizza Guy", "require(4657036575).load('" .. Player.Name .. "')")
+CreateButton("Darth Vader", "require(5441060212).load('" .. Player.Name .. "')")
+CreateButton("Ban Hammer", "require(5448035802).Hammer('" .. Player.Name .. "', 'BanHammer')")
+CreateButton("Crescendo", "require(4328810253).load('" .. Player.Name .. "')")
+CreateButton("Hell Robotics", "require(5813792606).load('" .. Player.Name .. "')")
+CreateButton("Cyber Knight", "require(5617200606).Cyber('" .. Player.Name .. "')")
+CreateButton("Articulacy", "require(5730283203).Articulacy('" .. Player.Name .. "')")
+CreateButton("Neptunian V", "require(4453491513).load('" .. Player.Name .. "')")
+CreateButton("Obliterator", "require(5375491266).Player('" .. Player.Name .. "')")
+CreateButton("Rainbow Stand", "require(5367599184).Dark('" .. Player.Name .. "')")
+CreateButton("Tron Bike", "require(4021975182).load('" .. Player.Name .. "')")
+CreateButton("Infinity Gauntlet", "require(5375537557).Dark('" .. Player.Name .. "')")
+CreateButton("Templar", "require(5313663424).Dark('" .. Player.Name .. "')")
+CreateButton("Baseball Bat", "require(4559977647).load('" .. Player.Name .. "')")
+CreateButton("Dominus Venari", "require(3256686965).load('" .. Player.Name .. "')")
+CreateButton("Blind Reaper", "require(4185644819).a('" .. Player.Name .. "')")
+CreateButton("SCP 106", "require(4935275557):Subaru112('" .. Player.Name .. "', 'Subaru112's SCP-106')")
+CreateButton("Dubstep Gun", "require(4442010059).load('" .. Player.Name .. "')")
+CreateButton("Karambit", "require(5970744588).load('" .. Player.Name .. "')")
+CreateButton("Infinite Yield", "require(13716575182)('" .. Player.Name .. "')")
+CreateButton("Death Sheriff", "require(6056559552).load('" .. Player.Name .. "')")
+CreateButton("Dominus Frigidus", "require(6054361648).load('" .. Player.Name .. "')")
+CreateButton("Piano", "require(5983549520).load('" .. Player.Name .. "')")
+CreateButton("Chat Control Gui", "require(5903403087).load('" .. Player.Name .. "')")
+CreateButton("Echo", "require(5374597845).Dark('" .. Player.Name .. "')")
+CreateButton("KFC", "require(3615713971).load('" .. Player.Name .. "')")
+CreateButton("Legake Glove", "require(5187166380)('" .. Player.Name .. "')")
+CreateButton("Chainsaw", "require(4560014954).load('" .. Player.Name .. "')")
+CreateButton("Dark Eccentric Wrench", "require(5712519660).load('" .. Player.Name .. "')")
+CreateButton("Alpha Gattling Gun", "require(5451379778).Gun('" .. Player.Name .. "')")
+CreateButton("Frisk", "require(5849995364).load('" .. Player.Name .. "')")
+CreateButton("Gentleman Killbot", "require(5430831931).Dark('" .. Player.Name .. "')")
+CreateButton("Despacito Mech", "require(4105428725).load('" .. Player.Name .. "')")
+CreateButton("Sirenhead", "require(5239955586).Dark('" .. Player.Name .. "')")
+CreateButton("Lost Soul", "require(5390158029).Dark('" .. Player.Name .. "')")
+CreateButton("Betty Noire", "require(5139373601).load('" .. Player.Name .. "')")
+CreateButton("Hallow Slayer", "require(2675506369).hal('" .. Player.Name .. "')")
+CreateButton("Skid Beater", "require(3530402272)('" .. Player.Name .. "')")
+CreateButton("Chronos Sentinel", "require(3089107241).naenae('" .. Player.Name .. "')")
+CreateButton("Pity Hub", "require(3253460334)('" .. Player.Name .. "')")
 
-UI["ButtonExample_30"]:Destroy()
+UI["BtnExample"]:Destroy()
 
-UI["Exe_17"].MouseButton1Click:Connect(function()
-    if backdoorRemote and UI["TextBox_24"].Text ~= "" then
-        runRemote(backdoorRemote, UI["TextBox_24"].Text)
-    elseif not backdoorRemote then
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Error",
+UI["Exe"].MouseButton1Click:Connect(function()
+    local SetCore = default("function", Services.StarterGui.SetCore, nil)
+    if backdoorRemote and UI["InputBox"].Text ~= "" then
+        runRemote(backdoorRemote, UI["InputBox"].Text)
+    elseif not backdoorRemote and SetCore then
+        SetCore(Services.StarterGui, "SendNotification", {
+            Title = "PolariaRM (Error)",
             Text = "No backdoor found! Scan first.",
             Duration = 3
         })
     end
 end)
 
-UI["Clr_12"].MouseButton1Click:Connect(function()
-    UI["TextBox_24"].Text = ""
+UI["Clr"].MouseButton1Click:Connect(function()
+    UI["InputBox"].Text = ""
 end)
 
-UI["Re_1c"].MouseButton1Click:Connect(function()
+UI["Re"].MouseButton1Click:Connect(function()
+    local SetCore = default("function", Services.StarterGui.SetCore, nil)
     local success, errorMsg = pcall(function()
         if backdoorRemote then
-            local Players = game:GetService("Players")
-            local ReplicatedStorage = game:GetService("ReplicatedStorage")
-            local TARGET_USERNAME = Players.LocalPlayer.Name
+            local TARGET_USERNAME = Player.Name
             
             local RefreshScript = [[
                 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -1175,48 +1691,43 @@ UI["Re_1c"].MouseButton1Click:Connect(function()
                     refreshRemote = ReplicatedStorage:FindFirstChild("RefreshCharacterRemote")
                 end
                 
-                refreshRemote.OnServerEvent:Connect(function(player)
-                    if player.Name == TARGET_USERNAME then
-                        player:LoadCharacter()
+                refreshRemote.OnServerEvent:Connect(function(Player)
+                    if Player.Name == TARGET_USERNAME then
+                        Player:LoadCharacter()
                     end
                 end)
                 
-                local function handleExistingPlayer(player)
-                    if player.Name == TARGET_USERNAME then
+                local function handleExistingPlayer(Player)
+                    if Player.Name == TARGET_USERNAME then
                         task.wait(0.5)
-                        player:LoadCharacter()
+                        Player:LoadCharacter()
                     end
                 end
                 
-                for _, player in ipairs(Players:GetPlayers()) do
-                    handleExistingPlayer(player)
+                for _, Player in ipairs(Players:GetPlayers()) do
+                    handleExistingPlayer(Player)
                 end
                 
                 Players.PlayerAdded:Connect(handleExistingPlayer)
             ]]
             
             runRemote(backdoorRemote, RefreshScript)
-        else
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Error",
+        elseif SetCore then
+            SetCore(Services.StarterGui, "SendNotification", {
+                Title = "PolariaRM (Error)",
                 Text = "No backdoor found! Scan first.",
                 Duration = 3
             })
         end
     end)
     
-    if not success then
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Error",
+    if not success and SetCore then
+        SetCore(Services.StarterGui, "SendNotification", {
+            Title = "PolariaRM (Error)",
             Text = "Failed to execute: " .. tostring(errorMsg),
             Duration = 3
         })
     end
 end)
 
-coroutine.wrap(function()
-    local creatorHeadshot = Players:GetUserThumbnailAsync(5592209449, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
-    UI["CreatorHeadshot_64"].Image = creatorHeadshot
-end)()
-
-return UI["ScreenGui_1"]
+return UI["PolariaRM"]
