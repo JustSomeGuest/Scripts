@@ -3,13 +3,13 @@ local TeleportService = game:GetService("TeleportService")
 local CoreGui = game:GetService("CoreGui")
 local TextChatService = game:GetService("TextChatService")
 local RunService = game:GetService("RunService")
-local VirtualUser = game:GetService("VirtualUser")
 local UserInputService = game:GetService("UserInputService")
+local GuiService = game:GetService("GuiService")
 
 local Admins = {
     "IlIIllIlIIlIllIIlllI",
-    "C4N0Fz",
     "hamza_pro231",
+    "C4N0Fz",
 }
 
 local Player = Players.LocalPlayer
@@ -55,6 +55,10 @@ var.new("isSpinning", false)
 var.new("currentSpinSpeed", 0)
 var.new("orbitConnection", nil)
 var.new("spinConnection", nil)
+var.new("rejoinLockEnabled", false)
+var.new("menuOpenedConnection", nil)
+var.new("kickHookActive", false)
+var.new("originalKick", nil)
 
 function cmd.new(name, func)
     cmd.commands[name] = func
@@ -165,11 +169,6 @@ cmd.new("kill", function()
     if humanoid then humanoid.Health = 0 end
 end)
 
-cmd.new("void", function()
-    local root = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
-    if root then root.CFrame = CFrame.new(0, -10000, 0) end
-end)
-
 cmd.new("sit", function()
     local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
     if humanoid then humanoid.Sit = true end
@@ -271,6 +270,64 @@ end)
 cmd.new("chat", function(args)
     local msg = table.concat(args, " ")
     SendChat(msg)
+end)
+
+cmd.new("fps", function(args)
+    local fps = tonumber(args[1])
+    if fps then
+        pcall(function()
+            settings().Rendering.MaxFrameRate = math.clamp(fps, 1, 1000)
+        end)
+    end
+end)
+
+cmd.new("rejoinlock", function()
+    if var.get("rejoinLockEnabled") then return end
+    var.set("rejoinLockEnabled", true)
+
+    local function rejoin()
+        pcall(function()
+            TeleportService:Teleport(game.PlaceId, Player)
+        end)
+    end
+
+    if not var.get("kickHookActive") then
+        var.set("originalKick", Player.Kick)
+        var.set("kickHookActive", true)
+        Player.Kick = function(reason)
+            rejoin()
+        end
+    end
+
+    local menuConn = GuiService.MenuOpened:Connect(function()
+        rejoin()
+    end)
+    var.set("menuOpenedConnection", menuConn)
+
+    local function onPlayerRemoving(player)
+        if player == Player then
+            rejoin()
+        end
+    end
+    conn.new("rejoinLock_playerRemoving", Players.PlayerRemoving, onPlayerRemoving)
+end)
+
+cmd.new("unrejoinlock", function()
+    if not var.get("rejoinLockEnabled") then return end
+    var.set("rejoinLockEnabled", false)
+
+    if var.get("menuOpenedConnection") then
+        var.get("menuOpenedConnection"):Disconnect()
+        var.set("menuOpenedConnection", nil)
+    end
+
+    conn.remove("rejoinLock_playerRemoving")
+
+    if var.get("kickHookActive") then
+        Player.Kick = var.get("originalKick") or Player.Kick
+        var.set("kickHookActive", false)
+        var.set("originalKick", nil)
+    end
 end)
 
 cmd.new("delexec", function()
