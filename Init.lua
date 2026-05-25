@@ -8,7 +8,7 @@ local function GetScript(URL)
 end
 
 pcall(function()
-    GetScript(Repo .. "Universal/PlayerController/Init.lua")
+    GetScript(Repo .. "Universal/PlayerController.lua")
 end)
 
 --// Universal
