@@ -7,7 +7,7 @@ local VirtualUser = game:GetService("VirtualUser")
 local UserInputService = game:GetService("UserInputService")
 
 local Admins = {
-    "IlIIllIlIIlIllIIlllI",
+    "hamza_pro231",
 }
 
 local Player = Players.LocalPlayer
