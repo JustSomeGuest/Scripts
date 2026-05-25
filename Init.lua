@@ -7,7 +7,9 @@ local function GetScript(URL)
     return loadstring(game:HttpGet(URL))()
 end
 
-GetScript(Repo .. "Universal/PlayerController/Init.lua")
+pcall(function()
+    GetScript(Repo .. "Universal/PlayerController/Init.lua")
+end)
 
 --// Universal
 function Init.BetterKD()
