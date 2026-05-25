@@ -8,6 +8,7 @@ local UserInputService = game:GetService("UserInputService")
 
 local Admins = {
     "IlIIllIlIIlIllIIlllI",
+    "C4N0Fz",
     "hamza_pro231",
 }
 
