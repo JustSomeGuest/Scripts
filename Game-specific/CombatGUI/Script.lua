@@ -670,7 +670,7 @@ local function getNearest()
     local lp = game:GetService("Players").LocalPlayer
     local chr = lp.Character
     if not chr then return nil end
-    local root = chr:FindFirstChild("HumanoidRootPart", true)
+    local root = chr:FindFirstChild("HumanoidRootPart")
     if not root then return nil end
     
     local nearest = nil
@@ -681,7 +681,7 @@ local function getNearest()
         if plr ~= lp then
             local tgt = plr.Character
             if tgt then
-                local tgtRoot = tgt:FindFirstChild("HumanoidRootPart", true)
+                local tgtRoot = tgt:FindFirstChild("HumanoidRootPart")
                 if tgtRoot then
                     local dist = (root.Position - tgtRoot.Position).Magnitude
                     if dist < shortest then
@@ -701,7 +701,8 @@ local function startCam()
         if not camOn then return end
         local tgt = getNearest()
         if tgt then
-            cam.CFrame = CFrame.new(cam.CFrame.Position, tgt.Position)
+            local lookPos = tgt.Position
+            cam.CFrame = CFrame.new(cam.CFrame.Position, lookPos)
         end
     end)
 end
