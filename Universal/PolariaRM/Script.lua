@@ -25,46 +25,18 @@ Services = setmetatable({}, {
 
 getgenv().PolariaRM = getgenv().PolariaRM or {}
 
-if getgenv().PolariaRM.isLoaded then
-    Services.StarterGui:SetCore("SendNotification", {
-        Title = "Polaria Remastered",
-        Text = "Polaria Remastered is already running!",
-        Duration = 4
-    })
-    return
-end
-
-getgenv().PolariaRM.isLoaded = true
-
-local Players = Services.Players
-local RunService = Services.RunService
-local HttpService = Services.HttpService
-local TweenService = Services.TweenService
-local UserInputService = Services.UserInputService
-local Player = Players.LocalPlayer
-local Stats = Services.Stats
-local MarketplaceService = Services.MarketplaceService
-local CoreGui
-
-if gethui then
-	local Success, Hui = pcall(gethui)
-	CoreGui = Success and Hui or Services.CoreGui
-else
-	CoreGui = Services.CoreGui
-end
-
 local WriteFile = default("function", writefile, function() end)
 local IsFile = default("function", isfile, function() return false end)
 local IsFolder = default("function", isfolder, function() return false end)
 local MakeFolder = default("function", makefolder, function() end)
+
+local loadasset = default("function", getcustomasset, default("function", getsynasset, nil))
 
 local Assets = {
 	["PolariaRM/assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/logo.png",
 	["PolariaRM/assets/dev.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/dev.png",
 	["PolariaRM/assets/shadow.png"] = "rbxassetid://15298624572",
 }
-
-local loadasset = default("function", getcustomasset, default("function", getsynasset, nil))
 
 local function HttpGet(url)
     local RequestFunc = default("function", syn and syn.request, 
@@ -120,6 +92,35 @@ local function GetAsset(Path)
 	end
 
 	return loadasset(Path)
+end
+
+if getgenv().PolariaRM.isLoaded then
+    Services.StarterGui:SetCore("SendNotification", {
+        Title = "Polaria Remastered",
+        Text = "Polaria Remastered is already running!",
+        Icon = GetAsset("PolariaRM/assets/logo.png"),
+        Duration = 4
+    })
+    return
+end
+
+getgenv().PolariaRM.isLoaded = true
+
+local Players = Services.Players
+local RunService = Services.RunService
+local HttpService = Services.HttpService
+local TweenService = Services.TweenService
+local UserInputService = Services.UserInputService
+local Player = Players.LocalPlayer
+local Stats = Services.Stats
+local MarketplaceService = Services.MarketplaceService
+local CoreGui
+
+if gethui then
+    local Success, Hui = pcall(gethui)
+    CoreGui = Success and Hui or Services.CoreGui
+else
+    CoreGui = Services.CoreGui
 end
 
 local UI = {}
