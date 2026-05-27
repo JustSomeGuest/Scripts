@@ -59,8 +59,8 @@ local IsFolder = default("function", isfolder, function() return false end)
 local MakeFolder = default("function", makefolder, function() end)
 
 local Assets = {
-	["PolariaRM/assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/refs/heads/main/Universal/PolariaRM/Assets/logo.png",
-	["PolariaRM/assets/dev.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/refs/heads/main/Universal/PolariaRM/Assets/dev.png",
+	["PolariaRM/assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/logo.png",
+	["PolariaRM/assets/dev.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/dev.png",
 	["PolariaRM/assets/shadow.png"] = "rbxassetid://15298624572",
 }
 
