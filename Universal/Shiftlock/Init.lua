@@ -146,10 +146,10 @@ ButtonStroke.Parent = Button
 
 local ButtonPadding = Instance.new("UIPadding")
 ButtonPadding.Name = "ButtonPadding"
-ButtonPadding.PaddingTop = UDim.new(0, 4)
-ButtonPadding.PaddingRight = UDim.new(0, 4)
-ButtonPadding.PaddingLeft = UDim.new(0, 4)
-ButtonPadding.PaddingBottom = UDim.new(0, 4)
+ButtonPadding.PaddingTop = UDim.new(0, 6)
+ButtonPadding.PaddingRight = UDim.new(0, 6)
+ButtonPadding.PaddingLeft = UDim.new(0, 6)
+ButtonPadding.PaddingBottom = UDim.new(0, 6)
 ButtonPadding.Parent = Button
 
 local Icon = Instance.new("ImageLabel")
@@ -161,11 +161,6 @@ Icon.Size = UDim2.new(1, 0, 1, 0)
 Icon.Image = GetAsset("Shiftlock/assets/lock.png") or "rbxassetid://6031098370"
 Icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
 Icon.Parent = Button
-
-local IconCorner = Instance.new("UICorner")
-IconCorner.Name = "IconCorner"
-IconCorner.CornerRadius = UDim.new(1, 0)
-IconCorner.Parent = Icon
 
 local Close = Instance.new("TextButton")
 Close.Name = "Close"
