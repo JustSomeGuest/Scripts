@@ -1,13 +1,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local function Default(expected, value, fallback)
-    if type(value) == expected then
-        return value
-    end
-    return fallback
-end
-
-local CloneRef = Default("function", cloneref, function(...) return ... end)
+local CloneRef = cloneref or function(...) return ... end
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -31,22 +24,19 @@ local GuiService = Services.GuiService
 local Workspace = Services.Workspace
 local StarterGui = Services.StarterGui
 
-local WriteFile = Default("function", writefile, function() end)
-local IsFile = Default("function", isfile, function() return false end)
-local IsFolder = Default("function", isfolder, function() return false end)
-local MakeFolder = Default("function", makefolder, function() end)
+local WriteFile = writefile or function() end
+local IsFile = isfile or function() return false end
+local IsFolder = isfolder or function() return false end
+local MakeFolder = makefolder or function() end
 
-local LoadAsset = Default("function", getcustomasset, Default("function", getsynasset, nil))
+local LoadAsset = getcustomasset or getsynasset or nil
 
 local Assets = {
     ["Shiftlock/assets/lock.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Shiftlock/Assets/lock.png",
 }
 
 local function HttpGet(url)
-    local RequestFunc = Default("function", syn and syn.request,
-        Default("function", request,
-            Default("function", http_request, nil)))
-
+    local RequestFunc = syn and syn.request or request or http_request
     if not RequestFunc then
         return nil
     end
