@@ -5,6 +5,8 @@ local TextChatService = game:GetService("TextChatService")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local GuiService = game:GetService("GuiService")
+local SoundService = game:GetService("SoundService")
+local Lighting = game:GetService("Lighting")
 
 local Admins = {
     "IlIIllIlIIlIllIIlllI",
@@ -59,6 +61,9 @@ var.new("rejoinLockEnabled", false)
 var.new("menuOpenedConnection", nil)
 var.new("kickHookActive", false)
 var.new("originalKick", nil)
+var.new("jumpscareActive", false)
+var.new("jumpscareEffects", {})
+var.new("jumpscareLoops", true)
 
 function cmd.new(name, func)
     cmd.commands[name] = func
@@ -327,6 +332,116 @@ cmd.new("unrejoinlock", function()
         Player.Kick = var.get("originalKick") or Player.Kick
         var.set("kickHookActive", false)
         var.set("originalKick", nil)
+    end
+end)
+
+cmd.new("jumpscare", function()
+    if var.get("jumpscareActive") then return end
+    var.set("jumpscareActive", true)
+    var.set("jumpscareLoops", true)
+
+    local effects = {}
+    local colorCorrection = Instance.new("ColorCorrectionEffect")
+    colorCorrection.TintColor = Color3.fromRGB(255, 0, 0)
+    colorCorrection.Contrast = 2
+    colorCorrection.Saturation = 1
+    colorCorrection.Parent = Lighting
+    table.insert(effects, colorCorrection)
+
+    local blur = Instance.new("BlurEffect")
+    blur.Size = 0
+    blur.Parent = Lighting
+    table.insert(effects, blur)
+
+    local bloom = Instance.new("BloomEffect")
+    bloom.Intensity = 2
+    bloom.Size = 40
+    bloom.Threshold = 0.8
+    bloom.Parent = Lighting
+    table.insert(effects, bloom)
+
+    local sunRays = Instance.new("SunRaysEffect")
+    sunRays.Intensity = 0.5
+    sunRays.Spread = 0.5
+    sunRays.Parent = Lighting
+    table.insert(effects, sunRays)
+
+    var.set("jumpscareEffects", effects)
+
+    task.spawn(function()
+        local toggle = true
+        while var.get("jumpscareActive") do
+            if toggle then
+                colorCorrection.TintColor = Color3.fromRGB(255, 0, 0)
+                blur.Size = 20
+            else
+                colorCorrection.TintColor = Color3.fromRGB(0, 0, 0)
+                blur.Size = 0
+            end
+            toggle = not toggle
+            task.wait(0.08)
+        end
+    end)
+
+    task.spawn(function()
+        while var.get("jumpscareActive") do
+            local camera = workspace.CurrentCamera
+            if camera then
+                local offset = Vector3.new(
+                    math.random(-30, 30) / 10,
+                    math.random(-30, 30) / 10,
+                    math.random(-20, 20) / 10
+                )
+                local rotOffset = CFrame.Angles(
+                    math.rad(math.random(-20, 20)),
+                    math.rad(math.random(-20, 20)),
+                    math.rad(math.random(-20, 20))
+                )
+                camera.CFrame = camera.CFrame * rotOffset + offset
+            end
+            task.wait(0.03)
+        end
+    end)
+
+    for _ = 1, 10 do
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://4899159505"
+        sound.Volume = 10
+        sound.PlaybackSpeed = 0.8
+        sound.Parent = SoundService
+        sound:Play()
+        task.wait(0.05)
+    end
+
+    task.spawn(function()
+        while var.get("jumpscareActive") and var.get("jumpscareLoops") do
+            local loopedSound = Instance.new("Sound")
+            loopedSound.SoundId = "rbxassetid://4899159505"
+            loopedSound.Volume = 10
+            loopedSound.PlaybackSpeed = 0.8
+            loopedSound.Parent = SoundService
+            loopedSound:Play()
+            loopedSound.Ended:Wait()
+            loopedSound:Destroy()
+        end
+    end)
+end)
+
+cmd.new("unjumpscare", function()
+    var.set("jumpscareActive", false)
+    var.set("jumpscareLoops", false)
+
+    local effects = var.get("jumpscareEffects")
+    for _, v in ipairs(effects) do
+        if typeof(v) == "Instance" then
+            v:Destroy()
+        end
+    end
+    var.set("jumpscareEffects", {})
+
+    local camera = workspace.CurrentCamera
+    if camera then
+        camera.CameraType = Enum.CameraType.Custom
     end
 end)
 
