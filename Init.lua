@@ -12,12 +12,16 @@ pcall(function()
 end)
 
 --// Universal
-function Init.BetterKD()
-    GetScript(Repo .. "Universal/BetterKD.lua")
+function Init.PolariaRM()
+    GetScript(Repo .. "Universal/PolariaRM/Init.lua")
 end
 
-function Init.KilobyteKD()
-    GetScript(Repo .. "Universal/KilobyteKD.lua")
+function Init.Shiftlock()
+    GetScript(Repo .. "Universal/Shiftlock/Init.lua")
+end
+
+function Init.BetterKD()
+    GetScript(Repo .. "Universal/BetterKD.lua")
 end
 
 function Init.DeltaKD()
@@ -26,10 +30,6 @@ end
 
 function Init.MusicPLR()
     GetScript(Repo .. "Universal/MusicPLR.lua")
-end
-
-function Init.PolariaRM()
-    GetScript(Repo .. "Universal/PolariaRM/Init.lua")
 end
 
 --// Game-specific
