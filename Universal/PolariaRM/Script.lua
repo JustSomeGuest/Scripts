@@ -29,13 +29,12 @@ local WriteFile = default("function", writefile, function() end)
 local IsFile = default("function", isfile, function() return false end)
 local IsFolder = default("function", isfolder, function() return false end)
 local MakeFolder = default("function", makefolder, function() end)
-
-local loadasset = default("function", getcustomasset, default("function", getsynasset, nil))
+local LoadAsset = default("function", getcustomasset, default("function", getsynasset, nil))
 
 local Assets = {
-	["PolariaRM/assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/logo.png",
-	["PolariaRM/assets/dev.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/dev.png",
-	["PolariaRM/assets/shadow.png"] = "rbxassetid://15298624572",
+	["PolariaRM/Assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/logo.png",
+	["PolariaRM/Assets/dev.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/dev.png",
+	["PolariaRM/Assets/shadow.png"] = "rbxassetid://15298624572",
 }
 
 local function HttpGet(url)
@@ -58,7 +57,7 @@ local function HttpGet(url)
 end
 
 local function GetAsset(Path)
-	if not loadasset then
+	if not LoadAsset then
 		return nil
 	end
 
@@ -71,8 +70,8 @@ local function GetAsset(Path)
 		MakeFolder("PolariaRM")
 	end
 
-	if not IsFolder("PolariaRM/assets") then
-		MakeFolder("PolariaRM/assets")
+	if not IsFolder("PolariaRM/Assets") then
+		MakeFolder("PolariaRM/Assets")
 	end
 
 	if Asset:match("^rbxassetid://") then
@@ -91,14 +90,14 @@ local function GetAsset(Path)
 		WriteFile(Path, Response.Body)
 	end
 
-	return loadasset(Path)
+	return LoadAsset(Path)
 end
 
 if getgenv().PolariaRM.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
-        Title = "Polaria Remastered",
+        Title = "PolariaRM",
         Text = "Polaria Remastered is already running!",
-        Icon = GetAsset("PolariaRM/assets/logo.png"),
+        Icon = GetAsset("PolariaRM/Assets/logo.png"),
         Duration = 4
     })
     return
@@ -141,7 +140,7 @@ UI["Show"]["Position"] = UDim2.new(0, 20, 0, 6)
 UI["Show"]["Parent"] = UI["PolariaRM"]
 
 UI["ShowIcon"] = Instance.new("ImageLabel")
-UI["ShowIcon"]["Image"] = GetAsset("PolariaRM/assets/logo.png")
+UI["ShowIcon"]["Image"] = GetAsset("PolariaRM/Assets/logo.png")
 UI["ShowIcon"]["ImageColor3"] = Color3.fromRGB(255, 255, 255)
 UI["ShowIcon"]["BackgroundTransparency"] = 1
 UI["ShowIcon"]["Size"] = UDim2.new(1,0,1,0)
@@ -197,7 +196,7 @@ UI["Shadow"]["BorderSizePixel"] = 0
 UI["Shadow"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 UI["Shadow"]["ImageTransparency"] = 0.2
 UI["Shadow"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
-UI["Shadow"]["Image"] = GetAsset("PolariaRM/assets/shadow.png")
+UI["Shadow"]["Image"] = GetAsset("PolariaRM/Assets/shadow.png")
 UI["Shadow"]["Size"] = UDim2.new(1.059, 0, 1.088, 0)
 UI["Shadow"]["BackgroundTransparency"] = 1
 UI["Shadow"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
@@ -724,7 +723,7 @@ UI["CreditsContentList"]["Parent"] = UI["CreditsContent"]
 
 UI["DevHeadshot"] = Instance.new("ImageLabel")
 UI["DevHeadshot"]["Name"] = "DevHeadshot"
-UI["DevHeadshot"]["Image"] = GetAsset("PolariaRM/assets/dev.png")
+UI["DevHeadshot"]["Image"] = GetAsset("PolariaRM/Assets/dev.png")
 UI["DevHeadshot"]["BorderSizePixel"] = 0
 UI["DevHeadshot"]["ScaleType"] = Enum.ScaleType.Fit
 UI["DevHeadshot"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
@@ -1362,8 +1361,6 @@ local function getOS()
         if p == Enum.Platform.OSX then return "macOS" end
         if p == Enum.Platform.IOS then return "iOS" end
         if p == Enum.Platform.Android then return "Android" end
-        if p == Enum.Platform.XBoxOne then return "Xbox" end
-        if p == Enum.Platform.PlayStation then return "PlayStation" end
     end
     return "Unknown"
 end
@@ -1582,8 +1579,9 @@ local function CreateButton(name, code)
             local SetCore = default("function", Services.StarterGui.SetCore, nil)
             if SetCore then
                 SetCore(Services.StarterGui, "SendNotification", {
-                    Title = "Error",
+                    Title = "PolariaRM (Error)",
                     Text = "No backdoor found! Scan first.",
+                    Icon = GetAsset("PolariaRM/Assets/logo.png"),
                     Duration = 3
                 })
             end
@@ -1663,6 +1661,7 @@ UI["Exe"].MouseButton1Click:Connect(function()
         SetCore(Services.StarterGui, "SendNotification", {
             Title = "PolariaRM (Error)",
             Text = "No backdoor found! Scan first.",
+            Icon = GetAsset("PolariaRM/Assets/logo.png"),
             Duration = 3
         })
     end
@@ -1717,6 +1716,7 @@ UI["Re"].MouseButton1Click:Connect(function()
             SetCore(Services.StarterGui, "SendNotification", {
                 Title = "PolariaRM (Error)",
                 Text = "No backdoor found! Scan first.",
+                Icon = GetAsset("PolariaRM/Assets/logo.png"),
                 Duration = 3
             })
         end
@@ -1726,6 +1726,7 @@ UI["Re"].MouseButton1Click:Connect(function()
         SetCore(Services.StarterGui, "SendNotification", {
             Title = "PolariaRM (Error)",
             Text = "Failed to execute: " .. tostring(errorMsg),
+            Icon = GetAsset("PolariaRM/Assets/logo.png"),
             Duration = 3
         })
     end
