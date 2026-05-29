@@ -20,6 +20,10 @@ function Init.Shiftlock()
     GetScript(Repo .. "Universal/Shiftlock/Init.lua")
 end
 
+function Init.WallyWest()
+    GetScript(Repo .. "Universal/WallyWest/Init.lua")
+end
+
 function Init.BetterKD()
     GetScript(Repo .. "Universal/BetterKD.lua")
 end
