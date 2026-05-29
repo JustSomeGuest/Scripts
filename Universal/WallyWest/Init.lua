@@ -505,30 +505,14 @@ local isMoving = false
 local speedDecayConnection = nil
 local renderConnection = nil
 local speedCheckConnection = nil
-local effectsFolder = nil
+local allTrails = {}
+local auraEmitters = {}
+local particleAuraObjects = {}
 local originalAnimationIds = {}
 
 local particlesEnabled = true
 local blueFXEnabled = true
 local musicEnabled = true
-
-local BodyParts = {
-    "Head",
-    "UpperTorso",
-    "LowerTorso",
-    "LeftUpperArm",
-    "LeftLowerArm",
-    "LeftHand",
-    "RightUpperArm",
-    "RightLowerArm",
-    "RightHand",
-    "LeftUpperLeg",
-    "LeftLowerLeg",
-    "LeftFoot",
-    "RightUpperLeg",
-    "RightLowerLeg",
-    "RightFoot"
-}
 
 local function Dragify(Frame)
 	local dragging = false
@@ -539,24 +523,18 @@ local function Dragify(Frame)
 	local function ClampPosition(newX, newY)
 		local viewport = workspace.CurrentCamera.ViewportSize
 		local size = Frame.AbsoluteSize
-
 		local maxX = viewport.X - size.X
 		local maxY = viewport.Y - size.Y
-
 		newX = math.clamp(newX, 0, maxX)
 		newY = math.clamp(newY, 0, maxY)
-
 		return newX, newY
 	end
 
 	Frame.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 			dragging = true
 			dragStart = input.Position
 			startPos = Frame.Position
-
 			input.Changed:Connect(function()
 				if input.UserInputState == Enum.UserInputState.End then
 					dragging = false
@@ -566,8 +544,7 @@ local function Dragify(Frame)
 	end)
 
 	Frame.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement
-			or input.UserInputType == Enum.UserInputType.Touch then
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
 			dragInput = input
 		end
 	end)
@@ -575,18 +552,10 @@ local function Dragify(Frame)
 	UserInputService.InputChanged:Connect(function(input)
 		if input == dragInput and dragging then
 			local delta = input.Position - dragStart
-
 			local newX = startPos.X.Offset + delta.X
 			local newY = startPos.Y.Offset + delta.Y
-
 			newX, newY = ClampPosition(newX, newY)
-
-			Frame.Position = UDim2.new(
-				startPos.X.Scale,
-				newX,
-				startPos.Y.Scale,
-				newY
-			)
+			Frame.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
 		end
 	end)
 end
@@ -659,126 +628,143 @@ local function RestoreOriginalAnims()
     if originalAnimationIds.climb then animate.climb.ClimbAnim.AnimationId = originalAnimationIds.climb end
 end
 
-local function CreateEffects()
-    if effectsFolder then effectsFolder:Destroy() end
-    effectsFolder = Instance.new("Folder")
-    effectsFolder.Name = "WallyWestEffects"
-    local character = Player.Character
-    if not character then return end
-    effectsFolder.Parent = character
+local function CreateTrail(part, offset0, offset1, width)
+    local a0 = Instance.new("Attachment", part)
+    local a1 = Instance.new("Attachment", part)
+    a0.Position = offset0
+    a1.Position = offset1
     
-    for _, partName in pairs(BodyParts) do
-        local part = character:FindFirstChild(partName)
+    local trail = Instance.new("Trail", part)
+    trail.Attachment0 = a0
+    trail.Attachment1 = a1
+    trail.Lifetime = 0.3
+    trail.LightEmission = 1
+    trail.WidthScale = NumberSequence.new(width)
+    trail.Color = ColorSequence.new(Color3.fromRGB(0, 220, 255), Color3.fromRGB(255, 255, 255))
+    trail.Transparency = NumberSequence.new{
+        NumberSequenceKeypoint.new(0, 0.1),
+        NumberSequenceKeypoint.new(1, 1)
+    }
+    table.insert(allTrails, trail)
+end
+
+local function CreateAllTrails()
+    local parts = {
+        "Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand",
+        "RightUpperArm", "RightLowerArm", "RightHand", "LeftUpperLeg", "LeftLowerLeg",
+        "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot", "HumanoidRootPart"
+    }
+    local offsetPairs = {
+        {Vector3.new(0,0.3,0), Vector3.new(0,-0.3,0)},
+        {Vector3.new(0.1,0.4,0), Vector3.new(0.1,-0.4,0)},
+        {Vector3.new(-0.1,0.4,0), Vector3.new(-0.1,-0.4,0)},
+        {Vector3.new(0.15,0.2,0.1), Vector3.new(0.15,-0.2,0.1)},
+        {Vector3.new(-0.15,0.2,0.1), Vector3.new(-0.15,-0.2,0.1)},
+        {Vector3.new(0.1,0,0.15), Vector3.new(0.1,0,-0.15)},
+        {Vector3.new(-0.1,0,0.15), Vector3.new(-0.1,0,-0.15)},
+    }
+    for _, name in ipairs(parts) do
+        local part = Player.Character:FindFirstChild(name)
         if part then
-            local attachment = Instance.new("Attachment")
-            attachment.Name = "ParticleAttachment"
-            attachment.Parent = part
-            
-            local particleEmitter = Instance.new("ParticleEmitter")
-            particleEmitter.Name = "SpeedParticles"
-            particleEmitter.Parent = attachment
-            particleEmitter.Texture = "rbxassetid://3442350629"
-            particleEmitter.Enabled = true
-            particleEmitter.LightEmission = 1
-            particleEmitter.LightInfluence = 0
-            particleEmitter.Brightness = 1
-            particleEmitter.Orientation = Enum.ParticleOrientation.FacingCamera
-            particleEmitter.ZOffset = 1
-            particleEmitter.EmissionDirection = Enum.NormalId.Top
-            particleEmitter.Lifetime = NumberRange.new(0.2, 0.4)
-            particleEmitter.Rate = 20
-            particleEmitter.Rotation = NumberRange.new(0, 0)
-            particleEmitter.RotSpeed = NumberRange.new(0, 0)
-            particleEmitter.Speed = NumberRange.new(3, 6)
-            particleEmitter.SpreadAngle = Vector2.new(360, 360)
-            particleEmitter.Shape = Enum.ParticleEmitterShape.Box
-            particleEmitter.ShapeInOut = Enum.ParticleEmitterShapeInOut.Outward
-            particleEmitter.ShapeStyle = Enum.ParticleEmitterShapeStyle.Volume
-            particleEmitter.VelocityInheritance = 0
-            particleEmitter.Acceleration = Vector3.new(0, 0, 0)
-            particleEmitter.Drag = 0
-            particleEmitter.LockedToPart = false
-            particleEmitter.TimeScale = 1
-            
-            particleEmitter.Color = ColorSequence.new({
-                ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 220)),
-                ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
-                ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
-            })
-            
-            particleEmitter.Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 0),
-                NumberSequenceKeypoint.new(0.15, 0),
-                NumberSequenceKeypoint.new(1, 1)
-            })
-            
-            particleEmitter.Size = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 1.2),
-                NumberSequenceKeypoint.new(1, 0.4)
-            })
-            
-            particleEmitter.Squash = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 0),
-                NumberSequenceKeypoint.new(1, 0)
-            })
-        end
-    end
-    
-    for _, partName in pairs(BodyParts) do
-        local part = character:FindFirstChild(partName)
-        if part then
-            local trail = Instance.new("Trail")
-            trail.Name = "SpeedTrail"
-            trail.Parent = part
-            trail.Archivable = true
-            trail.Enabled = true
-            trail.LightEmission = 1
-            trail.LightInfluence = 0
-            trail.Brightness = 1
-            trail.Lifetime = 0.3
-            
-            trail.Color = ColorSequence.new({
-                ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 220)),
-                ColorSequenceKeypoint.new(0.5, Color3.fromRGB(158, 158, 242)),
-                ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255)),
-                ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
-            })
-            
-            trail.Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 0.1),
-                NumberSequenceKeypoint.new(1, 0)
-            })
+            for i, offsets in ipairs(offsetPairs) do
+                local width = 0.05 + (i * 0.02)
+                CreateTrail(part, offsets[1], offsets[2], width)
+            end
         end
     end
 end
 
-local function UpdateParticleRate(intensity)
-    if not effectsFolder then return end
-    local normalizedIntensity = math.min(intensity / 400, 1.5)
-    local newRate = 0
-    if intensity > 5 then
-        newRate = 20 + (normalizedIntensity * 80)
+local function RemoveAllTrails()
+    for _, trail in ipairs(allTrails) do
+        if trail and trail.Parent then trail:Destroy() end
     end
-    for _, descendant in pairs(effectsFolder:GetDescendants()) do
-        if descendant:IsA("ParticleEmitter") and descendant.Name == "SpeedParticles" then
-            descendant.Rate = newRate
-            if newRate > 0 then
-                descendant.Speed = NumberRange.new(3 + (normalizedIntensity * 10), 6 + (normalizedIntensity * 15))
-            else
-                descendant.Rate = 0
-            end
-        end
-        if descendant:IsA("Trail") and descendant.Name == "SpeedTrail" then
-            descendant.Enabled = intensity > 5
+    table.clear(allTrails)
+end
+
+local function CreateAuraEmitter(part)
+    local attachment = Instance.new("Attachment", part)
+    local particle = Instance.new("ParticleEmitter", attachment)
+    particle.Texture = "rbxassetid://3442350629"
+    particle.Rate = 20
+    particle.Lifetime = NumberRange.new(0.2, 0.4)
+    particle.Speed = NumberRange.new(3, 6)
+    particle.VelocitySpread = 360
+    particle.Size = NumberSequence.new({NumberSequenceKeypoint.new(0,1.2),NumberSequenceKeypoint.new(1,0.4)})
+    particle.LightEmission = 1
+    particle.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0,0.15),NumberSequenceKeypoint.new(1,1)})
+    particle.Color = ColorSequence.new(Color3.fromRGB(0,255,255))
+    particle.ZOffset = 1
+    table.insert(auraEmitters, attachment)
+end
+
+local function CreateElectricAura()
+    local parts = {
+        "Head", "UpperTorso", "LowerTorso", "LeftUpperArm", "LeftLowerArm", "LeftHand",
+        "RightUpperArm", "RightLowerArm", "RightHand", "LeftUpperLeg", "LeftLowerLeg",
+        "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot", "HumanoidRootPart"
+    }
+    for _, name in ipairs(parts) do
+        local part = Player.Character:FindFirstChild(name)
+        if part then CreateAuraEmitter(part) end
+    end
+end
+
+local function RemoveElectricAura()
+    for _, emitter in ipairs(auraEmitters) do
+        if emitter and emitter.Parent then emitter:Destroy() end
+    end
+    table.clear(auraEmitters)
+end
+
+local function CreateParticleAura()
+    if not Player.Character then return end
+    
+    local highlight = Instance.new("Highlight")
+    highlight.Adornee = Player.Character
+    highlight.FillTransparency = 0.875
+    highlight.FillColor = Color3.fromRGB(87, 216, 255)
+    highlight.OutlineColor = Color3.fromRGB(180, 240, 255)
+    highlight.OutlineTransparency = 0.65
+    highlight.DepthMode = "Occluded"
+    highlight.Parent = Player.Character
+    table.insert(particleAuraObjects, highlight)
+
+    for _, part in next, Player.Character:GetDescendants() do
+        if part:IsA("BasePart") then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Rate = 1000
+            particle.LockedToPart = true
+            particle.Texture = "rbxassetid://11745241946"
+            particle.Lifetime = NumberRange.new(0.375, 0.375)
+            particle.Size = NumberSequence.new(0.435, 0.435)
+            particle.ZOffset = -1
+            particle.Speed = NumberRange.new(0, 0)
+            particle.LightEmission = 1
+            particle.Color = ColorSequence.new(Color3.fromRGB(87, 216, 255), Color3.fromRGB(200, 255, 255))
+            particle.Parent = part
+            table.insert(particleAuraObjects, particle)
         end
     end
+end
+
+local function RemoveParticleAura()
+    for _, obj in ipairs(particleAuraObjects) do
+        if obj and obj.Parent then obj:Destroy() end
+    end
+    table.clear(particleAuraObjects)
 end
 
 local function RemoveEffects()
-    if effectsFolder then
-        effectsFolder:Destroy()
-        effectsFolder = nil
-    end
+    RemoveAllTrails()
+    RemoveElectricAura()
+    RemoveParticleAura()
+end
+
+local function CreateEffects()
+    RemoveEffects()
+    CreateAllTrails()
+    CreateElectricAura()
+    CreateParticleAura()
 end
 
 local function StartSpeedDecay()
@@ -861,11 +847,6 @@ local function StartBoost()
             end
             
             UpdateSpeed()
-            
-            if particlesEnabled and effectsFolder then
-                local intensity = currentSpeed - 120
-                UpdateParticleRate(intensity)
-            end
             
             if blueFXEnabled then
                 local speedIntensity = math.min((currentSpeed - 120) / 380, 1.5)
@@ -1027,7 +1008,6 @@ CloseBtn.MouseButton1Click:Connect(function()
     if renderConnection then renderConnection:Disconnect() end
     if speedDecayConnection then speedDecayConnection:Disconnect() end
     if speedCheckConnection then speedCheckConnection:Disconnect() end
-    if effectsFolder then effectsFolder:Destroy() end
     WallyWestGui:Destroy()
     ColorCorrection:Destroy()
 end)
