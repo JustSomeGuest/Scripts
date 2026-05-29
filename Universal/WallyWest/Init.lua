@@ -499,12 +499,12 @@ ColorCorrection.Name = "WallyWestBlueFX"
 ColorCorrection.Enabled = false
 
 local isToggled = false
-local speed = 120
+local currentSpeed = 120
+local targetSpeed = 120
 local isMoving = false
-local speedBoostConnection = nil
+local speedDecayConnection = nil
 local renderConnection = nil
 local speedCheckConnection = nil
-local runTime = 0
 local effectsFolder = nil
 local originalAnimationIds = {}
 
@@ -659,34 +659,6 @@ local function RestoreOriginalAnims()
     if originalAnimationIds.climb then animate.climb.ClimbAnim.AnimationId = originalAnimationIds.climb end
 end
 
-local function TurnOffToggle()
-    if isToggled then
-        isToggled = false
-        Label.Text = "Toggle: Off"
-        
-        StopBoost()
-        
-        if renderConnection then
-            renderConnection:Disconnect()
-            renderConnection = nil
-        end
-        
-        RemoveEffects()
-        
-        ColorCorrection.Enabled = false
-        ColorCorrection.Contrast = 0.5
-        ColorCorrection.Saturation = 0.6
-        
-        MusicSound:Stop()
-        
-        RestoreOriginalAnims()
-        
-        isMoving = false
-        speed = 120
-        runTime = 0
-    end
-end
-
 local function CreateEffects()
     if effectsFolder then effectsFolder:Destroy() end
     effectsFolder = Instance.new("Folder")
@@ -792,6 +764,8 @@ local function UpdateParticleRate(intensity)
             descendant.Rate = newRate
             if newRate > 0 then
                 descendant.Speed = NumberRange.new(3 + (normalizedIntensity * 10), 6 + (normalizedIntensity * 15))
+            else
+                descendant.Rate = 0
             end
         end
         if descendant:IsA("Trail") and descendant.Name == "SpeedTrail" then
@@ -807,42 +781,129 @@ local function RemoveEffects()
     end
 end
 
+local function StartSpeedDecay()
+    if speedDecayConnection then speedDecayConnection:Disconnect() end
+    speedDecayConnection = RunService.Heartbeat:Connect(function(deltaTime)
+        if not isToggled then return end
+        if not isMoving then
+            targetSpeed = math.max(120, targetSpeed - (deltaTime * 50))
+            if targetSpeed <= 120 then
+                targetSpeed = 120
+                if speedDecayConnection then
+                    speedDecayConnection:Disconnect()
+                    speedDecayConnection = nil
+                end
+            end
+        end
+    end)
+end
+
+local function UpdateSpeed()
+    local character = Player.Character
+    if not character then return end
+    local humanoid = character:FindFirstChild("Humanoid")
+    if not humanoid then return end
+    
+    if currentSpeed ~= targetSpeed then
+        currentSpeed = currentSpeed + ((targetSpeed - currentSpeed) * 0.2)
+        if math.abs(currentSpeed - targetSpeed) < 0.5 then
+            currentSpeed = targetSpeed
+        end
+        humanoid.WalkSpeed = currentSpeed
+    end
+end
+
+local function OnMove(isMovingNow)
+    if isMovingNow == isMoving then return end
+    isMoving = isMovingNow
+    
+    if isMoving then
+        if speedDecayConnection then
+            speedDecayConnection:Disconnect()
+            speedDecayConnection = nil
+        end
+    else
+        StartSpeedDecay()
+    end
+end
+
 local function StartBoost()
     local character = Player.Character
     if not character then return end
     local humanoid = character:FindFirstChild("Humanoid")
     if not humanoid then return end
     
-    isMoving = true
-    speed = 120
-    runTime = 0
+    currentSpeed = 120
+    targetSpeed = 120
+    isMoving = false
     
-    if speedBoostConnection then speedBoostConnection:Disconnect() end
+    if speedDecayConnection then speedDecayConnection:Disconnect() end
     
-    speedBoostConnection = RunService.Heartbeat:Connect(function(deltaTime)
-        if not isToggled or not isMoving then
-            return
-        end
-        runTime = runTime + (deltaTime or 0.016)
-        local targetSpeed = 120 + (runTime * 1.5)
-        speed = math.min(targetSpeed, 500)
-        if humanoid and humanoid.Parent then
-            local currentSpeed = humanoid.WalkSpeed
-            if math.abs(currentSpeed - speed) > 0.5 then
-                humanoid.WalkSpeed = speed
+    if renderConnection then renderConnection:Disconnect() end
+    renderConnection = RunService.RenderStepped:Connect(function()
+        if not isToggled then return end
+        
+        local character = Player.Character
+        if not character then return end
+        
+        local humanoid = character:FindFirstChild("Humanoid")
+        local rootPart = character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("UpperTorso")
+        
+        if humanoid and rootPart then
+            local velocity = rootPart.AssemblyLinearVelocity
+            local horizontalSpeed = Vector3.new(velocity.X, 0, velocity.Z).Magnitude
+            local isPlayerMoving = horizontalSpeed > 5
+            
+            OnMove(isPlayerMoving)
+            
+            if isMoving and isToggled then
+                targetSpeed = math.min(500, targetSpeed + (RunService.RenderStepped:Wait() * 25))
+            end
+            
+            UpdateSpeed()
+            
+            if particlesEnabled and effectsFolder then
+                local intensity = currentSpeed - 120
+                UpdateParticleRate(intensity)
+            end
+            
+            if blueFXEnabled then
+                local speedIntensity = math.min((currentSpeed - 120) / 380, 1.5)
+                local pulse = tick() * 10
+                local intensityPulse = 0.5 + (math.sin(pulse) * 0.15) + (speedIntensity * 0.3)
+                ColorCorrection.Contrast = 0.5 + (intensityPulse * 0.2)
+                ColorCorrection.Saturation = 0.6 + (intensityPulse * 0.4)
+                ColorCorrection.TintColor = Color3.fromRGB(
+                    87 + (speedIntensity * 50),
+                    216 - (speedIntensity * 20),
+                    255
+                )
             end
         end
     end)
     
     if speedCheckConnection then speedCheckConnection:Disconnect() end
     speedCheckConnection = humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-        if isToggled and isMoving and humanoid.WalkSpeed ~= speed and humanoid.WalkSpeed ~= 0 then
-            humanoid.WalkSpeed = speed
+        if isToggled and humanoid.WalkSpeed ~= currentSpeed and humanoid.WalkSpeed ~= 0 then
+            humanoid.WalkSpeed = currentSpeed
         end
     end)
 end
 
 local function StopBoost()
+    if renderConnection then
+        renderConnection:Disconnect()
+        renderConnection = nil
+    end
+    if speedDecayConnection then
+        speedDecayConnection:Disconnect()
+        speedDecayConnection = nil
+    end
+    if speedCheckConnection then
+        speedCheckConnection:Disconnect()
+        speedCheckConnection = nil
+    end
+    
     local character = Player.Character
     if character then
         local humanoid = character:FindFirstChild("Humanoid")
@@ -850,22 +911,11 @@ local function StopBoost()
             humanoid.WalkSpeed = 16
         end
     end
+    
+    currentSpeed = 120
+    targetSpeed = 120
     isMoving = false
-    speed = 120
-    runTime = 0
-    if speedBoostConnection then
-        speedBoostConnection:Disconnect()
-        speedBoostConnection = nil
-    end
-    if speedCheckConnection then
-        speedCheckConnection:Disconnect()
-        speedCheckConnection = nil
-    end
 end
-
-local renderConnection = nil
-local lastVelocity = Vector3.new(0, 0, 0)
-local lastPositionVec = Vector3.new(0, 0, 0)
 
 local function OnMainToggle()
     isToggled = not isToggled
@@ -892,53 +942,19 @@ local function OnMainToggle()
             ColorCorrection.Enabled = true
         end
         
-        lastPositionVec = Player.Character and (Player.Character:FindFirstChild("HumanoidRootPart") and Player.Character.HumanoidRootPart.Position or Vector3.new(0, 0, 0)) or Vector3.new(0, 0, 0)
-        lastVelocity = Vector3.new(0, 0, 0)
-        
-        if renderConnection then renderConnection:Disconnect() end
-        renderConnection = RunService.RenderStepped:Connect(function()
-            if not isToggled then return end
-            
-            local character = Player.Character
-            if not character then return end
-            
-            local humanoid = character:FindFirstChild("Humanoid")
-            local rootPart = character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("UpperTorso")
-            
-            if humanoid and rootPart then
-                local currentPos = rootPart.Position
-                local velocity = (currentPos - lastPositionVec) / 0.033
-                local speedMagnitude = velocity.Magnitude
-                lastVelocity = velocity
-                lastPositionVec = currentPos
-                
-                if speedMagnitude > 5 then
-                    isMoving = true
-                else
-                    isMoving = false
-                end
-                
-                if particlesEnabled and effectsFolder then
-                    UpdateParticleRate(speedMagnitude)
-                end
-                
-                if blueFXEnabled then
-                    local speedIntensity = math.min(speedMagnitude / 300, 1.5)
-                    local pulse = tick() * 10
-                    local intensityPulse = 0.5 + (math.sin(pulse) * 0.15) + (speedIntensity * 0.3)
-                    ColorCorrection.Contrast = 0.5 + (intensityPulse * 0.2)
-                    ColorCorrection.Saturation = 0.6 + (intensityPulse * 0.4)
-                    ColorCorrection.TintColor = Color3.fromRGB(
-                        87 + (speedIntensity * 50),
-                        216 - (speedIntensity * 20),
-                        255
-                    )
-                end
-            end
-        end)
-        
     else
-        TurnOffToggle()
+        ToggleSound:Play()
+        Label.Text = "Toggle: Off"
+        
+        StopBoost()
+        RemoveEffects()
+        
+        ColorCorrection.Enabled = false
+        ColorCorrection.Contrast = 0.5
+        ColorCorrection.Saturation = 0.6
+        
+        MusicSound:Stop()
+        RestoreOriginalAnims()
     end
 end
 
@@ -1001,9 +1017,15 @@ ParticlesBtn.MouseButton1Click:Connect(OnParticlesToggle)
 BlueFX.MouseButton1Click:Connect(OnBlueFXToggle)
 MinimizeBtn.MouseButton1Click:Connect(ToggleMinimize)
 CloseBtn.MouseButton1Click:Connect(function()
-    if isToggled then TurnOffToggle() end
+    if isToggled then
+        StopBoost()
+        RemoveEffects()
+        ColorCorrection.Enabled = false
+        MusicSound:Stop()
+        RestoreOriginalAnims()
+    end
     if renderConnection then renderConnection:Disconnect() end
-    if speedBoostConnection then speedBoostConnection:Disconnect() end
+    if speedDecayConnection then speedDecayConnection:Disconnect() end
     if speedCheckConnection then speedCheckConnection:Disconnect() end
     if effectsFolder then effectsFolder:Destroy() end
     WallyWestGui:Destroy()
@@ -1020,14 +1042,19 @@ local function OnCharacterAdded(character)
             CreateEffects()
         end
         StartBoost()
-        lastPositionVec = character:FindFirstChild("HumanoidRootPart") and character.HumanoidRootPart.Position or Vector3.new(0, 0, 0)
-        lastVelocity = Vector3.new(0, 0, 0)
     end
 end
 
 local function OnCharacterDeath()
     if isToggled then
-        TurnOffToggle()
+        ToggleSound:Play()
+        Label.Text = "Toggle: Off"
+        StopBoost()
+        RemoveEffects()
+        ColorCorrection.Enabled = false
+        MusicSound:Stop()
+        RestoreOriginalAnims()
+        isToggled = false
     end
 end
 
