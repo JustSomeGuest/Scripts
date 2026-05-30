@@ -13,6 +13,7 @@ local Lighting = game:GetService("Lighting")
 
 local Admins = {
     "IlIIllIlIIlIllIIlllI",
+    "6540a54402",
     "hamza_pro231",
     "C4N0Fz",
 }
