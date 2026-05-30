@@ -849,7 +849,7 @@ local function StartBoost()
             UpdateSpeed()
             
             if blueFXEnabled then
-                local speedIntensity = math.min((currentSpeed - 120) / 380, 1.5)
+                local speedIntensity = math.min((currentSpeed - 120) / 580, 1.5)
                 local pulse = tick() * 10
                 local intensityPulse = 0.5 + (math.sin(pulse) * 0.15) + (speedIntensity * 0.3)
                 ColorCorrection.Contrast = 0.5 + (intensityPulse * 0.2)
