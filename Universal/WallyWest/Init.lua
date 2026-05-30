@@ -843,7 +843,7 @@ local function StartBoost()
             OnMove(isPlayerMoving)
             
             if isMoving and isToggled then
-                targetSpeed = math.min(500, targetSpeed + (RunService.RenderStepped:Wait() * 25))
+                targetSpeed = math.min(700, targetSpeed + (RunService.RenderStepped:Wait() * 25))
             end
             
             UpdateSpeed()
