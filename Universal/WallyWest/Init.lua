@@ -108,14 +108,7 @@ local HttpService = Services.HttpService
 local TweenService = Services.TweenService
 local UserInputService = Services.UserInputService
 local Player = Players.LocalPlayer
-local CoreGui
-
-if gethui then
-    local Success, Hui = pcall(gethui)
-    CoreGui = Success and Hui or Services.CoreGui
-else
-    CoreGui = Services.CoreGui
-end
+local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
 
 local GothamFont = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 
@@ -509,6 +502,7 @@ local allTrails = {}
 local auraEmitters = {}
 local particleAuraObjects = {}
 local originalAnimationIds = {}
+local originalJumpPower = nil
 
 local particlesEnabled = true
 local blueFXEnabled = true
@@ -523,10 +517,16 @@ local function Dragify(Frame)
 	local function ClampPosition(newX, newY)
 		local viewport = workspace.CurrentCamera.ViewportSize
 		local size = Frame.AbsoluteSize
-		local maxX = viewport.X - size.X
-		local maxY = viewport.Y - size.Y
-		newX = math.clamp(newX, 0, maxX)
-		newY = math.clamp(newY, 0, maxY)
+		local padding = 3
+
+		local maxX = viewport.X - size.X - padding
+		local maxY = viewport.Y - size.Y - padding
+		local minX = padding
+		local minY = padding
+
+		newX = math.clamp(newX, minX, maxX)
+		newY = math.clamp(newY, minY, maxY)
+
 		return newX, newY
 	end
 
@@ -626,6 +626,32 @@ local function RestoreOriginalAnims()
     if originalAnimationIds.jump then animate.jump.JumpAnim.AnimationId = originalAnimationIds.jump end
     if originalAnimationIds.fall then animate.fall.FallAnim.AnimationId = originalAnimationIds.fall end
     if originalAnimationIds.climb then animate.climb.ClimbAnim.AnimationId = originalAnimationIds.climb end
+end
+
+local function SaveOriginalJumpPower()
+    local character = Player.Character
+    if not character then return end
+    local humanoid = character:FindFirstChild("Humanoid")
+    if humanoid and originalJumpPower == nil then
+        originalJumpPower = humanoid.JumpPower
+    end
+end
+
+local function SetJumpPower(value)
+    local character = Player.Character
+    if not character then return end
+    local humanoid = character:FindFirstChild("Humanoid")
+    if humanoid then
+        humanoid.JumpPower = value
+    end
+end
+
+local function RestoreOriginalJumpPower()
+    if originalJumpPower then
+        SetJumpPower(originalJumpPower)
+    else
+        SetJumpPower(50)
+    end
 end
 
 local function CreateTrail(part, offset0, offset1, width)
@@ -898,6 +924,22 @@ local function StopBoost()
     isMoving = false
 end
 
+local function FullCleanup()
+    if isToggled then
+        StopBoost()
+        RemoveEffects()
+        ColorCorrection.Enabled = false
+        MusicSound:Stop()
+        RestoreOriginalAnims()
+        RestoreOriginalJumpPower()
+        isToggled = false
+        Label.Text = "Toggle: Off"
+    end
+    if renderConnection then renderConnection:Disconnect() end
+    if speedDecayConnection then speedDecayConnection:Disconnect() end
+    if speedCheckConnection then speedCheckConnection:Disconnect() end
+end
+
 local function OnMainToggle()
     isToggled = not isToggled
     
@@ -906,8 +948,10 @@ local function OnMainToggle()
         Label.Text = "Toggle: On"
         
         SaveOriginalAnims()
+        SaveOriginalJumpPower()
         RemoveAnims()
         ApplyAnims()
+        SetJumpPower(120)
         
         if particlesEnabled then
             CreateEffects()
@@ -936,6 +980,7 @@ local function OnMainToggle()
         
         MusicSound:Stop()
         RestoreOriginalAnims()
+        RestoreOriginalJumpPower()
     end
 end
 
@@ -998,26 +1043,20 @@ ParticlesBtn.MouseButton1Click:Connect(OnParticlesToggle)
 BlueFX.MouseButton1Click:Connect(OnBlueFXToggle)
 MinimizeBtn.MouseButton1Click:Connect(ToggleMinimize)
 CloseBtn.MouseButton1Click:Connect(function()
-    if isToggled then
-        StopBoost()
-        RemoveEffects()
-        ColorCorrection.Enabled = false
-        MusicSound:Stop()
-        RestoreOriginalAnims()
-    end
-    if renderConnection then renderConnection:Disconnect() end
-    if speedDecayConnection then speedDecayConnection:Disconnect() end
-    if speedCheckConnection then speedCheckConnection:Disconnect() end
+    FullCleanup()
     WallyWestGui:Destroy()
     ColorCorrection:Destroy()
+    getgenv().WallyWest.isLoaded = false
 end)
 
 local function OnCharacterAdded(character)
     if isToggled then
         task.wait(0.5)
         SaveOriginalAnims()
+        SaveOriginalJumpPower()
         RemoveAnims()
         ApplyAnims()
+        SetJumpPower(120)
         if particlesEnabled then
             CreateEffects()
         end
@@ -1034,6 +1073,7 @@ local function OnCharacterDeath()
         ColorCorrection.Enabled = false
         MusicSound:Stop()
         RestoreOriginalAnims()
+        RestoreOriginalJumpPower()
         isToggled = false
     end
 end
@@ -1046,6 +1086,7 @@ end)
 if Player.Character then
     local humanoid = Player.Character:FindFirstChild("Humanoid")
     if humanoid then
+        originalJumpPower = humanoid.JumpPower
         humanoid.Died:Connect(OnCharacterDeath)
     end
 end
