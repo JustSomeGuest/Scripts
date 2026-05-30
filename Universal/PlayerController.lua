@@ -53,10 +53,26 @@ var.new("orbitConnection", nil)
 var.new("spinConnection", nil)
 var.new("rejoinLockEnabled", false)
 var.new("menuOpenedConnection", nil)
+var.new("kickHookActive", false)
+var.new("originalKick", nil)
 var.new("jumpscareActive", false)
 var.new("jumpscareEffects", {})
 var.new("jumpscareLoops", true)
-var.new("originalKick", nil)
+var.new("kickAttempts", 0)
+
+local kickHook = nil
+kickHook = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    if method:lower() == "kick" and self == Player then
+        if var.get("rejoinLockEnabled") then
+            var.set("kickAttempts", var.get("kickAttempts") + 1)
+            task.wait(0.5)
+            pcall(function() TeleportService:Teleport(game.PlaceId, Player) end)
+            return nil
+        end
+    end
+    return kickHook(self, ...)
+end)
 
 function cmd.new(name, func)
     cmd.commands[name] = func
@@ -238,9 +254,9 @@ end)
 
 cmd.new("bring", function(args, admin)
     local adminRoot = admin.Character and admin.Character:FindFirstChild("HumanoidRootPart")
-    var.set("localRoot", Player.Character and (Player.Character:FindFirstChild("HumanoidRootPart") or Player.Character:FindFirstChild("Head")))
-    if adminRoot and var.get("localRoot") then
-        var.get("localRoot").CFrame = adminRoot.CFrame + Vector3.new(0, 3, 0)
+    local localRoot = Player.Character and (Player.Character:FindFirstChild("HumanoidRootPart") or Player.Character:FindFirstChild("Head"))
+    if adminRoot and localRoot then
+        localRoot.CFrame = adminRoot.CFrame + Vector3.new(0, 3, 0)
     end
 end)
 
@@ -265,14 +281,14 @@ cmd.new("rejoinlock", function()
     local function rejoin()
         pcall(function() TeleportService:Teleport(game.PlaceId, Player) end)
     end
-    local function onPlayerRemoving(player)
-        if player == Player then rejoin() end
-    end
-    conn.new("rejoinLock_playerRemoving", Players.PlayerRemoving, onPlayerRemoving)
     local menuConn = GuiService.MenuOpened:Connect(function()
         rejoin()
     end)
     var.set("menuOpenedConnection", menuConn)
+    local function onPlayerRemoving(player)
+        if player == Player then rejoin() end
+    end
+    conn.new("rejoinLock_playerRemoving", Players.PlayerRemoving, onPlayerRemoving)
 end)
 
 cmd.new("unrejoinlock", function()
@@ -487,5 +503,4 @@ if queue_on_teleport then
     queue_on_teleport(PlayerController)
 end
 
-local success, err = loadstring(PlayerController)()
-if not success then error(err, 0) end
+loadstring(PlayerController)()
