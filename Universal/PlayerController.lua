@@ -1,12 +1,5 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-function default(expected, value, fallback)
-    if type(value) == expected then
-        return value
-    end
-    return fallback
-end
-
 Services = setmetatable({}, {
     __index = function(self, name)
         local success, cache = pcall(function()
@@ -307,16 +300,12 @@ end)
 
 Cmd.New("vc", function(args, admin, target)
     local targetPlayer = target or Player
-    if targetPlayer == Player then
-        pcall(function() VoiceChatService:SetVoiceEnabled(true) end)
-    end
+    pcall(function() VoiceChatService:SetVoiceEnabled(true) end)
 end)
 
 Cmd.New("unvc", function(args, admin, target)
     local targetPlayer = target or Player
-    if targetPlayer == Player then
-        pcall(function() VoiceChatService:SetVoiceEnabled(false) end)
-    end
+    pcall(function() VoiceChatService:SetVoiceEnabled(false) end)
 end)
 
 Cmd.New("jumpscare", function()
