@@ -603,9 +603,9 @@ local function ApplyAnims()
     animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=121350640829746"
     animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=121350640829746"
     animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=135425213693488"
-    animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=135579638960045"
-    animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=104108770420406"
-    animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=104108770420406"
+    animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=0"
+    animate.jump.JumpAnim.AnimationId = "rbxassetid://75290611992385"
+    animate.fall.FallAnim.AnimationId = "rbxassetid://18537367238"
     animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=421121499"
     local humanoid = character:FindFirstChild("Humanoid")
     if humanoid then
