@@ -14,6 +14,7 @@ Services = setmetatable({}, {
 		local success, cache = pcall(function()
 			return cloneref(game:GetService(name))
 		end)
+			
 		if success then
 			rawset(self, name, cache)
 			return cache
@@ -110,14 +111,17 @@ local UserInputService = Services.UserInputService
 local Player = Players.LocalPlayer
 local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
 
-local GothamFont = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 
-local WallyWestGui = Instance.new("ScreenGui", CoreGui)
-WallyWestGui.Name = "WallyWest"
-WallyWestGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-WallyWestGui.ResetOnSpawn = false
+local FeWallyWest = Instance.new("ScreenGui")
+FeWallyWest.DisplayOrder = 1
+FeWallyWest.AutoLocalize = false
+FeWallyWest.Name = "FeWallyWest"
+FeWallyWest.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+FeWallyWest.ResetOnSpawn = false
+FeWallyWest.Parent = CoreGui
 
-local MainFrame = Instance.new("Frame", WallyWestGui)
+local MainFrame = Instance.new("Frame")
 MainFrame.BorderSizePixel = 0
 MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 MainFrame.ClipsDescendants = true
@@ -125,15 +129,17 @@ MainFrame.Size = UDim2.new(0, 280, 0, 190)
 MainFrame.Position = UDim2.new(0, 20, 0, 8)
 MainFrame.Name = "MainFrame"
 MainFrame.BackgroundTransparency = 0.5
+MainFrame.Parent = FeWallyWest
 
-local MainFramePadding = Instance.new("UIPadding", MainFrame)
+local MainFramePadding = Instance.new("UIPadding")
 MainFramePadding.PaddingTop = UDim.new(0, 2)
 MainFramePadding.PaddingRight = UDim.new(0, 2)
 MainFramePadding.Name = "MainFramePadding"
 MainFramePadding.PaddingLeft = UDim.new(0, 2)
 MainFramePadding.PaddingBottom = UDim.new(0, 2)
+MainFramePadding.Parent = MainFrame
 
-local Content = Instance.new("Frame", MainFrame)
+local Content = Instance.new("Frame")
 Content.ZIndex = 0
 Content.BorderSizePixel = 0
 Content.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -142,213 +148,193 @@ Content.Size = UDim2.new(0, 276, 0, 0)
 Content.Name = "Content"
 Content.LayoutOrder = 3
 Content.BackgroundTransparency = 0.5
+Content.Parent = MainFrame
 
-local ContentCorner = Instance.new("UICorner", Content)
+local ContentCorner = Instance.new("UICorner")
 ContentCorner.Name = "ContentCorner"
 ContentCorner.CornerRadius = UDim.new(0, 4)
+ContentCorner.Parent = Content
 
-local Toggle = Instance.new("TextButton", Content)
+local Toggle = Instance.new("TextButton")
 Toggle.TextWrapped = true
 Toggle.BorderSizePixel = 0
 Toggle.TextScaled = true
 Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
 Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Toggle.FontFace = GothamMedium
 Toggle.BackgroundTransparency = 1
 Toggle.Size = UDim2.new(0, 230, 0, 28)
 Toggle.LayoutOrder = 1
-Toggle.Text = ""
+Toggle.Text = "Toggle: Off"
 Toggle.Name = "Toggle"
 Toggle.Position = UDim2.new(0, 8, 0, 44)
+Toggle.Parent = Content
 
-local ToggleCorner = Instance.new("UICorner", Toggle)
+local ToggleCorner = Instance.new("UICorner")
 ToggleCorner.Name = "ToggleCorner"
 ToggleCorner.CornerRadius = UDim.new(0, 4)
+ToggleCorner.Parent = Toggle
 
-local ToggleSizeCons = Instance.new("UISizeConstraint", Toggle)
+local ToggleSizeCons = Instance.new("UISizeConstraint")
 ToggleSizeCons.MinSize = Vector2.new(0, 28)
+ToggleSizeCons.Name = "ToggleSizeCons"
 ToggleSizeCons.MaxSize = Vector2.new(math.huge, 30)
+ToggleSizeCons.Parent = Toggle
 
-local ToggleStroke = Instance.new("UIStroke", Toggle)
+local ToggleStroke = Instance.new("UIStroke")
 ToggleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 ToggleStroke.Name = "ToggleStroke"
 ToggleStroke.Color = Color3.fromRGB(255, 255, 255)
+ToggleStroke.Parent = Toggle
 
-local Label = Instance.new("TextLabel", Toggle)
-Label.TextWrapped = true
-Label.BorderSizePixel = 0
-Label.TextScaled = true
-Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Label.FontFace = GothamFont
-Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-Label.BackgroundTransparency = 1
-Label.Size = UDim2.new(1, 0, 1, 0)
-Label.Text = "Toggle: Off"
-Label.Name = "Label"
+local TogglePadding = Instance.new("UIPadding")
+TogglePadding.PaddingTop = UDim.new(0, 4)
+TogglePadding.PaddingRight = UDim.new(0, 5)
+TogglePadding.Name = "TogglePadding"
+TogglePadding.PaddingLeft = UDim.new(0, 5)
+TogglePadding.PaddingBottom = UDim.new(0, 4)
+TogglePadding.Parent = Toggle
 
-local LabelPadding = Instance.new("UIPadding", Label)
-LabelPadding.PaddingTop = UDim.new(0, 4)
-LabelPadding.PaddingRight = UDim.new(0, 5)
-LabelPadding.Name = "LabelPadding"
-LabelPadding.PaddingLeft = UDim.new(0, 5)
-LabelPadding.PaddingBottom = UDim.new(0, 4)
-
-local Music = Instance.new("TextButton", Content)
+local Music = Instance.new("TextButton")
 Music.TextWrapped = true
 Music.BorderSizePixel = 0
 Music.TextScaled = true
 Music.TextColor3 = Color3.fromRGB(255, 255, 255)
 Music.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Music.FontFace = GothamMedium
 Music.BackgroundTransparency = 1
 Music.Size = UDim2.new(0, 230, 0, 28)
 Music.LayoutOrder = 2
-Music.Text = ""
+Music.Text = "Music: On"
 Music.Name = "Music"
 Music.Position = UDim2.new(0, 8, 0, 44)
+Music.Parent = Content
 
-local MusicStroke = Instance.new("UIStroke", Music)
+local MusicStroke = Instance.new("UIStroke")
 MusicStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 MusicStroke.Name = "MusicStroke"
 MusicStroke.Color = Color3.fromRGB(255, 255, 255)
+MusicStroke.Parent = Music
 
-local MusicCorner = Instance.new("UICorner", Music)
+local MusicCorner = Instance.new("UICorner")
 MusicCorner.Name = "MusicCorner"
 MusicCorner.CornerRadius = UDim.new(0, 4)
+MusicCorner.Parent = Music
 
-local Label4 = Instance.new("TextLabel", Music)
-Label4.TextWrapped = true
-Label4.BorderSizePixel = 0
-Label4.TextScaled = true
-Label4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Label4.FontFace = GothamFont
-Label4.TextColor3 = Color3.fromRGB(255, 255, 255)
-Label4.BackgroundTransparency = 1
-Label4.Size = UDim2.new(1, 0, 1, 0)
-Label4.Text = "Music: On"
-Label4.Name = "Label"
-
-local Label4Padding = Instance.new("UIPadding", Label4)
-Label4Padding.PaddingTop = UDim.new(0, 4)
-Label4Padding.PaddingRight = UDim.new(0, 5)
-Label4Padding.Name = "LabelPadding"
-Label4Padding.PaddingLeft = UDim.new(0, 5)
-Label4Padding.PaddingBottom = UDim.new(0, 4)
-
-local MusicSizeCons = Instance.new("UISizeConstraint", Music)
+local MusicSizeCons = Instance.new("UISizeConstraint")
 MusicSizeCons.MinSize = Vector2.new(0, 28)
-MusicSizeCons.Name = "MusicSC"
+MusicSizeCons.Name = "MusicSizeCons"
 MusicSizeCons.MaxSize = Vector2.new(math.huge, 30)
+MusicSizeCons.Parent = Music
 
-local ParticlesBtn = Instance.new("TextButton", Content)
-ParticlesBtn.TextWrapped = true
-ParticlesBtn.BorderSizePixel = 0
-ParticlesBtn.TextScaled = true
-ParticlesBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-ParticlesBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ParticlesBtn.BackgroundTransparency = 1
-ParticlesBtn.Size = UDim2.new(0, 230, 0, 28)
-ParticlesBtn.LayoutOrder = 3
-ParticlesBtn.Text = ""
-ParticlesBtn.Name = "ParticlesBtn"
-ParticlesBtn.Position = UDim2.new(0, 8, 0, 44)
+local MusicPadding = Instance.new("UIPadding")
+MusicPadding.PaddingTop = UDim.new(0, 4)
+MusicPadding.PaddingRight = UDim.new(0, 5)
+MusicPadding.Name = "MusicPadding"
+MusicPadding.PaddingLeft = UDim.new(0, 5)
+MusicPadding.PaddingBottom = UDim.new(0, 4)
+MusicPadding.Parent = Music
 
-local ParticlesSizeCons = Instance.new("UISizeConstraint", ParticlesBtn)
+local Particles = Instance.new("TextButton")
+Particles.TextWrapped = true
+Particles.BorderSizePixel = 0
+Particles.TextScaled = true
+Particles.TextColor3 = Color3.fromRGB(255, 255, 255)
+Particles.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Particles.BackgroundTransparency = 1
+Particles.Size = UDim2.new(0, 230, 0, 28)
+Particles.LayoutOrder = 3
+Particles.Text = "Particles: On"
+Particles.Name = "Particles"
+Particles.Position = UDim2.new(0, 8, 0, 44)
+Particles.Parent = Content
+
+local ParticlesSizeCons = Instance.new("UISizeConstraint")
 ParticlesSizeCons.MinSize = Vector2.new(0, 28)
-ParticlesSizeCons.Name = "ParticlesSC"
+ParticlesSizeCons.Name = "ParticlesSizeCons"
 ParticlesSizeCons.MaxSize = Vector2.new(math.huge, 30)
+ParticlesSizeCons.Parent = Particles
 
-local Label2 = Instance.new("TextLabel", ParticlesBtn)
-Label2.TextWrapped = true
-Label2.BorderSizePixel = 0
-Label2.TextScaled = true
-Label2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Label2.FontFace = GothamFont
-Label2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Label2.BackgroundTransparency = 1
-Label2.Size = UDim2.new(1, 0, 1, 0)
-Label2.Text = "Particles: On"
-Label2.Name = "Label"
-
-local Label2Padding = Instance.new("UIPadding", Label2)
-Label2Padding.PaddingTop = UDim.new(0, 4)
-Label2Padding.PaddingRight = UDim.new(0, 5)
-Label2Padding.Name = "LabelPadding"
-Label2Padding.PaddingLeft = UDim.new(0, 5)
-Label2Padding.PaddingBottom = UDim.new(0, 4)
-
-local ParticlesStroke = Instance.new("UIStroke", ParticlesBtn)
+local ParticlesStroke = Instance.new("UIStroke")
 ParticlesStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 ParticlesStroke.Name = "ParticlesStroke"
 ParticlesStroke.Color = Color3.fromRGB(255, 255, 255)
+ParticlesStroke.Parent = Particles
 
-local ParticlesCorner = Instance.new("UICorner", ParticlesBtn)
+local ParticlesCorner = Instance.new("UICorner")
 ParticlesCorner.Name = "ParticlesCorner"
 ParticlesCorner.CornerRadius = UDim.new(0, 4)
+ParticlesCorner.Parent = Particles
 
-local BlueFX = Instance.new("TextButton", Content)
-BlueFX.TextWrapped = true
-BlueFX.BorderSizePixel = 0
-BlueFX.TextScaled = true
-BlueFX.TextColor3 = Color3.fromRGB(255, 255, 255)
-BlueFX.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-BlueFX.BackgroundTransparency = 1
-BlueFX.Size = UDim2.new(0, 230, 0, 28)
-BlueFX.LayoutOrder = 4
-BlueFX.Text = ""
-BlueFX.Name = "BlueFX"
-BlueFX.Position = UDim2.new(0, 8, 0, 44)
+local ParticlesPadding = Instance.new("UIPadding")
+ParticlesPadding.PaddingTop = UDim.new(0, 4)
+ParticlesPadding.PaddingRight = UDim.new(0, 5)
+ParticlesPadding.Name = "ParticlesPadding"
+ParticlesPadding.PaddingLeft = UDim.new(0, 5)
+ParticlesPadding.PaddingBottom = UDim.new(0, 4)
+ParticlesPadding.Parent = Particles
 
-local BlueFXStroke = Instance.new("UIStroke", BlueFX)
-BlueFXStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-BlueFXStroke.Name = "BlueFXStroke"
-BlueFXStroke.Color = Color3.fromRGB(255, 255, 255)
+local BlueFilter = Instance.new("TextButton")
+BlueFilter.TextWrapped = true
+BlueFilter.BorderSizePixel = 0
+BlueFilter.TextScaled = true
+BlueFilter.TextColor3 = Color3.fromRGB(255, 255, 255)
+BlueFilter.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+BlueFilter.BackgroundTransparency = 1
+BlueFilter.Size = UDim2.new(0, 230, 0, 28)
+BlueFilter.LayoutOrder = 4
+BlueFilter.Text = "Blue Filter: On"
+BlueFilter.Name = "BlueFilter"
+BlueFilter.Position = UDim2.new(0, 8, 0, 44)
+BlueFilter.Parent = Content
 
-local Label3 = Instance.new("TextLabel", BlueFX)
-Label3.TextWrapped = true
-Label3.BorderSizePixel = 0
-Label3.TextScaled = true
-Label3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Label3.FontFace = GothamFont
-Label3.TextColor3 = Color3.fromRGB(255, 255, 255)
-Label3.BackgroundTransparency = 1
-Label3.Size = UDim2.new(1, 0, 1, 0)
-Label3.Text = "Blue Effect: On"
-Label3.Name = "Label"
+local BlueFilterStroke = Instance.new("UIStroke")
+BlueFilterStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+BlueFilterStroke.Name = "BlueFilterStroke"
+BlueFilterStroke.Color = Color3.fromRGB(255, 255, 255)
+BlueFilterStroke.Parent = BlueFilter
 
-local Label3Padding = Instance.new("UIPadding", Label3)
-Label3Padding.PaddingTop = UDim.new(0, 4)
-Label3Padding.PaddingRight = UDim.new(0, 5)
-Label3Padding.Name = "LabelPadding"
-Label3Padding.PaddingLeft = UDim.new(0, 5)
-Label3Padding.PaddingBottom = UDim.new(0, 4)
+local BlueFilterCorner = Instance.new("UICorner")
+BlueFilterCorner.Name = "BlueFilterCorner"
+BlueFilterCorner.CornerRadius = UDim.new(0, 4)
+BlueFilterCorner.Parent = BlueFilter
 
-local BlueFXCorner = Instance.new("UICorner", BlueFX)
-BlueFXCorner.Name = "BlueFXCorner"
-BlueFXCorner.CornerRadius = UDim.new(0, 4)
+local BlueFilterSizeCons = Instance.new("UISizeConstraint")
+BlueFilterSizeCons.MinSize = Vector2.new(0, 28)
+BlueFilterSizeCons.Name = "BlueFilterSizeCons"
+BlueFilterSizeCons.MaxSize = Vector2.new(math.huge, 30)
+BlueFilterSizeCons.Parent = BlueFilter
 
-local BlueFXSizeCons = Instance.new("UISizeConstraint", BlueFX)
-BlueFXSizeCons.MinSize = Vector2.new(0, 28)
-BlueFXSizeCons.Name = "BlueFXSC"
-BlueFXSizeCons.MaxSize = Vector2.new(math.huge, 30)
+local BlueFilterPadding = Instance.new("UIPadding")
+BlueFilterPadding.PaddingTop = UDim.new(0, 4)
+BlueFilterPadding.PaddingRight = UDim.new(0, 5)
+BlueFilterPadding.Name = "BlueFilterPadding"
+BlueFilterPadding.PaddingLeft = UDim.new(0, 5)
+BlueFilterPadding.PaddingBottom = UDim.new(0, 4)
+BlueFilterPadding.Parent = BlueFilter
 
-local ContentPadding = Instance.new("UIPadding", Content)
+local ContentPadding = Instance.new("UIPadding")
 ContentPadding.PaddingTop = UDim.new(0, 6)
 ContentPadding.PaddingRight = UDim.new(0, 6)
 ContentPadding.Name = "ContentPadding"
 ContentPadding.PaddingLeft = UDim.new(0, 6)
 ContentPadding.PaddingBottom = UDim.new(0, 6)
+ContentPadding.Parent = Content
 
-local ContentLayout = Instance.new("UIListLayout", Content)
+local ContentLayout = Instance.new("UIListLayout")
 ContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
 ContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 ContentLayout.Padding = UDim.new(0, 8)
 ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-ContentLayout.Name = "ContentList"
+ContentLayout.Name = "ContentLayout"
+ContentLayout.Parent = Content
 
-local MainFrameCorner = Instance.new("UICorner", MainFrame)
+local MainFrameCorner = Instance.new("UICorner")
 MainFrameCorner.Name = "MainFrameCorner"
 MainFrameCorner.CornerRadius = UDim.new(0, 4)
+MainFrameCorner.Parent = MainFrame
 
-local Topbar = Instance.new("Frame", MainFrame)
+local Topbar = Instance.new("Frame")
 Topbar.BorderSizePixel = 0
 Topbar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Topbar.AutomaticSize = Enum.AutomaticSize.Y
@@ -357,90 +343,101 @@ Topbar.Position = UDim2.new(0, 56, 0, 48)
 Topbar.Name = "Topbar"
 Topbar.LayoutOrder = 1
 Topbar.BackgroundTransparency = 1
+Topbar.Parent = MainFrame
 
-local TopbarSizeCons = Instance.new("UISizeConstraint", Topbar)
+local TopbarSizeCons = Instance.new("UISizeConstraint")
 TopbarSizeCons.MinSize = Vector2.new(0, 28)
-TopbarSizeCons.Name = "TopbarSC"
+TopbarSizeCons.Name = "TopbarSizeCons"
 TopbarSizeCons.MaxSize = Vector2.new(math.huge, 30)
+TopbarSizeCons.Parent = Topbar
 
-local CloseBtn = Instance.new("TextButton", Topbar)
+local CloseBtn = Instance.new("TextButton")
 CloseBtn.TextWrapped = true
 CloseBtn.BorderSizePixel = 0
 CloseBtn.TextScaled = true
 CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-CloseBtn.FontFace = GothamFont
+CloseBtn.FontFace = GothamMedium
 CloseBtn.BackgroundTransparency = 0.5
 CloseBtn.Size = UDim2.new(0, 28, 0, 28)
 CloseBtn.LayoutOrder = 3
 CloseBtn.Text = "×"
 CloseBtn.Name = "CloseBtn"
 CloseBtn.Position = UDim2.new(0, 246, 0, -2)
+CloseBtn.Parent = Topbar
 
-local CloseBtnRatio = Instance.new("UIAspectRatioConstraint", CloseBtn)
+local CloseBtnRatio = Instance.new("UIAspectRatioConstraint")
 CloseBtnRatio.Name = "CloseBtnRatio"
+CloseBtnRatio.Parent = CloseBtn
 
-local CloseBtnCorner = Instance.new("UICorner", CloseBtn)
+local CloseBtnCorner = Instance.new("UICorner")
 CloseBtnCorner.Name = "CloseBtnCorner"
 CloseBtnCorner.CornerRadius = UDim.new(0, 4)
+CloseBtnCorner.Parent = CloseBtn
 
-local Title = Instance.new("TextLabel", Topbar)
+local Title = Instance.new("TextLabel")
 Title.TextWrapped = true
 Title.BorderSizePixel = 0
 Title.TextScaled = true
-Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Title.FontFace = GothamFont
+Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Title.FontFace = GothamMedium
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.BackgroundTransparency = 1
+Title.BackgroundTransparency = 0.5
 Title.Size = UDim2.new(0, 180, 0, 28)
 Title.Text = "Universal | Wally West (R15)"
 Title.LayoutOrder = 1
 Title.AutomaticSize = Enum.AutomaticSize.Y
 Title.Name = "Title"
 Title.Position = UDim2.new(0, 2, 0, 2)
+Title.Parent = Topbar
 
-local TitlePadding = Instance.new("UIPadding", Title)
+local TitlePadding = Instance.new("UIPadding")
 TitlePadding.PaddingTop = UDim.new(0, 4)
 TitlePadding.PaddingRight = UDim.new(0, 4)
 TitlePadding.Name = "TitlePadding"
 TitlePadding.PaddingLeft = UDim.new(0, 4)
 TitlePadding.PaddingBottom = UDim.new(0, 4)
+TitlePadding.Parent = Title
 
-local TitleStroke = Instance.new("UIStroke", Title)
-TitleStroke.Transparency = 0.66
-TitleStroke.Name = "TitleStroke"
-TitleStroke.Thickness = 2
+local TitleCorner = Instance.new("UICorner")
+TitleCorner.Name = "TitleCorner"
+TitleCorner.CornerRadius = UDim.new(0, 4)
+TitleCorner.Parent = Title
 
-local MinimizeBtn = Instance.new("TextButton", Topbar)
+local MinimizeBtn = Instance.new("TextButton")
 MinimizeBtn.TextWrapped = true
 MinimizeBtn.BorderSizePixel = 0
 MinimizeBtn.TextScaled = true
 MinimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 MinimizeBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-MinimizeBtn.FontFace = GothamFont
+MinimizeBtn.FontFace = GothamMedium
 MinimizeBtn.BackgroundTransparency = 0.5
 MinimizeBtn.Size = UDim2.new(0, 28, 0, 28)
 MinimizeBtn.LayoutOrder = 2
 MinimizeBtn.Text = "-"
 MinimizeBtn.Name = "MinimizeBtn"
 MinimizeBtn.Position = UDim2.new(0, 216, 0, -2)
+MinimizeBtn.Parent = Topbar
 
-local MinimizeBtnRatio = Instance.new("UIAspectRatioConstraint", MinimizeBtn)
+local MinimizeBtnRatio = Instance.new("UIAspectRatioConstraint")
 MinimizeBtnRatio.Name = "MinimizeBtnRatio"
+MinimizeBtnRatio.Parent = MinimizeBtn
 
-local MinimizeBtnCorner = Instance.new("UICorner", MinimizeBtn)
+local MinimizeBtnCorner = Instance.new("UICorner")
 MinimizeBtnCorner.Name = "MinimizeBtnCorner"
 MinimizeBtnCorner.CornerRadius = UDim.new(0, 4)
+MinimizeBtnCorner.Parent = MinimizeBtn
 
-local TopbarLayout = Instance.new("UIListLayout", Topbar)
+local TopbarLayout = Instance.new("UIListLayout")
 TopbarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
 TopbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 TopbarLayout.Padding = UDim.new(0, 2)
 TopbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
-TopbarLayout.Name = "TopbarList"
+TopbarLayout.Name = "TopbarLayout"
 TopbarLayout.FillDirection = Enum.FillDirection.Horizontal
+TopbarLayout.Parent = Topbar
 
-local Separator = Instance.new("Frame", MainFrame)
+local Separator = Instance.new("Frame")
 Separator.BorderSizePixel = 0
 Separator.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Separator.Size = UDim2.new(0, 276, 0, 2)
@@ -448,52 +445,59 @@ Separator.Position = UDim2.new(0, 2, 0, 33)
 Separator.Name = "Separator"
 Separator.LayoutOrder = 2
 Separator.BackgroundTransparency = 0.5
+Separator.Parent = MainFrame
 
-local SeparatorSizeCons = Instance.new("UISizeConstraint", Separator)
+local SeparatorSizeCons = Instance.new("UISizeConstraint")
 SeparatorSizeCons.MinSize = Vector2.new(0, 2)
-SeparatorSizeCons.Name = "TopbarSC"
+SeparatorSizeCons.Name = "SeparatorSizeCons"
 SeparatorSizeCons.MaxSize = Vector2.new(math.huge, 3)
+SeparatorSizeCons.Parent = Separator
 
-local SeparatorCorner = Instance.new("UICorner", Separator)
+local SeparatorCorner = Instance.new("UICorner")
 SeparatorCorner.Name = "SeparatorCorner"
 SeparatorCorner.CornerRadius = UDim.new(1, 0)
+SeparatorCorner.Parent = Separator
 
-local MainFrameLayout = Instance.new("UIListLayout", MainFrame)
+local MainFrameLayout = Instance.new("UIListLayout")
 MainFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
 MainFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 MainFrameLayout.Padding = UDim.new(0, 4)
 MainFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
-MainFrameLayout.Name = "MainFrameList"
+MainFrameLayout.Name = "MainFrameLayout"
+MainFrameLayout.Parent = MainFrame
 
-local MainFrameStroke = Instance.new("UIStroke", MainFrame)
+local MainFrameStroke = Instance.new("UIStroke")
 MainFrameStroke.Transparency = 0.33
 MainFrameStroke.Name = "MainFrameStroke"
 MainFrameStroke.Thickness = 2
+MainFrameStroke.Parent = MainFrame
 
-local MusicSound = Instance.new("Sound", WallyWestGui)
-local musicAsset = GetAsset("WallyWest/Assets/music.mp3")
-if musicAsset then
-    MusicSound.SoundId = musicAsset
+local MusicSound = Instance.new("Sound")
+if GetAsset then
+   MusicSound.SoundId = GetAsset("WallyWest/Assets/music.mp3")
 end
 MusicSound.Looped = true
 MusicSound.Volume = 1
 MusicSound.PlaybackSpeed = 1
 MusicSound.Name = "Music"
+MusicSound.Parent = FeWallyWest
 
-local ToggleSound = Instance.new("Sound", WallyWestGui)
+local ToggleSound = Instance.new("Sound")
 ToggleSound.SoundId = "rbxassetid://139909368044571"
 ToggleSound.Name = "ToggleSound"
+ToggleSound.Parent = FeWallyWest
 
-local ColorCorrection = Instance.new("ColorCorrectionEffect", game.Lighting)
+local ColorCorrection = Instance.new("ColorCorrectionEffect")
 ColorCorrection.Contrast = 0.5
 ColorCorrection.Saturation = 0.6
 ColorCorrection.TintColor = Color3.fromRGB(87, 216, 255)
-ColorCorrection.Name = "WallyWestBlueFX"
+ColorCorrection.Name = "WallyWestBlueFilter"
 ColorCorrection.Enabled = false
+ColorCorrection.Parent = game.Lighting
 
 local isToggled = false
-local currentSpeed = 120
-local targetSpeed = 120
+local currentSpeed = 200
+local targetSpeed = 200
 local isMoving = false
 local speedDecayConnection = nil
 local renderConnection = nil
@@ -505,7 +509,7 @@ local originalAnimationIds = {}
 local originalJumpPower = nil
 
 local particlesEnabled = true
-local blueFXEnabled = true
+local blueFilterEnabled = true
 local musicEnabled = true
 
 local function Dragify(Frame)
@@ -655,12 +659,15 @@ local function RestoreOriginalJumpPower()
 end
 
 local function CreateTrail(part, offset0, offset1, width)
-    local a0 = Instance.new("Attachment", part)
-    local a1 = Instance.new("Attachment", part)
+    local a0 = Instance.new("Attachment")
     a0.Position = offset0
-    a1.Position = offset1
+    a0.Parent = part
     
-    local trail = Instance.new("Trail", part)
+    local a1 = Instance.new("Attachment")
+    a1.Position = offset1
+    a1.Parent = part
+    
+    local trail = Instance.new("Trail")
     trail.Attachment0 = a0
     trail.Attachment1 = a1
     trail.Lifetime = 0.3
@@ -671,6 +678,7 @@ local function CreateTrail(part, offset0, offset1, width)
         NumberSequenceKeypoint.new(0, 0.1),
         NumberSequenceKeypoint.new(1, 1)
     }
+    trail.Parent = part
     table.insert(allTrails, trail)
 end
 
@@ -708,8 +716,10 @@ local function RemoveAllTrails()
 end
 
 local function CreateAuraEmitter(part)
-    local attachment = Instance.new("Attachment", part)
-    local particle = Instance.new("ParticleEmitter", attachment)
+    local attachment = Instance.new("Attachment")
+    attachment.Parent = part
+    
+    local particle = Instance.new("ParticleEmitter")
     particle.Texture = "rbxassetid://3442350629"
     particle.Rate = 20
     particle.Lifetime = NumberRange.new(0.2, 0.4)
@@ -720,6 +730,7 @@ local function CreateAuraEmitter(part)
     particle.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0,0.15),NumberSequenceKeypoint.new(1,1)})
     particle.Color = ColorSequence.new(Color3.fromRGB(0,255,255))
     particle.ZOffset = 1
+    particle.Parent = attachment
     table.insert(auraEmitters, attachment)
 end
 
@@ -798,9 +809,9 @@ local function StartSpeedDecay()
     speedDecayConnection = RunService.Heartbeat:Connect(function(deltaTime)
         if not isToggled then return end
         if not isMoving then
-            targetSpeed = math.max(120, targetSpeed - (deltaTime * 50))
-            if targetSpeed <= 120 then
-                targetSpeed = 120
+            targetSpeed = math.max(200, targetSpeed - (deltaTime * 100))
+            if targetSpeed <= 200 then
+                targetSpeed = 200
                 if speedDecayConnection then
                     speedDecayConnection:Disconnect()
                     speedDecayConnection = nil
@@ -817,7 +828,7 @@ local function UpdateSpeed()
     if not humanoid then return end
     
     if currentSpeed ~= targetSpeed then
-        currentSpeed = currentSpeed + ((targetSpeed - currentSpeed) * 0.2)
+        currentSpeed = currentSpeed + ((targetSpeed - currentSpeed) * 0.5)
         if math.abs(currentSpeed - targetSpeed) < 0.5 then
             currentSpeed = targetSpeed
         end
@@ -845,8 +856,8 @@ local function StartBoost()
     local humanoid = character:FindFirstChild("Humanoid")
     if not humanoid then return end
     
-    currentSpeed = 120
-    targetSpeed = 120
+    currentSpeed = 200
+    targetSpeed = 200
     isMoving = false
     
     if speedDecayConnection then speedDecayConnection:Disconnect() end
@@ -869,13 +880,13 @@ local function StartBoost()
             OnMove(isPlayerMoving)
             
             if isMoving and isToggled then
-                targetSpeed = math.min(700, targetSpeed + (RunService.RenderStepped:Wait() * 25))
+                targetSpeed = math.min(1000, targetSpeed + (RunService.RenderStepped:Wait() * 25))
             end
             
             UpdateSpeed()
             
-            if blueFXEnabled then
-                local speedIntensity = math.min((currentSpeed - 120) / 580, 1.5)
+            if blueFilterEnabled and isToggled then
+                local speedIntensity = math.min((currentSpeed - 200) / 800, 1.5)
                 local pulse = tick() * 10
                 local intensityPulse = 0.5 + (math.sin(pulse) * 0.15) + (speedIntensity * 0.3)
                 ColorCorrection.Contrast = 0.5 + (intensityPulse * 0.2)
@@ -919,8 +930,8 @@ local function StopBoost()
         end
     end
     
-    currentSpeed = 120
-    targetSpeed = 120
+    currentSpeed = 200
+    targetSpeed = 200
     isMoving = false
 end
 
@@ -933,7 +944,7 @@ local function FullCleanup()
         RestoreOriginalAnims()
         RestoreOriginalJumpPower()
         isToggled = false
-        Label.Text = "Toggle: Off"
+        Toggle.Text = "Toggle: Off"
     end
     if renderConnection then renderConnection:Disconnect() end
     if speedDecayConnection then speedDecayConnection:Disconnect() end
@@ -945,7 +956,7 @@ local function OnMainToggle()
     
     if isToggled then
         ToggleSound:Play()
-        Label.Text = "Toggle: On"
+        Toggle.Text = "Toggle: On"
         
         SaveOriginalAnims()
         SaveOriginalJumpPower()
@@ -963,13 +974,13 @@ local function OnMainToggle()
             MusicSound:Play()
         end
         
-        if blueFXEnabled then
+        if blueFilterEnabled then
             ColorCorrection.Enabled = true
         end
         
     else
         ToggleSound:Play()
-        Label.Text = "Toggle: Off"
+        Toggle.Text = "Toggle: Off"
         
         StopBoost()
         RemoveEffects()
@@ -986,7 +997,7 @@ end
 
 local function OnParticlesToggle()
     particlesEnabled = not particlesEnabled
-    Label2.Text = particlesEnabled and "Particles: On" or "Particles: Off"
+    Particles.Text = particlesEnabled and "Particles: On" or "Particles: Off"
     if isToggled then
         if particlesEnabled then
             CreateEffects()
@@ -996,22 +1007,17 @@ local function OnParticlesToggle()
     end
 end
 
-local function OnBlueFXToggle()
-    blueFXEnabled = not blueFXEnabled
-    Label3.Text = blueFXEnabled and "Blue Effect: On" or "Blue Effect: Off"
+local function OnBlueFilterToggle()
+    blueFilterEnabled = not blueFilterEnabled
+    BlueFilter.Text = blueFilterEnabled and "Blue Filter: On" or "Blue Filter: Off"
     if isToggled then
-        ColorCorrection.Enabled = blueFXEnabled
-    end
-    if not blueFXEnabled and not isToggled then
-        ColorCorrection.Enabled = false
-        ColorCorrection.Contrast = 0.5
-        ColorCorrection.Saturation = 0.6
+        ColorCorrection.Enabled = blueFilterEnabled
     end
 end
 
 local function OnMusicToggle()
     musicEnabled = not musicEnabled
-    Label4.Text = musicEnabled and "Music: On" or "Music: Off"
+    Music.Text = musicEnabled and "Music: On" or "Music: Off"
     if isToggled and musicEnabled then
         MusicSound:Play()
     elseif not musicEnabled then
@@ -1039,12 +1045,12 @@ end
 
 Toggle.MouseButton1Click:Connect(OnMainToggle)
 Music.MouseButton1Click:Connect(OnMusicToggle)
-ParticlesBtn.MouseButton1Click:Connect(OnParticlesToggle)
-BlueFX.MouseButton1Click:Connect(OnBlueFXToggle)
+Particles.MouseButton1Click:Connect(OnParticlesToggle)
+BlueFilter.MouseButton1Click:Connect(OnBlueFilterToggle)
 MinimizeBtn.MouseButton1Click:Connect(ToggleMinimize)
 CloseBtn.MouseButton1Click:Connect(function()
     FullCleanup()
-    WallyWestGui:Destroy()
+    FeWallyWest:Destroy()
     ColorCorrection:Destroy()
     getgenv().WallyWest.isLoaded = false
 end)
@@ -1067,7 +1073,7 @@ end
 local function OnCharacterDeath()
     if isToggled then
         ToggleSound:Play()
-        Label.Text = "Toggle: Off"
+        Toggle.Text = "Toggle: Off"
         StopBoost()
         RemoveEffects()
         ColorCorrection.Enabled = false
