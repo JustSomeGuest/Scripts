@@ -28,8 +28,8 @@ function Init.DeltaKD()
     GetScript(Repo .. "Universal/DeltaKD.lua")
 end
 
-function Init.MusicPLR()
-    GetScript(Repo .. "Universal/MusicPLR.lua")
+function Init.SoundDock()
+    GetScript(Repo .. "Universal/SoundDock.lua")
 end
 
 --// Game-specific
