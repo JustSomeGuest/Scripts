@@ -1,4 +1,6 @@
-if not game:IsLoaded() then game.Loaded:Wait() end
+if not game:IsLoaded() then 
+  game.Loaded:Wait()
+end
 
 function default(expected, value, fallback)
 	if type(value) == expected then
@@ -7,7 +9,7 @@ function default(expected, value, fallback)
 	return fallback
 end
 
-cloneref = default("function", cloneref, function(...) return ... end)
+cloneref = default("function", cloneref, function() return end)
 
 Services = setmetatable({}, {
 	__index = function(self, name)
@@ -37,7 +39,7 @@ end
 
 getgenv().WallyWest.isLoaded = true
 
-local WriteFile = default("function", writefile, function() end)
+local WriteFile = default("function", writefile, function() return end)
 local IsFile = default("function", isfile, function() return false end)
 local IsFolder = default("function", isfolder, function() return false end)
 local MakeFolder = default("function", makefolder, function() end)
@@ -48,10 +50,8 @@ local Assets = {
 }
 
 local function HttpGet(url)
-    local RequestFunc = default("function", syn and syn.request, 
-        default("function", request, 
-            default("function", http_request, nil)))
-    
+    local RequestFunc = default("function", syn and syn.request, default("function", request, default("function", http_request, nil)))
+	
     if not RequestFunc then
         return nil
     end
@@ -348,7 +348,7 @@ Topbar.Parent = MainFrame
 local TopbarSizeCons = Instance.new("UISizeConstraint")
 TopbarSizeCons.MinSize = Vector2.new(0, 28)
 TopbarSizeCons.Name = "TopbarSizeCons"
-TopbarSizeCons.MaxSize = Vector2.new(math.huge, 30)
+TopbarSizeCons.MaxSize = Vector2.new(math.huge, 28)
 TopbarSizeCons.Parent = Topbar
 
 local CloseBtn = Instance.new("TextButton")
