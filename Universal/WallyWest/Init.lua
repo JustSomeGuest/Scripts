@@ -40,8 +40,8 @@ end
 getgenv().WallyWest.isLoaded = true
 
 local WriteFile = default("function", writefile, function() return end)
-local IsFile = default("function", isfile, function() return false end)
-local IsFolder = default("function", isfolder, function() return false end)
+local IsFile = default("function", isfile, function() return end)
+local IsFolder = default("function", isfolder, function() return end)
 local MakeFolder = default("function", makefolder, function() end)
 local LoadAsset = default("function", getcustomasset, default("function", getsynasset, nil))
 
