@@ -24,10 +24,6 @@ function Init.WallyWest()
     GetScript(Repo .. "Universal/WallyWest/Init.lua")
 end
 
-function Init.BetterKD()
-    GetScript(Repo .. "Universal/BetterKD.lua")
-end
-
 function Init.DeltaKD()
     GetScript(Repo .. "Universal/DeltaKD.lua")
 end
