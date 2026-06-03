@@ -1,4 +1,4 @@
-getgenv().Init = {}
+getgenv().Init = getgenv().Init or {}
 local Init = getgenv().Init
 
 local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/"
