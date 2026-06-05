@@ -1,26 +1,46 @@
-if not game:IsLoaded() then game.Loaded:Wait() end
-
-local function GetService(Service)
-	repeat task.wait() until pcall(game.GetService, game, Service) 
-	return game:GetService(Service)
+if not game:IsLoaded() then 
+    game.Loaded:Wait() 
 end
 
-local Players = GetService("Players")
-local RunService = GetService("RunService")
+local function default(expected, value, fallback)
+    if type(value) == expected then
+        return value
+    end
+    return fallback
+end
+
+local cloneref = default("function", cloneref, function() return end)
+
+local Services = setmetatable({}, {
+    __index = function(self, name)
+        local success, cache = pcall(function()
+            return cloneref(game:GetService(name))
+        end)
+        if success then
+            rawset(self, name, cache)
+            return cache
+        else
+            error("Invalid Service: " .. tostring(name))
+        end
+    end
+})
+
+local Players = Services.Players
+local RunService = Services.RunService
 
 local function Load(url)
-    local s,r = pcall(game.HttpGetAsync, game, url)
-    return loadstring(s and r or game:HttpGet(url))()
+    local s,r = pcall(Services.HttpService.GetAsync, Services.HttpService, url)
+    return loadstring(s and r or Services.HttpService:HttpGet(url))()
 end
 
 local WindUI = Load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
 local Player = Players.LocalPlayer
 local Wait = task.wait
 
-local function Notify(txt)
+local function Notify(Text)
     WindUI:Notify({
         Title = "Nebula Hub",
-        Content = txt,
+        Content = Text,
         Duration = 3
     })
 end
@@ -38,7 +58,7 @@ WindUI:AddTheme({
     Toggle = Color3.fromRGB(170,85,255)
 })
 
-local win = WindUI:CreateWindow({
+local Window = WindUI:CreateWindow({
     Title = "Nebula Hub",
     Author = "JustAGuest",
     Folder = "NebulaHub",
@@ -48,7 +68,7 @@ local win = WindUI:CreateWindow({
     ToggleKey = Enum.KeyCode.P
 })
 
-win:EditOpenButton({
+Window:EditOpenButton({
     Title = "Nebula",
     Icon = "star",
     CornerRadius = UDim.new(1,0),
@@ -59,118 +79,116 @@ win:EditOpenButton({
 
 Notify('Press "P" to Open/Close')
 
-local SaitamaTab = win:Tab({
+local SaitamaTab = Window:Tab({
     Title = "Saitama",
     Icon = "sword"
 })
 
-local GarouTab = win:Tab({
+local GarouTab = Window:Tab({
     Title = "Garou",
     Icon = "flame"
 })
 
-local SonicTab = win:Tab({
+local SonicTab = Window:Tab({
     Title = "Sonic",
     Icon = "zap"
 })
 
-local GenosTab = win:Tab({
+local GenosTab = Window:Tab({
     Title = "Genos",
     Icon = "cpu"
 })
 
-local AnyTab = win:Tab({
+local AnyTab = Window:Tab({
     Title = "Any",
     Icon = "star"
 })
 
-local OtherTab = win:Tab({
+local OtherTab = Window:Tab({
     Title = "Other",
     Icon = "settings"
 })
 
-local antifling = {
+local AntiFling = {
     Enabled = false,
-    Cons = {},
+    Connections = {},
     Parts = {}
 }
 
-local function ClearCons()
-    for _,v in pairs(antifling.Cons) do
-        v:Disconnect()
+local function ClearConnections()
+    for _, Connection in pairs(AntiFling.Connections) do
+        Connection:Disconnect()
     end
-
-    table.clear(antifling.Cons)
+    table.clear(AntiFling.Connections)
 end
 
 local function ClearParts()
-    for v in pairs(antifling.Parts) do
-        if v and v.Parent then
-            v.CanCollide = true
+    for Part in pairs(AntiFling.Parts) do
+        if Part and Part.Parent then
+            Part.CanCollide = true
         end
     end
-
-    table.clear(antifling.Parts)
+    table.clear(AntiFling.Parts)
 end
 
-local function SetupPart(v)
-    if not v:IsA("BasePart") then
+local function SetupPart(Part)
+    if not Part:IsA("BasePart") then
         return
     end
 
-    if Player.Character and v:IsDescendantOf(Player.Character) then
+    if Player.Character and Part:IsDescendantOf(Player.Character) then
         return
     end
 
-    antifling.Parts[v] = true
-    v.CanCollide = false
+    AntiFling.Parts[Part] = true
+    Part.CanCollide = false
 
-    table.insert(antifling.Cons, v:GetPropertyChangedSignal("CanCollide"):Connect(function()
-        if antifling.Enabled and v.Parent then
-            v.CanCollide = false
+    table.insert(AntiFling.Connections, Part:GetPropertyChangedSignal("CanCollide"):Connect(function()
+        if AntiFling.Enabled and Part.Parent then
+            Part.CanCollide = false
         end
     end))
 end
 
-local function SetupChar(char)
-    for _,v in ipairs(char:GetDescendants()) do
-        SetupPart(v)
+local function SetupCharacter(Character)
+    for _, Part in ipairs(Character:GetDescendants()) do
+        SetupPart(Part)
     end
 
-    table.insert(antifling.Cons, char.DescendantAdded:Connect(SetupPart))
+    table.insert(AntiFling.Connections, Character.DescendantAdded:Connect(SetupPart))
 end
 
-local function SetupPlayer(plr)
-    if plr == Player then
+local function SetupPlayer(PlayerToSetup)
+    if PlayerToSetup == Player then
         return
     end
 
-    if plr.Character then
-        SetupChar(plr.Character)
+    if PlayerToSetup.Character then
+        SetupCharacter(PlayerToSetup.Character)
     end
 
-    table.insert(antifling.Cons, plr.CharacterAdded:Connect(SetupChar))
+    table.insert(AntiFling.Connections, PlayerToSetup.CharacterAdded:Connect(SetupCharacter))
 end
 
-local function EnableAF()
-    if antifling.Enabled then
+local function EnableAntiFling()
+    if AntiFling.Enabled then
         return
     end
 
-    antifling.Enabled = true
+    AntiFling.Enabled = true
 
-    for _,p in ipairs(Players:GetPlayers()) do
-        SetupPlayer(p)
+    for _, PlayerToSetup in ipairs(Players:GetPlayers()) do
+        SetupPlayer(PlayerToSetup)
     end
 
-    table.insert(antifling.Cons, Players.PlayerAdded:Connect(SetupPlayer))
+    table.insert(AntiFling.Connections, Players.PlayerAdded:Connect(SetupPlayer))
 
-    table.insert(antifling.Cons, RunService.PreSimulation:Connect(function()
-        for v in pairs(antifling.Parts) do
-            if v and v.Parent then
-                v.CanCollide = false
+    table.insert(AntiFling.Connections, RunService.PreSimulation:Connect(function()
+        for Part in pairs(AntiFling.Parts) do
+            if Part and Part.Parent then
+                Part.CanCollide = false
             else
-                antifling.Parts[v] = nil
+                AntiFling.Parts[Part] = nil
             end
         end
     end))
@@ -178,10 +196,10 @@ local function EnableAF()
     Notify("AntiFling: On")
 end
 
-local function DisableAF()
-    antifling.Enabled = false
+local function DisableAntiFling()
+    AntiFling.Enabled = false
 
-    ClearCons()
+    ClearConnections()
     ClearParts()
 
     Notify("AntiFling: Off")
@@ -190,52 +208,50 @@ end
 OtherTab:Toggle({
     Title = "AntiFling",
     Default = false,
-    Callback = function(v)
-        if v then
-            EnableAF()
+    Callback = function(Value)
+        if Value then
+            EnableAntiFling()
         else
-            DisableAF()
+            DisableAntiFling()
         end
     end
 })
 
-local cameraFixConnection = nil
+local CameraFixConnection = nil
 
 local function FixCamera()
-    local cam = workspace.CurrentCamera
-    local char = Player.Character or Player.CharacterAdded:Wait()
-    local hum = char:WaitForChild("Humanoid")
+    local Camera = workspace.CurrentCamera
+    local Character = Player.Character or Player.CharacterAdded:Wait()
+    local Humanoid = Character:WaitForChild("Humanoid")
 
-    cam.CameraType = Enum.CameraType.Custom
-    cam.CameraSubject = hum
+    Camera.CameraType = Enum.CameraType.Custom
+    Camera.CameraSubject = Humanoid
 
     Player.CameraMode = Enum.CameraMode.Classic
-    hum.AutoRotate = true
+    Humanoid.AutoRotate = true
 end
 
 OtherTab:Toggle({
     Title = "Fix Camera",
     Default = false,
-    Callback = function(v)
-        if v then
-
-            cameraFixConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraType"):Connect(function()
+    Callback = function(Value)
+        if Value then
+            CameraFixConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraType"):Connect(function()
                 if workspace.CurrentCamera.CameraType ~= Enum.CameraType.Custom then
                     pcall(FixCamera)
                 end
             end)
             
-            cameraFixConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraMode"):Connect(function()
+            CameraFixConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraMode"):Connect(function()
                 pcall(FixCamera)
             end)
             
             pcall(FixCamera)
             Notify("Camera Fix: Auto mode enabled")
         else
-
-            if cameraFixConnection then
-                cameraFixConnection:Disconnect()
-                cameraFixConnection = nil
+            if CameraFixConnection then
+                CameraFixConnection:Disconnect()
+                CameraFixConnection = nil
             end
             Notify("Camera Fix: Auto mode disabled")
         end
@@ -245,9 +261,8 @@ OtherTab:Toggle({
 OtherTab:Button({
     Title = "Fix Camera (Once)",
     Callback = function()
-        local ok = pcall(FixCamera)
-
-        if ok then
+        local Success = pcall(FixCamera)
+        if Success then
             Notify("Camera: Fixed")
         end
     end
@@ -256,14 +271,14 @@ OtherTab:Button({
 SaitamaTab:Button({
     Title = "Omni Man Moveset",
     Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/UnVdDWcf"))()
+        loadstring(Services.HttpService:HttpGet("https://pastebin.com/raw/UnVdDWcf"))()
     end
 })
 
 SaitamaTab:Button({
     Title = "Invincible Moveset",
     Callback = function()
-        loadstring(game:HttpGet("https://pastefy.app/BtDQqi2c/raw"))()
+        loadstring(Services.HttpService:HttpGet("https://pastefy.app/BtDQqi2c/raw"))()
     end
 })
 
@@ -282,10 +297,10 @@ SaitamaTab:Button({
 })
 
 SaitamaTab:Button({
-	Title = "Anti-Spiral Moveset",
-	Callback = function()
-		Load("https://raw.githubusercontent.com/sparksnaps/Anti-Spiral./main/Lua")
-	end
+    Title = "Anti-Spiral Moveset",
+    Callback = function()
+        Load("https://raw.githubusercontent.com/sparksnaps/Anti-Spiral./main/Lua")
+    end
 })
 
 SaitamaTab:Button({
@@ -420,14 +435,14 @@ SonicTab:Button({
     Title = "1x1x1x1 Moveset (Buns)",
     Callback = function()
         Load("https://gist.githubusercontent.com/GoldenHeads2/900e87ffc32f3c740930ccb106dd6abf/raw/358c5bf0f0a6aa25946718288dab006e3ae7e1d4/gistfile1.txt")
-	end
+    end
 })
 
 GenosTab:Button({
     Title = "Genos Mastery",
     Callback = function()
         Load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-mastery-32213")
-		Wait()
+        Wait()
         Load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-Mastery-ULT-32214")
     end
 })
