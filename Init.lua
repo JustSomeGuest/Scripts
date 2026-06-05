@@ -1,10 +1,24 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
 getgenv().Init = getgenv().Init or {}
 local Init = getgenv().Init
 
 local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/"
 
 local function GetScript(URL)
-    return loadstring(game:HttpGet(URL))()
+    local Success, Response = pcall(game.HttpGetAsync, game, URL)
+
+    if not Success then
+        Success, Response = pcall(game.HttpGet, game, URL)
+    end
+
+    if not Success then
+        error(string.format("Failed to fetch script: %s", URL))
+    end
+
+    return loadstring(Response)()
 end
 
 pcall(function()
