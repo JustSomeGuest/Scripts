@@ -1,4 +1,6 @@
-if not game:IsLoaded() then game.Loaded:Wait() end
+if not game:IsLoaded() then 
+	game.Loaded:Wait()
+end
   
 function default(expected, value, fallback)
 	if type(value) == expected then
