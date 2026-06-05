@@ -1,7 +1,34 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
 getgenv().CombatGUI = getgenv().CombatGUI or {}
 
+local function default(expected, value, fallback)
+    if type(value) == expected then
+        return value
+    end
+    return fallback
+end
+
+local cloneref = default("function", cloneref, function() return end)
+
+local Services = setmetatable({}, {
+    __index = function(self, name)
+        local success, cache = pcall(function()
+            return cloneref(game:GetService(name))
+        end)
+        if success then
+            rawset(self, name, cache)
+            return cache
+        else
+            error("Invalid Service: " .. tostring(name))
+        end
+    end
+})
+
 if getgenv().CombatGUI.isLoaded then
-    game:GetService("StarterGui"):SetCore("SendNotification", {
+    Services.StarterGui:SetCore("SendNotification", {
         Title = "Combat GUI+",
         Text = "Combat GUI+ is already running!",
         Duration = 4
@@ -15,727 +42,728 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/CombatGUI/m
 
 task.wait(0.5)
 
-local gothamMed = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-local gothamBold = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+local GothamBold = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 
-local CoreGui = game:GetService("CoreGui")
-local autoBlockGui = CoreGui:FindFirstChild("AutoBlock", true)
-if not autoBlockGui then return end
+local CoreGui = Services.CoreGui
+local AutoBlockGui = CoreGui:FindFirstChild("AutoBlock", true)
+if not AutoBlockGui then return end
 
-local txt = autoBlockGui:FindFirstChild("text", true)
-if txt then txt:Destroy() end
+local Text = AutoBlockGui:FindFirstChild("text", true)
+if Text then Text:Destroy() end
 
-local txt2 = autoBlockGui:FindFirstChild("text2", true)
-if txt2 then txt2:Destroy() end
+local Text2 = AutoBlockGui:FindFirstChild("text2", true)
+if Text2 then Text2:Destroy() end
 
-local main = autoBlockGui:FindFirstChild("MainFrame", true)
-if not main then return end
+local MainFrame = AutoBlockGui:FindFirstChild("MainFrame", true)
+if not MainFrame then return end
 
-local bg = main:FindFirstChild("Background", true)
-if not bg then
-    bg = Instance.new("Frame", main)
-    bg.Name = "Background"
+local Background = MainFrame:FindFirstChild("Background", true)
+if not Background then
+    Background = Instance.new("Frame", MainFrame)
+    Background.Name = "Background"
 end
 
-local titleLbl = main:FindFirstChild("Title", true)
-if not titleLbl then
-    titleLbl = Instance.new("TextLabel", main)
-    titleLbl.Name = "Title"
+local TitleLabel = MainFrame:FindFirstChild("Title", true)
+if not TitleLabel then
+    TitleLabel = Instance.new("TextLabel", MainFrame)
+    TitleLabel.Name = "Title"
 end
 
-local divider = main:FindFirstChild("Filler", true)
-if not divider then
-    divider = Instance.new("Frame", main)
-    divider.Name = "Filler"
+local Divider = MainFrame:FindFirstChild("Filler", true)
+if not Divider then
+    Divider = Instance.new("Frame", MainFrame)
+    Divider.Name = "Filler"
 end
 
-local optsMenu = main:FindFirstChild("NewFrame", true)
-if not optsMenu then
-    optsMenu = Instance.new("Frame", main)
-    optsMenu.Name = "NewFrame"
+local OptionsMenu = MainFrame:FindFirstChild("NewFrame", true)
+if not OptionsMenu then
+    OptionsMenu = Instance.new("Frame", MainFrame)
+    OptionsMenu.Name = "NewFrame"
 end
 
-local miscMenu = main:FindFirstChild("NewFrame1", true)
-if not miscMenu then
-    miscMenu = Instance.new("Frame", main)
-    miscMenu.Name = "NewFrame1"
+local MiscMenu = MainFrame:FindFirstChild("NewFrame1", true)
+if not MiscMenu then
+    MiscMenu = Instance.new("Frame", MainFrame)
+    MiscMenu.Name = "NewFrame1"
 end
 
-local settingsMenu = main:FindFirstChild("SettingsFrame", true)
-if not settingsMenu then
-    settingsMenu = Instance.new("Frame", main)
-    settingsMenu.Name = "SettingsFrame"
+local SettingsMenu = MainFrame:FindFirstChild("SettingsFrame", true)
+if not SettingsMenu then
+    SettingsMenu = Instance.new("Frame", MainFrame)
+    SettingsMenu.Name = "SettingsFrame"
 end
 
-local blockBtn = main:FindFirstChild("EnableButton", true)
-if not blockBtn then
-    blockBtn = Instance.new("TextButton", main)
-    blockBtn.Name = "EnableButton"
+local BlockButton = MainFrame:FindFirstChild("EnableButton", true)
+if not BlockButton then
+    BlockButton = Instance.new("TextButton", MainFrame)
+    BlockButton.Name = "EnableButton"
 end
 
-local counterBtn = main:FindFirstChild("EnableButton2", true)
-if not counterBtn then
-    counterBtn = Instance.new("TextButton", main)
-    counterBtn.Name = "EnableButton2"
+local CounterButton = MainFrame:FindFirstChild("EnableButton2", true)
+if not CounterButton then
+    CounterButton = Instance.new("TextButton", MainFrame)
+    CounterButton.Name = "EnableButton2"
 end
 
-local camBtn = main:FindFirstChild("EnableButton3", true)
-if not camBtn then
-    camBtn = Instance.new("TextButton", main)
-    camBtn.Name = "EnableButton3"
+local CameraButton = MainFrame:FindFirstChild("EnableButton3", true)
+if not CameraButton then
+    CameraButton = Instance.new("TextButton", MainFrame)
+    CameraButton.Name = "EnableButton3"
 end
 
-local optsBtn = main:FindFirstChild("NewButton", true)
-if not optsBtn then
-    optsBtn = Instance.new("ImageButton", main)
-    optsBtn.Name = "NewButton"
+local OptionsButton = MainFrame:FindFirstChild("NewButton", true)
+if not OptionsButton then
+    OptionsButton = Instance.new("ImageButton", MainFrame)
+    OptionsButton.Name = "NewButton"
 end
 
-local miscBtn = main:FindFirstChild("NewButton1", true)
-if not miscBtn then
-    miscBtn = Instance.new("ImageButton", main)
-    miscBtn.Name = "NewButton1"
+local MiscButton = MainFrame:FindFirstChild("NewButton1", true)
+if not MiscButton then
+    MiscButton = Instance.new("ImageButton", MainFrame)
+    MiscButton.Name = "NewButton1"
 end
 
-local settingsBtn = main:FindFirstChild("SettingsButton", true)
-if not settingsBtn then
-    settingsBtn = Instance.new("ImageButton", main)
-    settingsBtn.Name = "SettingsButton"
+local SettingsButton = MainFrame:FindFirstChild("SettingsButton", true)
+if not SettingsButton then
+    SettingsButton = Instance.new("ImageButton", MainFrame)
+    SettingsButton.Name = "SettingsButton"
 end
 
-main.BorderSizePixel = 0
-main.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-main.Size = UDim2.new(0, 280, 0, 150)
-main.Position = UDim2.new(0, 14, 0, 2)
-main.BackgroundTransparency = 0.5
+MainFrame.BorderSizePixel = 0
+MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MainFrame.Size = UDim2.new(0, 280, 0, 150)
+MainFrame.Position = UDim2.new(0, 14, 0, 2)
+MainFrame.BackgroundTransparency = 0.5
 
-local mainStroke = main:FindFirstChild("UIStroke", true)
-if not mainStroke then
-    mainStroke = Instance.new("UIStroke", main)
-    mainStroke.Transparency = 0.33
-    mainStroke.Thickness = 2
+local MainStroke = MainFrame:FindFirstChild("UIStroke", true)
+if not MainStroke then
+    MainStroke = Instance.new("UIStroke", MainFrame)
+    MainStroke.Transparency = 0.33
+    MainStroke.Thickness = 2
 else
-    mainStroke.Transparency = 0.33
-    mainStroke.Thickness = 2
+    MainStroke.Transparency = 0.33
+    MainStroke.Thickness = 2
 end
 
-local mainCorner = main:FindFirstChild("UICorner", true)
-if not mainCorner then
-    mainCorner = Instance.new("UICorner", main)
-    mainCorner.CornerRadius = UDim.new(0, 4)
+local MainCorner = MainFrame:FindFirstChild("UICorner", true)
+if not MainCorner then
+    MainCorner = Instance.new("UICorner", MainFrame)
+    MainCorner.CornerRadius = UDim.new(0, 4)
 end
 
-mainCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if mainCorner.CornerRadius ~= UDim.new(0, 4) then
-        mainCorner.CornerRadius = UDim.new(0, 4)
+MainCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if MainCorner.CornerRadius ~= UDim.new(0, 4) then
+        MainCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
-mainCorner.CornerRadius = UDim.new(0, 4)
+MainCorner.CornerRadius = UDim.new(0, 4)
 
-bg.ZIndex = 0
-bg.BorderSizePixel = 0
-bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-bg.Size = UDim2.new(0, 276, 0, 110)
-bg.Position = UDim2.new(0, 2, 0, 38)
-bg.BackgroundTransparency = 0.5
+Background.ZIndex = 0
+Background.BorderSizePixel = 0
+Background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Background.Size = UDim2.new(0, 276, 0, 110)
+Background.Position = UDim2.new(0, 2, 0, 38)
+Background.BackgroundTransparency = 0.5
 
-local bgCorner = bg:FindFirstChild("UICorner", true)
-if not bgCorner then
-    bgCorner = Instance.new("UICorner", bg)
-    bgCorner.CornerRadius = UDim.new(0, 4)
+local BackgroundCorner = Background:FindFirstChild("UICorner", true)
+if not BackgroundCorner then
+    BackgroundCorner = Instance.new("UICorner", Background)
+    BackgroundCorner.CornerRadius = UDim.new(0, 4)
 end
 
-bgCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if bgCorner.CornerRadius ~= UDim.new(0, 4) then
-        bgCorner.CornerRadius = UDim.new(0, 4)
+BackgroundCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if BackgroundCorner.CornerRadius ~= UDim.new(0, 4) then
+        BackgroundCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
-bgCorner.CornerRadius = UDim.new(0, 4)
+BackgroundCorner.CornerRadius = UDim.new(0, 4)
 
-divider.BorderSizePixel = 0
-divider.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-divider.Size = UDim2.new(0, 276, 0, 2)
-divider.Position = UDim2.new(0, 2, 0, 33)
-divider.LayoutOrder = 2
-divider.BackgroundTransparency = 0.5
+Divider.BorderSizePixel = 0
+Divider.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Divider.Size = UDim2.new(0, 276, 0, 2)
+Divider.Position = UDim2.new(0, 2, 0, 33)
+Divider.LayoutOrder = 2
+Divider.BackgroundTransparency = 0.5
 
-local divCorner = divider:FindFirstChild("UICorner", true)
-if not divCorner then
-    divCorner = Instance.new("UICorner", divider)
-    divCorner.CornerRadius = UDim.new(0, 4)
+local DividerCorner = Divider:FindFirstChild("UICorner", true)
+if not DividerCorner then
+    DividerCorner = Instance.new("UICorner", Divider)
+    DividerCorner.CornerRadius = UDim.new(0, 4)
 end
 
-divCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if divCorner.CornerRadius ~= UDim.new(0, 4) then
-        divCorner.CornerRadius = UDim.new(0, 4)
+DividerCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if DividerCorner.CornerRadius ~= UDim.new(0, 4) then
+        DividerCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
-divCorner.CornerRadius = UDim.new(0, 4)
+DividerCorner.CornerRadius = UDim.new(0, 4)
 
-local framePos = UDim2.new(0, 286, 0, 0)
+local FramePos = UDim2.new(0, 286, 0, 0)
 
-optsMenu.BorderSizePixel = 0
-optsMenu.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-optsMenu.Size = UDim2.new(0, 280, 0, 150)
-optsMenu.Position = framePos
-optsMenu.BackgroundTransparency = 0.5
-optsMenu.Visible = false
+OptionsMenu.BorderSizePixel = 0
+OptionsMenu.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+OptionsMenu.Size = UDim2.new(0, 280, 0, 150)
+OptionsMenu.Position = FramePos
+OptionsMenu.BackgroundTransparency = 0.5
+OptionsMenu.Visible = false
 
-local optsStroke = optsMenu:FindFirstChild("UIStroke", true)
-if not optsStroke then
-    optsStroke = Instance.new("UIStroke", optsMenu)
-    optsStroke.Transparency = 0.33
-    optsStroke.Thickness = 2
+local OptionsStroke = OptionsMenu:FindFirstChild("UIStroke", true)
+if not OptionsStroke then
+    OptionsStroke = Instance.new("UIStroke", OptionsMenu)
+    OptionsStroke.Transparency = 0.33
+    OptionsStroke.Thickness = 2
 end
 
-local optsCorner = optsMenu:FindFirstChild("UICorner", true)
-if not optsCorner then
-    optsCorner = Instance.new("UICorner", optsMenu)
-    optsCorner.CornerRadius = UDim.new(0, 4)
+local OptionsCorner = OptionsMenu:FindFirstChild("UICorner", true)
+if not OptionsCorner then
+    OptionsCorner = Instance.new("UICorner", OptionsMenu)
+    OptionsCorner.CornerRadius = UDim.new(0, 4)
 end
 
-optsCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if optsCorner.CornerRadius ~= UDim.new(0, 4) then
-        optsCorner.CornerRadius = UDim.new(0, 4)
+OptionsCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if OptionsCorner.CornerRadius ~= UDim.new(0, 4) then
+        OptionsCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
-optsCorner.CornerRadius = UDim.new(0, 4)
+OptionsCorner.CornerRadius = UDim.new(0, 4)
 
-miscMenu.BorderSizePixel = 0
-miscMenu.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-miscMenu.Size = UDim2.new(0, 280, 0, 150)
-miscMenu.Position = framePos
-miscMenu.BackgroundTransparency = 0.5
-miscMenu.Visible = false
+MiscMenu.BorderSizePixel = 0
+MiscMenu.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MiscMenu.Size = UDim2.new(0, 280, 0, 150)
+MiscMenu.Position = FramePos
+MiscMenu.BackgroundTransparency = 0.5
+MiscMenu.Visible = false
 
-local miscStroke = miscMenu:FindFirstChild("UIStroke", true)
-if not miscStroke then
-    miscStroke = Instance.new("UIStroke", miscMenu)
-    miscStroke.Transparency = 0.33
-    miscStroke.Thickness = 2
+local MiscStroke = MiscMenu:FindFirstChild("UIStroke", true)
+if not MiscStroke then
+    MiscStroke = Instance.new("UIStroke", MiscMenu)
+    MiscStroke.Transparency = 0.33
+    MiscStroke.Thickness = 2
 end
 
-local miscCorner = miscMenu:FindFirstChild("UICorner", true)
-if not miscCorner then
-    miscCorner = Instance.new("UICorner", miscMenu)
-    miscCorner.CornerRadius = UDim.new(0, 4)
+local MiscCorner = MiscMenu:FindFirstChild("UICorner", true)
+if not MiscCorner then
+    MiscCorner = Instance.new("UICorner", MiscMenu)
+    MiscCorner.CornerRadius = UDim.new(0, 4)
 end
 
-miscCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if miscCorner.CornerRadius ~= UDim.new(0, 4) then
-        miscCorner.CornerRadius = UDim.new(0, 4)
+MiscCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if MiscCorner.CornerRadius ~= UDim.new(0, 4) then
+        MiscCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
-miscCorner.CornerRadius = UDim.new(0, 4)
+MiscCorner.CornerRadius = UDim.new(0, 4)
 
-settingsMenu.BorderSizePixel = 0
-settingsMenu.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-settingsMenu.Size = UDim2.new(0, 280, 0, 150)
-settingsMenu.Position = framePos
-settingsMenu.BackgroundTransparency = 0.5
-settingsMenu.Visible = false
+SettingsMenu.BorderSizePixel = 0
+SettingsMenu.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+SettingsMenu.Size = UDim2.new(0, 280, 0, 150)
+SettingsMenu.Position = FramePos
+SettingsMenu.BackgroundTransparency = 0.5
+SettingsMenu.Visible = false
 
-local settingsStroke = settingsMenu:FindFirstChild("UIStroke", true)
-if not settingsStroke then
-    settingsStroke = Instance.new("UIStroke", settingsMenu)
-    settingsStroke.Transparency = 0.33
-    settingsStroke.Thickness = 2
+local SettingsStroke = SettingsMenu:FindFirstChild("UIStroke", true)
+if not SettingsStroke then
+    SettingsStroke = Instance.new("UIStroke", SettingsMenu)
+    SettingsStroke.Transparency = 0.33
+    SettingsStroke.Thickness = 2
 end
 
-local settingsCorner = settingsMenu:FindFirstChild("UICorner", true)
-if not settingsCorner then
-    settingsCorner = Instance.new("UICorner", settingsMenu)
-    settingsCorner.CornerRadius = UDim.new(0, 4)
+local SettingsCorner = SettingsMenu:FindFirstChild("UICorner", true)
+if not SettingsCorner then
+    SettingsCorner = Instance.new("UICorner", SettingsMenu)
+    SettingsCorner.CornerRadius = UDim.new(0, 4)
 end
 
-settingsCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if settingsCorner.CornerRadius ~= UDim.new(0, 4) then
-        settingsCorner.CornerRadius = UDim.new(0, 4)
+SettingsCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if SettingsCorner.CornerRadius ~= UDim.new(0, 4) then
+        SettingsCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
-settingsCorner.CornerRadius = UDim.new(0, 4)
+SettingsCorner.CornerRadius = UDim.new(0, 4)
 
-for _, frm in ipairs({optsMenu, miscMenu, settingsMenu}) do
-    for _, child in ipairs(frm:GetDescendants()) do
-        if child:IsA("Frame") or child:IsA("TextButton") or child:IsA("ImageButton") or child:IsA("TextLabel") then
-            local crn = child:FindFirstChild("UICorner", true)
-            if not crn then
-                crn = Instance.new("UICorner", child)
-                crn.CornerRadius = UDim.new(0, 4)
+for _, Frame in ipairs({OptionsMenu, MiscMenu, SettingsMenu}) do
+    for _, Child in ipairs(Frame:GetDescendants()) do
+        if Child:IsA("Frame") or Child:IsA("TextButton") or Child:IsA("ImageButton") or Child:IsA("TextLabel") then
+            local Corner = Child:FindFirstChild("UICorner", true)
+            if not Corner then
+                Corner = Instance.new("UICorner", Child)
+                Corner.CornerRadius = UDim.new(0, 4)
             else
-                crn.CornerRadius = UDim.new(0, 4)
+                Corner.CornerRadius = UDim.new(0, 4)
             end
-            crn:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-                if crn.CornerRadius ~= UDim.new(0, 4) then
-                    crn.CornerRadius = UDim.new(0, 4)
+            Corner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+                if Corner.CornerRadius ~= UDim.new(0, 4) then
+                    Corner.CornerRadius = UDim.new(0, 4)
                 end
             end)
         end
     end
 end
 
-titleLbl.TextWrapped = true
-titleLbl.BorderSizePixel = 0
-titleLbl.TextScaled = true
-titleLbl.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-titleLbl.FontFace = gothamMed
-titleLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleLbl.BackgroundTransparency = 1
-titleLbl.Size = UDim2.new(0, 180, 0, 28)
-titleLbl.Text = "TSB | Combat GUI+"
-titleLbl.Position = UDim2.new(0, 2, 0, 2)
+TitleLabel.TextWrapped = true
+TitleLabel.BorderSizePixel = 0
+TitleLabel.TextScaled = true
+TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.FontFace = GothamMedium
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Size = UDim2.new(0, 180, 0, 28)
+TitleLabel.Text = "TSB | Combat GUI+"
+TitleLabel.Position = UDim2.new(0, 2, 0, 2)
 
-local titlePad = titleLbl:FindFirstChild("UIPadding", true)
-if not titlePad then
-    titlePad = Instance.new("UIPadding", titleLbl)
-    titlePad.PaddingTop = UDim.new(0, 2)
-    titlePad.PaddingRight = UDim.new(0, 2)
-    titlePad.PaddingLeft = UDim.new(0, 2)
-    titlePad.PaddingBottom = UDim.new(0, 2)
+local TitlePadding = TitleLabel:FindFirstChild("UIPadding", true)
+if not TitlePadding then
+    TitlePadding = Instance.new("UIPadding", TitleLabel)
+    TitlePadding.PaddingTop = UDim.new(0, 2)
+    TitlePadding.PaddingRight = UDim.new(0, 2)
+    TitlePadding.PaddingLeft = UDim.new(0, 2)
+    TitlePadding.PaddingBottom = UDim.new(0, 2)
 end
 
-local titleStroke = titleLbl:FindFirstChild("UIStroke", true)
-if not titleStroke then
-    titleStroke = Instance.new("UIStroke", titleLbl)
-    titleStroke.Transparency = 0.66
-    titleStroke.Thickness = 2
+local TitleStroke = TitleLabel:FindFirstChild("UIStroke", true)
+if not TitleStroke then
+    TitleStroke = Instance.new("UIStroke", TitleLabel)
+    TitleStroke.Transparency = 0.66
+    TitleStroke.Thickness = 2
 end
 
-local titleCorner = titleLbl:FindFirstChild("UICorner", true)
-if not titleCorner then
-    titleCorner = Instance.new("UICorner", titleLbl)
-    titleCorner.CornerRadius = UDim.new(0, 4)
+local TitleCorner = TitleLabel:FindFirstChild("UICorner", true)
+if not TitleCorner then
+    TitleCorner = Instance.new("UICorner", TitleLabel)
+    TitleCorner.CornerRadius = UDim.new(0, 4)
 end
 
-titleCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if titleCorner.CornerRadius ~= UDim.new(0, 4) then
-        titleCorner.CornerRadius = UDim.new(0, 4)
+TitleCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if TitleCorner.CornerRadius ~= UDim.new(0, 4) then
+        TitleCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
-titleCorner.CornerRadius = UDim.new(0, 4)
+TitleCorner.CornerRadius = UDim.new(0, 4)
 
-local openCloseBtn = titleLbl:FindFirstChild("OpenCloseButton", true)
-if openCloseBtn then
-    openCloseBtn:Destroy()
+local OpenCloseButton = TitleLabel:FindFirstChild("OpenCloseButton", true)
+if OpenCloseButton then
+    OpenCloseButton:Destroy()
 end
 
-local minBtn = titleLbl:FindFirstChild("MinimizeButton", true)
-if not minBtn then
-    minBtn = Instance.new("TextButton", titleLbl)
-    minBtn.Name = "MinimizeButton"
+local MinimizeButton = TitleLabel:FindFirstChild("MinimizeButton", true)
+if not MinimizeButton then
+    MinimizeButton = Instance.new("TextButton", TitleLabel)
+    MinimizeButton.Name = "MinimizeButton"
 end
-minBtn.TextWrapped = true
-minBtn.BorderSizePixel = 0
-minBtn.TextScaled = true
-minBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-minBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-minBtn.FontFace = gothamMed
-minBtn.BackgroundTransparency = 0.5
-minBtn.Size = UDim2.new(0, 28, 0, 28)
-minBtn.Text = "-"
-minBtn.Position = UDim2.new(0, 216, 0, -2)
+MinimizeButton.TextWrapped = true
+MinimizeButton.BorderSizePixel = 0
+MinimizeButton.TextScaled = true
+MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MinimizeButton.FontFace = GothamMedium
+MinimizeButton.BackgroundTransparency = 0.5
+MinimizeButton.Size = UDim2.new(0, 28, 0, 28)
+MinimizeButton.Text = "-"
+MinimizeButton.Position = UDim2.new(0, 216, 0, -2)
 
-local minCorner = minBtn:FindFirstChild("UICorner", true)
-if not minCorner then
-    minCorner = Instance.new("UICorner", minBtn)
-    minCorner.CornerRadius = UDim.new(0, 4)
+local MinimizeCorner = MinimizeButton:FindFirstChild("UICorner", true)
+if not MinimizeCorner then
+    MinimizeCorner = Instance.new("UICorner", MinimizeButton)
+    MinimizeCorner.CornerRadius = UDim.new(0, 4)
 end
 
-minCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if minCorner.CornerRadius ~= UDim.new(0, 4) then
-        minCorner.CornerRadius = UDim.new(0, 4)
+MinimizeCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if MinimizeCorner.CornerRadius ~= UDim.new(0, 4) then
+        MinimizeCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
-minCorner.CornerRadius = UDim.new(0, 4)
+MinimizeCorner.CornerRadius = UDim.new(0, 4)
 
-local minAspect = minBtn:FindFirstChild("UIAspectRatioConstraint", true)
-if not minAspect then
-    minAspect = Instance.new("UIAspectRatioConstraint", minBtn)
+local MinimizeAspect = MinimizeButton:FindFirstChild("UIAspectRatioConstraint", true)
+if not MinimizeAspect then
+    MinimizeAspect = Instance.new("UIAspectRatioConstraint", MinimizeButton)
 end
 
-local closeBtn = titleLbl:FindFirstChild("CloseButton", true)
-if not closeBtn then
-    closeBtn = Instance.new("TextButton", titleLbl)
-    closeBtn.Name = "CloseButton"
+local CloseButton = TitleLabel:FindFirstChild("CloseButton", true)
+if not CloseButton then
+    CloseButton = Instance.new("TextButton", TitleLabel)
+    CloseButton.Name = "CloseButton"
 end
-closeBtn.TextWrapped = true
-closeBtn.BorderSizePixel = 0
-closeBtn.TextScaled = true
-closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-closeBtn.FontFace = gothamMed
-closeBtn.BackgroundTransparency = 0.5
-closeBtn.Size = UDim2.new(0, 28, 0, 28)
-closeBtn.Text = "×"
-closeBtn.Position = UDim2.new(0, 246, 0, -2)
+CloseButton.TextWrapped = true
+CloseButton.BorderSizePixel = 0
+CloseButton.TextScaled = true
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+CloseButton.FontFace = GothamMedium
+CloseButton.BackgroundTransparency = 0.5
+CloseButton.Size = UDim2.new(0, 28, 0, 28)
+CloseButton.Text = "×"
+CloseButton.Position = UDim2.new(0, 246, 0, -2)
 
-local closeCorner = closeBtn:FindFirstChild("UICorner", true)
-if not closeCorner then
-    closeCorner = Instance.new("UICorner", closeBtn)
-    closeCorner.CornerRadius = UDim.new(0, 4)
+local CloseCorner = CloseButton:FindFirstChild("UICorner", true)
+if not CloseCorner then
+    CloseCorner = Instance.new("UICorner", CloseButton)
+    CloseCorner.CornerRadius = UDim.new(0, 4)
 end
 
-closeCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if closeCorner.CornerRadius ~= UDim.new(0, 4) then
-        closeCorner.CornerRadius = UDim.new(0, 4)
+CloseCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if CloseCorner.CornerRadius ~= UDim.new(0, 4) then
+        CloseCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
-closeCorner.CornerRadius = UDim.new(0, 4)
+CloseCorner.CornerRadius = UDim.new(0, 4)
 
-local closeAspect = closeBtn:FindFirstChild("UIAspectRatioConstraint", true)
-if not closeAspect then
-    closeAspect = Instance.new("UIAspectRatioConstraint", closeBtn)
+local CloseAspect = CloseButton:FindFirstChild("UIAspectRatioConstraint", true)
+if not CloseAspect then
+    CloseAspect = Instance.new("UIAspectRatioConstraint", CloseButton)
 end
 
-closeBtn.MouseButton1Click:Connect(function()
-    autoBlockGui:Destroy()
+CloseButton.MouseButton1Click:Connect(function()
+    AutoBlockGui:Destroy()
     getgenv().CombatGUI.isLoaded = false
 end)
 
-blockBtn.Text = ""
-blockBtn.BackgroundTransparency = 1
-blockBtn.Size = UDim2.new(0, 230, 0, 28)
-blockBtn.Position = UDim2.new(0, 8, 0, 44)
+BlockButton.Text = ""
+BlockButton.BackgroundTransparency = 1
+BlockButton.Size = UDim2.new(0, 230, 0, 28)
+BlockButton.Position = UDim2.new(0, 8, 0, 44)
 
-local blockLbl = blockBtn:FindFirstChild("Label", true)
-if not blockLbl then
-    blockLbl = Instance.new("TextLabel", blockBtn)
-    blockLbl.Name = "Label"
+local BlockLabel = BlockButton:FindFirstChild("Label", true)
+if not BlockLabel then
+    BlockLabel = Instance.new("TextLabel", BlockButton)
+    BlockLabel.Name = "Label"
 end
-blockLbl.TextWrapped = true
-blockLbl.TextScaled = true
-blockLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-blockLbl.BackgroundTransparency = 1
-blockLbl.Size = UDim2.new(1, 0, 1, 0)
-blockLbl.Text = "AutoBlock: Off"
+BlockLabel.TextWrapped = true
+BlockLabel.TextScaled = true
+BlockLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+BlockLabel.BackgroundTransparency = 1
+BlockLabel.Size = UDim2.new(1, 0, 1, 0)
+BlockLabel.Text = "AutoBlock: Off"
 
-local blockPad = blockLbl:FindFirstChild("UIPadding", true)
-if not blockPad then
-    blockPad = Instance.new("UIPadding", blockLbl)
-    blockPad.PaddingTop = UDim.new(0, 4)
-    blockPad.PaddingRight = UDim.new(0, 5)
-    blockPad.PaddingLeft = UDim.new(0, 5)
-    blockPad.PaddingBottom = UDim.new(0, 4)
+local BlockPadding = BlockLabel:FindFirstChild("UIPadding", true)
+if not BlockPadding then
+    BlockPadding = Instance.new("UIPadding", BlockLabel)
+    BlockPadding.PaddingTop = UDim.new(0, 4)
+    BlockPadding.PaddingRight = UDim.new(0, 5)
+    BlockPadding.PaddingLeft = UDim.new(0, 5)
+    BlockPadding.PaddingBottom = UDim.new(0, 4)
 end
 
-local blockCorner = blockBtn:FindFirstChild("UICorner", true)
-if not blockCorner then
-    blockCorner = Instance.new("UICorner", blockBtn)
-    blockCorner.CornerRadius = UDim.new(0, 4)
+local BlockCorner = BlockButton:FindFirstChild("UICorner", true)
+if not BlockCorner then
+    BlockCorner = Instance.new("UICorner", BlockButton)
+    BlockCorner.CornerRadius = UDim.new(0, 4)
 else
-    blockCorner.CornerRadius = UDim.new(0, 4)
+    BlockCorner.CornerRadius = UDim.new(0, 4)
 end
 
-blockCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if blockCorner.CornerRadius ~= UDim.new(0, 4) then
-        blockCorner.CornerRadius = UDim.new(0, 4)
+BlockCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if BlockCorner.CornerRadius ~= UDim.new(0, 4) then
+        BlockCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
 
-local blockStroke = blockBtn:FindFirstChild("UIStroke", true)
-if not blockStroke then
-    blockStroke = Instance.new("UIStroke", blockBtn)
-    blockStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    blockStroke.Color = Color3.fromRGB(255, 255, 255)
+local BlockStroke = BlockButton:FindFirstChild("UIStroke", true)
+if not BlockStroke then
+    BlockStroke = Instance.new("UIStroke", BlockButton)
+    BlockStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    BlockStroke.Color = Color3.fromRGB(255, 255, 255)
 end
 
-counterBtn.Text = ""
-counterBtn.BackgroundTransparency = 1
-counterBtn.Size = UDim2.new(0, 230, 0, 28)
-counterBtn.Position = UDim2.new(0, 8, 0, 78)
+CounterButton.Text = ""
+CounterButton.BackgroundTransparency = 1
+CounterButton.Size = UDim2.new(0, 230, 0, 28)
+CounterButton.Position = UDim2.new(0, 8, 0, 78)
 
-local counterLbl = counterBtn:FindFirstChild("Label", true)
-if not counterLbl then
-    counterLbl = Instance.new("TextLabel", counterBtn)
-    counterLbl.Name = "Label"
+local CounterLabel = CounterButton:FindFirstChild("Label", true)
+if not CounterLabel then
+    CounterLabel = Instance.new("TextLabel", CounterButton)
+    CounterLabel.Name = "Label"
 end
-counterLbl.TextWrapped = true
-counterLbl.TextScaled = true
-counterLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-counterLbl.BackgroundTransparency = 1
-counterLbl.Size = UDim2.new(1, 0, 1, 0)
-counterLbl.Text = "Counter-Notifier: Off"
+CounterLabel.TextWrapped = true
+CounterLabel.TextScaled = true
+CounterLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+CounterLabel.BackgroundTransparency = 1
+CounterLabel.Size = UDim2.new(1, 0, 1, 0)
+CounterLabel.Text = "Counter-Notifier: Off"
 
-local counterPad = counterLbl:FindFirstChild("UIPadding", true)
-if not counterPad then
-    counterPad = Instance.new("UIPadding", counterLbl)
-    counterPad.PaddingTop = UDim.new(0, 4)
-    counterPad.PaddingRight = UDim.new(0, 5)
-    counterPad.PaddingLeft = UDim.new(0, 5)
-    counterPad.PaddingBottom = UDim.new(0, 4)
+local CounterPadding = CounterLabel:FindFirstChild("UIPadding", true)
+if not CounterPadding then
+    CounterPadding = Instance.new("UIPadding", CounterLabel)
+    CounterPadding.PaddingTop = UDim.new(0, 4)
+    CounterPadding.PaddingRight = UDim.new(0, 5)
+    CounterPadding.PaddingLeft = UDim.new(0, 5)
+    CounterPadding.PaddingBottom = UDim.new(0, 4)
 end
 
-local counterCorner = counterBtn:FindFirstChild("UICorner", true)
-if not counterCorner then
-    counterCorner = Instance.new("UICorner", counterBtn)
-    counterCorner.CornerRadius = UDim.new(0, 4)
+local CounterCorner = CounterButton:FindFirstChild("UICorner", true)
+if not CounterCorner then
+    CounterCorner = Instance.new("UICorner", CounterButton)
+    CounterCorner.CornerRadius = UDim.new(0, 4)
 else
-    counterCorner.CornerRadius = UDim.new(0, 4)
+    CounterCorner.CornerRadius = UDim.new(0, 4)
 end
 
-counterCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if counterCorner.CornerRadius ~= UDim.new(0, 4) then
-        counterCorner.CornerRadius = UDim.new(0, 4)
+CounterCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if CounterCorner.CornerRadius ~= UDim.new(0, 4) then
+        CounterCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
 
-local counterStroke = counterBtn:FindFirstChild("UIStroke", true)
-if not counterStroke then
-    counterStroke = Instance.new("UIStroke", counterBtn)
-    counterStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    counterStroke.Color = Color3.fromRGB(255, 255, 255)
+local CounterStroke = CounterButton:FindFirstChild("UIStroke", true)
+if not CounterStroke then
+    CounterStroke = Instance.new("UIStroke", CounterButton)
+    CounterStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    CounterStroke.Color = Color3.fromRGB(255, 255, 255)
 end
 
-camBtn.Text = ""
-camBtn.BackgroundTransparency = 1
-camBtn.Size = UDim2.new(0, 230, 0, 28)
-camBtn.Position = UDim2.new(0, 8, 0, 112)
+CameraButton.Text = ""
+CameraButton.BackgroundTransparency = 1
+CameraButton.Size = UDim2.new(0, 230, 0, 28)
+CameraButton.Position = UDim2.new(0, 8, 0, 112)
 
-local camLbl = camBtn:FindFirstChild("Label", true)
-if not camLbl then
-    camLbl = Instance.new("TextLabel", camBtn)
-    camLbl.Name = "Label"
+local CameraLabel = CameraButton:FindFirstChild("Label", true)
+if not CameraLabel then
+    CameraLabel = Instance.new("TextLabel", CameraButton)
+    CameraLabel.Name = "Label"
 end
-camLbl.TextWrapped = true
-camLbl.TextScaled = true
-camLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-camLbl.BackgroundTransparency = 1
-camLbl.Size = UDim2.new(1, 0, 1, 0)
-camLbl.Text = "CamLock: Off"
+CameraLabel.TextWrapped = true
+CameraLabel.TextScaled = true
+CameraLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+CameraLabel.BackgroundTransparency = 1
+CameraLabel.Size = UDim2.new(1, 0, 1, 0)
+CameraLabel.Text = "CamLock: Off"
 
-local camPad = camLbl:FindFirstChild("UIPadding", true)
-if not camPad then
-    camPad = Instance.new("UIPadding", camLbl)
-    camPad.PaddingTop = UDim.new(0, 4)
-    camPad.PaddingRight = UDim.new(0, 5)
-    camPad.PaddingLeft = UDim.new(0, 5)
-    camPad.PaddingBottom = UDim.new(0, 4)
-end
-
-local camCorner = camBtn:FindFirstChild("UICorner", true)
-if not camCorner then
-    camCorner = Instance.new("UICorner", camBtn)
-    camCorner.CornerRadius = UDim.new(0, 4)
+local CameraPadding = CameraLabel:FindFirstChild("UIPadding", true)
+if not CameraPadding then
+    CameraPadding = Instance.new("UIPadding", CameraLabel)
+    CameraPadding.PaddingTop = UDim.new(0, 4)
+    CameraPadding.PaddingRight = UDim.new(0, 5)
+    CameraPadding.PaddingLeft = UDim.new(0, 5)
+    CameraPadding.PaddingBottom = UDim.new(0, 4)
 end
 
-camCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if camCorner.CornerRadius ~= UDim.new(0, 4) then
-        camCorner.CornerRadius = UDim.new(0, 4)
+local CameraCorner = CameraButton:FindFirstChild("UICorner", true)
+if not CameraCorner then
+    CameraCorner = Instance.new("UICorner", CameraButton)
+    CameraCorner.CornerRadius = UDim.new(0, 4)
+end
+
+CameraCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if CameraCorner.CornerRadius ~= UDim.new(0, 4) then
+        CameraCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
 
-local camStroke = camBtn:FindFirstChild("UIStroke", true)
-if not camStroke then
-    camStroke = Instance.new("UIStroke", camBtn)
-    camStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    camStroke.Color = Color3.fromRGB(255, 255, 255)
+local CameraStroke = CameraButton:FindFirstChild("UIStroke", true)
+if not CameraStroke then
+    CameraStroke = Instance.new("UIStroke", CameraButton)
+    CameraStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    CameraStroke.Color = Color3.fromRGB(255, 255, 255)
 end
 
-local function protectBtn(btn)
-    btn:GetPropertyChangedSignal("Text"):Connect(function()
-        if btn.Text ~= "" then
-            btn.Text = ""
+local function ProtectButton(Button)
+    Button:GetPropertyChangedSignal("Text"):Connect(function()
+        if Button.Text ~= "" then
+            Button.Text = ""
         end
     end)
 end
 
-protectBtn(blockBtn)
-protectBtn(counterBtn)
-protectBtn(camBtn)
+ProtectButton(BlockButton)
+ProtectButton(CounterButton)
+ProtectButton(CameraButton)
 
-optsBtn.BorderSizePixel = 0
-optsBtn.BackgroundTransparency = 1
-optsBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-optsBtn.Image = "rbxassetid://91728161555751"
-optsBtn.Size = UDim2.new(0, 28, 0, 28)
-optsBtn.Position = UDim2.new(0, 244, 0, 78)
+OptionsButton.BorderSizePixel = 0
+OptionsButton.BackgroundTransparency = 1
+OptionsButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+OptionsButton.Image = "rbxassetid://91728161555751"
+OptionsButton.Size = UDim2.new(0, 28, 0, 28)
+OptionsButton.Position = UDim2.new(0, 244, 0, 78)
 
-local optsBtnCorner = optsBtn:FindFirstChild("UICorner", true)
-if not optsBtnCorner then
-    optsBtnCorner = Instance.new("UICorner", optsBtn)
-    optsBtnCorner.CornerRadius = UDim.new(0, 4)
+local OptionsButtonCorner = OptionsButton:FindFirstChild("UICorner", true)
+if not OptionsButtonCorner then
+    OptionsButtonCorner = Instance.new("UICorner", OptionsButton)
+    OptionsButtonCorner.CornerRadius = UDim.new(0, 4)
 end
 
-optsBtnCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if optsBtnCorner.CornerRadius ~= UDim.new(0, 4) then
-        optsBtnCorner.CornerRadius = UDim.new(0, 4)
+OptionsButtonCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if OptionsButtonCorner.CornerRadius ~= UDim.new(0, 4) then
+        OptionsButtonCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
 
-local optsBtnAspect = optsBtn:FindFirstChild("UIAspectRatioConstraint", true)
-if not optsBtnAspect then
-    optsBtnAspect = Instance.new("UIAspectRatioConstraint", optsBtn)
+local OptionsButtonAspect = OptionsButton:FindFirstChild("UIAspectRatioConstraint", true)
+if not OptionsButtonAspect then
+    OptionsButtonAspect = Instance.new("UIAspectRatioConstraint", OptionsButton)
 end
 
-local optsBtnStroke = optsBtn:FindFirstChild("UIStroke", true)
-if not optsBtnStroke then
-    optsBtnStroke = Instance.new("UIStroke", optsBtn)
-    optsBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    optsBtnStroke.Color = Color3.fromRGB(255, 255, 255)
+local OptionsButtonStroke = OptionsButton:FindFirstChild("UIStroke", true)
+if not OptionsButtonStroke then
+    OptionsButtonStroke = Instance.new("UIStroke", OptionsButton)
+    OptionsButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    OptionsButtonStroke.Color = Color3.fromRGB(255, 255, 255)
 end
 
-miscBtn.BorderSizePixel = 0
-miscBtn.BackgroundTransparency = 1
-miscBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-miscBtn.Image = "rbxassetid://12072054746"
-miscBtn.Size = UDim2.new(0, 28, 0, 28)
-miscBtn.Position = UDim2.new(0, 244, 0, 44)
+MiscButton.BorderSizePixel = 0
+MiscButton.BackgroundTransparency = 1
+MiscButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MiscButton.Image = "rbxassetid://12072054746"
+MiscButton.Size = UDim2.new(0, 28, 0, 28)
+MiscButton.Position = UDim2.new(0, 244, 0, 44)
 
-local miscBtnCorner = miscBtn:FindFirstChild("UICorner", true)
-if not miscBtnCorner then
-    miscBtnCorner = Instance.new("UICorner", miscBtn)
-    miscBtnCorner.CornerRadius = UDim.new(0, 4)
+local MiscButtonCorner = MiscButton:FindFirstChild("UICorner", true)
+if not MiscButtonCorner then
+    MiscButtonCorner = Instance.new("UICorner", MiscButton)
+    MiscButtonCorner.CornerRadius = UDim.new(0, 4)
 end
 
-miscBtnCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if miscBtnCorner.CornerRadius ~= UDim.new(0, 4) then
-        miscBtnCorner.CornerRadius = UDim.new(0, 4)
+MiscButtonCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if MiscButtonCorner.CornerRadius ~= UDim.new(0, 4) then
+        MiscButtonCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
 
-local miscBtnAspect = miscBtn:FindFirstChild("UIAspectRatioConstraint", true)
-if not miscBtnAspect then
-    miscBtnAspect = Instance.new("UIAspectRatioConstraint", miscBtn)
+local MiscButtonAspect = MiscButton:FindFirstChild("UIAspectRatioConstraint", true)
+if not MiscButtonAspect then
+    MiscButtonAspect = Instance.new("UIAspectRatioConstraint", MiscButton)
 end
 
-local miscBtnStroke = miscBtn:FindFirstChild("UIStroke", true)
-if not miscBtnStroke then
-    miscBtnStroke = Instance.new("UIStroke", miscBtn)
-    miscBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    miscBtnStroke.Color = Color3.fromRGB(255, 255, 255)
+local MiscButtonStroke = MiscButton:FindFirstChild("UIStroke", true)
+if not MiscButtonStroke then
+    MiscButtonStroke = Instance.new("UIStroke", MiscButton)
+    MiscButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    MiscButtonStroke.Color = Color3.fromRGB(255, 255, 255)
 end
 
-settingsBtn.BorderSizePixel = 0
-settingsBtn.BackgroundTransparency = 1
-settingsBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-settingsBtn.Image = "rbxassetid://7059346373"
-settingsBtn.Size = UDim2.new(0, 28, 0, 28)
-settingsBtn.Position = UDim2.new(0, 244, 0, 112)
+SettingsButton.BorderSizePixel = 0
+SettingsButton.BackgroundTransparency = 1
+SettingsButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SettingsButton.Image = "rbxassetid://7059346373"
+SettingsButton.Size = UDim2.new(0, 28, 0, 28)
+SettingsButton.Position = UDim2.new(0, 244, 0, 112)
 
-local settingsBtnCorner = settingsBtn:FindFirstChild("UICorner", true)
-if not settingsBtnCorner then
-    settingsBtnCorner = Instance.new("UICorner", settingsBtn)
-    settingsBtnCorner.CornerRadius = UDim.new(0, 4)
+local SettingsButtonCorner = SettingsButton:FindFirstChild("UICorner", true)
+if not SettingsButtonCorner then
+    SettingsButtonCorner = Instance.new("UICorner", SettingsButton)
+    SettingsButtonCorner.CornerRadius = UDim.new(0, 4)
 end
 
-settingsBtnCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    if settingsBtnCorner.CornerRadius ~= UDim.new(0, 4) then
-        settingsBtnCorner.CornerRadius = UDim.new(0, 4)
+SettingsButtonCorner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
+    if SettingsButtonCorner.CornerRadius ~= UDim.new(0, 4) then
+        SettingsButtonCorner.CornerRadius = UDim.new(0, 4)
     end
 end)
 
-local settingsBtnAspect = settingsBtn:FindFirstChild("UIAspectRatioConstraint", true)
-if not settingsBtnAspect then
-    settingsBtnAspect = Instance.new("UIAspectRatioConstraint", settingsBtn)
+local SettingsButtonAspect = SettingsButton:FindFirstChild("UIAspectRatioConstraint", true)
+if not SettingsButtonAspect then
+    SettingsButtonAspect = Instance.new("UIAspectRatioConstraint", SettingsButton)
 end
 
-local settingsBtnStroke = settingsBtn:FindFirstChild("UIStroke", true)
-if not settingsBtnStroke then
-    settingsBtnStroke = Instance.new("UIStroke", settingsBtn)
-    settingsBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    settingsBtnStroke.Color = Color3.fromRGB(255, 255, 255)
+local SettingsButtonStroke = SettingsButton:FindFirstChild("UIStroke", true)
+if not SettingsButtonStroke then
+    SettingsButtonStroke = Instance.new("UIStroke", SettingsButton)
+    SettingsButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    SettingsButtonStroke.Color = Color3.fromRGB(255, 255, 255)
 end
 
-local minimized = false
-local ts = game:GetService("TweenService")
+local Minimized = false
+local TweenService = Services.TweenService
 
-local function toggleMin()
-    minimized = not minimized
-    local sz = minimized and UDim2.new(0, 280, 0, 32) or UDim2.new(0, 280, 0, 150)
-    local tween = ts:Create(main, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = sz})
-    tween:Play()
-    for _, child in ipairs(main:GetChildren()) do
-        if child ~= titleLbl and child ~= divider and child ~= mainStroke and child ~= mainCorner and child ~= bg and child ~= optsMenu and child ~= miscMenu and child ~= settingsMenu then
-            child.Visible = not minimized
+local function ToggleMinimize()
+    Minimized = not Minimized
+    local Size = Minimized and UDim2.new(0, 280, 0, 32) or UDim2.new(0, 280, 0, 150)
+    local Tween = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = Size})
+    Tween:Play()
+    for _, Child in ipairs(MainFrame:GetChildren()) do
+        if Child ~= TitleLabel and Child ~= Divider and Child ~= MainStroke and Child ~= MainCorner and Child ~= Background and Child ~= OptionsMenu and Child ~= MiscMenu and Child ~= SettingsMenu then
+            Child.Visible = not Minimized
         end
     end
-    bg.Visible = not minimized
-    divider.Visible = not minimized
-    optsMenu.Visible = false
-    miscMenu.Visible = false
-    settingsMenu.Visible = false
-    minBtn.Text = minimized and "+" or "-"
+    Background.Visible = not Minimized
+    Divider.Visible = not Minimized
+    OptionsMenu.Visible = false
+    MiscMenu.Visible = false
+    SettingsMenu.Visible = false
+    MinimizeButton.Text = Minimized and "+" or "-"
 end
 
-minBtn.MouseButton1Click:Connect(toggleMin)
+MinimizeButton.MouseButton1Click:Connect(ToggleMinimize)
 
-local blockOn = false
-local counterOn = false
-local camOn = false
-local camConn = nil
-local rs = game:GetService("RunService")
-local cam = workspace.CurrentCamera
+local BlockOn = false
+local CounterOn = false
+local CameraOn = false
+local CameraConnection = nil
+local RunService = Services.RunService
+local Camera = workspace.CurrentCamera
 
-local function getNearest()
-    local lp = game:GetService("Players").LocalPlayer
-    local chr = lp.Character
-    if not chr then return nil end
-    local root = chr:FindFirstChild("HumanoidRootPart")
-    if not root then return nil end
+local function GetNearestTarget()
+    local Players = Services.Players
+    local LocalPlayer = Players.LocalPlayer
+    local Character = LocalPlayer.Character
+    if not Character then return nil end
+    local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
+    if not HumanoidRootPart then return nil end
     
-    local nearest = nil
-    local shortest = math.huge
-    local plrs = game:GetService("Players"):GetPlayers()
+    local Nearest = nil
+    local ShortestDistance = math.huge
+    local PlayerList = Players:GetPlayers()
     
-    for _, plr in ipairs(plrs) do
-        if plr ~= lp then
-            local tgt = plr.Character
-            if tgt then
-                local tgtRoot = tgt:FindFirstChild("HumanoidRootPart")
-                if tgtRoot then
-                    local dist = (root.Position - tgtRoot.Position).Magnitude
-                    if dist < shortest then
-                        shortest = dist
-                        nearest = tgtRoot
+    for _, Player in ipairs(PlayerList) do
+        if Player ~= LocalPlayer then
+            local TargetCharacter = Player.Character
+            if TargetCharacter then
+                local TargetRoot = TargetCharacter:FindFirstChild("HumanoidRootPart")
+                if TargetRoot then
+                    local Distance = (HumanoidRootPart.Position - TargetRoot.Position).Magnitude
+                    if Distance < ShortestDistance then
+                        ShortestDistance = Distance
+                        Nearest = TargetRoot
                     end
                 end
             end
         end
     end
-    return nearest
+    return Nearest
 end
 
-local function startCam()
-    if camConn then camConn:Disconnect() end
-    camConn = rs.RenderStepped:Connect(function()
-        if not camOn then return end
-        local tgt = getNearest()
-        if tgt then
-            local lookPos = tgt.Position
-            cam.CFrame = CFrame.new(cam.CFrame.Position, lookPos)
+local function StartCameraLock()
+    if CameraConnection then CameraConnection:Disconnect() end
+    CameraConnection = RunService.RenderStepped:Connect(function()
+        if not CameraOn then return end
+        local Target = GetNearestTarget()
+        if Target then
+            local LookPosition = Target.Position
+            Camera.CFrame = CFrame.new(Camera.CFrame.Position, LookPosition)
         end
     end)
 end
 
-local function stopCam()
-    if camConn then
-        camConn:Disconnect()
-        camConn = nil
+local function StopCameraLock()
+    if CameraConnection then
+        CameraConnection:Disconnect()
+        CameraConnection = nil
     end
 end
 
-blockBtn.MouseButton1Click:Connect(function()
-    blockOn = not blockOn
-    if blockBtn:FindFirstChild("Label", true) then
-        blockBtn.Label.Text = blockOn and "AutoBlock: On" or "AutoBlock: Off"
+BlockButton.MouseButton1Click:Connect(function()
+    BlockOn = not BlockOn
+    if BlockButton:FindFirstChild("Label", true) then
+        BlockButton.Label.Text = BlockOn and "AutoBlock: On" or "AutoBlock: Off"
     end
 end)
 
-counterBtn.MouseButton1Click:Connect(function()
-    counterOn = not counterOn
-    if counterBtn:FindFirstChild("Label", true) then
-        counterBtn.Label.Text = counterOn and "Counter-Notifier: On" or "Counter-Notifier: Off"
+CounterButton.MouseButton1Click:Connect(function()
+    CounterOn = not CounterOn
+    if CounterButton:FindFirstChild("Label", true) then
+        CounterButton.Label.Text = CounterOn and "Counter-Notifier: On" or "Counter-Notifier: Off"
     end
 end)
 
-camBtn.MouseButton1Click:Connect(function()
-    camOn = not camOn
-    if camBtn:FindFirstChild("Label", true) then
-        camBtn.Label.Text = camOn and "CamLock: On" or "CamLock: Off"
+CameraButton.MouseButton1Click:Connect(function()
+    CameraOn = not CameraOn
+    if CameraButton:FindFirstChild("Label", true) then
+        CameraButton.Label.Text = CameraOn and "CamLock: On" or "CamLock: Off"
     end
-    if camOn then
-        startCam()
+    if CameraOn then
+        StartCameraLock()
     else
-        stopCam()
+        StopCameraLock()
     end
 end)
