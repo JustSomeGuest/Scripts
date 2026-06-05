@@ -1,3 +1,32 @@
+if not game:IsLoaded() then 
+    game.Loaded:Wait() 
+end
+
+local function default(expected, value, fallback)
+    if type(value) == expected then
+        return value
+    end
+    return fallback
+end
+
+local cloneref = default("function", cloneref, function() return end)
+
+local Services = setmetatable({}, {
+    __index = function(self, name)
+        local success, cache = pcall(function()
+            return cloneref(game:GetService(name))
+        end)
+        if success then
+            rawset(self, name, cache)
+            return cache
+        else
+            error("Invalid Service: " .. tostring(name))
+        end
+    end
+})
+
+local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
+
 local Disclaimer = {}
 
 Disclaimer.Script = nil
@@ -21,19 +50,21 @@ local function CreateDisclaimer()
     getgenv().Disclaimer = getgenv().Disclaimer or {}
     getgenv().Disclaimer.isLoaded = true
 
-    local ScreenGui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"))
+    local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "Disclaimer"
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    ScreenGui.Parent = CoreGui
 
-    local Container = Instance.new("Frame", ScreenGui)
+    local Container = Instance.new("Frame")
     Container.Name = "Container"
     Container.Size = UDim2.new(0.6, 0, 0.8, 0)
     Container.Position = UDim2.new(0, 164, 0, 32)
     Container.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Container.BackgroundTransparency = 1
     Container.BorderSizePixel = 0
+    Container.Parent = ScreenGui
 
-    local Shadow = Instance.new("ImageLabel", Container)
+    local Shadow = Instance.new("ImageLabel")
     Shadow.Name = "Shadow"
     Shadow.Size = UDim2.new(1.059, 0, 1.088, 0)
     Shadow.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -44,8 +75,9 @@ local function CreateDisclaimer()
     Shadow.Image = "rbxassetid://15298624572"
     Shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
     Shadow.ImageTransparency = 0.2
+    Shadow.Parent = Container
 
-    local MainFrame = Instance.new("Frame", Container)
+    local MainFrame = Instance.new("Frame")
     MainFrame.Name = "MainFrame"
     MainFrame.Size = UDim2.new(1, 0, 1, 0)
     MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -53,8 +85,9 @@ local function CreateDisclaimer()
     MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     MainFrame.BorderSizePixel = 0
     MainFrame.ZIndex = 2
+    MainFrame.Parent = Container
 
-    local Options = Instance.new("Frame", MainFrame)
+    local Options = Instance.new("Frame")
     Options.Name = "Options"
     Options.Size = UDim2.new(0, 70, 0, 34)
     Options.Position = UDim2.new(0, 0, 0, 34)
@@ -62,8 +95,9 @@ local function CreateDisclaimer()
     Options.BackgroundTransparency = 1
     Options.BorderSizePixel = 0
     Options.LayoutOrder = 3
+    Options.Parent = MainFrame
 
-    local Accept = Instance.new("TextButton", Options)
+    local Accept = Instance.new("TextButton")
     Accept.Name = "Accept"
     Accept.Size = UDim2.new(0.2, 0, 0.3, 0)
     Accept.BackgroundColor3 = Color3.fromRGB(0, 107, 255)
@@ -77,25 +111,29 @@ local function CreateDisclaimer()
     Accept.ZIndex = 10
     Accept.ClipsDescendants = true
     Accept.LayoutOrder = 1
+    Accept.Parent = Options
 
-    local AcceptStroke = Instance.new("UIStroke", Accept)
+    local AcceptStroke = Instance.new("UIStroke")
     AcceptStroke.Name = "Stroke"
     AcceptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     AcceptStroke.Thickness = 2
     AcceptStroke.Color = Color3.fromRGB(0, 86, 207)
+    AcceptStroke.Parent = Accept
 
-    local AcceptCorner = Instance.new("UICorner", Accept)
+    local AcceptCorner = Instance.new("UICorner")
     AcceptCorner.Name = "Corner"
     AcceptCorner.CornerRadius = UDim.new(0, 4)
+    AcceptCorner.Parent = Accept
 
-    local AcceptPadding = Instance.new("UIPadding", Accept)
+    local AcceptPadding = Instance.new("UIPadding")
     AcceptPadding.Name = "Padding"
     AcceptPadding.PaddingTop = UDim.new(0, 2)
     AcceptPadding.PaddingRight = UDim.new(0, 2)
     AcceptPadding.PaddingLeft = UDim.new(0, 2)
     AcceptPadding.PaddingBottom = UDim.new(0, 2)
+    AcceptPadding.Parent = Accept
 
-    local OptionsLayout = Instance.new("UIListLayout", Options)
+    local OptionsLayout = Instance.new("UIListLayout")
     OptionsLayout.Name = "Layout"
     OptionsLayout.FillDirection = Enum.FillDirection.Horizontal
     OptionsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -103,13 +141,15 @@ local function CreateDisclaimer()
     OptionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
     OptionsLayout.Padding = UDim.new(0, 8)
     OptionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    OptionsLayout.Parent = Options
 
-    local OptionsSC = Instance.new("UISizeConstraint", Options)
+    local OptionsSC = Instance.new("UISizeConstraint")
     OptionsSC.Name = "OptionsSC"
     OptionsSC.MinSize = Vector2.new(0, 28)
     OptionsSC.MaxSize = Vector2.new(math.huge, 32)
+    OptionsSC.Parent = Options
 
-    local Decline = Instance.new("TextButton", Options)
+    local Decline = Instance.new("TextButton")
     Decline.Name = "Decline"
     Decline.Size = UDim2.new(0.2, 0, 0.3, 0)
     Decline.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
@@ -123,32 +163,37 @@ local function CreateDisclaimer()
     Decline.ZIndex = 10
     Decline.ClipsDescendants = true
     Decline.LayoutOrder = 2
+    Decline.Parent = Options
 
-    local DeclineStroke = Instance.new("UIStroke", Decline)
+    local DeclineStroke = Instance.new("UIStroke")
     DeclineStroke.Name = "Stroke"
     DeclineStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     DeclineStroke.Thickness = 2
     DeclineStroke.Color = Color3.fromRGB(216, 0, 0)
+    DeclineStroke.Parent = Decline
 
-    local DeclineCorner = Instance.new("UICorner", Decline)
+    local DeclineCorner = Instance.new("UICorner")
     DeclineCorner.Name = "Corner"
     DeclineCorner.CornerRadius = UDim.new(0, 4)
+    DeclineCorner.Parent = Decline
 
-    local DeclinePadding = Instance.new("UIPadding", Decline)
+    local DeclinePadding = Instance.new("UIPadding")
     DeclinePadding.Name = "Padding"
     DeclinePadding.PaddingTop = UDim.new(0, 2)
     DeclinePadding.PaddingRight = UDim.new(0, 2)
     DeclinePadding.PaddingLeft = UDim.new(0, 2)
     DeclinePadding.PaddingBottom = UDim.new(0, 2)
+    DeclinePadding.Parent = Decline
 
-    local OptionsPadding = Instance.new("UIPadding", Options)
+    local OptionsPadding = Instance.new("UIPadding")
     OptionsPadding.Name = "Padding"
     OptionsPadding.PaddingTop = UDim.new(0, 2)
     OptionsPadding.PaddingRight = UDim.new(0, 2)
     OptionsPadding.PaddingLeft = UDim.new(0, 2)
     OptionsPadding.PaddingBottom = UDim.new(0, 2)
+    OptionsPadding.Parent = Options
 
-    local Description = Instance.new("TextLabel", MainFrame)
+    local Description = Instance.new("TextLabel")
     Description.Name = "Description"
     Description.Size = UDim2.new(0, 92, 0, 16)
     Description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -164,15 +209,17 @@ local function CreateDisclaimer()
     Description.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     Description.RichText = true
     Description.LayoutOrder = 2
+    Description.Parent = MainFrame
 
-    local MainLayout = Instance.new("UIListLayout", MainFrame)
+    local MainLayout = Instance.new("UIListLayout")
     MainLayout.Name = "Layout"
     MainLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
     MainLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
     MainLayout.Padding = UDim.new(0, 4)
     MainLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    MainLayout.Parent = MainFrame
 
-    local Title = Instance.new("TextLabel", MainFrame)
+    local Title = Instance.new("TextLabel")
     Title.Name = "Title"
     Title.Size = UDim2.new(0, 462, 0, 224)
     Title.Position = UDim2.new(0, -56, 0, 6)
@@ -186,30 +233,35 @@ local function CreateDisclaimer()
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     Title.LayoutOrder = 1
+    Title.Parent = MainFrame
 
-    local TitleSC = Instance.new("UISizeConstraint", Title)
+    local TitleSC = Instance.new("UISizeConstraint")
     TitleSC.Name = "TitleSC"
     TitleSC.MinSize = Vector2.new(0, 24)
     TitleSC.MaxSize = Vector2.new(math.huge, 28)
+    TitleSC.Parent = Title
 
-    local TitleGradient = Instance.new("UIGradient", Title)
+    local TitleGradient = Instance.new("UIGradient")
     TitleGradient.Name = "Gradient"
     TitleGradient.Color = ColorSequence.new{
         ColorSequenceKeypoint.new(0.000, Color3.fromRGB(255, 0, 0)),
         ColorSequenceKeypoint.new(0.471, Color3.fromRGB(189, 0, 0)),
         ColorSequenceKeypoint.new(1.000, Color3.fromRGB(189, 0, 0))
     }
+    TitleGradient.Parent = Title
 
-    local MainCorner = Instance.new("UICorner", MainFrame)
+    local MainCorner = Instance.new("UICorner")
     MainCorner.Name = "Corner"
     MainCorner.CornerRadius = UDim.new(0, 4)
+    MainCorner.Parent = MainFrame
 
-    local MainPadding = Instance.new("UIPadding", MainFrame)
+    local MainPadding = Instance.new("UIPadding")
     MainPadding.Name = "Padding"
     MainPadding.PaddingTop = UDim.new(0, 4)
     MainPadding.PaddingRight = UDim.new(0, 4)
     MainPadding.PaddingLeft = UDim.new(0, 4)
     MainPadding.PaddingBottom = UDim.new(0, 4)
+    MainPadding.Parent = MainFrame
 
     local TweenService = game:GetService("TweenService")
 
