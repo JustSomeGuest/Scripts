@@ -960,7 +960,7 @@ NoResultsLabel.FontFace = GothamMedium
 NoResultsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 NoResultsLabel.BackgroundTransparency = 1
 NoResultsLabel.Size = UDim2.new(1, 0, 0, 30)
-NoResultsLabel.Text = "No Scripts Found that match the query."
+NoResultsLabel.Text = "No scripts found matching your query."
 NoResultsLabel.Name = "NoResultsLabel"
 NoResultsLabel.Visible = false
 NoResultsLabel.Parent = SearchResults
@@ -1728,19 +1728,19 @@ local function PerformSearch(query)
     local success, response = pcall(function() return HttpGet(url) end)
     if not success or not response or not response.Body then
         NoResultsLabel.Visible = true
-        NoResultsLabel.Text = "Failed to fetch scripts. Check your connection."
+        NoResultsLabel.Text = "Failed to fetch scripts. Check your connection and try again."
         return
     end
     local decoded = HttpService:JSONDecode(response.Body)
     if not decoded or not decoded.result or not decoded.result.scripts then
         NoResultsLabel.Visible = true
-        NoResultsLabel.Text = "No Scripts Found that match the query."
+        NoResultsLabel.Text = "No scripts found matching your query."
         return
     end
     local scripts = decoded.result.scripts
     if #scripts == 0 then
         NoResultsLabel.Visible = true
-        NoResultsLabel.Text = "No Scripts Found that match the query."
+        NoResultsLabel.Text = "No scripts found matching your query."
         return
     end
     NoResultsLabel.Visible = false
