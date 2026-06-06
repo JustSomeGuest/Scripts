@@ -26,13 +26,14 @@ local Services = setmetatable({}, {
 })
 
 local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
+local TweenService = Services.TweenService
+local StarterGui = Services.StarterGui
 
 local Disclaimer = {}
 
 Disclaimer.Script = nil
 
 local function Notify(message)
-    local StarterGui = game:GetService("StarterGui")
     pcall(function()
         StarterGui:SetCore("SendNotification", {
             Title = "Disclaimer",
@@ -262,8 +263,6 @@ local function CreateDisclaimer()
     MainPadding.PaddingLeft = UDim.new(0, 4)
     MainPadding.PaddingBottom = UDim.new(0, 4)
     MainPadding.Parent = MainFrame
-
-    local TweenService = game:GetService("TweenService")
 
     local isAnimating = false
 
