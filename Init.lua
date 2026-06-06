@@ -26,20 +26,20 @@ pcall(function()
 end)
 
 --// Universal
-function Init.PolariaRM()
-    GetScript(Repo .. "Universal/PolariaRM/Init.lua")
-end
-
 function Init.Lucid()
     GetScript(Repo .. "Universal/Lucid/Init.lua")
 end
 
-function Init.Shiftlock()
-    GetScript(Repo .. "Universal/Shiftlock/Init.lua")
+function Init.PolariaRM()
+    GetScript(Repo .. "Universal/PolariaRM/Init.lua")
 end
 
 function Init.WallyWest()
     GetScript(Repo .. "Universal/WallyWest/Init.lua")
+end
+
+function Init.Shiftlock()
+    GetScript(Repo .. "Universal/Shiftlock/Init.lua")
 end
 
 function Init.DeltaKD()
