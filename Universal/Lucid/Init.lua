@@ -27,7 +27,37 @@ local Services = setmetatable({}, {
 
 getgenv().Lucid = getgenv().Lucid or {}
 
-local function DelExec()
+local WriteFile = default("function", writefile, function() return end)
+local ReadFile = default("function", readfile, function() return end)
+local DelFile = default("function", delfile, function() return end)
+local IsFile = default("function", isfile, function() return end)
+local IsFolder = default("function", isfolder, function() return end)
+local MakeFolder = default("function", makefolder, function() return end)
+local ListFiles = default("function", listfiles, function() return end)
+local LoadAsset = default("function", getcustomasset, default("function", getsynasset, function() return end))
+local SetClipboard = default("function", setclipboard, function() return end)
+
+local Workspace = Services.Workspace
+local HttpService = Services.HttpService
+local Players = Services.Players
+local Player = Players.LocalPlayer
+local UserInputService = Services.UserInputService
+local TweenService = Services.TweenService
+
+local GothamBold = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+local BuilderSans = Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+local Inconsolata = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+
+local Assets = {
+    ["Lucid/Assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/logo.png",
+    ["Lucid/Assets/executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/executor.png",
+    ["Lucid/Assets/search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/search.png",
+    ["Lucid/Assets/scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/scripts.png",
+    ["Lucid/Assets/close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/close.png",
+}
+
+local function HideExec()
 	local Safe = {
 		RobloxGui = true,
 		PlayerList = true,
@@ -94,46 +124,26 @@ local function DelExec()
 		return false
 	end
 
-	for _, Gui in ipairs(Services.CoreGui:GetChildren()) do
-		if not Safe[Gui.Name] and IsSus(Gui.Name) then
-			pcall(function()
-				Gui:Destroy()
-			end)
+	local function Scan(Parent)
+		if not Parent then
+			return
+		end
+
+		for _, Obj in ipairs(Parent:GetDescendants()) do
+			if Obj:IsA("ScreenGui") and not Safe[Obj.Name] and IsSus(Obj.Name) then
+				pcall(function()
+					Obj.Enabled = false
+				end)
+			end
 		end
 	end
+
+	Scan(Services.CoreGui)
+
+	if Hui and Hui ~= Services.CoreGui then
+		Scan(Hui)
+	end
 end
-
-DelExec()
-
-local WriteFile = default("function", writefile, function() return end)
-local ReadFile = default("function", readfile, function() return end)
-local DelFile = default("function", delfile, function() return end)
-local IsFile = default("function", isfile, function() return end)
-local IsFolder = default("function", isfolder, function() return end)
-local MakeFolder = default("function", makefolder, function() return end)
-local ListFiles = default("function", listfiles, function() return end)
-local LoadAsset = default("function", getcustomasset, default("function", getsynasset, function() return end))
-local SetClipboard = default("function", setclipboard, function() return end)
-
-local Workspace = Services.Workspace
-local HttpService = Services.HttpService
-local Players = Services.Players
-local LocalPlayer = Players.LocalPlayer
-local UserInputService = Services.UserInputService
-local TweenService = Services.TweenService
-
-local GothamBold = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-local BuilderSans = Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-local Inconsolata = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-
-local Assets = {
-    ["Lucid/Assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/logo.png",
-    ["Lucid/Assets/executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/executor.png",
-    ["Lucid/Assets/search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/search.png",
-    ["Lucid/Assets/scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/scripts.png",
-    ["Lucid/Assets/close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/close.png",
-}
 
 local function HttpGet(url)
     local RequestFunc = default("function", syn and syn.request,
@@ -170,15 +180,18 @@ local function GetImage(url)
         return LoadAsset(cachePath)
     end
 
-    local success, body = pcall(function()
-        return HttpGet(url)
-    end)
-
-    if not success or not body then
+    local response = HttpGet(url)
+    if not response or not response.Body then
         return nil
     end
 
-    WriteFile(cachePath, body)
+    local success, err = pcall(function()
+        WriteFile(cachePath, response.Body)
+    end)
+
+    if not success then
+        return nil
+    end
 
     return LoadAsset(cachePath)
 end
@@ -228,6 +241,17 @@ local function SanitizeName(name)
     return cleaned
 end
 
+local function ClearCache()
+    if IsFolder("Lucid/Cache") then
+        local files = ListFiles("Lucid/Cache")
+        for _, file in ipairs(files) do
+            pcall(function()
+                DelFile(file)
+            end)
+        end
+    end
+end
+
 if getgenv().Lucid.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "Lucid Executor",
@@ -240,8 +264,11 @@ end
 
 getgenv().Lucid.isLoaded = true
 
-local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local Hui = (gethui and gethui())
+local CoreGui = Hui or Services.CoreGui
+
+HideExec()
+
 local Lucid = Instance.new("ScreenGui")
 Lucid.IgnoreGuiInset = true
 Lucid.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
@@ -2034,3 +2061,9 @@ end)
 SetActivePage(ExeContent)
 Show.Visible = true
 MainFrame.Visible = false
+
+Players.PlayerRemoving:Connect(function(player)
+    if player == Player then
+        ClearCache()
+    end
+end)
