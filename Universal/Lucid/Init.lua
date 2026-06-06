@@ -27,6 +27,84 @@ local Services = setmetatable({}, {
 
 getgenv().Lucid = getgenv().Lucid or {}
 
+local function DelExec()
+	local Safe = {
+		RobloxGui = true,
+		PlayerList = true,
+		ExperienceChat = true,
+		BubbleChat = true,
+		DevConsole = true,
+		SocialService = true,
+		PerformanceStats = true,
+		ScreenShotTool = true,
+		EmotesMenu = true,
+		CallDialogScreen = true,
+		CaptureManager = true,
+		CaptureOverlay = true,
+		Composer = true,
+		ContactList = true,
+		Chat = true,
+		HeadsetDisconnectedDialog = true,
+		InExperienceInterventionApp = true,
+		PlayerMenuScreen = true,
+		PurchasePromptApp = true,
+		RobloxPromptGui = true,
+		ScreenshotsCarousel = true,
+		TeleportEffectGui = true,
+		TopBarApp = true,
+		ControlGui = true,
+		VehicleGui = true,
+		NotificationGui = true,
+		DescendantProtector = true,
+		AppUpdaterGui = true,
+		FaceTrackingGui = true,
+		ExperienceNotificationGui = true,
+		VoiceChatGui = true,
+		SafetyCheckGui = true,
+		ToastGui = true,
+		InGameMenuV2 = true,
+		RightClickMenu = true,
+		VoiceChatPromptGui = true,
+		BottomBarGui = true,
+		GuiService = true,
+		FullscreenTitleBar = true,
+		TextureView = true,
+		ChromeGui = true,
+		BlockingApp = true,
+		HealthGui = true,
+		StutterDetector = true,
+		AvatarContextMenuItem = true
+	}
+
+	local function IsSus(Name)
+		if #Name > 30 then
+			return true
+		end
+
+		if Name:match("[^%w%s%-%.]") then
+			return true
+		end
+
+		local Caps = select(2, Name:gsub("[A-Z]", ""))
+
+		if Caps >= 5 then
+			return true
+		end
+
+		return false
+	end
+
+	for _, Gui in ipairs(Services.CoreGui:GetChildren()) do
+		if not Safe[Gui.Name] and IsSus(Gui.Name) then
+			pcall(function()
+				Gui:Destroy()
+			end)
+		end
+	end
+end
+
+DelExec()
+
 local WriteFile = default("function", writefile, function() return end)
 local ReadFile = default("function", readfile, function() return end)
 local DelFile = default("function", delfile, function() return end)
