@@ -21,42 +21,40 @@ local function GetScript(URL)
     return loadstring(Response)()
 end
 
-pcall(function()
-    GetScript(Repo .. "Universal/PlayerController.lua")
-end)
+pcall(GetScript, Repo .. "Universal/PlayerController.luau")
 
 --// Universal
 function Init.Lucid()
-    GetScript(Repo .. "Universal/Lucid/Init.lua")
+    GetScript(Repo .. "Universal/Lucid/Init.luau")
 end
 
 function Init.PolariaRM()
-    GetScript(Repo .. "Universal/PolariaRM/Init.lua")
+    GetScript(Repo .. "Universal/PolariaRM/Init.luau")
 end
 
 function Init.WallyWest()
-    GetScript(Repo .. "Universal/WallyWest/Init.lua")
+    GetScript(Repo .. "Universal/WallyWest/Init.luau")
 end
 
 function Init.Shiftlock()
-    GetScript(Repo .. "Universal/Shiftlock/Init.lua")
+    GetScript(Repo .. "Universal/Shiftlock/Init.luau")
 end
 
 function Init.DeltaKD()
-    GetScript(Repo .. "Universal/DeltaKD.lua")
+    GetScript(Repo .. "Universal/DeltaKD.luau")
 end
 
 function Init.SoundDock()
-    GetScript(Repo .. "Universal/SoundDock.lua")
+    GetScript(Repo .. "Universal/SoundDock.luau")
 end
 
 --// Game-specific
 function Init.CombatGUI()
-    GetScript(Repo .. "Game-specific/CombatGUI/Init.lua")
+    GetScript(Repo .. "Game-specific/CombatGUI/Init.luau")
 end
 
 function Init.NebulaHub()
-    GetScript(Repo .. "Game-specific/NebulaHub/Init.lua")
+    GetScript(Repo .. "Game-specific/NebulaHub/Init.luau")
 end
 
 return Init
