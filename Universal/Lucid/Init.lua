@@ -50,11 +50,11 @@ local BuilderSans = Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.
 local Inconsolata = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 
 local Assets = {
-    ["Lucid/Assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/logo.png",
-    ["Lucid/Assets/executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/executor.png",
-    ["Lucid/Assets/search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/search.png",
-    ["Lucid/Assets/scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/scripts.png",
-    ["Lucid/Assets/close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/close.png",
+    ["Lucid/Assets/lucid_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/logo.png",
+    ["Lucid/Assets/lucid_executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/executor.png",
+    ["Lucid/Assets/lucid_search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/search.png",
+    ["Lucid/Assets/lucid_scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/scripts.png",
+    ["Lucid/Assets/lucid_close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/close.png",
 }
 
 local function HideExec()
@@ -256,7 +256,7 @@ if getgenv().Lucid.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "Lucid Executor",
         Text = "Lucid is already running!",
-        Icon = GetAsset("Lucid/Assets/logo.png"),
+        Icon = GetAsset("Lucid/Assets/lucid_logo.png"),
         Duration = 4
     })
     return
@@ -1463,7 +1463,7 @@ local Logo = Instance.new("ImageLabel")
 Logo.BorderSizePixel = 0
 Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Logo.ImageColor3 = Color3.fromRGB(241, 241, 241)
-Logo.Image = GetAsset("Lucid/Assets/logo.png")
+Logo.Image = GetAsset("Lucid/Assets/lucid_logo.png")
 Logo.Size = UDim2.new(0, 30, 0, 30)
 Logo.BackgroundTransparency = 1
 Logo.LayoutOrder = 1
@@ -1527,7 +1527,7 @@ ExeTabSizeCons.Parent = ExeTab
 local TabIconExe = Instance.new("ImageLabel")
 TabIconExe.BorderSizePixel = 0
 TabIconExe.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TabIconExe.Image = GetAsset("Lucid/Assets/executor.png")
+TabIconExe.Image = GetAsset("Lucid/Assets/lucid_executor.png")
 TabIconExe.Size = UDim2.new(0, 30, 0, 30)
 TabIconExe.BackgroundTransparency = 1
 TabIconExe.LayoutOrder = 1
@@ -1585,7 +1585,7 @@ SearchTabSizeCons.Parent = SearchTab
 local TabIconSearch = Instance.new("ImageLabel")
 TabIconSearch.BorderSizePixel = 0
 TabIconSearch.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TabIconSearch.Image = GetAsset("Lucid/Assets/search.png")
+TabIconSearch.Image = GetAsset("Lucid/Assets/lucid_search.png")
 TabIconSearch.Size = UDim2.new(0, 30, 0, 30)
 TabIconSearch.BackgroundTransparency = 1
 TabIconSearch.LayoutOrder = 1
@@ -1643,7 +1643,7 @@ ScriptsTabSizeCons.Parent = ScriptsTab
 local TabIconScripts = Instance.new("ImageLabel")
 TabIconScripts.BorderSizePixel = 0
 TabIconScripts.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TabIconScripts.Image = GetAsset("Lucid/Assets/scripts.png")
+TabIconScripts.Image = GetAsset("Lucid/Assets/lucid_scripts.png")
 TabIconScripts.Size = UDim2.new(0, 30, 0, 30)
 TabIconScripts.BackgroundTransparency = 1
 TabIconScripts.LayoutOrder = 1
@@ -1701,7 +1701,7 @@ CloseTabSizeCons.Parent = CloseTab
 local TabIconClose = Instance.new("ImageLabel")
 TabIconClose.BorderSizePixel = 0
 TabIconClose.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TabIconClose.Image = GetAsset("Lucid/Assets/close.png")
+TabIconClose.Image = GetAsset("Lucid/Assets/lucid_close.png")
 TabIconClose.Size = UDim2.new(0, 30, 0, 30)
 TabIconClose.BackgroundTransparency = 1
 TabIconClose.LayoutOrder = 1
@@ -1757,7 +1757,7 @@ ShowPadding.Parent = Show
 local ShowIcon = Instance.new("ImageLabel")
 ShowIcon.BorderSizePixel = 0
 ShowIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ShowIcon.Image = GetAsset("Lucid/Assets/logo.png")
+ShowIcon.Image = GetAsset("Lucid/Assets/lucid_logo.png")
 ShowIcon.Size = UDim2.new(1, 0, 1, 0)
 ShowIcon.BackgroundTransparency = 1
 ShowIcon.Name = "ShowIcon"
