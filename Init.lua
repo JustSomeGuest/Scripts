@@ -15,46 +15,30 @@ local function GetScript(URL)
     end
 
     if not Success then
-        error(string.format("Failed to fetch script: %s", URL))
+        error(("Failed to fetch script: %s"):format(URL))
     end
 
     return loadstring(Response)()
 end
 
-pcall(GetScript, Repo .. "Universal/PlayerController.luau")
+pcall(GetScript, Repo .. "Universal/PlayerCTRL.luau")
 
---// Universal
-function Init.Lucid()
-    GetScript(Repo .. "Universal/Lucid/Init.luau")
-end
+local Scripts = {
+    Lucid = "Universal/Lucid/Init.luau",
+    PolariaRM = "Universal/PolariaRM/Init.luau",
+    WallyWest = "Universal/WallyWest/Init.luau",
+    Shiftlock = "Universal/Shiftlock/Init.luau",
+    DeltaKD = "Universal/DeltaKD.luau",
+    SoundDock = "Universal/SoundDock.luau",
 
-function Init.PolariaRM()
-    GetScript(Repo .. "Universal/PolariaRM/Init.luau")
-end
+    CombatGUI = "Game-specific/CombatGUI/Init.luau",
+    NebulaHub = "Game-specific/NebulaHub/Init.luau"
+}
 
-function Init.WallyWest()
-    GetScript(Repo .. "Universal/WallyWest/Init.luau")
-end
-
-function Init.Shiftlock()
-    GetScript(Repo .. "Universal/Shiftlock/Init.luau")
-end
-
-function Init.DeltaKD()
-    GetScript(Repo .. "Universal/DeltaKD.luau")
-end
-
-function Init.SoundDock()
-    GetScript(Repo .. "Universal/SoundDock.luau")
-end
-
---// Game-specific
-function Init.CombatGUI()
-    GetScript(Repo .. "Game-specific/CombatGUI/Init.luau")
-end
-
-function Init.NebulaHub()
-    GetScript(Repo .. "Game-specific/NebulaHub/Init.luau")
+for Name, Path in pairs(Scripts) do
+    Init[Name] = function()
+        return GetScript(Repo .. Path)
+    end
 end
 
 return Init
