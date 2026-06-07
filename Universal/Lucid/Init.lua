@@ -609,6 +609,8 @@ InputBox.Size = UDim2.new(0, 250, 0, 280)
 InputBox.Position = UDim2.new(0, -14, 0, -76)
 InputBox.Text = ""
 InputBox.BackgroundTransparency = 0.5
+InputBox.MultiLine = true
+InputBox.ClearTextOnFocus = false
 InputBox.Parent = InputFrame
 
 local InputBoxPadding = Instance.new("UIPadding")
