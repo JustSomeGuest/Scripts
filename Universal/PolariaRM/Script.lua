@@ -34,9 +34,9 @@ local MakeFolder = default("function", makefolder, function() return end)
 local LoadAsset = default("function", getcustomasset, default("function", getsynasset, nil))
 
 local Assets = {
-    ["PolariaRM/Assets/logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/logo.png",
-    ["PolariaRM/Assets/dev.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/dev.png",
-    ["PolariaRM/Assets/shadow.png"] = "rbxassetid://15298624572",
+    ["PolariaRM/Assets/polaria_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/logo.png",
+    ["PolariaRM/Assets/polaria_dev.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/dev.png",
+    ["PolariaRM/Assets/polaria_shadow.png"] = "rbxassetid://15298624572",
 }
 
 local function HttpGet(url)
@@ -99,7 +99,7 @@ if getgenv().PolariaRM.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "PolariaRM",
         Text = "Polaria Remastered is already running!",
-        Icon = GetAsset("PolariaRM/Assets/logo.png"),
+        Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
         Duration = 4
     })
     return
@@ -138,7 +138,7 @@ Show.Position = UDim2.new(0, 20, 0, 6)
 Show.Parent = PolariaRM
 
 local ShowIcon = Instance.new("ImageLabel")
-ShowIcon.Image = GetAsset("PolariaRM/Assets/logo.png")
+ShowIcon.Image = GetAsset("PolariaRM/Assets/polaria_logo.png")
 ShowIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
 ShowIcon.BackgroundTransparency = 1
 ShowIcon.Size = UDim2.new(1,0,1,0)
@@ -194,7 +194,7 @@ Shadow.BorderSizePixel = 0
 Shadow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Shadow.ImageTransparency = 0.2
 Shadow.AnchorPoint = Vector2.new(0.5, 0.5)
-Shadow.Image = GetAsset("PolariaRM/Assets/shadow.png")
+Shadow.Image = GetAsset("PolariaRM/Assets/polaria_shadow.png")
 Shadow.Size = UDim2.new(1.059, 0, 1.088, 0)
 Shadow.BackgroundTransparency = 1
 Shadow.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -721,7 +721,7 @@ CreditsContentList.Parent = CreditsContent
 
 local DevHeadshot = Instance.new("ImageLabel")
 DevHeadshot.Name = "DevHeadshot"
-DevHeadshot.Image = GetAsset("PolariaRM/Assets/dev.png")
+DevHeadshot.Image = GetAsset("PolariaRM/Assets/polaria_dev.png")
 DevHeadshot.BorderSizePixel = 0
 DevHeadshot.ScaleType = Enum.ScaleType.Fit
 DevHeadshot.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -1576,7 +1576,7 @@ local function CreateButton(name, code)
                 SetCore(Services.StarterGui, "SendNotification", {
                     Title = "PolariaRM (Error)",
                     Text = "No backdoor found! Scan first.",
-                    Icon = GetAsset("PolariaRM/Assets/logo.png"),
+                    Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
                     Duration = 3
                 })
             end
@@ -1656,7 +1656,7 @@ Exe.MouseButton1Click:Connect(function()
         SetCore(Services.StarterGui, "SendNotification", {
             Title = "PolariaRM (Error)",
             Text = "No backdoor found! Scan first.",
-            Icon = GetAsset("PolariaRM/Assets/logo.png"),
+            Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
             Duration = 3
         })
     end
@@ -1711,7 +1711,7 @@ Re.MouseButton1Click:Connect(function()
             SetCore(Services.StarterGui, "SendNotification", {
                 Title = "PolariaRM (Error)",
                 Text = "No backdoor found! Scan first.",
-                Icon = GetAsset("PolariaRM/Assets/logo.png"),
+                Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
                 Duration = 3
             })
         end
@@ -1721,7 +1721,7 @@ Re.MouseButton1Click:Connect(function()
         SetCore(Services.StarterGui, "SendNotification", {
             Title = "PolariaRM (Error)",
             Text = "Failed to execute: " .. tostring(errorMsg),
-            Icon = GetAsset("PolariaRM/Assets/logo.png"),
+            Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
             Duration = 3
         })
     end
