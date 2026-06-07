@@ -1,26 +1,26 @@
-local function load(u)
-    local s,r = pcall(game.HttpGetAsync, game, u)
-    return loadstring(s and r or game:HttpGet(u))()
+local function Load(Url)
+    local Success, Result = pcall(game.HttpGetAsync, game, Url)
+    return loadstring(Success and Result or game:HttpGet(Url))()
 end
 
 if game.GameId ~= 3808081382 then
-    local ui = load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
+    local UI = Load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
 
-    ui:Notify({
+    UI:Notify({
         Title = "Nebula Hub",
         Content = "This only works in The Strongest Battlegrounds",
-        Duration = 3
+        Duration = 4
     })
 
     return
 end
 
-local worked = pcall(function()
-    local d = load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Disclaimer.lua")
-    d.Script = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Game-specific/NebulaHub/Script.lua"
-    d:Start()
+local Success = pcall(function()
+    local Disclaimer = Load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Disclaimer.lua")
+    Disclaimer.Script = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Game-specific/NebulaHub/Script.luau"
+    Disclaimer:Start()
 end)
 
-if not worked then
-    load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Game-specific/NebulaHub/Script.lua")
+if not Success then
+    Load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Game-specific/NebulaHub/Script.luau")
 end
