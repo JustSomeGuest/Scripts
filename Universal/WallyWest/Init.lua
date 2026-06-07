@@ -46,7 +46,7 @@ local MakeFolder = default("function", makefolder, function() end)
 local LoadAsset = default("function", getcustomasset, default("function", getsynasset, nil))
 
 local Assets = {
-    ["WallyWest/Assets/music.mp3"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/WallyWest/Assets/music.mp3",
+    ["WallyWest/Assets/wallywest_music.mp3"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/WallyWest/Assets/music.mp3",
 }
 
 local function HttpGet(url)
@@ -474,7 +474,7 @@ MainFrameStroke.Parent = MainFrame
 
 local MusicSound = Instance.new("Sound")
 if GetAsset then
-   MusicSound.SoundId = GetAsset("WallyWest/Assets/music.mp3")
+   MusicSound.SoundId = GetAsset("WallyWest/Assets/wallywest_music.mp3")
 end
 MusicSound.Looped = true
 MusicSound.Volume = 1
