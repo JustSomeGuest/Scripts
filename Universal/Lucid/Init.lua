@@ -597,6 +597,7 @@ InputFrameLayout.Parent = InputFrame
 local InputBox = Instance.new("TextBox")
 InputBox.Name = "InputBox"
 InputBox.Size = UDim2.new(0, 250, 0, 280)
+InputBox.AutomaticSize = Enum.AutomaticSize.Y
 InputBox.Position = UDim2.new(0, -14, 0, -76)
 InputBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 InputBox.BackgroundTransparency = 0.5
