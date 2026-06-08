@@ -1833,7 +1833,7 @@ local function PerformSearch(query)
         end
     end
     if query == "" then NoResultsLabel.Visible = false; return end
-    local url = "https://scriptblox.com/api/script/search?q=" .. HttpService:UrlEncode(query) .. "&max=20"
+    local url = "https://scriptblox.com/api/script/search?q=" .. HttpService:UrlEncode(query) .. "&max=20&strict=true"
     local success, response = pcall(function() return HttpGet(url) end)
     if not success or not response or not response.Body then
         NoResultsLabel.Visible = true
