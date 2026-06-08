@@ -212,7 +212,7 @@ local function GetAsset(Path)
 end
 
 local function NewCorner(cornerValue, name, parent)
-    cornerValue = (cornerValue and cornerValue ~= "") and cornerValue or "0,4"
+    cornerValue = (cornerValue and cornerValue ~= "") and cornerValue or "0,6"
     local c = Instance.new("UICorner")
     c.Name = name or "UICorner"
     local parts = {}
