@@ -25,7 +25,8 @@ local Services = setmetatable({}, {
     end
 })
 
-local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
+local Success, Hui = pcall(gethui)
+local CoreGui = Success and Hui or Services.CoreGui
 local TweenService = Services.TweenService
 local StarterGui = Services.StarterGui
 
