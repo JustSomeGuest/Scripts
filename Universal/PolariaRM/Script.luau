@@ -115,7 +115,8 @@ local UserInputService = Services.UserInputService
 local Player = Players.LocalPlayer
 local Stats = Services.Stats
 local MarketplaceService = Services.MarketplaceService
-local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
+local Success, Hui = pcall(function() return gethui and gethui() end)
+local CoreGui = Success and Hui or Services.CoreGui
 
 local backdoorRemote = nil
 local currentContent = nil
