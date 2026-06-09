@@ -25,7 +25,7 @@ local Services = setmetatable({}, {
     end
 })
 
-local Success, Hui = pcall(gethui)
+local Success, Hui = pcall(function() return gethui and gethui() end)
 local CoreGui = Success and Hui or Services.CoreGui
 local TweenService = Services.TweenService
 local StarterGui = Services.StarterGui
