@@ -48,7 +48,6 @@ local Scripts = {
     PolariaRM = "Universal/PolariaRM/Init.luau",
     WallyWest = "Universal/WallyWest/Init.luau",
     Shiftlock = "Universal/Shiftlock/Init.luau",
-    DeltaKD = "Universal/DeltaKD.luau",
     SoundDock = "Universal/SoundDock.luau",
 
     CombatGUI = "Game-specific/CombatGUI/Init.luau",
