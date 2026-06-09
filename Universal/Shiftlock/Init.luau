@@ -37,7 +37,8 @@ local Players = Services.Players
 local RunService = Services.RunService
 local UserInputService = Services.UserInputService
 local Workspace = Services.Workspace
-local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
+local Success, Hui = pcall(function() return gethui and gethui() end)
+local CoreGui = Success and Hui or Services.CoreGui
 
 local Player = Players.LocalPlayer
 local ScreenSize = Workspace.CurrentCamera.ViewportSize
