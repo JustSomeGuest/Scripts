@@ -15,13 +15,33 @@ local function GetScript(URL)
     end
 
     if not Success then
-        error(("Failed to fetch script: %s"):format(URL))
+        error(("[Init Error]: Failed to fetch script: %s"):format(tostring(Response)), 0)
     end
 
-    return loadstring(Response)()
+    local Loaded, Result = pcall(function()
+        local Chunk = loadstring(Response)
+
+        if not Chunk then
+            error("loadstring returned nil")
+        end
+
+        return Chunk()
+    end)
+
+    if not Loaded then
+        error(("[Init Error]: %s"):format(tostring(Result)), 0)
+    end
+
+    return Result
 end
 
-pcall(GetScript, Repo .. "Universal/PlayerCTRL.luau")
+local Success, Err = pcall(function()
+    GetScript(Repo .. "Universal/PlayerCTRL.luau")
+end)
+
+if not Success then
+    error(("[Init Error]: %s"):format(tostring(Err)), 0)
+end
 
 local Scripts = {
     Lucid = "Universal/Lucid/Init.luau",
@@ -37,7 +57,15 @@ local Scripts = {
 
 for Name, Path in pairs(Scripts) do
     Init[Name] = function()
-        return GetScript(Repo .. Path)
+        local Success, Result = pcall(function()
+            return GetScript(Repo .. Path)
+        end)
+
+        if not Success then
+            error(("[Init Error]: %s"):format(tostring(Result)), 0)
+        end
+
+        return Result
     end
 end
 
