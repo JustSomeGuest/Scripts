@@ -109,7 +109,8 @@ local HttpService = Services.HttpService
 local TweenService = Services.TweenService
 local UserInputService = Services.UserInputService
 local Player = Players.LocalPlayer
-local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
+local Success, Hui = pcall(function() return gethui and gethui() end)
+local CoreGui = Success and Hui or Services.CoreGui
 
 local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 
