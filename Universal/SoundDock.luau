@@ -49,7 +49,8 @@ local TweenService = Services.TweenService
 local RunService = Services.RunService
 local StarterGui = Services.StarterGui
 local UserInputService = Services.UserInputService
-local CoreGui = (gethui and select(2, pcall(gethui))) or Services.CoreGui
+local Success, Hui = pcall(function() return gethui and gethui() end)
+local CoreGui = Success and Hui or Services.CoreGui
 
 local SoundDockFolder = "SoundDock"
 local SongsFolder = SoundDockFolder .. "/Songs"
@@ -75,10 +76,10 @@ if IsFile(SettingsPath) then
     end
 end
 
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "SoundDock"
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Parent = CoreGui
+local SoundDock = Instance.new("ScreenGui")
+SoundDock.Name = "SoundDock"
+SoundDock.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+SoundDock.Parent = CoreGui
 
 local Toggle = Instance.new("ImageButton")
 Toggle.Name = "Toggle"
@@ -87,7 +88,7 @@ Toggle.BackgroundTransparency = 0.2
 Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Toggle.Size = UDim2.new(0, 44, 0, 44)
 Toggle.Position = UDim2.new(0, 20, 0, 4)
-Toggle.Parent = ScreenGui
+Toggle.Parent = SoundDock
 
 local TogglePadding = Instance.new("UIPadding")
 TogglePadding.PaddingTop = UDim.new(0, 10)
@@ -134,7 +135,7 @@ MainFrame.Position = UDim2.new(0, 76, 0, 4)
 MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 MainFrame.BackgroundTransparency = 0.2
 MainFrame.Visible = false
-MainFrame.Parent = ScreenGui
+MainFrame.Parent = SoundDock
 
 local SongName = Instance.new("TextLabel")
 SongName.Name = "SongName"
@@ -568,7 +569,7 @@ if #songs == 0 then
             Duration = 6
         })
     end)
-    ScreenGui:Destroy()
+    SoundDock:Destroy()
     return
 else
     pcall(function()
