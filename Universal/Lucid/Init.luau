@@ -264,8 +264,8 @@ end
 
 getgenv().Lucid.isLoaded = true
 
-local Hui = (gethui and gethui())
-local CoreGui = Hui or Services.CoreGui
+local Success, Hui = pcall(function() return gethui and gethui() end)
+local CoreGui = Success and Hui or Services.CoreGui
 
 HideExec()
 
