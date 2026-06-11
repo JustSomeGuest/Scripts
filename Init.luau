@@ -18,25 +18,19 @@ local function GetScript(URL)
         error(("[Init Error]: Failed to fetch script: %s"):format(tostring(Response)), 0)
     end
 
-    local Loaded, Result = pcall(function()
-        local Chunk = loadstring(Response)
+    local Chunk, Err = loadstring(Response)
 
-        if not Chunk then
-            error("loadstring returned nil")
-        end
+    if not Chunk then
+        error(("[Init Error]: %s"):format(tostring(Err)), 0)
+    end
 
-        return Chunk()
-    end)
+    local Loaded, Result = pcall(Chunk)
 
     if not Loaded then
         error(("[Init Error]: %s"):format(tostring(Result)), 0)
     end
 
     return Result
-end
-
-if not Success then
-    error(("[Init Error]: %s"):format(tostring(Err)), 0)
 end
 
 local Scripts = {
