@@ -35,10 +35,6 @@ local function GetScript(URL)
     return Result
 end
 
-local Success, Err = pcall(function()
-    GetScript(Repo .. "Universal/PlayerCTRL.luau")
-end)
-
 if not Success then
     error(("[Init Error]: %s"):format(tostring(Err)), 0)
 end
