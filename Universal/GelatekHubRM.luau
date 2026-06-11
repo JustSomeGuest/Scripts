@@ -3,9 +3,7 @@ if not game:IsLoaded() then
 end
 
 local Global = (getgenv and getgenv()) or shared
-
-local genv = getgenv and getgenv()
-genv.GelatekHubRM = genv.GelatekHubRM or {}
+Global.GelatekHubRM = Global.GelatekHubRM or {}
 
 local function default(expected, value, fallback)
     if type(value) == expected then return value end
@@ -27,7 +25,7 @@ local Services = setmetatable({}, {
     end
 })
 
-if genv.GelatekHubRM.isLoaded then
+if Global.GelatekHubRM.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "GelatekHubRM",
         Text = "Gelatek Hub Remastered is already running!",
@@ -36,7 +34,7 @@ if genv.GelatekHubRM.isLoaded then
     return
 end
 
-genv.GelatekHubRM.isLoaded = true
+Global.GelatekHubRM.isLoaded = true
 
 local function SafeCall(func, ...)
     local ok, result = pcall(func, ...)
@@ -65,7 +63,7 @@ local function Run(url)
         fn()
     end)
     if not ok then
-        warn("[GelatekHub Run]: " .. tostring(result))
+        warn("[Gelatek Hub]: " .. tostring(result))
         Services.StarterGui:SetCore("SendNotification", {
             Title = "Script Error",
             Text = "Failed to load script. Check console.",
@@ -73,6 +71,31 @@ local function Run(url)
         })
     end
 end
+
+local WriteFile = default("function", writefile, function() return end)
+local IsFile = default("function", isfile, function() return false end)
+local IsFolder = default("function", isfolder, function() return false end)
+local MakeFolder = default("function", makefolder, function() return end)
+
+local function CheckAudioPackage()
+    if not WriteFile or not IsFile or not MakeFolder or not IsFolder then
+        return
+    end
+
+    if IsFolder("GelatekHub") then
+        return
+    end
+
+    local ok, err = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/packages/AudioPack.lua"))()
+    end)
+
+    if not ok then
+        warn("[Gelatek Hub]: Failed to install audio package: " .. tostring(err))
+    end
+end
+
+SafeCall(CheckAudioPackage)
 
 Run("https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/packages/FunctionPack.lua")
 
@@ -859,6 +882,6 @@ end)
 Close.MouseButton1Click:Connect(function()
     SafeCall(function()
         GelatekHub:Destroy()
-        genv.GelatekHubRM.isLoaded = false
+        Global.GelatekHubRM.isLoaded = false
     end)
 end)
