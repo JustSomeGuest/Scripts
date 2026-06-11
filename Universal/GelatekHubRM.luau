@@ -77,7 +77,7 @@ end
 Run("https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/packages/FunctionPack.lua")
 
 Global.GelatekHubConfig = {
-    ["Permanent Death"] = true,
+    ["Permanent Death"] = false,
     ["Torso Fling"] = false,
     ["Bullet Enabled"] = false,
     ["Enable Collisions"] = false,
