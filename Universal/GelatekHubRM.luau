@@ -99,6 +99,10 @@ SafeCall(CheckAudioPackage)
 
 Run("https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/packages/FunctionPack.lua")
 
+local Games = {
+  ["Just A Baseplate"] = 123974602339071,
+}
+
 Global.GelatekHubConfig = {
     ["Permanent Death"] = false,
     ["Torso Fling"] = false,
@@ -219,7 +223,7 @@ Title.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontW
 Title.TextColor3 = Color3.fromRGB(255, 88, 91)
 Title.BackgroundTransparency = 1
 Title.Size = UDim2.new(0.8, 0, 1, 0)
-Title.Text = "Gelatek Hub Remastered"
+Title.Text = "Gelatek Hub Remastered • " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
 Title.LayoutOrder = 1
 Title.Name = "Title"
 Title.Parent = Topbar
@@ -761,122 +765,148 @@ MakeToggle(DisableAnims, DisableAnimsToggle, "Disable Anims")
 
 local BASE = "https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/"
 
-ReanimateBtn.MouseButton1Click:Connect(function() 
-    Run(BASE .. "lib/Reanimate.lua") 
-end)
+local function IsGame(targetPlaceId)
+    return game.PlaceId == targetPlaceId
+end
+
+if IsGame(Games["Just A Baseplate"]) then
+    local CmdEvent = game:GetService("ReplicatedStorage"):WaitForChild("01_server")
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    
+    local function WaitForDeath()
+        local character = LocalPlayer.Character
+        if not character then
+            character = LocalPlayer.CharacterAdded:Wait()
+        end
+        local humanoid = character:WaitForChild("Humanoid")
+        local connection
+        connection = humanoid.HealthChanged:Connect(function(health)
+            if health <= 0 then
+                connection:Disconnect()
+            end
+        end)
+    end
+    
+    ReanimateBtn.MouseButton1Click:Connect(function()
+        if Global.GelatekHubConfig["Permanent Death"] then
+            CmdEvent:FireServer("cmd", "-pd")
+        end
+        task.wait(2)
+        if Global.GelatekHubConfig["Keep Hats On Head"] then
+            CmdEvent:FireServer("cmd", "-net")
+        end
+        task.wait(2)
+        Run(BASE .. "lib/Reanimate.lua")
+        WaitForDeath()
+        task.wait(0.1)
+        CmdEvent:FireServer("cmd", "-net")
+    end)
+    
+    local hatIdMap = {
+        [CopyR6BulletHat] = "48474313",
+        [CopyDualUltimaHats] = "4524991457,4820152700",
+        [CopyTheHotlineHats] = "4962455546",
+        [CopyCarnageHats] = "5134896593,5410674378",
+        [CopyNeptunianVHats] = "4506945409",
+        [CopyZenithBattleRifleHats] = "4962510729,4962455546",
+        [CopyChipsHats] = "4964938812",
+        [CopyVoidScytheHats] = "5414429551",
+        [CopyVoodooDollHats] = "7218265043,7170689370",
+        [CopyQuenoxHats] = "4820152700,4794315940,4524991457,4315489767,4458601937,4506945409",
+        [CopyGonerHats] = "6869866014",
+    }
+    for btn, ids in pairs(hatIdMap) do
+        btn.Text = btn.Text:gsub("^Copy", "Get"):gsub("Hat Id%(s%)", "Hat(s)")
+        btn.MouseButton1Click:Connect(function()
+            CmdEvent:FireServer("cmd", "-gh " .. ids)
+        end)
+    end
+else
+    ReanimateBtn.MouseButton1Click:Connect(function()
+        Run(BASE .. "lib/Reanimate.lua")
+    end)
+    
+    local function CopyToClipboard(text)
+        SafeCall(function()
+            if type(setclipboard) == "function" then
+                setclipboard(text)
+                Services.StarterGui:SetCore("SendNotification", { Title = "Copied!", Text = text, Duration = 2 })
+            else
+                warn("[GelatekHub]: setclipboard not available")
+            end
+        end)
+    end
+    CopyR6BulletHat.MouseButton1Click:Connect(function() CopyToClipboard("48474313") end)
+    CopyDualUltimaHats.MouseButton1Click:Connect(function() CopyToClipboard("4524991457,4820152700") end)
+    CopyTheHotlineHats.MouseButton1Click:Connect(function() CopyToClipboard("4962455546") end)
+    CopyCarnageHats.MouseButton1Click:Connect(function() CopyToClipboard("5134896593,5410674378") end)
+    CopyNeptunianVHats.MouseButton1Click:Connect(function() CopyToClipboard("4506945409") end)
+    CopyZenithBattleRifleHats.MouseButton1Click:Connect(function() CopyToClipboard("4962510729,4962455546") end)
+    CopyChipsHats.MouseButton1Click:Connect(function() CopyToClipboard("4964938812") end)
+    CopyVoidScytheHats.MouseButton1Click:Connect(function() CopyToClipboard("5414429551") end)
+    CopyVoodooDollHats.MouseButton1Click:Connect(function() CopyToClipboard("7218265043,7170689370") end)
+    CopyQuenoxHats.MouseButton1Click:Connect(function() CopyToClipboard("4820152700,4794315940,4524991457,4315489767,4458601937,4506945409") end)
+    CopyGonerHats.MouseButton1Click:Connect(function() CopyToClipboard("6869866014") end)
+end
 
 Deanimate.MouseButton1Click:Connect(BetterStopScript)
 HatScriptsDeanimate.MouseButton1Click:Connect(BetterStopScript)
 
-GaleFighter.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/GaleFighter.lua") 
+GaleFighter.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/GaleFighter.lua")
 end)
 
-Ender.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/Ender.lua") 
+Ender.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/Ender.lua")
 end)
 
-Caducus.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/Cadacus.lua") 
+Caducus.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/Cadacus.lua")
 end)
 
-Keyboard.MouseButton1Click:Connect(function() 
-    Run("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/DeltaKD.luau") 
+Keyboard.MouseButton1Click:Connect(function()
+    Run("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/DeltaKD.luau")
 end)
 
-DualUltima.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/DualUltima.lua") 
+DualUltima.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/DualUltima.lua")
 end)
 
-TheHotline.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/TheHotline.lua") 
+TheHotline.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/TheHotline.lua")
 end)
 
-Carnage.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/TheCarnage.lua") 
+Carnage.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/TheCarnage.lua")
 end)
 
-NeptunianV.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/NeptunianV.lua") 
+NeptunianV.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/NeptunianV.lua")
 end)
 
-ZenithBattleRifle.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/ZenithAttackRifle.lua") 
+ZenithBattleRifle.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/ZenithAttackRifle.lua")
 end)
 
-Chips.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/TheChips.lua") 
+Chips.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/TheChips.lua")
 end)
 
-VoidScythe.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/VoidScythe.lua") 
+VoidScythe.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/VoidScythe.lua")
 end)
 
-VoodooDoll.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/VoodooDoll.lua") 
+VoodooDoll.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/VoodooDoll.lua")
 end)
 
-Quenox.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/Quenox.lua") 
+Quenox.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/Quenox.lua")
 end)
 
-Goner.MouseButton1Click:Connect(function() 
-    Run(BASE .. "scripts/Goner.lua") 
-end)
-
-local function CopyToClipboard(text)
-    SafeCall(function()
-        if type(setclipboard) == "function" then
-            setclipboard(text)
-            Services.StarterGui:SetCore("SendNotification", { Title = "Copied!", Text = text, Duration = 2 })
-        else
-            warn("[GelatekHub]: setclipboard not available")
-        end
-    end)
-end
-
-CopyR6BulletHat.MouseButton1Click:Connect(function() 
-    CopyToClipboard("48474313") 
-end)
-
-CopyDualUltimaHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("4524991457,4820152700") 
-end)
-
-CopyTheHotlineHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("4962455546") 
-end)
-
-CopyCarnageHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("5134896593,5410674378") 
-end)
-
-CopyNeptunianVHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("4506945409") 
-end)
-
-CopyZenithBattleRifleHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("4962510729,4962455546") 
-end)
-
-CopyChipsHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("4964938812") 
-end)
-
-CopyVoidScytheHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("5414429551") 
-end)
-
-CopyVoodooDollHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("7218265043,7170689370") 
-end)
-
-CopyQuenoxHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("4820152700,4794315940,4524991457,4315489767,4458601937,4506945409") 
-end)
-
-CopyGonerHats.MouseButton1Click:Connect(function() 
-    CopyToClipboard("6869866014") 
+Goner.MouseButton1Click:Connect(function()
+    Run(BASE .. "scripts/Goner.lua")
 end)
 
 Close.MouseButton1Click:Connect(function()
