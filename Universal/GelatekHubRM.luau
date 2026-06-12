@@ -121,6 +121,22 @@ Global.GelatekHubConfig = {
     ["Disable Anims"] = false,
 }
 
+local Player = Services.Players.LocalPlayer
+
+local function WaitForDeath()
+    local character = Player.Character
+    if not character then
+        character = Player.CharacterAdded:Wait()
+    end
+    local humanoid = character:WaitForChild("Humanoid")
+    local connection
+    connection = humanoid.HealthChanged:Connect(function(health)
+        if health <= 0 then
+            connection:Disconnect()
+        end
+    end)
+end
+
 local Success, Hui = pcall(function() return gethui and gethui() end)
 local CoreGui = (Success and Hui) or Services.CoreGui
 local TweenService = Services.TweenService
@@ -774,22 +790,6 @@ local BASE = "https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/
 
 if IsGame("Just A Baseplate") then
     local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
-    local Players = Services.Players
-    local LocalPlayer = Players.LocalPlayer
-    
-    local function WaitForDeath()
-        local character = LocalPlayer.Character
-        if not character then
-            character = LocalPlayer.CharacterAdded:Wait()
-        end
-        local humanoid = character:WaitForChild("Humanoid")
-        local connection
-        connection = humanoid.HealthChanged:Connect(function(health)
-            if health <= 0 then
-                connection:Disconnect()
-            end
-        end)
-    end
     
     ReanimateBtn.MouseButton1Click:Connect(function()
         if Global.GelatekHubConfig["Permanent Death"] then
@@ -891,6 +891,14 @@ GalaxySlasher.MouseButton1Click:Connect(function()
         CmdEvent:FireServer("cmd", "-pd")
         task.wait(2)
         Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
+        WaitForDeath()
+        task.wait(0.5)
+        local character = Player.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local hrp = character.HumanoidRootPart
+            hrp.Transparency = 1
+            hrp.CastShadow = false
+        end
     else
         Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
     end
