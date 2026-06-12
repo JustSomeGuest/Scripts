@@ -568,7 +568,7 @@ local EnableAntivoid, AntivoidToggle = MakeToggleButton(ReanimContent, "Antivoid
 MakeDivider(HatScriptsContent, 2)
 local HatScriptsDeanimate = MakeButton(HatScriptsContent, "- [ Deanimate ] -", 1)
 local DualUltima = MakeButton(HatScriptsContent, "Dual Ultima", 3)
-local TheHotline = MakeButton(HatScriptsContent, "The Hotline", 4)
+local GalaxySlasher = MakeButton(HatScriptsContent, "Galaxy Slasher", 4)
 local Carnage = MakeButton(HatScriptsContent, "Carnage", 5)
 local NeptunianV = MakeButton(HatScriptsContent, "Neptunian V", 6)
 local ZenithBattleRifle = MakeButton(HatScriptsContent, "Zenith Battle Rifle-70", 7)
@@ -581,7 +581,7 @@ local Goner = MakeButton(HatScriptsContent, "Goner", 12)
 MakeDivider(HatsContent, 2)
 local CopyR6BulletHat = MakeButton(HatsContent, "Copy R6 Bullet Hat Id(s)", 1)
 local CopyDualUltimaHats = MakeButton(HatsContent, "Copy Dual Ultima Hat Id(s)", 3)
-local CopyTheHotlineHats = MakeButton(HatsContent, "Copy The Hotline Hat Id(s)", 4)
+local CopyGalaxySlasherHats = MakeButton(HatsContent, "Copy Galaxy Slasher Hat Id(s)", 4)
 local CopyCarnageHats = MakeButton(HatsContent, "Copy Carnage Hat Id(s)", 5)
 local CopyNeptunianVHats = MakeButton(HatsContent, "Copy Neptunian V Hat Id(s)", 6)
 local CopyZenithBattleRifleHats = MakeButton(HatsContent, "Copy Zenith Battle Rifle-70 Hat Id(s)", 7)
@@ -806,7 +806,7 @@ if IsGame(Games["Just A Baseplate"]) then
     local hatIdMap = {
         [CopyR6BulletHat] = "48474313",
         [CopyDualUltimaHats] = "4524991457,4820152700",
-        [CopyTheHotlineHats] = "4962455546",
+        [CopyGalaxySlasherHats] = "7548993875",
         [CopyCarnageHats] = "5134896593,5410674378",
         [CopyNeptunianVHats] = "4506945409",
         [CopyZenithBattleRifleHats] = "4962510729,4962455546",
@@ -839,7 +839,7 @@ else
     end
     CopyR6BulletHat.MouseButton1Click:Connect(function() CopyToClipboard("48474313") end)
     CopyDualUltimaHats.MouseButton1Click:Connect(function() CopyToClipboard("4524991457,4820152700") end)
-    CopyTheHotlineHats.MouseButton1Click:Connect(function() CopyToClipboard("4962455546") end)
+    CopyGalaxySlasherHats.MouseButton1Click:Connect(function() CopyToClipboard("7548993875") end)
     CopyCarnageHats.MouseButton1Click:Connect(function() CopyToClipboard("5134896593,5410674378") end)
     CopyNeptunianVHats.MouseButton1Click:Connect(function() CopyToClipboard("4506945409") end)
     CopyZenithBattleRifleHats.MouseButton1Click:Connect(function() CopyToClipboard("4962510729,4962455546") end)
@@ -873,8 +873,8 @@ DualUltima.MouseButton1Click:Connect(function()
     Run(BASE .. "scripts/DualUltima.lua")
 end)
 
-TheHotline.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/TheHotline.lua")
+GalaxySlasher.MouseButton1Click:Connect(function()
+    Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
 end)
 
 Carnage.MouseButton1Click:Connect(function()
