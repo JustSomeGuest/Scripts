@@ -36,7 +36,7 @@ end
 local Scripts = {
     Lucid = "Universal/Lucid/Init.luau",
     PolariaRM = "Universal/PolariaRM/Init.luau",
-    GelatekHubRM = "Universal/GelatekHubRM.luau",
+    GelatekHubRM = "Universal/GelatekHubRM/Init.luau",
     WallyWest = "Universal/WallyWest/Init.luau",
     Shiftlock = "Universal/Shiftlock/Init.luau",
     SoundDock = "Universal/SoundDock.luau",
