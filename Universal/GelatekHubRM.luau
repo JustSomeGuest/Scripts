@@ -100,8 +100,14 @@ SafeCall(CheckAudioPackage)
 Run("https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/packages/FunctionPack.lua")
 
 local Games = {
-  ["Just A Baseplate"] = 123974602339071,
+    ["Just A Baseplate"] = 123974602339071,
 }
+
+local function IsGame(gameName)
+    local placeId = Games[gameName]
+    if not placeId then return false end
+    return game.PlaceId == placeId
+end
 
 Global.GelatekHubConfig = {
     ["Permanent Death"] = false,
@@ -223,7 +229,7 @@ Title.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontW
 Title.TextColor3 = Color3.fromRGB(255, 88, 91)
 Title.BackgroundTransparency = 1
 Title.Size = UDim2.new(0.8, 0, 1, 0)
-Title.Text = "Gelatek Hub Remastered • " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+Title.Text = "Gelatek Hub Remastered • " .. Services.MarketplaceService:GetProductInfo(game.PlaceId).Name
 Title.LayoutOrder = 1
 Title.Name = "Title"
 Title.Parent = Topbar
@@ -552,7 +558,8 @@ local GaleFighter = MakeButton(FreeScriptsContent, "Gale Fighter", 3)
 local Ender = MakeButton(FreeScriptsContent, "Ender", 4)
 local Caducus = MakeButton(FreeScriptsContent, "Caducus", 5)
 MakeDivider(FreeScriptsContent, 6)
-local Keyboard = MakeButton(FreeScriptsContent, "Keyboard", 7)
+local Shiftlock = MakeButton(FreeScriptsContent, "Shiftlock", 7)
+local Keyboard = MakeButton(FreeScriptsContent, "Keyboard", 8)
 
 MakeDivider(ReanimContent, 2)
 local ReanimateBtn = MakeButton(ReanimContent, "- [ Reanimate ] -", 1)
@@ -568,7 +575,7 @@ local EnableAntivoid, AntivoidToggle = MakeToggleButton(ReanimContent, "Antivoid
 MakeDivider(HatScriptsContent, 2)
 local HatScriptsDeanimate = MakeButton(HatScriptsContent, "- [ Deanimate ] -", 1)
 local DualUltima = MakeButton(HatScriptsContent, "Dual Ultima", 3)
-local GalaxySlasher = MakeButton(HatScriptsContent, "Galaxy Slasher", 4)
+local GalaxySlasher = MakeButton(HatScriptsContent, "Galaxy Slasher (Don't Reanimate)", 4)
 local Carnage = MakeButton(HatScriptsContent, "Carnage", 5)
 local NeptunianV = MakeButton(HatScriptsContent, "Neptunian V", 6)
 local ZenithBattleRifle = MakeButton(HatScriptsContent, "Zenith Battle Rifle-70", 7)
@@ -640,7 +647,7 @@ local function Dragify(DragObject, MoveObject)
     local dragging, dragInput, dragStart, startPos = false, nil, nil, nil
 
     local function ClampPosition(newX, newY)
-        local viewport = workspace.CurrentCamera.ViewportSize
+        local viewport = Services.Workspace.CurrentCamera.ViewportSize
         local size = MoveObject.AbsoluteSize
         local padding = 3
         return math.clamp(newX, padding, viewport.X - size.X - padding),
@@ -765,13 +772,9 @@ MakeToggle(DisableAnims, DisableAnimsToggle, "Disable Anims")
 
 local BASE = "https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/"
 
-local function IsGame(targetPlaceId)
-    return game.PlaceId == targetPlaceId
-end
-
-if IsGame(Games["Just A Baseplate"]) then
-    local CmdEvent = game:GetService("ReplicatedStorage"):WaitForChild("01_server")
-    local Players = game:GetService("Players")
+if IsGame("Just A Baseplate") then
+    local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
+    local Players = Services.Players
     local LocalPlayer = Players.LocalPlayer
     
     local function WaitForDeath()
@@ -820,6 +823,8 @@ if IsGame(Games["Just A Baseplate"]) then
         btn.Text = btn.Text:gsub("^Copy", "Get"):gsub("Hat Id%(s%)", "Hat(s)")
         btn.MouseButton1Click:Connect(function()
             CmdEvent:FireServer("cmd", "-gh " .. ids)
+            task.wait(2)
+            CmdEvent:FireServer("cmd", "-net")
         end)
     end
 else
@@ -865,6 +870,13 @@ Caducus.MouseButton1Click:Connect(function()
     Run(BASE .. "scripts/Cadacus.lua")
 end)
 
+Shiftlock.MouseButton1Click:Connect(function()
+    Run("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau")
+    SafeCall(function()
+        Init.Shiftlock()
+    end)
+end)
+
 Keyboard.MouseButton1Click:Connect(function()
     Run("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/DeltaKD.luau")
 end)
@@ -874,7 +886,14 @@ DualUltima.MouseButton1Click:Connect(function()
 end)
 
 GalaxySlasher.MouseButton1Click:Connect(function()
-    Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
+    if IsGame("Just A Baseplate") then
+        local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
+        CmdEvent:FireServer("cmd", "-pd")
+        task.wait(2)
+        Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
+    else
+        Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
+    end
 end)
 
 Carnage.MouseButton1Click:Connect(function()
