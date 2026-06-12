@@ -122,7 +122,6 @@ Global.GelatekHubConfig = {
 }
 
 local Player = Services.Players.LocalPlayer
-local Wait = task.wait
 
 local function WaitForDeath()
     local character = Player.Character
@@ -764,7 +763,7 @@ SelectTab("Home")
 local function BetterStopScript()
     SafeCall(function()
         StopScript()
-        Wait(0.25)
+        task.wait(0.25)
         StopScript()
     end)
 end
@@ -796,14 +795,14 @@ if IsGame("Just A Baseplate") then
         if Global.GelatekHubConfig["Permanent Death"] then
             CmdEvent:FireServer("cmd", "-pd")
         end
-        Wait(2)
+        task.wait(2)
         if Global.GelatekHubConfig["Keep Hats On Head"] then
             CmdEvent:FireServer("cmd", "-net")
         end
-        Wait(2)
+        task.wait(2)
         Run(BASE .. "lib/Reanimate.lua")
         WaitForDeath()
-        Wait(0.1)
+        task.wait(0.1)
         CmdEvent:FireServer("cmd", "-net")
     end)
     
@@ -824,7 +823,7 @@ if IsGame("Just A Baseplate") then
         btn.Text = btn.Text:gsub("^Copy", "Get"):gsub("Hat Id%(s%)", "Hat(s)")
         btn.MouseButton1Click:Connect(function()
             CmdEvent:FireServer("cmd", "-gh " .. ids)
-            Wait(2)
+            task.wait(2)
             CmdEvent:FireServer("cmd", "-net")
         end)
     end
@@ -890,15 +889,13 @@ GalaxySlasher.MouseButton1Click:Connect(function()
     if IsGame("Just A Baseplate") then
         local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
         CmdEvent:FireServer("cmd", "-pd")
-        Wait(2)
+        task.wait(2)
         Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
         WaitForDeath()
-        Wait(1)
-        local character = Player.Character
-        if character and character:FindFirstChild("HumanoidRootPart") then
-            local hrp = character.HumanoidRootPart
-            hrp.Transparency = 1
-            hrp.CastShadow = false
+        task.wait(0.5)
+        if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
+            Player.Character.HumanoidRootPart.Transparency = 1
+            Player.Character.HumanoidRootPart.CastShadow = false
         end
     else
         Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
