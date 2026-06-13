@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Global = (pcall(getgenv) and getgenv()) or warn("[MobileWASD]: Executor doesn't support getgenv()")
+local Global = (pcall(getgenv) and getgenv()) or warn("[SoundDock]: Executor doesn't support getgenv()")
 
 local function default(expected, value, fallback)
     if type(value) == expected then
