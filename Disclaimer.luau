@@ -2,6 +2,8 @@ if not game:IsLoaded() then
     game.Loaded:Wait() 
 end
 
+local Global = (pcall(getgenv) and getgenv()) or warn("[Disclaimer]: Executor doesn't support getgenv()")
+
 local function default(expected, value, fallback)
     if type(value) == expected then
         return value
