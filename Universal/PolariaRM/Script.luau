@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-getgenv().PolariaRM = getgenv().PolariaRM or {}
+local Global = (pcall(getgenv) and getgenv()) or warn("[Polaria Remastered]: Executor doesn't support getgenv()")
 
 local function default(expected, value, fallback)
     if type(value) == expected then
@@ -95,7 +95,9 @@ local function GetAsset(Path)
     return LoadAsset(Path)
 end
 
-if getgenv().PolariaRM.isLoaded then
+Global.PolariaRM = Global.PolariaRM or {}
+
+if Global.PolariaRM.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "PolariaRM",
         Text = "Polaria Remastered is already running!",
@@ -105,7 +107,7 @@ if getgenv().PolariaRM.isLoaded then
     return
 end
 
-getgenv().PolariaRM.isLoaded = true
+Global.PolariaRM.isLoaded = true
 
 local Players = Services.Players
 local RunService = Services.RunService
@@ -1315,7 +1317,7 @@ end)
 
 Close.MouseButton1Click:Connect(function()
     PolariaRM:Destroy()
-    getgenv().PolariaRM.isLoaded = false
+    Global.PolariaRM.isLoaded = false
 end)
 
 Hide.MouseButton1Click:Connect(function()
