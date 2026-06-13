@@ -2,8 +2,10 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-getgenv().Init = getgenv().Init or {}
-local Init = getgenv().Init
+local Global = (pcall(getgenv) and getgenv()) or warn("[Init]: Executor doesn't support getgenv()")
+
+Global.Init = Global.Init or {}
+local Init = Global.Init
 
 local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/"
 
