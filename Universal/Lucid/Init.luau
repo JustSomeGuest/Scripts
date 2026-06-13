@@ -2,6 +2,8 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end 
 
+local Global = (pcall(getgenv) and getgenv()) or warn("[Lucid]: Executor doesn't support getgenv()")
+
 local function default(expected, value, fallback)
     if type(value) == expected then
         return value
@@ -25,7 +27,7 @@ local Services = setmetatable({}, {
     end
 })
 
-getgenv().Lucid = getgenv().Lucid or {}
+Global.Lucid = Global.Lucid or {}
 
 local WriteFile = default("function", writefile, function() return end)
 local ReadFile = default("function", readfile, function() return end)
@@ -252,7 +254,7 @@ local function ClearCache()
     end
 end
 
-if getgenv().Lucid.isLoaded then
+if Global.Lucid.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "Lucid Executor",
         Text = "Lucid is already running!",
@@ -262,7 +264,7 @@ if getgenv().Lucid.isLoaded then
     return
 end
 
-getgenv().Lucid.isLoaded = true
+Global.Lucid.isLoaded = true
 
 local Success, Hui = pcall(function() return gethui and gethui() end)
 local CoreGui = Success and Hui or Services.CoreGui
