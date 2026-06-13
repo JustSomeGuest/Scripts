@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-getgenv().CombatGUI = getgenv().CombatGUI or {}
+local Global = (pcall(getgenv) and getgenv()) or warn("[CombatGUI+]: Executor doesn't support getgenv()")
 
 local function default(expected, value, fallback)
     if type(value) == expected then
@@ -27,7 +27,9 @@ local Services = setmetatable({}, {
     end
 })
 
-if getgenv().CombatGUI.isLoaded then
+Global.CombatGUI = Global.CombatGUI or {}
+
+if Global.CombatGUI.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "Combat GUI+",
         Text = "Combat GUI+ is already running!",
@@ -36,9 +38,14 @@ if getgenv().CombatGUI.isLoaded then
     error("Combat GUI+ is already running", 0)
 end
 
-getgenv().CombatGUI.isLoaded = true
+Global.CombatGUI.isLoaded = true
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Cyborg883/CombatGUI/main/TSBCombatGUI"))()
+local function load(url)
+    local Success, Response = pcall(game.HttpGet, game, url)
+    return loadstring(Success and Response or game:HttpGet(url))()
+end
+
+load("https://raw.githubusercontent.com/Cyborg883/CombatGUI/main/TSBCombatGUI")
 
 task.wait(0.5)
 
@@ -416,7 +423,7 @@ end
 
 CloseButton.MouseButton1Click:Connect(function()
     AutoBlockGui:Destroy()
-    getgenv().CombatGUI.isLoaded = false
+    Global.CombatGUI.isLoaded = false
 end)
 
 BlockButton.Text = ""
