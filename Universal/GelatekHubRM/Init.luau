@@ -5,6 +5,10 @@ end
 local Global = (getgenv and getgenv()) or shared
 Global.GelatekHubRM = Global.GelatekHubRM or {}
 
+local BASE = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM"
+local PACKAGES = BASE .. "/Packages"
+local SCRIPTS = BASE .. "/Scripts"
+
 local function default(expected, value, fallback)
     if type(value) == expected then return value end
     return fallback
@@ -42,7 +46,7 @@ local function SafeCall(func, ...)
     return ok, result
 end
 
-local function Run(url)
+local function load(url)
     local ok, result = pcall(function()
         local src
         local asyncOk, asyncErr = pcall(function()
@@ -82,12 +86,12 @@ local function CheckAudioPackage()
         return
     end
 
-    if IsFolder("GelatekHub") then
+    if IsFolder("GelatekHubRemastered") then
         return
     end
 
     local ok, err = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/packages/AudioPack.lua"))()
+        load(PACKAGES .. "/Audios.luau")
     end)
 
     if not ok then
@@ -97,7 +101,7 @@ end
 
 SafeCall(CheckAudioPackage)
 
-Run("https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/packages/FunctionPack.lua")
+load(PACKAGES .. "/Functions.luau")
 
 local Games = {
     ["Just A Baseplate"] = 123974602339071,
@@ -787,8 +791,6 @@ MakeToggle(EnableHeadless, HeadlessToggle, "Headless On Perma")
 MakeToggle(EnableAntivoid, AntivoidToggle, "Anti Void")
 MakeToggle(DisableAnims, DisableAnimsToggle, "Disable Anims")
 
-local BASE = "https://raw.githubusercontent.com/Gelatekussy/GelatekHub/main/src/"
-
 if IsGame("Just A Baseplate") then
     local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
     
@@ -801,7 +803,7 @@ if IsGame("Just A Baseplate") then
             CmdEvent:FireServer("cmd", "-net")
         end
         Wait(2)
-        Run(BASE .. "lib/Reanimate.lua")
+        load(PACKAGES .. "/Reanimate.luau")
         WaitForDeath()
         Wait(0.1)
         CmdEvent:FireServer("cmd", "-net")
@@ -830,7 +832,7 @@ if IsGame("Just A Baseplate") then
     end
 else
     ReanimateBtn.MouseButton1Click:Connect(function()
-        Run(BASE .. "lib/Reanimate.lua")
+        load(PACKAGES .. "/Reanimate.luau")
     end)
     
     local function CopyToClipboard(text)
@@ -860,30 +862,33 @@ Deanimate.MouseButton1Click:Connect(BetterStopScript)
 HatScriptsDeanimate.MouseButton1Click:Connect(BetterStopScript)
 
 GaleFighter.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/GaleFighter.lua")
+    load(SCRIPTS .. "/GaleFighter.luau")
 end)
 
 Ender.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/Ender.lua")
+    load(SCRIPTS .. "/Ender.luau")
 end)
 
 Caducus.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/Cadacus.lua")
+    load(SCRIPTS .. "/Caducus.luau")
 end)
 
 Shiftlock.MouseButton1Click:Connect(function()
-    Run("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau")
+    load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau")
     SafeCall(function()
         Init.Shiftlock()
     end)
 end)
 
 Keyboard.MouseButton1Click:Connect(function()
-    Run("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/DeltaKD.luau")
+    load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau")
+    SafeCall(function()
+        Init.DeltaKD()
+    end)
 end)
 
 DualUltima.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/DualUltima.lua")
+    load(SCRIPTS .. "/DualUltima.luau")
 end)
 
 GalaxySlasher.MouseButton1Click:Connect(function()
@@ -891,42 +896,42 @@ GalaxySlasher.MouseButton1Click:Connect(function()
         local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
         CmdEvent:FireServer("cmd", "-pd")
         Wait(2)
-        Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
+        load(SCRIPTS .. "/GalaxySlasher.luau")
     else
-        Run("https://raw.githubusercontent.com/banishercool/banishercool/main/Feslasherscript.lua")
+        load(SCRIPTS .. "/GalaxySlasher.luau")
     end
 end)
 
 Carnage.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/TheCarnage.lua")
+    load(SCRIPTS .. "/Carnage.luau")
 end)
 
 NeptunianV.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/NeptunianV.lua")
+    load(SCRIPTS .. "/Neptunian.luau")
 end)
 
 ZenithBattleRifle.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/ZenithAttackRifle.lua")
+    load(SCRIPTS .. "/ZenithAttackRifle.luau")
 end)
 
 Chips.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/TheChips.lua")
+    load(SCRIPTS .. "/Chips.luau")
 end)
 
 VoidScythe.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/VoidScythe.lua")
+    load(SCRIPTS .. "/VoidScythe.luau")
 end)
 
 VoodooDoll.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/VoodooDoll.lua")
+    load(SCRIPTS .. "/VoodooDoll.luau")
 end)
 
 Quenox.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/Quenox.lua")
+    load(SCRIPTS .. "/Quenox.luau")
 end)
 
 Goner.MouseButton1Click:Connect(function()
-    Run(BASE .. "scripts/Goner.lua")
+    load(SCRIPTS .. "/Goner.luau")
 end)
 
 Close.MouseButton1Click:Connect(function()
