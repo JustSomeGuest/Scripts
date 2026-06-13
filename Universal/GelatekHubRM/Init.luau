@@ -2,8 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Global = (getgenv and getgenv()) or shared
-Global.GelatekHubRM = Global.GelatekHubRM or {}
+local Global = (pcall(getgenv) and getgenv()) or warn("[Gelatek Hub Remastered]: Executor doesn't support getgenv()")
 
 local BASE = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM"
 local PACKAGES = BASE .. "/Packages"
@@ -28,6 +27,8 @@ local Services = setmetatable({}, {
         error("Invalid Service: " .. tostring(name))
     end
 })
+
+Global.GelatekHubRM = Global.GelatekHubRM or {}
 
 if Global.GelatekHubRM.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
