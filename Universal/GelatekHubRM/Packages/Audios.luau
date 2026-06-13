@@ -14,7 +14,7 @@ local Files = {
 	"Carnage.mp3",
 	"NeptunianV.mp3",
 	"Chips.mp3",
-	"VoodooDoll.mp3"
+	"VoodooDoll.mp3",
 }
 
 local HowMuch = #Files
@@ -31,15 +31,22 @@ for Index, FileName in ipairs(Files) do
 	local Path = "GelatekHubRemastered/Audios/" .. FileName
 
 	if not isfile(Path) then
-		writefile(
-			Path,
-			game:HttpGet(Repo .. FileName)
-		)
+		local Success, Result = pcall(function()
+			return game:HttpGet(Repo .. FileName)
+		end)
 
-		warn(
-			FileName:gsub("%.mp3$", "") ..
-			" Downloaded! " ..
-			Index .. "/" .. HowMuch
-		)
+		if Success and Result then
+			local WriteSuccess = pcall(function()
+				writefile(Path, Result)
+			end)
+
+			if WriteSuccess then
+				warn(
+					FileName:gsub("%.mp3$", "") ..
+					" Downloaded! " ..
+					Index .. "/" .. HowMuch
+				)
+			end
+		end
 	end
 end
