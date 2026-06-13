@@ -10,16 +10,11 @@ local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Unive
 local Files = {
 	"GaleFighter.mp3",
 	"Ender.mp3",
-	"Caducus.mp3",
 	"DualUltima.mp3",
 	"Carnage.mp3",
 	"NeptunianV.mp3",
-	"ZenithBattleRifle70.mp3",
 	"Chips.mp3",
-	"VoidScythe.mp3",
-	"VoodooDoll.mp3",
-	"Quenox.mp3",
-	"Goner.mp3"
+	"VoodooDoll.mp3"
 }
 
 local HowMuch = #Files
