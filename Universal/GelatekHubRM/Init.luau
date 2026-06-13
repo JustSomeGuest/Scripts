@@ -46,7 +46,8 @@ local function SafeCall(func, ...)
     return ok, result
 end
 
-local function load(url)
+local function load(url, scriptName)
+    scriptName = scriptName or url
     local ok, result = pcall(function()
         local src
         local asyncOk, asyncErr = pcall(function()
@@ -57,12 +58,23 @@ local function load(url)
                 src = game:HttpGet(url)
             end)
             if not syncOk or not src then
-                error("HttpGetAsync: " .. tostring(asyncErr) .. " | HttpGet: " .. tostring(syncErr))
+                error(string.format(
+                    "Failed to fetch script: %s\nURL: %s\nAsync Error: %s\nSync Error: %s\nPossible causes: File doesn't exist (404), network issue, or repo is private/deleted.",
+                    scriptName,
+                    url,
+                    tostring(asyncErr),
+                    tostring(syncErr)
+                ))
             end
         end
         local fn, compileErr = loadstring(src)
         if not fn then
-            error("loadstring failed: " .. tostring(compileErr))
+            error(string.format(
+                "Failed to compile script: %s\nURL: %s\nCompile Error: %s\nPossible cause: The file contains syntax errors or is not valid Lua/Luau code.",
+                scriptName,
+                url,
+                tostring(compileErr)
+            ))
         end
         fn()
     end)
@@ -70,8 +82,8 @@ local function load(url)
         warn("[Gelatek Hub]: " .. tostring(result))
         Services.StarterGui:SetCore("SendNotification", {
             Title = "Script Error",
-            Text = "Failed to load script. Check console.",
-            Duration = 4
+            Text = "Failed to load: " .. scriptName .. "\nCheck console (F9) for details.",
+            Duration = 6
         })
     end
 end
@@ -91,7 +103,7 @@ local function CheckAudioPackage()
     end
 
     local ok, err = pcall(function()
-        load(PACKAGES .. "/Audios.luau")
+        load(PACKAGES .. "/Audios.luau", "Audios.luau")
     end)
 
     if not ok then
@@ -101,7 +113,7 @@ end
 
 SafeCall(CheckAudioPackage)
 
-load(PACKAGES .. "/Functions.luau")
+load(PACKAGES .. "/Functions.luau", "Functions.luau")
 
 local Games = {
     ["Just A Baseplate"] = 123974602339071,
@@ -803,7 +815,7 @@ if IsGame("Just A Baseplate") then
             CmdEvent:FireServer("cmd", "-net")
         end
         Wait(2)
-        load(PACKAGES .. "/Reanimate.luau")
+        load(PACKAGES .. "/Reanimate.luau", "Reanimate.luau")
         WaitForDeath()
         Wait(0.1)
         CmdEvent:FireServer("cmd", "-net")
@@ -832,7 +844,7 @@ if IsGame("Just A Baseplate") then
     end
 else
     ReanimateBtn.MouseButton1Click:Connect(function()
-        load(PACKAGES .. "/Reanimate.luau")
+        load(PACKAGES .. "/Reanimate.luau", "Reanimate.luau")
     end)
     
     local function CopyToClipboard(text)
@@ -862,33 +874,33 @@ Deanimate.MouseButton1Click:Connect(BetterStopScript)
 HatScriptsDeanimate.MouseButton1Click:Connect(BetterStopScript)
 
 GaleFighter.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/GaleFighter.luau")
+    load(SCRIPTS .. "/GaleFighter.luau", "GaleFighter.luau")
 end)
 
 Ender.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Ender.luau")
+    load(SCRIPTS .. "/Ender.luau", "Ender.luau")
 end)
 
 Caducus.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Caducus.luau")
+    load(SCRIPTS .. "/Caducus.luau", "Caducus.luau")
 end)
 
 Shiftlock.MouseButton1Click:Connect(function()
-    load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau")
+    load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau", "Init.luau")
     SafeCall(function()
         Init.Shiftlock()
     end)
 end)
 
 Keyboard.MouseButton1Click:Connect(function()
-    load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau")
+    load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau", "Init.luau")
     SafeCall(function()
         Init.DeltaKD()
     end)
 end)
 
 DualUltima.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/DualUltima.luau")
+    load(SCRIPTS .. "/DualUltima.luau", "DualUltima.luau")
 end)
 
 GalaxySlasher.MouseButton1Click:Connect(function()
@@ -896,42 +908,42 @@ GalaxySlasher.MouseButton1Click:Connect(function()
         local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
         CmdEvent:FireServer("cmd", "-pd")
         Wait(2)
-        load(SCRIPTS .. "/GalaxySlasher.luau")
+        load(SCRIPTS .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
     else
-        load(SCRIPTS .. "/GalaxySlasher.luau")
+        load(SCRIPTS .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
     end
 end)
 
 Carnage.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Carnage.luau")
+    load(SCRIPTS .. "/Carnage.luau", "Carnage.luau")
 end)
 
 NeptunianV.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Neptunian.luau")
+    load(SCRIPTS .. "/Neptunian.luau", "Neptunian.luau")
 end)
 
 ZenithBattleRifle.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/ZenithAttackRifle.luau")
+    load(SCRIPTS .. "/ZenithAttackRifle.luau", "ZenithAttackRifle.luau")
 end)
 
 Chips.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Chips.luau")
+    load(SCRIPTS .. "/Chips.luau", "Chips.luau")
 end)
 
 VoidScythe.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/VoidScythe.luau")
+    load(SCRIPTS .. "/VoidScythe.luau", "VoidScythe.luau")
 end)
 
 VoodooDoll.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/VoodooDoll.luau")
+    load(SCRIPTS .. "/VoodooDoll.luau", "VoodooDoll.luau")
 end)
 
 Quenox.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Quenox.luau")
+    load(SCRIPTS .. "/Quenox.luau", "Quenox.luau")
 end)
 
 Goner.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Goner.luau")
+    load(SCRIPTS .. "/Goner.luau", "Goner.luau")
 end)
 
 Close.MouseButton1Click:Connect(function()
