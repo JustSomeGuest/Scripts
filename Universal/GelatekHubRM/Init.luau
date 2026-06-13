@@ -825,7 +825,7 @@ if IsGame("Just A Baseplate") then
     local hatIdMap = {
         [CopyR6BulletHat] = "48474313",
         [CopyDualUltimaHats] = "4524991457,4820152700",
-        [CopyGalaxySlasherHats] = "7548993875",
+        [CopyGalaxySlasherHats] = "6202664431",
         [CopyCarnageHats] = "5134896593,5410674378",
         [CopyNeptunianVHats] = "4506945409",
         [CopyZenithBattleRifleHats] = "4962510729,4962455546",
@@ -854,13 +854,13 @@ else
                 setclipboard(text)
                 Services.StarterGui:SetCore("SendNotification", { Title = "Copied!", Text = text, Duration = 2 })
             else
-                warn("[GelatekHub]: setclipboard not available")
+                warn("[Gelatek Hub Remastered]: Executor doesn't support setclipboard()")
             end
         end)
     end
     CopyR6BulletHat.MouseButton1Click:Connect(function() CopyToClipboard("48474313") end)
     CopyDualUltimaHats.MouseButton1Click:Connect(function() CopyToClipboard("4524991457,4820152700") end)
-    CopyGalaxySlasherHats.MouseButton1Click:Connect(function() CopyToClipboard("7548993875") end)
+    CopyGalaxySlasherHats.MouseButton1Click:Connect(function() CopyToClipboard("6202664431") end)
     CopyCarnageHats.MouseButton1Click:Connect(function() CopyToClipboard("5134896593,5410674378") end)
     CopyNeptunianVHats.MouseButton1Click:Connect(function() CopyToClipboard("4506945409") end)
     CopyZenithBattleRifleHats.MouseButton1Click:Connect(function() CopyToClipboard("4962510729,4962455546") end)
