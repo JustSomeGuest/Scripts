@@ -2,6 +2,8 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+local Global = (pcall(getgenv) and getgenv()) or warn("[MobileWASD]: Executor doesn't support getgenv()")
+
 local function default(expected, value, fallback)
     if type(value) == expected then
         return value
@@ -32,9 +34,9 @@ local IsFolder = default("function", isfolder, function() return end)
 local MakeFolder = default("function", makefolder, function() return end)
 local ListFiles = default("function", listfiles, function() return end)
 
-getgenv().SoundDock = getgenv().SoundDock or {}
+Global.SoundDock = Global.SoundDock or {}
 
-if getgenv().SoundDock.isLoaded then
+if Global.SoundDock.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "SoundDock Music Player",
         Text = "SoundDock is already running!",
@@ -43,7 +45,7 @@ if getgenv().SoundDock.isLoaded then
     return
 end
 
-getgenv().SoundDock.isLoaded = true
+Global.SoundDock.isLoaded = true
 
 local TweenService = Services.TweenService
 local RunService = Services.RunService
