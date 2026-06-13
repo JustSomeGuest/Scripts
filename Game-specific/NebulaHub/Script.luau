@@ -2,6 +2,8 @@ if not game:IsLoaded() then
     game.Loaded:Wait() 
 end
 
+local Global = (pcall(getgenv) and getgenv()) or warn("[Nebula Hub]: Executor doesn't support getgenv()")
+
 local function default(expected, value, fallback)
     if type(value) == expected then
         return value
@@ -25,27 +27,40 @@ local Services = setmetatable({}, {
     end
 })
 
+Global.NebulaHub = Global.NebulaHub or {}
+
+if Global.NebulaHub.isLoaded then
+    Services.StarterGui:SetCore("SendNotification", {
+        Title = "Nebula Hub",
+        Text = "Nebula Hub is already running!",
+        Duration = 4
+    })
+    error("Nebula Hub is already running", 0)
+end
+
+Global.NebulaHub.isLoaded = true
+
 local Players = Services.Players
 local RunService = Services.RunService
 
-local function Load(url)
-    local s,r = pcall(Services.HttpService.GetAsync, Services.HttpService, url)
-    return loadstring(s and r or Services.HttpService:HttpGet(url))()
+local function load(url)
+    local Success, Response = pcall(game.HttpGet, game, url)
+    return loadstring(Success and Response or game:HttpGet(url))()
 end
 
-local WindUI = Load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
+local Interface = load("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua")
 local Player = Players.LocalPlayer
 local Wait = task.wait
 
 local function Notify(Text)
-    WindUI:Notify({
+    Interface:Notify({
         Title = "Nebula Hub",
         Content = Text,
         Duration = 3
     })
 end
 
-WindUI:AddTheme({
+Interface:AddTheme({
     Name = "Nebula",
     Accent = Color3.fromRGB(170,85,255),
     Outline = Color3.fromRGB(40,20,60),
@@ -58,7 +73,7 @@ WindUI:AddTheme({
     Toggle = Color3.fromRGB(170,85,255)
 })
 
-local Window = WindUI:CreateWindow({
+local Window = Interface:CreateWindow({
     Title = "Nebula Hub",
     Author = "JustAGuest",
     Folder = "NebulaHub",
@@ -217,8 +232,6 @@ OtherTab:Toggle({
     end
 })
 
-local CameraFixConnection = nil
-
 local function FixCamera()
     local Camera = workspace.CurrentCamera
     local Character = Player.Character or Player.CharacterAdded:Wait()
@@ -230,33 +243,6 @@ local function FixCamera()
     Player.CameraMode = Enum.CameraMode.Classic
     Humanoid.AutoRotate = true
 end
-
-OtherTab:Toggle({
-    Title = "Fix Camera",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            CameraFixConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraType"):Connect(function()
-                if workspace.CurrentCamera.CameraType ~= Enum.CameraType.Custom then
-                    pcall(FixCamera)
-                end
-            end)
-            
-            CameraFixConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraMode"):Connect(function()
-                pcall(FixCamera)
-            end)
-            
-            pcall(FixCamera)
-            Notify("Camera Fix: Auto mode enabled")
-        else
-            if CameraFixConnection then
-                CameraFixConnection:Disconnect()
-                CameraFixConnection = nil
-            end
-            Notify("Camera Fix: Auto mode disabled")
-        end
-    end
-})
 
 OtherTab:Button({
     Title = "Fix Camera (Once)",
@@ -271,42 +257,42 @@ OtherTab:Button({
 SaitamaTab:Button({
     Title = "Omni Man Moveset",
     Callback = function()
-        loadstring(Services.HttpService:HttpGet("https://pastebin.com/raw/UnVdDWcf"))()
+        load("https://pastebin.com/raw/UnVdDWcf")()
     end
 })
 
 SaitamaTab:Button({
     Title = "Invincible Moveset",
     Callback = function()
-        loadstring(Services.HttpService:HttpGet("https://pastefy.app/BtDQqi2c/raw"))()
+        load("https://pastefy.app/BtDQqi2c/raw")()
     end
 })
 
 SaitamaTab:Button({
     Title = "Naruto Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/LolnotaKid/NarutoBeatUpSasukeAss/main/NarutoCums")
+        load("https://raw.githubusercontent.com/LolnotaKid/NarutoBeatUpSasukeAss/main/NarutoCums")()
     end
 })
 
 SaitamaTab:Button({
     Title = "Kratos Moveset",
     Callback = function()
-        Load("https://rawscripts.net/raw/KJ-The-Strongest-Battlegrounds-Kratos-By-Me-saitama-btw-29150")
+        load("https://rawscripts.net/raw/KJ-The-Strongest-Battlegrounds-Kratos-By-Me-saitama-btw-29150")()
     end
 })
 
 SaitamaTab:Button({
     Title = "Anti-Spiral Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/sparksnaps/Anti-Spiral./main/Lua")
+        load("https://raw.githubusercontent.com/sparksnaps/Anti-Spiral./main/Lua")()
     end
 })
 
 SaitamaTab:Button({
     Title = "Vexor Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/Reapvitalized/TSB/main/VEXOR.lua")
+        load("https://raw.githubusercontent.com/Reapvitalized/TSB/main/VEXOR.lua")()
     end
 })
 
@@ -314,7 +300,7 @@ SaitamaTab:Button({
     Title = "Gojo V2 (Morph: On)",
     Callback = function()
         getgenv().morph = true 
-        Load("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/refs/heads/main/LatestV2.lua")
+        load("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/refs/heads/main/LatestV2.lua")()
     end
 })
 
@@ -322,134 +308,134 @@ SaitamaTab:Button({
     Title = "Gojo V2 (Morph: Off)",
     Callback = function()
         getgenv().morph = false
-        Load("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/refs/heads/main/LatestV2.lua")
+        load("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/refs/heads/main/LatestV2.lua")()
     end
 })
 
 SaitamaTab:Button({
     Title = "Yuji X Sukuna Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Sigma%20v2%20vessel%20tp")
+        load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Sigma%20v2%20vessel%20tp")()
     end
 })
 
 SaitamaTab:Button({
     Title = "Jun Moveset",
     Callback = function()
-        Load("https://gist.githubusercontent.com/GoldenHeads2/f66279000c58a020e894a6db44914838/raw/62e53e1acacec0b38b43cd0f594292c32e09c39b/gistfile1.txt")
+        load("https://gist.githubusercontent.com/GoldenHeads2/f66279000c58a020e894a6db44914838/raw/62e53e1acacec0b38b43cd0f594292c32e09c39b/gistfile1.txt")()
     end
 })
 
 SaitamaTab:Button({
     Title = "Shinji Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Shinji%20tp%20exploit")
+        load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Shinji%20tp%20exploit")()
     end
 })
 
 SaitamaTab:Button({
     Title = "GoldenHead Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Saitama%20to%20golden%20sigma")
+        load("https://raw.githubusercontent.com/Kenjihin69/Kenjihin69/main/Saitama%20to%20golden%20sigma")()
     end
 })
 
 SaitamaTab:Button({
     Title = "Trashcan Man Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/yes1nt/yes/main/Trashcan%20Man")
+        load("https://raw.githubusercontent.com/yes1nt/yes/main/Trashcan%20Man")()
     end
 })
 
 GarouTab:Button({
     Title = "Garou X Suiryu Moveset",
     Callback = function()
-        Load("https://gist.githubusercontent.com/kjremaker/b092496fc11a57e2c50477154176fa3e/raw/2148f00a036a1799118541765675f3f6a0f8adae/GAROU%20TO%20SURIYU%20BETTER%20THAN%20THE%20OTHERS%20FR")
+        load("https://gist.githubusercontent.com/kjremaker/b092496fc11a57e2c50477154176fa3e/raw/2148f00a036a1799118541765675f3f6a0f8adae/GAROU%20TO%20SURIYU%20BETTER%20THAN%20THE%20OTHERS%20FR")()
     end
 })
 
 GarouTab:Button({
     Title = "Void Garou Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/yes1nt/yes/main/Void%20Reaper%20Obfuscated.txt")
+        load("https://raw.githubusercontent.com/yes1nt/yes/main/Void%20Reaper%20Obfuscated.txt")()
     end
 })
 
 GarouTab:Button({
     Title = "Mastery Deku Moveset",
     Callback = function()
-        Load("https://pastebin.com/raw/xKextYP5")
+        load("https://pastebin.com/raw/xKextYP5")()
     end
 })
 
 GarouTab:Button({
     Title = "Chainsaw-Man Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/yes1nt/yes/main/CHAINSAW%20MAN/Chainsaw%20Man%20(Obfuscated).txt")
+        load("https://raw.githubusercontent.com/yes1nt/yes/main/CHAINSAW%20MAN/Chainsaw%20Man%20(Obfuscated).txt")()
     end
 })
 
 GarouTab:Button({
     Title = "Dio Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/ThanakritScript/StandUserCilent/main/DioBeta.lua")
+        load("https://raw.githubusercontent.com/ThanakritScript/StandUserCilent/main/DioBeta.lua")()
     end
 })
 
 GarouTab:Button({
     Title = "A-Train Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/skibiditoiletfan2007/ATrainSounds/main/ATrain.lua")
+        load("https://raw.githubusercontent.com/skibiditoiletfan2007/ATrainSounds/main/ATrain.lua")()
     end
 })
 
 GarouTab:Button({
     Title = "Teleport Guy Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/yes1nt/yes/main/Teleport%20Guy.txt")
+        load("https://raw.githubusercontent.com/yes1nt/yes/main/Teleport%20Guy.txt")()
     end
 })
 
 GarouTab:Button({
     Title = "Akaza Moveset",
     Callback = function()
-        Load("https://paste.ee/r/zzvAH")
+        load("https://paste.ee/r/zzvAH")()
     end
 })
 
 GarouTab:Button({
     Title = "Angel V1.0 Moveset",
     Callback = function()
-        Load("https://gist.githubusercontent.com/GoldenHeads2/93ddb1b1e2935bc76fbc37aae8985ad2/raw/47dfa45e1e8f1933a1c031b198d40c3cd1499fa2/gistfile1.txt")
+        load("https://gist.githubusercontent.com/GoldenHeads2/93ddb1b1e2935bc76fbc37aae8985ad2/raw/47dfa45e1e8f1933a1c031b198d40c3cd1499fa2/gistfile1.txt")()
     end
 })
 
 GarouTab:Button({
     Title = "Light Yagami Moveset",
     Callback = function()
-        Load("https://gist.githubusercontent.com/GoldenHeads2/35ca43410a2e96102f73dca904137973/raw/c4cb113194c35e0439151b06ea82dcc8053ff2c3/gistfile1.txt")
+        load("https://gist.githubusercontent.com/GoldenHeads2/35ca43410a2e96102f73dca904137973/raw/c4cb113194c35e0439151b06ea82dcc8053ff2c3/gistfile1.txt")()
     end
 })
 
 SonicTab:Button({
     Title = "1x1x1x1 Moveset (Buns)",
     Callback = function()
-        Load("https://gist.githubusercontent.com/GoldenHeads2/900e87ffc32f3c740930ccb106dd6abf/raw/358c5bf0f0a6aa25946718288dab006e3ae7e1d4/gistfile1.txt")
+        load("https://gist.githubusercontent.com/GoldenHeads2/900e87ffc32f3c740930ccb106dd6abf/raw/358c5bf0f0a6aa25946718288dab006e3ae7e1d4/gistfile1.txt")()
     end
 })
 
 GenosTab:Button({
     Title = "Genos Mastery",
     Callback = function()
-        Load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-mastery-32213")
+        load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-mastery-32213")()
         Wait()
-        Load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-Mastery-ULT-32214")
+        load("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Genos-Mastery-ULT-32214")()
     end
 })
 
 AnyTab:Button({
     Title = "Star Glitcher Moveset",
     Callback = function()
-        Load("https://raw.githubusercontent.com/Reapvitalized/TSB/main/SG_DEMO.lua")
+        load("https://raw.githubusercontent.com/Reapvitalized/TSB/main/SG_DEMO.lua")()
     end
 })
