@@ -43,6 +43,7 @@ local Scripts = {
     Shiftlock = "Universal/Shiftlock/Init.luau",
     SoundDock = "Universal/SoundDock.luau",
     DeltaKD = "Universal/DeltaKD.luau",
+    TouchGui = "Universal/TouchGui.luau",
 
     CombatGUI = "Game-specific/CombatGUI/Init.luau",
     NebulaHub = "Game-specific/NebulaHub/Init.luau"
