@@ -79,16 +79,6 @@ local Player = Players.LocalPlayer
 local PlayerGui = Player:FindFirstChild("PlayerGui")
 local TouchControlFrame = PlayerGui and PlayerGui:FindFirstChild("TouchGui") and PlayerGui.TouchGui:FindFirstChild("TouchControlFrame")
 local OriginalJump = TouchControlFrame and TouchControlFrame:FindFirstChild("JumpButton")
-local OriginalThumb = TouchControlFrame and TouchControlFrame:FindFirstChild("ThumbstickFrame")
-
-if not OriginalThumb then
-    StarterGui:SetCore("SendNotification", {
-        Title = "TouchGui",
-        Text = "Please use the classic thumbstick in order to run this.",
-        Duration = 4
-    })
-    return
-end
 
 local TouchGui = Instance.new("ScreenGui")
 TouchGui.Name = "TouchGui"
@@ -96,29 +86,17 @@ TouchGui.ResetOnSpawn = false
 TouchGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 TouchGui.Parent = CoreGui
 
-local Positions = {
-    TopLeft = UDim2.fromScale(0, 0),
-    TopCenter = UDim2.fromScale(0.5, 0),
-    TopRight = UDim2.fromScale(1, 0),
-    CenterLeft = UDim2.fromScale(0, 0.5),
-    Center = UDim2.fromScale(0.5, 0.5),
-    CenterRight = UDim2.fromScale(1, 0.5),
-    BottomLeft = UDim2.fromScale(0, 1),
-    BottomCenter = UDim2.fromScale(0.5, 1),
-    BottomRight = UDim2.fromScale(1, 1),
-}
-
-local AnchorPoints = {
-    TopLeft = Vector2.new(0, 0),
-    TopCenter = Vector2.new(0.5, 0),
-    TopRight = Vector2.new(1, 0),
-    CenterLeft = Vector2.new(0, 0.5),
-    Center = Vector2.new(0.5, 0.5),
-    CenterRight = Vector2.new(1, 0.5),
-    BottomLeft = Vector2.new(0, 1),
-    BottomCenter = Vector2.new(0.5, 1),
-    BottomRight = Vector2.new(1, 1),
-}
+local function GetOppositePosition(Position, AnchorPoint)
+    return UDim2.new(
+        1 - Position.X.Scale,
+        -Position.X.Offset,
+        Position.Y.Scale,
+        Position.Y.Offset
+    ), Vector2.new(
+        1 - AnchorPoint.X,
+        AnchorPoint.Y
+    )
+end
 
 local ZoneKeys = {
     TopLeft = {"W", "A"},
@@ -224,18 +202,20 @@ if OriginalJump then
     OriginalJump:GetPropertyChangedSignal("Size"):Connect(function()
         Jump.Size = OriginalJump.Size
     end)
-end
-
-if OriginalThumb then
-    Thumb.Position = OriginalThumb.Position
-    Thumb.Size = OriginalThumb.Size
     
-    OriginalThumb:GetPropertyChangedSignal("Position"):Connect(function()
-        Thumb.Position = OriginalThumb.Position
+    local oppositePos, oppositeAnchor = GetOppositePosition(OriginalJump.Position, OriginalJump.AnchorPoint)
+    Thumb.Position = oppositePos
+    Thumb.AnchorPoint = oppositeAnchor
+    Thumb.Size = OriginalJump.Size
+    
+    OriginalJump:GetPropertyChangedSignal("Position"):Connect(function()
+        local newOppositePos, newOppositeAnchor = GetOppositePosition(OriginalJump.Position, OriginalJump.AnchorPoint)
+        Thumb.Position = newOppositePos
+        Thumb.AnchorPoint = newOppositeAnchor
     end)
     
-    OriginalThumb:GetPropertyChangedSignal("Size"):Connect(function()
-        Thumb.Size = OriginalThumb.Size
+    OriginalJump:GetPropertyChangedSignal("Size"):Connect(function()
+        Thumb.Size = OriginalJump.Size
     end)
 end
 
