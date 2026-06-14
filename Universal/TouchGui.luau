@@ -86,7 +86,7 @@ TouchGui.ResetOnSpawn = false
 TouchGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 TouchGui.Parent = CoreGui
 
-local function GetOppositePosition(Position, AnchorPoint)
+local function GetOppisitePos(Position, AnchorPoint)
     return UDim2.new(
         1 - Position.X.Scale,
         -Position.X.Offset,
@@ -203,13 +203,13 @@ if OriginalJump then
         Jump.Size = OriginalJump.Size
     end)
     
-    local oppositePos, oppositeAnchor = GetOppositePosition(OriginalJump.Position, OriginalJump.AnchorPoint)
+    local oppositePos, oppositeAnchor = GetOppisitePos(OriginalJump.Position, OriginalJump.AnchorPoint)
     Thumb.Position = oppositePos
     Thumb.AnchorPoint = oppositeAnchor
     Thumb.Size = OriginalJump.Size
     
     OriginalJump:GetPropertyChangedSignal("Position"):Connect(function()
-        local newOppositePos, newOppositeAnchor = GetOppositePosition(OriginalJump.Position, OriginalJump.AnchorPoint)
+        local newOppositePos, newOppositeAnchor = GetOppisitePos(OriginalJump.Position, OriginalJump.AnchorPoint)
         Thumb.Position = newOppositePos
         Thumb.AnchorPoint = newOppositeAnchor
     end)
