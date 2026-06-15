@@ -632,7 +632,7 @@ local EnableAntivoid, AntivoidToggle = MakeToggleButton(ReanimationContent, "Ant
 
 MakeLabel(ScriptsContent, "Free Scripts", 1)
 local GaleFighter = MakeButton(ScriptsContent, "Gale Fighter", 2)
-local Ender = MakeButton(ScriptsContent, "Ender", 3)
+local Ender = MakeButton(ScriptsContent, "Ender", 3) 
 local Caducus = MakeButton(ScriptsContent, "Caducus", 4)
 
 MakeLabel(ScriptsContent, "Hat Scripts", 5)
