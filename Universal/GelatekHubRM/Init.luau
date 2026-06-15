@@ -5,15 +5,26 @@ end
 local Global = (pcall(getgenv) and getgenv()) or warn("[Gelatek Hub Remastered]: Executor doesn't support getgenv()")
 
 local BASE = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM"
-local PACKAGES = BASE .. "/Packages"
+local MODULES = BASE .. "/Modules"
 local SCRIPTS = BASE .. "/Scripts"
+local FREESCR = SCRIPTS .. "/Free"
+local HATSCR = SCRIPTS .. "/Hat"
 
 local function default(expected, value, fallback)
     if type(value) == expected then return value end
+    if fallback ~= nil then
+        if type(fallback) == "function" then
+            return function(...)
+                warn("[Gelatek Hub Remastered]: Executor doesn't support " .. tostring(fallback))
+                return fallback
+            end
+        end
+        warn("[Gelatek Hub Remastered]: Executor doesn't support " .. tostring(fallback))
+    end
     return fallback
 end
 
-local cloneref = default("function", cloneref, function(x) return x end)
+local cloneref = default("function", cloneref, "cloneref")
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -89,13 +100,14 @@ local function load(url, scriptName)
     end
 end
 
-local WriteFile = default("function", writefile, function() return end)
-local IsFile = default("function", isfile, function() return false end)
-local IsFolder = default("function", isfolder, function() return false end)
-local MakeFolder = default("function", makefolder, function() return end)
+local WriteFile = default("function", writefile, "writefile")
+local IsFile = default("function", isfile, "isfile")
+local IsFolder = default("function", isfolder, "isfolder")
+local MakeFolder = default("function", makefolder, "makefolder")
 
 local function CheckAudioPackage()
     if not WriteFile or not IsFile or not MakeFolder or not IsFolder then
+        warn("[Gelatek Hub Remastered]: Skipping audio package check - required file functions not available")
         return
     end
 
@@ -104,7 +116,7 @@ local function CheckAudioPackage()
     end
 
     local ok, err = pcall(function()
-        load(PACKAGES .. "/Audios.luau", "Audios.luau")
+        load(MODULES .. "/Audios.luau", "Audios.luau")
     end)
 
     if not ok then
@@ -114,7 +126,7 @@ end
 
 SafeCall(CheckAudioPackage)
 
-load(PACKAGES .. "/Functions.luau", "Functions.luau")
+load(MODULES .. "/Functions.luau", "Functions.luau")
 
 local Games = {
     ["Just A Baseplate"] = 123974602339071,
@@ -127,15 +139,15 @@ local function IsGame(gameName)
 end
 
 Global.GelatekHubConfig = {
-    ["Permanent Death"] = false,
-    ["Torso Fling"] = false,
-    ["Bullet Enabled"] = false,
-    ["Enable Collisions"] = false,
-    ["Keep Hats On Head"] = false,
-    ["Headless On Perma"] = false,
-    ["Anti Void"] = false,
-    ["Anti Void Offset"] = 75,
-    ["Disable Anims"] = false,
+    PermanentDeath = false,
+    TorsoFling = false,
+    BulletFling = false,
+    EnableCollisions = false,
+    KeepHatsAttached = false,
+    HeadlessOnPerma = false,
+    Antivoid = false,
+    AntivoidOffset = 75,
+    DisableAnims = false,
 }
 
 local Player = Services.Players.LocalPlayer
@@ -389,10 +401,10 @@ end
 
 local HomeContent = MakeScrollContent("HomeContent", 1, 5)
 HomeContent.Visible = true
-local ReanimContent = MakeScrollContent("ReanimContent", 2, 0)
-local FreeScriptsContent = MakeScrollContent("FreeScriptsContent", 3, 0)
-local HatScriptsContent = MakeScrollContent("HatScriptsContent", 4, 0)
-local HatsContent = MakeScrollContent("HatsContent", 5, 0)
+local ReanimationContent = MakeScrollContent("ReanimationContent", 2, 0)
+local ScriptsContent = MakeScrollContent("ScriptsContent", 3, 0)
+local HatsContent = MakeScrollContent("HatsContent", 4, 0)
+local ExtraContent = MakeScrollContent("ExtraContent", 5, 0)
 local CreditsContent = MakeScrollContent("CreditsContent", 6, 5)
 
 local function MakeDivider(parent, layoutOrder)
@@ -406,6 +418,26 @@ local function MakeDivider(parent, layoutOrder)
     c.CornerRadius = UDim.new(0.1, 1)
     c.Parent = d
     return d
+end
+
+local function MakeLabel(parent, text, layoutOrder)
+    local lbl = Instance.new("TextLabel")
+    lbl.TextWrapped = true
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+    lbl.TextSize = 14
+    lbl.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
+    lbl.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    lbl.TextColor3 = Color3.fromRGB(255, 88, 91)
+    lbl.Size = UDim2.new(0, 300, 0, 28)
+    lbl.Text = text
+    lbl.Name = "Label"
+    lbl.LayoutOrder = layoutOrder
+    lbl.BackgroundTransparency = 1
+    lbl.Parent = parent
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 4)
+    corner.Parent = lbl
+    return lbl
 end
 
 local function MakePadding(parent, top, right, bottom, left)
@@ -586,42 +618,39 @@ VersionLabel.Size = UDim2.new(1, 0, 1, 0)
 VersionLabel.Text = "Current Version: 1.1"
 VersionLabel.Parent = Version
 
-MakeDivider(FreeScriptsContent, 2)
-local Deanimate = MakeButton(FreeScriptsContent, "- [ Deanimate ] -", 1)
-local GaleFighter = MakeButton(FreeScriptsContent, "Gale Fighter", 3)
-local Ender = MakeButton(FreeScriptsContent, "Ender", 4)
-local Caducus = MakeButton(FreeScriptsContent, "Caducus", 5)
-MakeDivider(FreeScriptsContent, 6)
-local Shiftlock = MakeButton(FreeScriptsContent, "Shiftlock", 7)
-local TouchGui = MakeButton(FreeScriptsContent, "TouchGui (Uses Keyboard Keys)", 8)
-local Keyboard = MakeButton(FreeScriptsContent, "Keyboard", 9)
+local ReanimateBtn = MakeButton(ReanimationContent, "- [ Reanimate ] -", 1)
+local Deanimate = MakeButton(ReanimationContent, "- [ Deanimate ] -", 2)
+MakeDivider(ReanimationContent, 3)
+local EnablePermadeath, PermadeathToggle = MakeToggleButton(ReanimationContent, "Permanent Death", 4)
+local EnableTorsoFling, TorsoFlingToggle = MakeToggleButton(ReanimationContent, "Torso Fling", 5)
+local EnableBulletFling, BulletFlingToggle = MakeToggleButton(ReanimationContent, "Bullet Fling", 6)
+local EnableCollisions, CollisionsToggle = MakeToggleButton(ReanimationContent, "Collisions", 7)
+local EnableNetless, NetlessToggle = MakeToggleButton(ReanimationContent, "Keep Hats Attached", 8)
+local EnableHeadless, HeadlessToggle = MakeToggleButton(ReanimationContent, "Headless On Permadeath", 9)
+local DisableAnims, DisableAnimsToggle = MakeToggleButton(ReanimationContent, "Disable Animations", 10)
+local EnableAntivoid, AntivoidToggle = MakeToggleButton(ReanimationContent, "Antivoid", 11)
 
-MakeDivider(ReanimContent, 2)
-local ReanimateBtn = MakeButton(ReanimContent, "- [ Reanimate ] -", 1)
-local EnablePermadeath, PermadeathToggle = MakeToggleButton(ReanimContent, "Permanent Death", 3)
-local EnableTorsoFling, TorsoFlingToggle = MakeToggleButton(ReanimContent, "Torso Fling", 4)
-local EnableBulletFling, BulletFlingToggle = MakeToggleButton(ReanimContent, "Bullet Fling", 5)
-local EnableCollisions, CollisionsToggle = MakeToggleButton(ReanimContent, "Collisions", 6)
-local EnableNetless, NetlessToggle = MakeToggleButton(ReanimContent, "Keep Hats Attached", 7)
-local EnableHeadless, HeadlessToggle = MakeToggleButton(ReanimContent, "Headless On Permadeath", 8)
-local DisableAnims, DisableAnimsToggle = MakeToggleButton(ReanimContent, "Disable Animations", 9)
-local EnableAntivoid, AntivoidToggle = MakeToggleButton(ReanimContent, "Antivoid", 10)
+MakeLabel(ScriptsContent, "Free Scripts", 1)
+local GaleFighter = MakeButton(ScriptsContent, "Gale Fighter", 2)
+local Ender = MakeButton(ScriptsContent, "Ender", 3)
+local Caducus = MakeButton(ScriptsContent, "Caducus", 4)
 
-MakeDivider(HatScriptsContent, 2)
-local HatScriptsDeanimate = MakeButton(HatScriptsContent, "- [ Deanimate ] -", 1)
-local DualUltima = MakeButton(HatScriptsContent, "Dual Ultima", 3)
-local GalaxySlasher = MakeButton(HatScriptsContent, "Galaxy Slasher (Don't Reanimate)", 4)
-local Carnage = MakeButton(HatScriptsContent, "Carnage", 5)
-local NeptunianV = MakeButton(HatScriptsContent, "Neptunian V", 6)
-local ZenithBattleRifle = MakeButton(HatScriptsContent, "Zenith Battle Rifle-70", 7)
-local Chips = MakeButton(HatScriptsContent, "Chips", 8)
-local VoidScythe = MakeButton(HatScriptsContent, "Void Scythe", 9)
-local VoodooDoll = MakeButton(HatScriptsContent, "Voodoo Doll", 10)
-local Quenox = MakeButton(HatScriptsContent, "Quenox", 11)
-local Goner = MakeButton(HatScriptsContent, "Goner", 12)
+MakeDivider(ScriptsContent, 5)
 
-MakeDivider(HatsContent, 2)
+MakeLabel(ScriptsContent, "Hat Scripts", 6)
+local DualUltima = MakeButton(ScriptsContent, "Dual Ultima", 7)
+local GalaxySlasher = MakeButton(ScriptsContent, "Galaxy Slasher (Don't Reanimate)", 8)
+local Carnage = MakeButton(ScriptsContent, "Carnage", 9)
+local NeptunianV = MakeButton(ScriptsContent, "Neptunian V", 10)
+local ZenithBattleRifle = MakeButton(ScriptsContent, "Zenith Battle Rifle-70", 11)
+local Chips = MakeButton(ScriptsContent, "Chips", 12)
+local VoidScythe = MakeButton(ScriptsContent, "Void Scythe", 13)
+local VoodooDoll = MakeButton(ScriptsContent, "Voodoo Doll", 14)
+local Quenox = MakeButton(ScriptsContent, "Quenox", 15)
+local Goner = MakeButton(ScriptsContent, "Goner", 16)
+
 local CopyR6BulletHat = MakeButton(HatsContent, "Copy R6 Bullet Hat Id(s)", 1)
+MakeDivider(HatsContent, 2)
 local CopyDualUltimaHats = MakeButton(HatsContent, "Copy Dual Ultima Hat Id(s)", 3)
 local CopyGalaxySlasherHats = MakeButton(HatsContent, "Copy Galaxy Slasher Hat Id(s)", 4)
 local CopyCarnageHats = MakeButton(HatsContent, "Copy Carnage Hat Id(s)", 5)
@@ -632,6 +661,10 @@ local CopyVoidScytheHats = MakeButton(HatsContent, "Copy Void Scythe Hat Id(s)",
 local CopyVoodooDollHats = MakeButton(HatsContent, "Copy Voodoo Doll Hat Id(s)", 10)
 local CopyQuenoxHats = MakeButton(HatsContent, "Copy Quenox Hat Id(s)", 11)
 local CopyGonerHats = MakeButton(HatsContent, "Copy Goner Hat Id(s)", 12)
+
+local Shiftlock = MakeButton(ExtraContent, "Shiftlock", 1)
+local TouchGui = MakeButton(ExtraContent, "TouchGui (Uses Keyboard Keys)", 2)
+local Keyboard = MakeButton(ExtraContent, "Keyboard", 3)
 
 local CreditsLabel = Instance.new("TextLabel")
 CreditsLabel.TextWrapped = true
@@ -653,10 +686,10 @@ local HomeTab, HomeTabUnderlay, HomeTabLabel = MakeTabButton(Tabs, "Home", 1)
 HomeTabLabel.TextTransparency = 0
 HomeTabUnderlay.Size = UDim2.new(1, 0, 0, 2)
 
-local ReanimTab, ReanimTabUnderlay, ReanimTabLabel = MakeTabButton(Tabs, "Reanimate", 2)
-local FreeScriptsTab, FreeScriptsTabUnderlay, FreeScriptsTabLabel = MakeTabButton(Tabs, "Free Scripts", 3)
-local HatScriptsTab, HatScriptsTabUnderlay, HatScriptsTabLabel = MakeTabButton(Tabs, "Hat Scripts", 4)
-local HatsTab, HatsTabUnderlay, HatsTabLabel = MakeTabButton(Tabs, "Hats", 5)
+local ReanimationTab, ReanimationTabUnderlay, ReanimationTabLabel = MakeTabButton(Tabs, "Reanimation", 2)
+local ScriptsTab, ScriptsTabUnderlay, ScriptsTabLabel = MakeTabButton(Tabs, "Scripts", 3)
+local HatsTab, HatsTabUnderlay, HatsTabLabel = MakeTabButton(Tabs, "Hats", 4)
+local ExtraTab, ExtraTabUnderlay, ExtraTabLabel = MakeTabButton(Tabs, "Extra", 5)
 local CreditsTab, CreditsTabUnderlay, CreditsTabLabel = MakeTabButton(Tabs, "Credits", 6)
 
 local function TweenUnderlay(underlay, sizeX)
@@ -749,10 +782,10 @@ Show.MouseButton1Click:Connect(ShowMain)
 
 local TabMap = {
     Home = { Content = HomeContent, Underlay = HomeTabUnderlay, Label = HomeTabLabel },
-    Reanimate = { Content = ReanimContent, Underlay = ReanimTabUnderlay, Label = ReanimTabLabel },
-    FreeScripts = { Content = FreeScriptsContent, Underlay = FreeScriptsTabUnderlay, Label = FreeScriptsTabLabel },
-    HatScripts = { Content = HatScriptsContent, Underlay = HatScriptsTabUnderlay, Label = HatScriptsTabLabel },
+    Reanimation = { Content = ReanimationContent, Underlay = ReanimationTabUnderlay, Label = ReanimationTabLabel },
+    Scripts = { Content = ScriptsContent, Underlay = ScriptsTabUnderlay, Label = ScriptsTabLabel },
     Hats = { Content = HatsContent, Underlay = HatsTabUnderlay, Label = HatsTabLabel },
+    Extra = { Content = ExtraContent, Underlay = ExtraTabUnderlay, Label = ExtraTabLabel },
     Credits = { Content = CreditsContent, Underlay = CreditsTabUnderlay, Label = CreditsTabLabel },
 }
 
@@ -771,10 +804,10 @@ local function SelectTab(tabName)
 end
 
 HomeTab.MouseButton1Click:Connect(function() SelectTab("Home") end)
-ReanimTab.MouseButton1Click:Connect(function() SelectTab("Reanimate") end)
-FreeScriptsTab.MouseButton1Click:Connect(function() SelectTab("FreeScripts") end)
-HatScriptsTab.MouseButton1Click:Connect(function() SelectTab("HatScripts") end)
+ReanimationTab.MouseButton1Click:Connect(function() SelectTab("Reanimation") end)
+ScriptsTab.MouseButton1Click:Connect(function() SelectTab("Scripts") end)
 HatsTab.MouseButton1Click:Connect(function() SelectTab("Hats") end)
+ExtraTab.MouseButton1Click:Connect(function() SelectTab("Extra") end)
 CreditsTab.MouseButton1Click:Connect(function() SelectTab("Credits") end)
 
 SelectTab("Home")
@@ -796,28 +829,28 @@ local function MakeToggle(button, toggleFrame, configKey)
     end)
 end
 
-MakeToggle(EnablePermadeath, PermadeathToggle, "Permanent Death")
-MakeToggle(EnableTorsoFling, TorsoFlingToggle, "Torso Fling")
-MakeToggle(EnableBulletFling, BulletFlingToggle, "Bullet Enabled")
-MakeToggle(EnableCollisions, CollisionsToggle, "Enable Collisions")
-MakeToggle(EnableNetless, NetlessToggle, "Keep Hats On Head")
-MakeToggle(EnableHeadless, HeadlessToggle, "Headless On Perma")
-MakeToggle(EnableAntivoid, AntivoidToggle, "Anti Void")
-MakeToggle(DisableAnims, DisableAnimsToggle, "Disable Anims")
+MakeToggle(EnablePermadeath, PermadeathToggle, "PermanentDeath")
+MakeToggle(EnableTorsoFling, TorsoFlingToggle, "TorsoFling")
+MakeToggle(EnableBulletFling, BulletFlingToggle, "BulletFling")
+MakeToggle(EnableCollisions, CollisionsToggle, "EnableCollisions")
+MakeToggle(EnableNetless, NetlessToggle, "KeepHatsAttached")
+MakeToggle(EnableHeadless, HeadlessToggle, "HeadlessOnPerma")
+MakeToggle(EnableAntivoid, AntivoidToggle, "Antivoid")
+MakeToggle(DisableAnims, DisableAnimsToggle, "DisableAnims")
 
 if IsGame("Just A Baseplate") then
     local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
     
     ReanimateBtn.MouseButton1Click:Connect(function()
-        if Global.GelatekHubConfig["Permanent Death"] then
+        if Global.GelatekHubConfig.PermanentDeath then
             CmdEvent:FireServer("cmd", "-pd")
         end
         Wait(2)
-        if Global.GelatekHubConfig["Keep Hats On Head"] then
+        if Global.GelatekHubConfig.KeepHatsAttached then
             CmdEvent:FireServer("cmd", "-net")
         end
         Wait(2)
-        load(PACKAGES .. "/Reanimate.luau", "Reanimate.luau")
+        load(MODULES .. "/Reanimate.luau", "Reanimate.luau")
         WaitForDeath()
         Wait(0.1)
         CmdEvent:FireServer("cmd", "-net")
@@ -846,17 +879,22 @@ if IsGame("Just A Baseplate") then
     end
 else
     ReanimateBtn.MouseButton1Click:Connect(function()
-        load(PACKAGES .. "/Reanimate.luau", "Reanimate.luau")
+        load(MODULES .. "/Reanimate.luau", "Reanimate.luau")
     end)
     
     local function CopyToClipboard(text)
+        if type(setclipboard) ~= "function" then
+            warn("[Gelatek Hub Remastered]: Executor doesn't support setclipboard")
+            Services.StarterGui:SetCore("SendNotification", {
+                Title = "Error",
+                Text = "Your executor doesn't support clipboard access!",
+                Duration = 4
+            })
+            return
+        end
         SafeCall(function()
-            if type(setclipboard) == "function" then
-                setclipboard(text)
-                Services.StarterGui:SetCore("SendNotification", { Title = "Copied!", Text = text, Duration = 2 })
-            else
-                warn("[Gelatek Hub Remastered]: Executor doesn't support setclipboard()")
-            end
+            setclipboard(text)
+            Services.StarterGui:SetCore("SendNotification", { Title = "Copied!", Text = text, Duration = 2 })
         end)
     end
     CopyR6BulletHat.MouseButton1Click:Connect(function() CopyToClipboard("48474313") end)
@@ -873,18 +911,17 @@ else
 end
 
 Deanimate.MouseButton1Click:Connect(BetterStopScript)
-HatScriptsDeanimate.MouseButton1Click:Connect(BetterStopScript)
 
 GaleFighter.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/GaleFighter.luau", "GaleFighter.luau")
+    load(FREESCR .. "/GaleFighter.luau", "GaleFighter.luau")
 end)
 
 Ender.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Ender.luau", "Ender.luau")
+    load(FREESCR .. "/Ender.luau", "Ender.luau")
 end)
 
 Caducus.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Caducus.luau", "Caducus.luau")
+    load(FREESCR .. "/Caducus.luau", "Caducus.luau")
 end)
 
 Shiftlock.MouseButton1Click:Connect(function()
@@ -902,7 +939,7 @@ Keyboard.MouseButton1Click:Connect(function()
 end)
 
 DualUltima.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/DualUltima.luau", "DualUltima.luau")
+    load(HATSCR .. "/DualUltima.luau", "DualUltima.luau")
 end)
 
 GalaxySlasher.MouseButton1Click:Connect(function()
@@ -910,42 +947,42 @@ GalaxySlasher.MouseButton1Click:Connect(function()
         local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
         CmdEvent:FireServer("cmd", "-pd")
         Wait(2)
-        load(SCRIPTS .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
+        load(HATSCR .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
     else
-        load(SCRIPTS .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
+        load(HATSCR .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
     end
 end)
 
 Carnage.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Carnage.luau", "Carnage.luau")
+    load(HATSCR .. "/Carnage.luau", "Carnage.luau")
 end)
 
 NeptunianV.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Neptunian.luau", "Neptunian.luau")
+    load(HATSCR .. "/Neptunian.luau", "Neptunian.luau")
 end)
 
 ZenithBattleRifle.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/ZenithAttackRifle.luau", "ZenithAttackRifle.luau")
+    load(HATSCR .. "/ZenithAttackRifle.luau", "ZenithAttackRifle.luau")
 end)
 
 Chips.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Chips.luau", "Chips.luau")
+    load(HATSCR .. "/Chips.luau", "Chips.luau")
 end)
 
 VoidScythe.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/VoidScythe.luau", "VoidScythe.luau")
+    load(HATSCR .. "/VoidScythe.luau", "VoidScythe.luau")
 end)
 
 VoodooDoll.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/VoodooDoll.luau", "VoodooDoll.luau")
+    load(HATSCR .. "/VoodooDoll.luau", "VoodooDoll.luau")
 end)
 
 Quenox.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Quenox.luau", "Quenox.luau")
+    load(HATSCR .. "/Quenox.luau", "Quenox.luau")
 end)
 
 Goner.MouseButton1Click:Connect(function()
-    load(SCRIPTS .. "/Goner.luau", "Goner.luau")
+    load(HATSCR .. "/Goner.luau", "Goner.luau")
 end)
 
 Close.MouseButton1Click:Connect(function()
