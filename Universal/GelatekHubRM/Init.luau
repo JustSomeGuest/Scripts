@@ -4,11 +4,11 @@ end
 
 local Global = (pcall(getgenv) and getgenv()) or warn("[Gelatek Hub Remastered]: Executor doesn't support getgenv()")
 
-local BASE = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM"
-local MODULES = BASE .. "/Modules"
-local SCRIPTS = BASE .. "/Scripts"
-local FREESCR = SCRIPTS .. "/Free"
-local HATSCR = SCRIPTS .. "/Hat"
+local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM"
+local Modules = Base .. "/Modules"
+local Scripts = Base .. "/Scripts"
+local FreeScripts = Scripts .. "/Free"
+local HatScripts = Scripts .. "/Hat"
 
 local function default(expected, value, fallback)
     if type(value) == expected then return value end
@@ -39,10 +39,19 @@ local Services = setmetatable({}, {
     end
 })
 
+local Players = Services.Players
+local ReplicatedStorage = Services.ReplicatedStorage
+local Workspace = Services.Workspace
+local GuiService = Services.GuiService
+local UserInputService = Services.UserInputService
+local TweenService = Services.TweenService
+local MarketplaceService = Services.MarketplaceService
+local StarterGui = Services.StarterGui
+
 Global.GelatekHubRM = Global.GelatekHubRM or {}
 
 if Global.GelatekHubRM.isLoaded then
-    Services.StarterGui:SetCore("SendNotification", {
+    StarterGui:SetCore("SendNotification", {
         Title = "GelatekHubRM",
         Text = "Gelatek Hub Remastered is already running!",
         Duration = 4
@@ -92,7 +101,7 @@ local function load(url, scriptName)
     end)
     if not ok then
         warn("[Gelatek Hub]: " .. tostring(result))
-        Services.StarterGui:SetCore("SendNotification", {
+        StarterGui:SetCore("SendNotification", {
             Title = "Script Error",
             Text = "Failed to load: " .. scriptName .. "\nCheck console (F9) for details.",
             Duration = 6
@@ -116,7 +125,7 @@ local function CheckAudioPackage()
     end
 
     local ok, err = pcall(function()
-        load(MODULES .. "/Audios.luau", "Audios.luau")
+        load(Modules .. "/Audios.luau", "Audios.luau")
     end)
 
     if not ok then
@@ -126,7 +135,7 @@ end
 
 SafeCall(CheckAudioPackage)
 
-load(MODULES .. "/Functions.luau", "Functions.luau")
+load(Modules .. "/Functions.luau", "Functions.luau")
 
 local Games = {
     ["Just A Baseplate"] = 123974602339071,
@@ -150,7 +159,7 @@ Global.GelatekHubConfig = {
     DisableAnims = false,
 }
 
-local Player = Services.Players.LocalPlayer
+local Player = Players.LocalPlayer
 local Wait = task.wait
 
 local function WaitForDeath()
@@ -169,8 +178,6 @@ end
 
 local Success, Hui = pcall(function() return gethui and gethui() end)
 local CoreGui = (Success and Hui) or Services.CoreGui
-local TweenService = Services.TweenService
-local UserInputService = Services.UserInputService
 
 local GelatekHub = Instance.new("ScreenGui")
 GelatekHub.DisplayOrder = 1
@@ -275,7 +282,7 @@ Title.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontW
 Title.TextColor3 = Color3.fromRGB(255, 88, 91)
 Title.BackgroundTransparency = 1
 Title.Size = UDim2.new(0.8, 0, 1, 0)
-Title.Text = "Gelatek Hub Remastered • " .. Services.MarketplaceService:GetProductInfo(game.PlaceId).Name
+Title.Text = "Gelatek Hub Remastered • " .. MarketplaceService:GetProductInfo(game.PlaceId).Name
 Title.LayoutOrder = 1
 Title.Name = "Title"
 Title.Parent = Topbar
@@ -710,39 +717,61 @@ end
 
 local function Dragify(DragObject, MoveObject)
     MoveObject = MoveObject or DragObject
-    local dragging, dragInput, dragStart, startPos = false, nil, nil, nil
 
-    local function ClampPosition(newX, newY)
-        local viewport = Services.Workspace.CurrentCamera.ViewportSize
-        local size = MoveObject.AbsoluteSize
-        local padding = 3
-        return math.clamp(newX, padding, viewport.X - size.X - padding),
-            math.clamp(newY, padding, viewport.Y - size.Y - padding)
-    end
+    local dragging = false
+    local dragInput
+    local dragStart
+    local startPos
 
     DragObject.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseButton1
+        or input.UserInputType == Enum.UserInputType.Touch then
+
             dragging = true
             dragStart = input.Position
-            startPos = MoveObject.Position
+            startPos = MoveObject.AbsolutePosition
+
             input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then dragging = false end
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
             end)
         end
     end)
 
     DragObject.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseMovement
+        or input.UserInputType == Enum.UserInputType.Touch then
             dragInput = input
         end
     end)
 
     UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            local delta = input.Position - dragStart
-            local newX, newY = ClampPosition(startPos.X.Offset + delta.X, startPos.Y.Offset + delta.Y)
-            MoveObject.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
+        if not dragging or input ~= dragInput then
+            return
         end
+
+        local delta = input.Position - dragStart
+
+        local parent = MoveObject.Parent
+        local parentSize = parent.AbsoluteSize
+        local objectSize = MoveObject.AbsoluteSize
+
+        local padding = 3
+
+        local newX = math.clamp(
+            startPos.X + delta.X,
+            padding,
+            parentSize.X - objectSize.X - padding
+        )
+
+        local newY = math.clamp(
+            startPos.Y + delta.Y,
+            padding,
+            parentSize.Y - objectSize.Y - padding
+        )
+
+        MoveObject.Position = UDim2.fromOffset(newX, newY)
     end)
 end
 
@@ -837,7 +866,7 @@ MakeToggle(EnableAntivoid, AntivoidToggle, "Antivoid")
 MakeToggle(DisableAnims, DisableAnimsToggle, "DisableAnims")
 
 if IsGame("Just A Baseplate") then
-    local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
+    local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
     
     ReanimateBtn.MouseButton1Click:Connect(function()
         if Global.GelatekHubConfig.PermanentDeath then
@@ -848,7 +877,7 @@ if IsGame("Just A Baseplate") then
             CmdEvent:FireServer("cmd", "-net")
         end
         Wait(2)
-        load(MODULES .. "/Reanimate.luau", "Reanimate.luau")
+        load(Modules .. "/Reanimate.luau", "Reanimate.luau")
         WaitForDeath()
         Wait(0.1)
         CmdEvent:FireServer("cmd", "-net")
@@ -877,13 +906,13 @@ if IsGame("Just A Baseplate") then
     end
 else
     ReanimateBtn.MouseButton1Click:Connect(function()
-        load(MODULES .. "/Reanimate.luau", "Reanimate.luau")
+        load(Modules .. "/Reanimate.luau", "Reanimate.luau")
     end)
     
     local function CopyToClipboard(text)
         if type(setclipboard) ~= "function" then
             warn("[Gelatek Hub Remastered]: Executor doesn't support setclipboard")
-            Services.StarterGui:SetCore("SendNotification", {
+            StarterGui:SetCore("SendNotification", {
                 Title = "Error",
                 Text = "Your executor doesn't support clipboard access!",
                 Duration = 4
@@ -892,7 +921,7 @@ else
         end
         SafeCall(function()
             setclipboard(text)
-            Services.StarterGui:SetCore("SendNotification", { Title = "Copied!", Text = text, Duration = 2 })
+            StarterGui:SetCore("SendNotification", { Title = "Copied!", Text = text, Duration = 2 })
         end)
     end
     CopyR6BulletHat.MouseButton1Click:Connect(function() CopyToClipboard("48474313") end)
@@ -911,15 +940,15 @@ end
 Deanimate.MouseButton1Click:Connect(BetterStopScript)
 
 GaleFighter.MouseButton1Click:Connect(function()
-    load(FREESCR .. "/GaleFighter.luau", "GaleFighter.luau")
+    load(FreeScripts .. "/GaleFighter.luau", "GaleFighter.luau")
 end)
 
 Ender.MouseButton1Click:Connect(function()
-    load(FREESCR .. "/Ender.luau", "Ender.luau")
+    load(FreeScripts .. "/Ender.luau", "Ender.luau")
 end)
 
 Caducus.MouseButton1Click:Connect(function()
-    load(FREESCR .. "/Caducus.luau", "Caducus.luau")
+    load(FreeScripts .. "/Caducus.luau", "Caducus.luau")
 end)
 
 Shiftlock.MouseButton1Click:Connect(function()
@@ -937,50 +966,50 @@ Keyboard.MouseButton1Click:Connect(function()
 end)
 
 DualUltima.MouseButton1Click:Connect(function()
-    load(HATSCR .. "/DualUltima.luau", "DualUltima.luau")
+    load(HatScripts .. "/DualUltima.luau", "DualUltima.luau")
 end)
 
 GalaxySlasher.MouseButton1Click:Connect(function()
     if IsGame("Just A Baseplate") then
-        local CmdEvent = Services.ReplicatedStorage:WaitForChild("01_server")
+        local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
         CmdEvent:FireServer("cmd", "-pd")
         Wait(2)
-        load(HATSCR .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
+        load(HatScripts .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
     else
-        load(HATSCR .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
+        load(HatScripts .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
     end
 end)
 
 Carnage.MouseButton1Click:Connect(function()
-    load(HATSCR .. "/Carnage.luau", "Carnage.luau")
+    load(HatScripts .. "/Carnage.luau", "Carnage.luau")
 end)
 
 NeptunianV.MouseButton1Click:Connect(function()
-    load(HATSCR .. "/Neptunian.luau", "Neptunian.luau")
+    load(HatScripts .. "/Neptunian.luau", "Neptunian.luau")
 end)
 
 ZenithBattleRifle.MouseButton1Click:Connect(function()
-    load(HATSCR .. "/ZenithAttackRifle.luau", "ZenithAttackRifle.luau")
+    load(HatScripts .. "/ZenithAttackRifle.luau", "ZenithAttackRifle.luau")
 end)
 
 Chips.MouseButton1Click:Connect(function()
-    load(HATSCR .. "/Chips.luau", "Chips.luau")
+    load(HatScripts .. "/Chips.luau", "Chips.luau")
 end)
 
 VoidScythe.MouseButton1Click:Connect(function()
-    load(HATSCR .. "/VoidScythe.luau", "VoidScythe.luau")
+    load(HatScripts .. "/VoidScythe.luau", "VoidScythe.luau")
 end)
 
 VoodooDoll.MouseButton1Click:Connect(function()
-    load(HATSCR .. "/VoodooDoll.luau", "VoodooDoll.luau")
+    load(HatScripts .. "/VoodooDoll.luau", "VoodooDoll.luau")
 end)
 
 Quenox.MouseButton1Click:Connect(function()
-    load(HATSCR .. "/Quenox.luau", "Quenox.luau")
+    load(HatScripts .. "/Quenox.luau", "Quenox.luau")
 end)
 
 Goner.MouseButton1Click:Connect(function()
-    load(HATSCR .. "/Goner.luau", "Goner.luau")
+    load(HatScripts .. "/Goner.luau", "Goner.luau")
 end)
 
 Close.MouseButton1Click:Connect(function()
