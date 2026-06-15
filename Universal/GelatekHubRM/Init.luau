@@ -662,7 +662,7 @@ local CopyGonerHats = MakeButton(HatsContent, "Copy Goner Hat Id(s)", 12)
 
 local Shiftlock = MakeButton(ExtraContent, "Shiftlock", 1)
 local TouchGui = MakeButton(ExtraContent, "TouchGui (Uses Keyboard Keys)", 2)
-local Keyboard = MakeButton(ExtraContent, "Keyboard", 3)
+local Keyboard = MakeButton(ExtraContent, "Mobile Keyboard", 3)
 
 local CreditsLabel = Instance.new("TextLabel")
 CreditsLabel.TextWrapped = true
