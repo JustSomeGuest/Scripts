@@ -46,7 +46,7 @@ Global.AlignPart = function(Part0, Part1, Position, Orientation)
 end
 
 Global.GetLoadLibrary = function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM/Packages/Utilities.luau"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM/Modules/Utilities.luau"))()
 end
 
 Global.StopScript = function()
