@@ -625,8 +625,8 @@ VersionLabel.Size = UDim2.new(1, 0, 1, 0)
 VersionLabel.Text = "Current Version: 1.1"
 VersionLabel.Parent = Version
 
-local ReanimateBtn = MakeButton(ReanimationContent, "- [ Reanimate ] -", 1)
-local Deanimate = MakeButton(ReanimationContent, "- [ Deanimate ] -", 2)
+local ReanimateBtn = MakeButton(ReanimationContent, "Reanimate", 1)
+local Deanimate = MakeButton(ReanimationContent, "Deanimate", 2)
 MakeDivider(ReanimationContent, 3)
 local EnablePermadeath, PermadeathToggle = MakeToggleButton(ReanimationContent, "Permanent Death", 4)
 local EnableTorsoFling, TorsoFlingToggle = MakeToggleButton(ReanimationContent, "Torso Fling", 5)
