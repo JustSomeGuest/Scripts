@@ -27,6 +27,13 @@ local Services = setmetatable({}, {
     end
 })
 
+local Workspace = Services.Workspace
+local HttpService = Services.HttpService
+local Players = Services.Players
+local Player = Players.LocalPlayer
+local UserInputService = Services.UserInputService
+local TweenService = Services.TweenService
+
 Global.Lucid = Global.Lucid or {}
 
 local WriteFile = default("function", writefile, function() return end)
@@ -38,13 +45,6 @@ local MakeFolder = default("function", makefolder, function() return end)
 local ListFiles = default("function", listfiles, function() return end)
 local LoadAsset = default("function", getcustomasset, default("function", getsynasset, function() return end))
 local SetClipboard = default("function", setclipboard, function() return end)
-
-local Workspace = Services.Workspace
-local HttpService = Services.HttpService
-local Players = Services.Players
-local Player = Players.LocalPlayer
-local UserInputService = Services.UserInputService
-local TweenService = Services.TweenService
 
 local GothamBold = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -511,7 +511,7 @@ NewCorner("", "CancelCorner", Cancel)
 local MainFrame = Instance.new("Frame")
 MainFrame.AutoLocalize = false
 MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-MainFrame.BackgroundTransparency = 0.5
+MainFrame.BackgroundTransparency = 1
 MainFrame.BorderSizePixel = 0
 MainFrame.Name = "MainFrame"
 MainFrame.Size = UDim2.new(1, 0, 1, 0)
@@ -1731,8 +1731,8 @@ TabLabelClose.TextXAlignment = Enum.TextXAlignment.Left
 TabLabelClose.Parent = CloseTab
 
 local Show = Instance.new("ImageButton")
-Show.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Show.BackgroundTransparency = 0.3
+Show.BackgroundColor3 = Color3.fromRGB(18, 18, 21)
+Show.BackgroundTransparency = 0.08
 Show.BorderSizePixel = 0
 Show.Image = ""
 Show.Name = "Show"
@@ -1745,18 +1745,12 @@ Instance.new("UIAspectRatioConstraint", Show).Name = "ShowRatio"
 
 NewCorner("1, 0", "ShowCorner", Show)
 
-local ShowStroke = Instance.new("UIStroke")
-ShowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-ShowStroke.Name = "ShowStroke"
-ShowStroke.Transparency = 0.8
-ShowStroke.Parent = Show
-
 local ShowPadding = Instance.new("UIPadding")
 ShowPadding.Name = "ShowPadding"
-ShowPadding.PaddingBottom = UDim.new(0, 6)
-ShowPadding.PaddingLeft = UDim.new(0, 6)
-ShowPadding.PaddingRight = UDim.new(0, 6)
-ShowPadding.PaddingTop = UDim.new(0, 6)
+ShowPadding.PaddingBottom = UDim.new(0, 8)
+ShowPadding.PaddingLeft = UDim.new(0, 8)
+ShowPadding.PaddingRight = UDim.new(0, 8)
+ShowPadding.PaddingTop = UDim.new(0, 8)
 ShowPadding.Parent = Show
 
 local ShowIcon = Instance.new("ImageLabel")
@@ -1935,11 +1929,122 @@ local function PerformSearch(query)
     end
 end
 
-local function SetActivePage(page)
+local function SwitchTab(NewPage)
     ExeContent.Visible = false
     SearchContent.Visible = false
     SavedScriptsContent.Visible = false
-    page.Visible = true
+    
+    local oldPage = nil
+    for _, child in ipairs(Pages:GetChildren()) do
+        if child:IsA("CanvasGroup") and child.Visible and child ~= NewPage then
+            oldPage = child
+            break
+        end
+    end
+    
+    if NewPage == oldPage then return end
+    
+    NewPage.Position = UDim2.new(1, 0, 0, 0)
+    NewPage.Visible = true
+    
+    if oldPage then
+        oldPage.Visible = false
+        local oldClone = oldPage:Clone()
+        oldClone.Parent = Pages
+        oldClone.Position = UDim2.new(0, 0, 0, 0)
+        oldClone.Size = UDim2.new(1, 0, 1, 0)
+        
+        local oldTween = TweenService:Create(oldClone, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+            Position = UDim2.new(-0.5, 0, 0, 0),
+            Rotation = -15,
+            BackgroundTransparency = 1
+        })
+        oldTween:Play()
+        oldTween.Completed:Connect(function()
+            oldClone:Destroy()
+        end)
+    end
+    
+    local newTween = TweenService:Create(NewPage, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(0, 0, 0, 0)
+    })
+    newTween:Play()
+end
+
+local function OpenUI()
+    MainFrame.Visible = true
+    MainFrame.BackgroundTransparency = 1
+
+    local activeContent = ExeContent.Visible and ExeContent
+        or SearchContent.Visible and SearchContent
+        or SavedScriptsContent.Visible and SavedScriptsContent
+        or ExeContent
+
+    activeContent.Position = UDim2.new(-1, 0, 0, 0)
+    Sidebar.Position = UDim2.new(1, 300, 0.5, 0)
+    
+    Show.ImageTransparency = 0
+    Show.BackgroundTransparency = 0.08
+
+    local bgTween = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        BackgroundTransparency = 0.5
+    })
+    
+    local contentTween = TweenService:Create(activeContent, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(0, 0, 0, 0)
+    })
+    
+    local sidebarTween = TweenService:Create(Sidebar, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(1, 8, 0.5, 0)
+    })
+    
+    local showBgTween = TweenService:Create(Show, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        ImageTransparency = 1,
+        BackgroundTransparency = 1
+    })
+
+    bgTween:Play()
+    contentTween:Play()
+    sidebarTween:Play()
+    showBgTween:Play()
+end
+
+local function CloseUI()
+    local activeContent = ExeContent.Visible and ExeContent
+        or SearchContent.Visible and SearchContent
+        or SavedScriptsContent.Visible and SavedScriptsContent
+        or ExeContent
+
+    local vpWidth = workspace.CurrentCamera.ViewportSize.X
+
+    local bgTween = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+        BackgroundTransparency = 1
+    })
+    
+    local contentTween = TweenService:Create(activeContent, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+        Position = UDim2.new(-1.2, 0, 0, 0),
+        Rotation = 10
+    })
+    
+    local sidebarTween = TweenService:Create(Sidebar, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+        Position = UDim2.new(1, vpWidth + 50, 0.5, 0)
+    })
+    
+    local showTween = TweenService:Create(Show, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        ImageTransparency = 0,
+        BackgroundTransparency = 0.08
+    })
+
+    bgTween:Play()
+    contentTween:Play()
+    sidebarTween:Play()
+    showTween:Play()
+
+    contentTween.Completed:Connect(function()
+        MainFrame.Visible = false
+        Show.Visible = true
+        activeContent.Rotation = 0
+    end)
 end
 
 NewScriptBtn.MouseButton1Click:Connect(function()
@@ -1957,14 +2062,14 @@ SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
     PerformSearch(SearchBox.Text)
 end)
 
-ExeTab.MouseButton1Click:Connect(function() SetActivePage(ExeContent) end)
-SearchTab.MouseButton1Click:Connect(function() SetActivePage(SearchContent) end)
+ExeTab.MouseButton1Click:Connect(function() SwitchTab(ExeContent) end)
+SearchTab.MouseButton1Click:Connect(function() SwitchTab(SearchContent) end)
 ScriptsTab.MouseButton1Click:Connect(function()
-    SetActivePage(SavedScriptsContent)
+    SwitchTab(SavedScriptsContent)
     RefreshSavedScripts(SavedScriptsSearchBox.Text)
 end)
 
-local function Dragify(Frame)
+local function Dragify(Object)
     local dragging = false
     local dragInput
     local dragStart
@@ -1972,13 +2077,14 @@ local function Dragify(Frame)
 
     local function ClampPosition(newX, newY)
         local viewport = workspace.CurrentCamera.ViewportSize
-        local size = Frame.AbsoluteSize
-        local padding = 3
+        local size = Object.AbsoluteSize
+        local paddingX = 16
+        local paddingY = 12
 
-        local maxX = viewport.X - size.X - padding
-        local maxY = viewport.Y - size.Y - padding
-        local minX = padding
-        local minY = padding
+        local maxX = viewport.X - size.X - paddingX
+        local maxY = viewport.Y - size.Y - paddingY
+        local minX = paddingX
+        local minY = paddingY
 
         newX = math.clamp(newX, minX, maxX)
         newY = math.clamp(newY, minY, maxY)
@@ -1986,11 +2092,11 @@ local function Dragify(Frame)
         return newX, newY
     end
 
-    Frame.InputBegan:Connect(function(input)
+    Object.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
-            startPos = Frame.Position
+            startPos = Object.Position
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     dragging = false
@@ -1999,7 +2105,7 @@ local function Dragify(Frame)
         end
     end)
 
-    Frame.InputChanged:Connect(function(input)
+    Object.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             dragInput = input
         end
@@ -2011,7 +2117,7 @@ local function Dragify(Frame)
             local newX = startPos.X.Offset + delta.X
             local newY = startPos.Y.Offset + delta.Y
             newX, newY = ClampPosition(newX, newY)
-            Frame.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
+            Object.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
         end
     end)
 end
@@ -2019,13 +2125,12 @@ end
 Dragify(Show)
 
 CloseTab.MouseButton1Click:Connect(function()
-    MainFrame.Visible = false
-    Show.Visible = true
+    CloseUI()
 end)
 
 Show.MouseButton1Click:Connect(function()
-    MainFrame.Visible = true
     Show.Visible = false
+    OpenUI()
 end)
 
 Cancel.MouseButton1Click:Connect(function()
@@ -2065,7 +2170,7 @@ CopyBtn.MouseButton1Click:Connect(function()
     SetClipboard(InputBox.Text)
 end)
 
-SetActivePage(ExeContent)
+SwitchTab(ExeContent)
 Show.Visible = true
 MainFrame.Visible = false
 
