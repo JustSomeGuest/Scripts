@@ -2,16 +2,28 @@ if not game:IsLoaded() then
   game.Loaded:Wait()
 end
 
-local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
+local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
 
-function default(expected, value, fallback)
-	if type(value) == expected then
-		return value
-	end
-	return fallback
+local function expect(expected, value, fallback)
+    if type(value) == expected then
+        return value
+    end
+
+    if fallback ~= nil then
+        if type(fallback) == "function" then
+            return function(...)
+                warn("[Expect]: Missing executor functionality. Using fallback function.")
+                return fallback(...)
+            end
+        end
+
+        warn("[Expect]: Value has unexpected type. Using fallback value.")
+    end
+
+    return fallback
 end
 
-cloneref = default("function", cloneref, function() return end)
+cloneref = expect("function", cloneref, function() return end)
 
 Services = setmetatable({}, {
 	__index = function(self, name)
@@ -28,6 +40,15 @@ Services = setmetatable({}, {
 	end
 })
 
+local Players = Services.Players
+local RunService = Services.RunService
+local HttpService = Services.HttpService
+local TweenService = Services.TweenService
+local UserInputService = Services.UserInputService
+local Player = Players.LocalPlayer
+local Success, Hui = pcall(function() return gethui and gethui() end)
+local CoreGui = Success and Hui or Services.CoreGui
+
 Shared.WallyWest = Shared.WallyWest or {}
 
 if Shared.WallyWest.isLoaded then
@@ -41,18 +62,18 @@ end
 
 Shared.WallyWest.isLoaded = true
 
-local WriteFile = default("function", writefile, function() return end)
-local IsFile = default("function", isfile, function() return end)
-local IsFolder = default("function", isfolder, function() return end)
-local MakeFolder = default("function", makefolder, function() end)
-local LoadAsset = default("function", getcustomasset, default("function", getsynasset, nil))
+local WriteFile = expect("function", writefile, function() return end)
+local IsFile = expect("function", isfile, function() return end)
+local IsFolder = expect("function", isfolder, function() return end)
+local MakeFolder = expect("function", makefolder, function() end)
+local LoadAsset = expect("function", getcustomasset, expect("function", getsynasset, nil))
 
 local Assets = {
     ["WallyWest/Assets/wallywest_music.mp3"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/WallyWest/Assets/music.mp3",
 }
 
 local function HttpGet(url)
-    local RequestFunc = default("function", syn and syn.request, default("function", request, default("function", http_request, nil)))
+    local RequestFunc = expect("function", syn and syn.request, expect("function", request, expect("function", http_request, nil)))
 	
     if not RequestFunc then
         return nil
@@ -104,15 +125,6 @@ local function GetAsset(Path)
 
     return LoadAsset(Path)
 end
-
-local Players = Services.Players
-local RunService = Services.RunService
-local HttpService = Services.HttpService
-local TweenService = Services.TweenService
-local UserInputService = Services.UserInputService
-local Player = Players.LocalPlayer
-local Success, Hui = pcall(function() return gethui and gethui() end)
-local CoreGui = Success and Hui or Services.CoreGui
 
 local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 
