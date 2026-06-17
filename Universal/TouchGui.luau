@@ -2,9 +2,9 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Global = (pcall(getgenv) and getgenv()) or warn("[TouchGui]: Executor doesn't support getgenv()")
+local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
 
-Global.TouchGui = Global.TouchGui or {}
+Shared.TouchGui = Shared.TouchGui or {}
 
 local function default(expected, value, fallback)
     if type(value) == expected then
@@ -39,7 +39,7 @@ local CoreGui = Services.CoreGui
 local Success, Hui = pcall(function() return gethui and gethui() end)
 local CoreGui = Success and Hui or CoreGui
 
-if Global.TouchGui.isLoaded then
+if Shared.TouchGui.isLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "TouchGui",
         Text = "TouchGui is already running!",
@@ -48,7 +48,7 @@ if Global.TouchGui.isLoaded then
     return
 end
 
-Global.TouchGui.isLoaded = true
+Shared.TouchGui.isLoaded = true
 
 local function isDesktop()
     return not UserInputService.TouchEnabled

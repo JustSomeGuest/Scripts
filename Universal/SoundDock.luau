@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Global = (pcall(getgenv) and getgenv()) or warn("[SoundDock]: Executor doesn't support getgenv()")
+local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
 
 local function default(expected, value, fallback)
     if type(value) == expected then
@@ -34,9 +34,9 @@ local IsFolder = default("function", isfolder, function() return end)
 local MakeFolder = default("function", makefolder, function() return end)
 local ListFiles = default("function", listfiles, function() return end)
 
-Global.SoundDock = Global.SoundDock or {}
+Shared.SoundDock = Shared.SoundDock or {}
 
-if Global.SoundDock.isLoaded then
+if Shared.SoundDock.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "SoundDock Music Player",
         Text = "SoundDock is already running!",
@@ -45,7 +45,7 @@ if Global.SoundDock.isLoaded then
     return
 end
 
-Global.SoundDock.isLoaded = true
+Shared.SoundDock.isLoaded = true
 
 local TweenService = Services.TweenService
 local RunService = Services.RunService
