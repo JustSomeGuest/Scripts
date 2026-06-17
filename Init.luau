@@ -45,8 +45,8 @@ local Scripts = {
     DeltaKD = "Universal/DeltaKD.luau",
     TouchGui = "Universal/TouchGui.luau",
 
-    CombatGUI = "Game-specific/CombatGUI/Init.luau",
-    NebulaHub = "Game-specific/NebulaHub/Init.luau"
+    CombatGUI = "Game-specific/CombatGui.luau",
+    NebulaHub = "Game-specific/NebulaHub.luau"
 }
 
 for Name, Path in pairs(Scripts) do
