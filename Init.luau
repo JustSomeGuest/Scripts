@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
+local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
 
 Shared.Init = Shared.Init or {}
 local Init = Shared.Init
