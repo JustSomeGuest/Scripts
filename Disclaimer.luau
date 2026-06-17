@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait() 
 end
 
-local Global = (pcall(getgenv) and getgenv()) or warn("[Disclaimer]: Executor doesn't support getgenv()")
+local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
 
 local function default(expected, value, fallback)
     if type(value) == expected then
@@ -31,10 +31,13 @@ local Success, Hui = pcall(function() return gethui and gethui() end)
 local CoreGui = Success and Hui or Services.CoreGui
 local TweenService = Services.TweenService
 local StarterGui = Services.StarterGui
+local Players = Services.Players
+local Player = Players.LocalPlayer
 
 local Disclaimer = {}
 
 Disclaimer.Script = nil
+Disclaimer.OnAccept = nil
 
 local function Notify(message)
     pcall(function()
@@ -47,12 +50,12 @@ local function Notify(message)
 end
 
 local function CreateDisclaimer()
-    if getgenv().Disclaimer and getgenv().Disclaimer.isLoaded then
+    if Shared.Disclaimer and Shared.Disclaimer.isLoaded then
         return nil
     end
 
-    getgenv().Disclaimer = getgenv().Disclaimer or {}
-    getgenv().Disclaimer.isLoaded = true
+    Shared.Disclaimer = Shared.Disclaimer or {}
+    Shared.Disclaimer.isLoaded = true
 
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "Disclaimer"
@@ -203,7 +206,15 @@ local function CreateDisclaimer()
     Description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Description.BackgroundTransparency = 1
     Description.BorderSizePixel = 0
-    Description.Text = "By selecting <b>\"Accept\"</b>, you acknowledge that using this script violates Roblox's Terms of Service and may result in moderation actions.\n\nPossible consequences include warnings, temporary suspensions, permanent account termination, or removal from the current game by moderators or automated anti-cheat systems.\n\nBy continuing, you confirm that you understand these risks and choose to proceed at your own discretion.\n\nYou accept full responsibility for any consequences that may arise from the use of this script.\n\nThe creator (<b>JustAGuest</b>) provides no guarantees regarding safety, detection, or functionality, and assumes no responsibility for any bans, losses, or damages resulting from its use.\n\nIf you do not agree with this disclaimer, you should immediately decline and discontinue use of this script."
+    Description.Text = [[
+Using executors is against Roblox's Terms of Service and can lead to action being taken on your account, including a permanent ban.
+
+Some games also use their own anti-cheat systems or moderators that may detect this and remove or ban you while using this script.
+
+By clicking "Accept", you acknowledge these risks and understand that you are using this script at your own discretion. JustAGuest is not responsible for any bans, penalties, or losses that may occur.
+
+If you do not agree, click "Decline" and do not continue.
+]]
     Description.TextWrapped = true
     Description.TextXAlignment = Enum.TextXAlignment.Left
     Description.TextYAlignment = Enum.TextYAlignment.Top
@@ -325,7 +336,7 @@ local function CreateDisclaimer()
         ScreenGui:Destroy()
 
         isAnimating = false
-        getgenv().Disclaimer.isLoaded = false
+        Shared.Disclaimer.isLoaded = false
 
         if callback then
             task.spawn(callback)
@@ -335,30 +346,39 @@ local function CreateDisclaimer()
     Accept.MouseButton1Click:Connect(function()
         task.spawn(function()
             SlideOut(function()
-                local URL = Disclaimer.Script
-                if not URL or URL == "" then
-                    Notify("No script URL has been assigned to Disclaimer.Script")
-                    return
-                end
+                if Disclaimer.OnAccept then
+                    Disclaimer.OnAccept()
+                elseif Disclaimer.Script then
+                    local URL = Disclaimer.Script
+                    if type(URL) == "function" then
+                        URL = URL()
+                    end
+                    if not URL or URL == "" then
+                        Notify("No script URL has been assigned")
+                        return
+                    end
 
-                local ok, res = pcall(function()
-                    return game:HttpGet(URL)
-                end)
+                    local ok, res = pcall(function()
+                        return game:HttpGet(URL)
+                    end)
 
-                if not ok then
-                    Notify("Failed to load script from: " .. tostring(URL))
-                    return
-                end
+                    if not ok then
+                        Notify("Failed to load script from: " .. tostring(URL))
+                        return
+                    end
 
-                local scriptFunc, err = loadstring(res)
-                if not scriptFunc then
-                    Notify("Script compilation error: " .. tostring(err))
-                    return
-                end
+                    local scriptFunc, err = loadstring(res)
+                    if not scriptFunc then
+                        Notify("Script compilation error: " .. tostring(err))
+                        return
+                    end
 
-                local ok2, execErr = pcall(scriptFunc)
-                if not ok2 then
-                    Notify("Script execution error: " .. tostring(execErr))
+                    local ok2, execErr = pcall(scriptFunc)
+                    if not ok2 then
+                        Notify("Script execution error: " .. tostring(execErr))
+                    end
+                else
+                    Notify("No script to load")
                 end
             end)
         end)

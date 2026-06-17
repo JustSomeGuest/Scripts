@@ -36,7 +36,6 @@ local function GetScript(URL)
 end
 
 local Scripts = {
-    --// Universal
     Lucid = "Universal/Lucid/Init.luau",
     PolariaRM = "Universal/PolariaRM/Init.luau",
     GelatekHubRM = "Universal/GelatekHubRM/Init.luau",
@@ -46,22 +45,17 @@ local Scripts = {
     DeltaKD = "Universal/DeltaKD.luau",
     TouchGui = "Universal/TouchGui.luau",
 
-    --// Game-specific
-    CombatGUI = "Game-specific/CombatGui.luau",
-    NebulaHub = "Game-specific/NebulaHub.luau"
+    CombatGUI = "Game-specific/CombatGUI/Init.luau",
+    NebulaHub = "Game-specific/NebulaHub/Init.luau"
 }
+
+local Disclaimer = GetScript(Repo .. "Disclaimer.luau")
 
 for Name, Path in pairs(Scripts) do
     Init[Name] = function()
-        local Success, Result = pcall(function()
-            return GetScript(Repo .. Path)
-        end)
-
-        if not Success then
-            error(("[Init Error]: %s"):format(tostring(Result)), 0)
-        end
-
-        return Result
+        Disclaimer.Script = Repo .. Path
+        Disclaimer()
+        return true
     end
 end
 
