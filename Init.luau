@@ -36,6 +36,7 @@ local function GetScript(URL)
 end
 
 local Scripts = {
+    --// Universal
     Lucid = "Universal/Lucid/Init.luau",
     PolariaRM = "Universal/PolariaRM/Init.luau",
     GelatekHubRM = "Universal/GelatekHubRM/Init.luau",
@@ -45,6 +46,7 @@ local Scripts = {
     DeltaKD = "Universal/DeltaKD.luau",
     TouchGui = "Universal/TouchGui.luau",
 
+    --// Game-specific
     CombatGUI = "Game-specific/CombatGui.luau",
     NebulaHub = "Game-specific/NebulaHub.luau"
 }
