@@ -2,9 +2,9 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Global = (pcall(getgenv) and getgenv()) or warn("[Shiftlock]: Executor doesn't support getgenv()")
+local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
 
-Global.Shiftlock = Global.Shiftlock or {}
+Shared.Shiftlock = Shared.Shiftlock or {}
 
 local function default(expected, value, fallback)
     if type(value) == expected then
@@ -104,7 +104,7 @@ local function GetAsset(Path)
     return LoadAsset(Path)
 end
 
-if Global.Shiftlock.isLoaded then
+if Shared.Shiftlock.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "Shiftlock",
         Text = "Shiftlock is already running!",
@@ -114,7 +114,7 @@ if Global.Shiftlock.isLoaded then
     return
 end
 
-Global.Shiftlock.isLoaded = true
+Shared.Shiftlock.isLoaded = true
 
 local ShiftlockGui = Instance.new("ScreenGui")
 ShiftlockGui.Name = "Shiftlock"
@@ -292,7 +292,7 @@ end)
 Close.MouseButton1Click:Connect(function()
     DisableShiftlock()
     ShiftlockGui:Destroy()
-    Global.Shiftlock.isLoaded = false
+    Shared.Shiftlock.isLoaded = false
 end)
 
 Player.CharacterAdded:Connect(function(NewChar)
