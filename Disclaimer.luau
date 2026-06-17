@@ -206,15 +206,13 @@ local function CreateDisclaimer()
     Description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Description.BackgroundTransparency = 1
     Description.BorderSizePixel = 0
-    Description.Text = [[
-Using executors is against Roblox's Terms of Service and can lead to action being taken on your account, including a permanent ban.
+    Description.Text = [[Using executors is against Roblox's Terms of Service and can lead to action being taken on your account, including a permanent ban.
 
 Some games also use their own anti-cheat systems or moderators that may detect this and remove or ban you while using this script.
 
 By clicking "Accept", you acknowledge these risks and understand that you are using this script at your own discretion. JustAGuest is not responsible for any bans, penalties, or losses that may occur.
 
-If you do not agree, click "Decline" and do not continue.
-]]
+If you do not agree, click "Decline" and do not continue.]]
     Description.TextWrapped = true
     Description.TextXAlignment = Enum.TextXAlignment.Left
     Description.TextYAlignment = Enum.TextYAlignment.Top
