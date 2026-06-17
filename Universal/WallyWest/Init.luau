@@ -2,7 +2,7 @@ if not game:IsLoaded() then
   game.Loaded:Wait()
 end
 
-local Global = (pcall(getgenv) and getgenv()) or warn("[WallyWest]: Executor doesn't support getgenv()")
+local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
 
 function default(expected, value, fallback)
 	if type(value) == expected then
@@ -28,9 +28,9 @@ Services = setmetatable({}, {
 	end
 })
 
-Global.WallyWest = Global.WallyWest or {}
+Shared.WallyWest = Shared.WallyWest or {}
 
-if Global.WallyWest.isLoaded then
+if Shared.WallyWest.isLoaded then
     Services.StarterGui:SetCore("SendNotification", {
         Title = "Wally West",
         Text = "Wally West is already running!",
@@ -39,7 +39,7 @@ if Global.WallyWest.isLoaded then
     return
 end
 
-Global.WallyWest.isLoaded = true
+Shared.WallyWest.isLoaded = true
 
 local WriteFile = default("function", writefile, function() return end)
 local IsFile = default("function", isfile, function() return end)
@@ -1055,7 +1055,7 @@ CloseBtn.MouseButton1Click:Connect(function()
     FullCleanup()
     FeWallyWest:Destroy()
     ColorCorrection:Destroy()
-    Global.WallyWest.isLoaded = false
+    Shared.WallyWest.isLoaded = false
 end)
 
 local function OnCharacterAdded(character)
