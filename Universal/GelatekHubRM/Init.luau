@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
+local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
 
 local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM"
 local Modules = Base .. "/Modules"
@@ -10,21 +10,26 @@ local Scripts = Base .. "/Scripts"
 local FreeScripts = Scripts .. "/Free"
 local HatScripts = Scripts .. "/Hat"
 
-local function default(expected, value, fallback)
-    if type(value) == expected then return value end
+local function expect(expected, value, fallback)
+    if type(value) == expected then
+        return value
+    end
+
     if fallback ~= nil then
         if type(fallback) == "function" then
             return function(...)
-                warn("[Gelatek Hub Remastered]: Executor doesn't support " .. tostring(fallback))
-                return fallback
+                warn("[Expect]: Missing executor functionality. Using fallback function.")
+                return fallback(...)
             end
         end
-        warn("[Gelatek Hub Remastered]: Executor doesn't support " .. tostring(fallback))
+
+        warn("[Expect]: Value has unexpected type. Using fallback value.")
     end
+
     return fallback
 end
 
-local cloneref = default("function", cloneref, "cloneref")
+local cloneref = expect("function", cloneref, "cloneref")
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -109,10 +114,10 @@ local function load(url, scriptName)
     end
 end
 
-local WriteFile = default("function", writefile, "writefile")
-local IsFile = default("function", isfile, "isfile")
-local IsFolder = default("function", isfolder, "isfolder")
-local MakeFolder = default("function", makefolder, "makefolder")
+local WriteFile = expect("function", writefile, "writefile")
+local IsFile = expect("function", isfile, "isfile")
+local IsFolder = expect("function", isfolder, "isfolder")
+local MakeFolder = expect("function", makefolder, "makefolder")
 
 local function CheckAudioPackage()
     if not WriteFile or not IsFile or not MakeFolder or not IsFolder then
