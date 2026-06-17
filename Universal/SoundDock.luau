@@ -2,16 +2,28 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
+local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
 
-local function default(expected, value, fallback)
+local function expect(expected, value, fallback)
     if type(value) == expected then
         return value
     end
+
+    if fallback ~= nil then
+        if type(fallback) == "function" then
+            return function(...)
+                warn("[Expect]: Missing executor functionality. Using fallback function.")
+                return fallback(...)
+            end
+        end
+
+        warn("[Expect]: Value has unexpected type. Using fallback value.")
+    end
+
     return fallback
 end
 
-local cloneref = default("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function() return end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -28,11 +40,11 @@ local Services = setmetatable({}, {
     end
 })
 
-local WriteFile = default("function", writefile, function() return end)
-local IsFile = default("function", isfile, function() return end)
-local IsFolder = default("function", isfolder, function() return end)
-local MakeFolder = default("function", makefolder, function() return end)
-local ListFiles = default("function", listfiles, function() return end)
+local WriteFile = expect("function", writefile, function() return end)
+local IsFile = expect("function", isfile, function() return end)
+local IsFolder = expect("function", isfolder, function() return end)
+local MakeFolder = expect("function", makefolder, function() return end)
+local ListFiles = expect("function", listfiles, function() return end)
 
 Shared.SoundDock = Shared.SoundDock or {}
 
@@ -588,15 +600,15 @@ local currentSound = nil
 local isPaused = false
 local currentTween = nil
 local currentSongTime = 0
-local defaultPauseImage = "rbxassetid://13980756617"
+local expectPauseImage = "rbxassetid://13980756617"
 local pausedImage = "rbxassetid://12099513379"
-local defaultLoopColor = Loop.ImageColor3
+local expectLoopColor = Loop.ImageColor3
 local loopisLoadedColor = Color3.fromRGB(0, 170, 255)
 local fadeTime = 0.5
 local fadeTweenInfo = TweenInfo.new(fadeTime, Enum.EasingStyle.Linear)
 local isLooping = settings.IsLooped or false
 
-Loop.ImageColor3 = isLooping and loopisLoadedColor or defaultLoopColor
+Loop.ImageColor3 = isLooping and loopisLoadedColor or expectLoopColor
 
 local function SaveSettings()
     local newSettings = {
@@ -689,7 +701,7 @@ local function PlaySong(index)
     ProgressBar.Visible = true
     UpdateProgressBar(sound, 0)
     isPaused = false
-    Pause.Image = defaultPauseImage
+    Pause.Image = expectPauseImage
     sound.Ended:Connect(function()
         if sound == currentSound then
             if isLooping then
@@ -726,7 +738,7 @@ Pause.MouseButton1Click:Connect(function()
             currentSound:Resume()
             FadeIn(currentSound)
         end)
-        Pause.Image = defaultPauseImage
+        Pause.Image = expectPauseImage
         currentSongTime = currentSound.TimePosition or 0
         UpdateProgressBar(currentSound, currentSongTime)
     end
@@ -742,7 +754,7 @@ end)
 
 Loop.MouseButton1Click:Connect(function()
     isLooping = not isLooping
-    Loop.ImageColor3 = isLooping and loopisLoadedColor or defaultLoopColor
+    Loop.ImageColor3 = isLooping and loopisLoadedColor or expectLoopColor
     SaveSettings()
 end)
 

@@ -2,18 +2,28 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
+local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
 
-Shared.TouchGui = Shared.TouchGui or {}
-
-local function default(expected, value, fallback)
+local function expect(expected, value, fallback)
     if type(value) == expected then
         return value
     end
+
+    if fallback ~= nil then
+        if type(fallback) == "function" then
+            return function(...)
+                warn("[Expect]: Missing executor functionality. Using fallback function.")
+                return fallback(...)
+            end
+        end
+
+        warn("[Expect]: Value has unexpected type. Using fallback value.")
+    end
+
     return fallback
 end
 
-local cloneref = default("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function() return end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -38,6 +48,8 @@ local CoreGui = Services.CoreGui
 
 local Success, Hui = pcall(function() return gethui and gethui() end)
 local CoreGui = Success and Hui or CoreGui
+
+Shared.TouchGui = Shared.TouchGui or {}
 
 if Shared.TouchGui.isLoaded then
     StarterGui:SetCore("SendNotification", {
