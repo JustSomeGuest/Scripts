@@ -2,16 +2,28 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end 
 
-local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
+local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
 
-local function default(expected, value, fallback)
+local function expect(expected, value, fallback)
     if type(value) == expected then
         return value
     end
+
+    if fallback ~= nil then
+        if type(fallback) == "function" then
+            return function(...)
+                warn("[Expect]: Missing executor functionality. Using fallback function.")
+                return fallback(...)
+            end
+        end
+
+        warn("[Expect]: Value has unexpected type. Using fallback value.")
+    end
+
     return fallback
 end
 
-local cloneref = default("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function() return end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -36,15 +48,15 @@ local TweenService = Services.TweenService
 
 Shared.Lucid = Shared.Lucid or {}
 
-local WriteFile = default("function", writefile, function() return end)
-local ReadFile = default("function", readfile, function() return end)
-local DelFile = default("function", delfile, function() return end)
-local IsFile = default("function", isfile, function() return end)
-local IsFolder = default("function", isfolder, function() return end)
-local MakeFolder = default("function", makefolder, function() return end)
-local ListFiles = default("function", listfiles, function() return end)
-local LoadAsset = default("function", getcustomasset, default("function", getsynasset, function() return end))
-local SetClipboard = default("function", setclipboard, function() return end)
+local WriteFile = expect("function", writefile, function() return end)
+local ReadFile = expect("function", readfile, function() return end)
+local DelFile = expect("function", delfile, function() return end)
+local IsFile = expect("function", isfile, function() return end)
+local IsFolder = expect("function", isfolder, function() return end)
+local MakeFolder = expect("function", makefolder, function() return end)
+local ListFiles = expect("function", listfiles, function() return end)
+local LoadAsset = expect("function", getcustomasset, expect("function", getsynasset, function() return end))
+local SetClipboard = expect("function", setclipboard, function() return end)
 
 local GothamBold = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -148,9 +160,9 @@ local function HideExec()
 end
 
 local function HttpGet(url)
-    local RequestFunc = default("function", syn and syn.request,
-        default("function", request,
-            default("function", http_request, function() return end)))
+    local RequestFunc = expect("function", syn and syn.request,
+        expect("function", request,
+            expect("function", http_request, function() return end)))
     if not RequestFunc then return nil end
     local success, result = pcall(function()
         return RequestFunc({ Url = url, Method = "GET" })
