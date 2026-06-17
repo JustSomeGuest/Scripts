@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Global = (pcall(getgenv) and getgenv()) or warn("[Gelatek Hub Remastered]: Executor doesn't support getgenv()")
+local Shared = (pcall(getgenv) and getgenv()) or warn("[Shared]: getgenv() isn't supported by this executor.")
 
 local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM"
 local Modules = Base .. "/Modules"
@@ -48,9 +48,9 @@ local TweenService = Services.TweenService
 local MarketplaceService = Services.MarketplaceService
 local StarterGui = Services.StarterGui
 
-Global.GelatekHubRM = Global.GelatekHubRM or {}
+Shared.GelatekHubRM = Shared.GelatekHubRM or {}
 
-if Global.GelatekHubRM.isLoaded then
+if Shared.GelatekHubRM.isLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "GelatekHubRM",
         Text = "Gelatek Hub Remastered is already running!",
@@ -59,7 +59,7 @@ if Global.GelatekHubRM.isLoaded then
     return
 end
 
-Global.GelatekHubRM.isLoaded = true
+Shared.GelatekHubRM.isLoaded = true
 
 local function SafeCall(func, ...)
     local ok, result = pcall(func, ...)
@@ -147,7 +147,7 @@ local function IsGame(gameName)
     return game.PlaceId == placeId
 end
 
-Global.GelatekHubConfig = {
+Shared.GelatekHubConfig = {
     PermanentDeath = false,
     TorsoFling = false,
     BulletFling = false,
@@ -851,7 +851,7 @@ local function MakeToggle(button, toggleFrame, configKey)
     local isOn = false
     button.MouseButton1Click:Connect(function()
         isOn = not isOn
-        Global.GelatekHubConfig[configKey] = isOn
+        Shared.GelatekHubConfig[configKey] = isOn
         toggleFrame.BackgroundColor3 = isOn and Color3.fromRGB(76, 175, 80) or Color3.fromRGB(255, 57, 60)
     end)
 end
@@ -869,11 +869,11 @@ if IsGame("Just A Baseplate") then
     local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
     
     ReanimateBtn.MouseButton1Click:Connect(function()
-        if Global.GelatekHubConfig.PermanentDeath then
+        if Shared.GelatekHubConfig.PermanentDeath then
             CmdEvent:FireServer("cmd", "-pd")
         end
         Wait(2)
-        if Global.GelatekHubConfig.KeepHatsAttached then
+        if Shared.GelatekHubConfig.KeepHatsAttached then
             CmdEvent:FireServer("cmd", "-net")
         end
         Wait(2)
@@ -1015,6 +1015,6 @@ end)
 Close.MouseButton1Click:Connect(function()
     SafeCall(function()
         GelatekHub:Destroy()
-        Global.GelatekHubRM.isLoaded = false
+        Shared.GelatekHubRM.isLoaded = false
     end)
 end)
