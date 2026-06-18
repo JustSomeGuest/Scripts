@@ -2,7 +2,10 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
+local Shared = (function()
+    local Success, Env = pcall(getgenv)
+    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+end)()
 
 Shared.Init = Shared.Init or {}
 local Init = Shared.Init
@@ -11,28 +14,36 @@ local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/"
 
 local function GetScript(URL)
     local Success, Response = pcall(game.HttpGetAsync, game, URL)
-
     if not Success then
         Success, Response = pcall(game.HttpGet, game, URL)
     end
-
     if not Success then
         error(("[Init Error]: Failed to fetch script: %s"):format(tostring(Response)), 0)
     end
 
     local Chunk, Err = loadstring(Response)
-
     if not Chunk then
         error(("[Init Error]: %s"):format(tostring(Err)), 0)
     end
 
     local Loaded, Result = pcall(Chunk)
-
     if not Loaded then
         error(("[Init Error]: %s"):format(tostring(Result)), 0)
     end
 
     return Result
+end
+
+local function Notify()
+    local Success, Notification = pcall(function()
+        return GetScript(Repo .. "Welcome.luau")
+    end)
+
+    if Success and Notification then
+        Notification()
+    else
+        warn("[Init]: Failed to show notification")
+    end
 end
 
 local Scripts = {
@@ -49,12 +60,23 @@ local Scripts = {
     NebulaHub = "Game-specific/NebulaHub/Init.luau"
 }
 
-local Disclaimer = GetScript(Repo .. "Disclaimer.luau")
-
 for Name, Path in pairs(Scripts) do
     Init[Name] = function()
-        Disclaimer.Script = Repo .. Path
-        Disclaimer()
+        Notify()
+
+        task.wait(0.5)
+
+        local Success, Script = pcall(function()
+            return GetScript(Repo .. Path)
+        end)
+
+        if Success and Script then
+            Script()
+            print("[Init] Loaded " .. Name .. " successfully")
+        else
+            warn("[Init Error] Failed to load " .. Name .. ": " .. tostring(Script))
+        end
+
         return true
     end
 end
