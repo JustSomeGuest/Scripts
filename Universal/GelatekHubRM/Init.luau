@@ -653,24 +653,24 @@ local GalaxySlasher = MakeButton(ScriptsContent, "Galaxy Slasher (Don't Reanimat
 local Carnage = MakeButton(ScriptsContent, "Carnage", 8)
 local NeptunianV = MakeButton(ScriptsContent, "Neptunian V", 9)
 local ZenithBattleRifle = MakeButton(ScriptsContent, "Zenith Battle Rifle-70", 10)
-local Chips = MakeButton(ScriptsContent, "Chips", 11)
-local VoidScythe = MakeButton(ScriptsContent, "Void Scythe", 12)
-local VoodooDoll = MakeButton(ScriptsContent, "Voodoo Doll", 13)
-local Quenox = MakeButton(ScriptsContent, "Quenox", 14)
-local Goner = MakeButton(ScriptsContent, "Goner", 15)
+local StarslayerRailgun = MakeButton(ScriptsContent, "Starslayer Railgun (Don't Reanimate)", 11)
+local Chips = MakeButton(ScriptsContent, "Chips", 12)
+local VoidScythe = MakeButton(ScriptsContent, "Void Scythe", 13)
+local VoodooDoll = MakeButton(ScriptsContent, "Voodoo Doll", 14)
+local Quenox = MakeButton(ScriptsContent, "Quenox", 15)
+local Goner = MakeButton(ScriptsContent, "Goner", 16)
 
-local CopyR6BulletHat = MakeButton(HatsContent, "Copy R6 Bullet Hat Id(s)", 1)
-MakeDivider(HatsContent, 2)
-local CopyDualUltimaHats = MakeButton(HatsContent, "Copy Dual Ultima Hat Id(s)", 3)
-local CopyGalaxySlasherHats = MakeButton(HatsContent, "Copy Galaxy Slasher Hat Id(s)", 4)
-local CopyCarnageHats = MakeButton(HatsContent, "Copy Carnage Hat Id(s)", 5)
-local CopyNeptunianVHats = MakeButton(HatsContent, "Copy Neptunian V Hat Id(s)", 6)
-local CopyZenithBattleRifleHats = MakeButton(HatsContent, "Copy Zenith Battle Rifle-70 Hat Id(s)", 7)
-local CopyChipsHats = MakeButton(HatsContent, "Copy Chips Hat Id(s)", 8)
-local CopyVoidScytheHats = MakeButton(HatsContent, "Copy Void Scythe Hat Id(s)", 9)
-local CopyVoodooDollHats = MakeButton(HatsContent, "Copy Voodoo Doll Hat Id(s)", 10)
-local CopyQuenoxHats = MakeButton(HatsContent, "Copy Quenox Hat Id(s)", 11)
-local CopyGonerHats = MakeButton(HatsContent, "Copy Goner Hat Id(s)", 12)
+local CopyDualUltimaHats = MakeButton(HatsContent, "Copy Dual Ultima Hat Id(s)", 1)
+local CopyGalaxySlasherHats = MakeButton(HatsContent, "Copy Galaxy Slasher Hat Id(s)", 2)
+local CopyCarnageHats = MakeButton(HatsContent, "Copy Carnage Hat Id(s)", 3)
+local CopyNeptunianVHats = MakeButton(HatsContent, "Copy Neptunian V Hat Id(s)", 4)
+local CopyZenithBattleRifleHats = MakeButton(HatsContent, "Copy Zenith Battle Rifle-70 Hat Id(s)", 5)
+local CopyStarslayerRailgunHats = MakeButton(HatsContent, "Copy Starslayer Railgun Hat Id(s)", 6)
+local CopyChipsHats = MakeButton(HatsContent, "Copy Chips Hat Id(s)", 7)
+local CopyVoidScytheHats = MakeButton(HatsContent, "Copy Void Scythe Hat Id(s)", 8)
+local CopyVoodooDollHats = MakeButton(HatsContent, "Copy Voodoo Doll Hat Id(s)", 9)
+local CopyQuenoxHats = MakeButton(HatsContent, "Copy Quenox Hat Id(s)", 10)
+local CopyGonerHats = MakeButton(HatsContent, "Copy Goner Hat Id(s)", 11)
 
 local Shiftlock = MakeButton(ExtraContent, "Shiftlock", 1)
 local TouchGui = MakeButton(ExtraContent, "TouchGui (Uses Keyboard Keys)", 2)
@@ -872,74 +872,121 @@ MakeToggle(DisableAnims, DisableAnimsToggle, "DisableAnims")
 
 if IsGame("Just A Baseplate") then
     local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
-    
+
     ReanimateBtn.MouseButton1Click:Connect(function()
         if Shared.GelatekHubConfig.PermanentDeath then
             CmdEvent:FireServer("cmd", "-pd")
         end
+
         Wait(2)
+
         if Shared.GelatekHubConfig.KeepHatsAttached then
             CmdEvent:FireServer("cmd", "-net")
         end
+
         Wait(2)
+
         load(Modules .. "/Reanimate.luau", "Reanimate.luau")
+
         WaitForDeath()
         Wait(0.1)
+
         CmdEvent:FireServer("cmd", "-net")
     end)
-    
+
     local hatIdMap = {
-        [CopyR6BulletHat] = "48474313",
         [CopyDualUltimaHats] = "4524991457,4820152700",
         [CopyGalaxySlasherHats] = "6202664431",
         [CopyCarnageHats] = "5134896593,5410674378",
         [CopyNeptunianVHats] = "4506945409",
         [CopyZenithBattleRifleHats] = "4962510729,4962455546",
+        [CopyStarslayerRailgunHats] = "4623059912",
         [CopyChipsHats] = "4964938812",
         [CopyVoidScytheHats] = "5414429551",
         [CopyVoodooDollHats] = "7218265043,7170689370",
         [CopyQuenoxHats] = "4820152700,4794315940,4524991457,4315489767,4458601937,4506945409",
         [CopyGonerHats] = "6869866014",
     }
+
     for btn, ids in pairs(hatIdMap) do
         btn.Text = btn.Text:gsub("^Copy", "Get"):gsub("Hat Id%(s%)", "Hat(s)")
+
         btn.MouseButton1Click:Connect(function()
             CmdEvent:FireServer("cmd", "-gh " .. ids)
+
             Wait(2)
+
             CmdEvent:FireServer("cmd", "-net")
         end)
     end
 else
-    ReanimateBtn.MouseButton1Click:Connect(function()
-        load(Modules .. "/Reanimate.luau", "Reanimate.luau")
-    end)
-    
     local function CopyToClipboard(text)
         if type(setclipboard) ~= "function" then
             warn("[Gelatek Hub Remastered]: Executor doesn't support setclipboard")
+
             StarterGui:SetCore("SendNotification", {
-                Title = "Error",
+                Title = "Gelatek Hub Remastered",
                 Text = "Your executor doesn't support clipboard access!",
                 Duration = 4
             })
+
             return
         end
+
         SafeCall(function()
             setclipboard(text)
-            StarterGui:SetCore("SendNotification", { Title = "Copied!", Text = text, Duration = 2 })
+
+            StarterGui:SetCore("SendNotification", {
+                Title = "Gelatek Hub Remastered",
+                Text = "Copied Hat Id!",
+                Duration = 2
+            })
         end)
     end
-    CopyR6BulletHat.MouseButton1Click:Connect(function() CopyToClipboard("48474313") end)
-    CopyDualUltimaHats.MouseButton1Click:Connect(function() CopyToClipboard("4524991457,4820152700") end)
-    CopyGalaxySlasherHats.MouseButton1Click:Connect(function() CopyToClipboard("6202664431") end)
-    CopyCarnageHats.MouseButton1Click:Connect(function() CopyToClipboard("5134896593,5410674378") end)
-    CopyNeptunianVHats.MouseButton1Click:Connect(function() CopyToClipboard("4506945409") end)
-    CopyZenithBattleRifleHats.MouseButton1Click:Connect(function() CopyToClipboard("4962510729,4962455546") end)
-    CopyChipsHats.MouseButton1Click:Connect(function() CopyToClipboard("4964938812") end)
-    CopyVoidScytheHats.MouseButton1Click:Connect(function() CopyToClipboard("5414429551") end)
-    CopyVoodooDollHats.MouseButton1Click:Connect(function() CopyToClipboard("7218265043,7170689370") end)
-    CopyQuenoxHats.MouseButton1Click:Connect(function() CopyToClipboard("4820152700,4794315940,4524991457,4315489767,4458601937,4506945409") end)
-    CopyGonerHats.MouseButton1Click:Connect(function() CopyToClipboard("6869866014") end)
+
+    CopyDualUltimaHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("4524991457,4820152700")
+    end)
+
+    CopyGalaxySlasherHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("6202664431")
+    end)
+
+    CopyCarnageHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("5134896593,5410674378")
+    end)
+
+    CopyNeptunianVHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("4506945409")
+    end)
+
+    CopyZenithBattleRifleHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("4962510729,4962455546")
+    end)
+
+    CopyStarslayerRailgunHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("4623059912")
+    end)
+
+    CopyChipsHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("4964938812")
+    end)
+
+    CopyVoidScytheHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("5414429551")
+    end)
+
+    CopyVoodooDollHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("7218265043,7170689370")
+    end)
+
+    CopyQuenoxHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("4820152700,4794315940,4524991457,4315489767,4458601937,4506945409")
+    end)
+
+    CopyGonerHats.MouseButton1Click:Connect(function()
+        CopyToClipboard("6869866014")
+    end)
 end
 
 Deanimate.MouseButton1Click:Connect(BetterStopScript)
@@ -995,6 +1042,17 @@ end)
 
 ZenithBattleRifle.MouseButton1Click:Connect(function()
     load(HatScripts .. "/ZenithAttackRifle.luau", "ZenithAttackRifle.luau")
+end)
+
+StarslayerRailgun.MouseButton1Click:Connect(function()
+    if IsGame("Just A Baseplate") then
+        local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
+        CmdEvent:FireServer("cmd", "-pd")
+        Wait(2)
+        load(HatScripts .. "/StarslayerRailgun.luau", "StarslayerRailgun.luau")
+    else
+        load(HatScripts .. "/StarslayerRailgun.luau", "StarslayerRailgun.luau")
+    end
 end)
 
 Chips.MouseButton1Click:Connect(function()
