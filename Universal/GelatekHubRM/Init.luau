@@ -1,14 +1,11 @@
-if not game:IsLoaded() then
-    game.Loaded:Wait()
+if not game:IsLoaded() then 
+    game.Loaded:Wait() 
 end
 
-local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
-
-local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM"
-local Modules = Base .. "/Modules"
-local Scripts = Base .. "/Scripts"
-local FreeScripts = Scripts .. "/Free"
-local HatScripts = Scripts .. "/Hat"
+local Shared = (function()
+    local Success, Env = pcall(getgenv)
+    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+end)()
 
 local function expect(expected, value, fallback)
     if type(value) == expected then
@@ -29,20 +26,27 @@ local function expect(expected, value, fallback)
     return fallback
 end
 
-local cloneref = expect("function", cloneref, "cloneref")
+local cloneref = expect("function", cloneref, function(...) return ... end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
-        local ok, result = pcall(function()
+        local success, cache = pcall(function()
             return cloneref(game:GetService(name))
         end)
-        if ok then
-            rawset(self, name, result)
-            return result
+        if success then
+            rawset(self, name, cache)
+            return cache
+        else
+            error("Invalid Service: " .. tostring(name))
         end
-        error("Invalid Service: " .. tostring(name))
     end
 })
+
+local Success, Hui = pcall(function()
+    return gethui and gethui()
+end)
+
+local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
 
 local Players = Services.Players
 local ReplicatedStorage = Services.ReplicatedStorage
@@ -180,9 +184,6 @@ local function WaitForDeath()
         end
     end)
 end
-
-local Success, Hui = pcall(function() return gethui and gethui() end)
-local CoreGui = (Success and Hui) or Services.CoreGui
 
 local GelatekHub = Instance.new("ScreenGui")
 GelatekHub.DisplayOrder = 1
