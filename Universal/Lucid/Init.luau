@@ -1,8 +1,11 @@
-if not game:IsLoaded() then
-    game.Loaded:Wait()
-end 
+if not game:IsLoaded() then 
+    game.Loaded:Wait() 
+end
 
-local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
+local Shared = (function()
+    local Success, Env = pcall(getgenv)
+    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+end)()
 
 local function expect(expected, value, fallback)
     if type(value) == expected then
@@ -23,7 +26,7 @@ local function expect(expected, value, fallback)
     return fallback
 end
 
-local cloneref = expect("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function(...) return ... end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -39,12 +42,19 @@ local Services = setmetatable({}, {
     end
 })
 
+local Success, Hui = pcall(function()
+    return gethui and gethui()
+end)
+
+local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
+
 local Workspace = Services.Workspace
 local HttpService = Services.HttpService
 local Players = Services.Players
 local Player = Players.LocalPlayer
 local UserInputService = Services.UserInputService
 local TweenService = Services.TweenService
+local StarterGui = Services.StarterGui
 
 Shared.Lucid = Shared.Lucid or {}
 
@@ -159,6 +169,8 @@ local function HideExec()
 	end
 end
 
+HideExec()
+
 local function HttpGet(url)
     local RequestFunc = expect("function", syn and syn.request,
         expect("function", request,
@@ -267,7 +279,7 @@ local function ClearCache()
 end
 
 if Shared.Lucid.isLoaded then
-    Services.StarterGui:SetCore("SendNotification", {
+    StarterGui:SetCore("SendNotification", {
         Title = "Lucid Executor",
         Text = "Lucid is already running!",
         Icon = GetAsset("Lucid/Assets/lucid_logo.png"),
@@ -277,11 +289,6 @@ if Shared.Lucid.isLoaded then
 end
 
 Shared.Lucid.isLoaded = true
-
-local Success, Hui = pcall(function() return gethui and gethui() end)
-local CoreGui = Success and Hui or Services.CoreGui
-
-HideExec()
 
 local Lucid = Instance.new("ScreenGui")
 Lucid.IgnoreGuiInset = true
