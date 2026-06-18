@@ -54,7 +54,10 @@ local Scripts = {
 
 for Name, Path in pairs(Scripts) do
     Init[Name] = function()
-        task.defer(GetScript, Repo .. "Welcome.luau")
+        coroutine.wrap(function()
+            GetScript(Repo .. "Welcome.luau")
+        end)()
+
         return GetScript(Repo .. Path)
     end
 end
