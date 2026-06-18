@@ -2,10 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (function()
-    local Success, Env = pcall(getgenv)
-    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
-end)()
+local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
 
 Shared.Init = Shared.Init or {}
 local Init = Shared.Init
@@ -34,18 +31,6 @@ local function GetScript(URL)
     return Result
 end
 
-local function Notify()
-    local Success, Notification = pcall(function()
-        return GetScript(Repo .. "Welcome.luau")
-    end)
-
-    if Success and Notification then
-        Notification()
-    else
-        warn("[Init]: Failed to show notification")
-    end
-end
-
 local Scripts = {
     Lucid = "Universal/Lucid/Init.luau",
     PolariaRM = "Universal/PolariaRM/Init.luau",
@@ -62,7 +47,7 @@ local Scripts = {
 
 for Name, Path in pairs(Scripts) do
     Init[Name] = function()
-        Notify()
+        GetScript(Repo .. "Welcome.luau")
 
         task.wait(0.5)
 
