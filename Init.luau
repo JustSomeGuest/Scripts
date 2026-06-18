@@ -38,13 +38,6 @@ local function GetScript(URL)
     return Result
 end
 
-local Services = {
-    CoreGui = game:GetService("CoreGui")
-}
-
-local Success, Hui = pcall(function() return gethui and gethui() end)      
-local CoreGui = Success and Hui or Services.CoreGui
-
 local Scripts = {
     Lucid = "Universal/Lucid/Init.luau",
     PolariaRM = "Universal/PolariaRM/Init.luau",
