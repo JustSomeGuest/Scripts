@@ -34,9 +34,14 @@ local Services = setmetatable({}, {
     end
 })
 
-local Success, Hui = pcall(function() return gethui and gethui() end)
-local CoreGui = Success and Hui or Services.CoreGui
+local Success, Hui = pcall(gethui or function() end)
+local CoreGui = Hui or Services.CoreGui
 local TweenSvc = Services.TweenService
+
+local Existing = CoreGui:FindFirstChild("Notification")
+if Existing then
+    Existing:Destroy()
+end
 
 local Notification = Instance.new("ScreenGui")
 Notification.AutoLocalize = false
