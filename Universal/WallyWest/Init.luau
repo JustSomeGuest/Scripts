@@ -1,8 +1,11 @@
 if not game:IsLoaded() then 
-  game.Loaded:Wait()
+    game.Loaded:Wait() 
 end
 
-local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
+local Shared = (function()
+    local Success, Env = pcall(getgenv)
+    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+end)()
 
 local function expect(expected, value, fallback)
     if type(value) == expected then
@@ -23,36 +26,40 @@ local function expect(expected, value, fallback)
     return fallback
 end
 
-cloneref = expect("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function(...) return ... end)
 
-Services = setmetatable({}, {
-	__index = function(self, name)
-		local success, cache = pcall(function()
-			return cloneref(game:GetService(name))
-		end)
-			
-		if success then
-			rawset(self, name, cache)
-			return cache
-		else
-			error("Invalid Service: " .. tostring(name))
-		end
-	end
+local Services = setmetatable({}, {
+    __index = function(self, name)
+        local success, cache = pcall(function()
+            return cloneref(game:GetService(name))
+        end)
+        if success then
+            rawset(self, name, cache)
+            return cache
+        else
+            error("Invalid Service: " .. tostring(name))
+        end
+    end
 })
+
+local Success, Hui = pcall(function()
+    return gethui and gethui()
+end)
+
+local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
 
 local Players = Services.Players
 local RunService = Services.RunService
+local StarterGui = Services.StarterGui
 local HttpService = Services.HttpService
 local TweenService = Services.TweenService
 local UserInputService = Services.UserInputService
 local Player = Players.LocalPlayer
-local Success, Hui = pcall(function() return gethui and gethui() end)
-local CoreGui = Success and Hui or Services.CoreGui
 
 Shared.WallyWest = Shared.WallyWest or {}
 
 if Shared.WallyWest.isLoaded then
-    Services.StarterGui:SetCore("SendNotification", {
+    StarterGui:SetCore("SendNotification", {
         Title = "Wally West",
         Text = "Wally West is already running!",
         Duration = 4
