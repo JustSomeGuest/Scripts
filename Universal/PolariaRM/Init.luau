@@ -1,8 +1,11 @@
-if not game:IsLoaded() then
-    game.Loaded:Wait()
+if not game:IsLoaded() then 
+    game.Loaded:Wait() 
 end
 
-local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
+local Shared = (function()
+    local Success, Env = pcall(getgenv)
+    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+end)()
 
 local function expect(expected, value, fallback)
     if type(value) == expected then
@@ -23,7 +26,7 @@ local function expect(expected, value, fallback)
     return fallback
 end
 
-local cloneref = expect("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function(...) return ... end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -38,6 +41,22 @@ local Services = setmetatable({}, {
         end
     end
 })
+
+local Success, Hui = pcall(function()
+    return gethui and gethui()
+end)
+
+local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
+
+local Players = Services.Players
+local Player = Players.LocalPlayer
+local RunService = Services.RunService
+local HttpService = Services.HttpService
+local TweenService = Services.TweenService
+local UserInputService = Services.UserInputService
+local Stats = Services.Stats
+local MarketplaceService = Services.MarketplaceService
+local StarterGui = Services.StarterGui
 
 local WriteFile = expect("function", writefile, function() return end)
 local IsFile = expect("function", isfile, function() return end)
@@ -120,17 +139,6 @@ if Shared.PolariaRM.isLoaded then
 end
 
 Shared.PolariaRM.isLoaded = true
-
-local Players = Services.Players
-local RunService = Services.RunService
-local HttpService = Services.HttpService
-local TweenService = Services.TweenService
-local UserInputService = Services.UserInputService
-local Player = Players.LocalPlayer
-local Stats = Services.Stats
-local MarketplaceService = Services.MarketplaceService
-local Success, Hui = pcall(function() return gethui and gethui() end)
-local CoreGui = Success and Hui or Services.CoreGui
 
 local backdoorRemote = nil
 local currentContent = nil
