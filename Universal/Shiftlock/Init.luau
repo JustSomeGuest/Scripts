@@ -1,8 +1,11 @@
-if not game:IsLoaded() then
-    game.Loaded:Wait()
+if not game:IsLoaded() then 
+    game.Loaded:Wait() 
 end
 
-local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
+local Shared = (function()
+    local Success, Env = pcall(getgenv)
+    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+end)()
 
 local function expect(expected, value, fallback)
     if type(value) == expected then
@@ -23,7 +26,7 @@ local function expect(expected, value, fallback)
     return fallback
 end
 
-local cloneref = expect("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function(...) return ... end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -39,18 +42,22 @@ local Services = setmetatable({}, {
     end
 })
 
-local WriteFile = expect("function", writefile, function() return end)
-local IsFile = expect("function", isfile, function() return end)
-local IsFolder = expect("function", isfolder, function() return end)
-local MakeFolder = expect("function", makefolder, function() return end)
-local LoadAsset = expect("function", getcustomasset, expect("function", getsynasset, nil))
+local Success, Hui = pcall(function()
+    return gethui and gethui()
+end)
+
+local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
 
 local Players = Services.Players
 local RunService = Services.RunService
 local UserInputService = Services.UserInputService
 local Workspace = Services.Workspace
-local Success, Hui = pcall(function() return gethui and gethui() end)
-local CoreGui = Success and Hui or Services.CoreGui
+
+local WriteFile = expect("function", writefile, function() return end)
+local IsFile = expect("function", isfile, function() return end)
+local IsFolder = expect("function", isfolder, function() return end)
+local MakeFolder = expect("function", makefolder, function() return end)
+local LoadAsset = expect("function", getcustomasset, expect("function", getsynasset, nil))
 
 local Player = Players.LocalPlayer
 local ScreenSize = Workspace.CurrentCamera.ViewportSize
