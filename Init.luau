@@ -54,7 +54,7 @@ local Scripts = {
 
 for Name, Path in pairs(Scripts) do
     Init[Name] = function()
-        task.spawn(GetScript, Repo .. "Welcome.luau")
+        task.defer(GetScript, Repo .. "Welcome.luau")
         return GetScript(Repo .. Path)
     end
 end
