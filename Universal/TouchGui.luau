@@ -1,8 +1,11 @@
-if not game:IsLoaded() then
-    game.Loaded:Wait()
+if not game:IsLoaded() then 
+    game.Loaded:Wait() 
 end
 
-local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
+local Shared = (function()
+    local Success, Env = pcall(getgenv)
+    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+end)()
 
 local function expect(expected, value, fallback)
     if type(value) == expected then
@@ -23,7 +26,7 @@ local function expect(expected, value, fallback)
     return fallback
 end
 
-local cloneref = expect("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function(...) return ... end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
@@ -39,15 +42,17 @@ local Services = setmetatable({}, {
     end
 })
 
-local Players = Services.Players
+local Success, Hui = pcall(function()
+    return gethui and gethui()
+end)
+
+local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
+
 local StarterGui = Services.StarterGui
+local Players = Services.Players
 local UserInputService = Services.UserInputService
 local VirtualInputManager = Services.VirtualInputManager
 local RunService = Services.RunService
-local CoreGui = Services.CoreGui
-
-local Success, Hui = pcall(function() return gethui and gethui() end)
-local CoreGui = Success and Hui or CoreGui
 
 Shared.TouchGui = Shared.TouchGui or {}
 
@@ -98,7 +103,7 @@ TouchGui.ResetOnSpawn = false
 TouchGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 TouchGui.Parent = CoreGui
 
-local function GetOppisitePos(Position, AnchorPoint)
+local function GetOppositePos(Position, AnchorPoint)
     return UDim2.new(
         1 - Position.X.Scale,
         -Position.X.Offset,
@@ -215,13 +220,13 @@ if OriginalJump then
         Jump.Size = OriginalJump.Size
     end)
     
-    local oppositePos, oppositeAnchor = GetOppisitePos(OriginalJump.Position, OriginalJump.AnchorPoint)
+    local oppositePos, oppositeAnchor = GetOppositePos(OriginalJump.Position, OriginalJump.AnchorPoint)
     Thumb.Position = oppositePos
     Thumb.AnchorPoint = oppositeAnchor
     Thumb.Size = OriginalJump.Size
     
     OriginalJump:GetPropertyChangedSignal("Position"):Connect(function()
-        local newOppositePos, newOppositeAnchor = GetOppisitePos(OriginalJump.Position, OriginalJump.AnchorPoint)
+        local newOppositePos, newOppositeAnchor = GetOppositePos(OriginalJump.Position, OriginalJump.AnchorPoint)
         Thumb.Position = newOppositePos
         Thumb.AnchorPoint = newOppositeAnchor
     end)

@@ -1,8 +1,11 @@
 if not game:IsLoaded() then 
-    game.Loaded:Wait()
+    game.Loaded:Wait() 
 end
 
-local Shared = (function() local Success, Env = pcall(getgenv); return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {}) end)()
+local Shared = (function()
+    local Success, Env = pcall(getgenv)
+    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+end)()
 
 local function expect(expected, value, fallback)
     if type(value) == expected then
@@ -23,14 +26,13 @@ local function expect(expected, value, fallback)
     return fallback
 end
 
-local cloneref = expect("function", cloneref, function() return end)
+local cloneref = expect("function", cloneref, function(...) return ... end)
 
 local Services = setmetatable({}, {
     __index = function(self, name)
         local success, cache = pcall(function()
             return cloneref(game:GetService(name))
         end)
-            
         if success then
             rawset(self, name, cache)
             return cache
@@ -39,6 +41,17 @@ local Services = setmetatable({}, {
         end
     end
 })
+
+local Success, Hui = pcall(function()
+    return gethui and gethui()
+end)
+
+local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
+
+local TweenService = Services.TweenService
+local RunService = Services.RunService
+local StarterGui = Services.StarterGui
+local UserInputService = Services.UserInputService
 
 local WriteFile = expect("function", writefile, function() return end)
 local IsFile = expect("function", isfile, function() return end)
@@ -49,7 +62,7 @@ local ListFiles = expect("function", listfiles, function() return end)
 Shared.SoundDock = Shared.SoundDock or {}
 
 if Shared.SoundDock.isLoaded then
-    Services.StarterGui:SetCore("SendNotification", {
+    StarterGui:SetCore("SendNotification", {
         Title = "SoundDock Music Player",
         Text = "SoundDock is already running!",
         Duration = 4
@@ -58,13 +71,6 @@ if Shared.SoundDock.isLoaded then
 end
 
 Shared.SoundDock.isLoaded = true
-
-local TweenService = Services.TweenService
-local RunService = Services.RunService
-local StarterGui = Services.StarterGui
-local UserInputService = Services.UserInputService
-local Success, Hui = pcall(function() return gethui and gethui() end)
-local CoreGui = Success and Hui or Services.CoreGui
 
 local SoundDockFolder = "SoundDock"
 local SongsFolder = SoundDockFolder .. "/Songs"
