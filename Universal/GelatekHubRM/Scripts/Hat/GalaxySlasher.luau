@@ -5207,8 +5207,8 @@ end
 kan.TimePosition = 0
 kan.PlaybackSpeed = 1.01
 kan.Pitch = 0.9
-kan.SoundId = "rbxassetid://5801326053"
-kan.Name = "nepnepnep"
+kan.SoundId = "rbxassetid://5409360995"
+kan.Name = "Music"
 kan.Looped = true
 kan:Play()
 local BanishMode = 1
