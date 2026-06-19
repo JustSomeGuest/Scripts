@@ -7608,7 +7608,7 @@ if k == "2" and attack == false then
        hum.WalkSpeed = 40
        Speed = 40
        kan.Pitch = 1.00
-       kan.SoundId = "rbxassetid://9047104336"
+       kan.SoundId = "rbxassetid://5409360995"
 		BanishMode = 2
 	end
 if k == "1" and attack == false then
