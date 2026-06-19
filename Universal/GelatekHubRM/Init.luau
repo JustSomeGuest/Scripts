@@ -57,6 +57,12 @@ local TweenService = Services.TweenService
 local MarketplaceService = Services.MarketplaceService
 local StarterGui = Services.StarterGui
 
+local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/refs/heads/main/Universal/GelatekHubRM/"
+local Scripts = Base .. "Scripts"
+local FreeScripts = Base .. "Scripts/Free"
+local HatScripts = Base .. "Scripts/Hat"
+local Modules = Base .. "Modules"
+
 Shared.GelatekHubRM = Shared.GelatekHubRM or {}
 
 if Shared.GelatekHubRM.isLoaded then
