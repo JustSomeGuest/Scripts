@@ -1772,7 +1772,7 @@ ShowIcon.BorderSizePixel = 0
 ShowIcon.Image = GetAsset("Lucid/Assets/lucid_logo.png")
 ShowIcon.Name = "ShowIcon"
 ShowIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-ShowIcon.Size = UDim2.new(0, 36, 0, 36)
+ShowIcon.Size = UDim2.new(0, 28, 0, 28)
 ShowIcon.Parent = Show
 
 local function RefreshSavedScripts(searchQuery)
