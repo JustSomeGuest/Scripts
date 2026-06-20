@@ -1764,21 +1764,15 @@ Instance.new("UIAspectRatioConstraint", Show).Name = "ShowRatio"
 
 NewCorner("1, 0", "ShowCorner", Show)
 
-local ShowPadding = Instance.new("UIPadding")
-ShowPadding.Name = "ShowPadding"
-ShowPadding.PaddingBottom = UDim.new(0, 8)
-ShowPadding.PaddingLeft = UDim.new(0, 8)
-ShowPadding.PaddingRight = UDim.new(0, 8)
-ShowPadding.PaddingTop = UDim.new(0, 8)
-ShowPadding.Parent = Show
-
 local ShowIcon = Instance.new("ImageLabel")
+ShowIcon.AnchorPoint = Vector2.new(0.5, 0.5)
 ShowIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ShowIcon.BackgroundTransparency = 1
 ShowIcon.BorderSizePixel = 0
 ShowIcon.Image = GetAsset("Lucid/Assets/lucid_logo.png")
 ShowIcon.Name = "ShowIcon"
-ShowIcon.Size = UDim2.new(1, 0, 1, 0)
+ShowIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+ShowIcon.Size = UDim2.new(0, 36, 0, 36)
 ShowIcon.Parent = Show
 
 local function RefreshSavedScripts(searchQuery)
