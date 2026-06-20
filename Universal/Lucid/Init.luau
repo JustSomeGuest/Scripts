@@ -291,6 +291,7 @@ end
 Shared.Lucid.isLoaded = true
 
 local Lucid = Instance.new("ScreenGui")
+Lucid.DisplayOrder = 2147483647
 Lucid.IgnoreGuiInset = true
 Lucid.Name = "Lucid"
 Lucid.ResetOnSpawn = false
