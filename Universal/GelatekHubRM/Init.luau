@@ -634,7 +634,7 @@ VersionLabel.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enu
 VersionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 VersionLabel.BackgroundTransparency = 1
 VersionLabel.Size = UDim2.new(1, 0, 1, 0)
-VersionLabel.Text = "Current Version: 1.1"
+VersionLabel.Text = "Current Version: 1.2"
 VersionLabel.Parent = Version
 
 local ReanimateBtn = MakeButton(ReanimationContent, "Reanimate", 1)
