@@ -658,26 +658,24 @@ MakeLabel(ScriptsContent, "Hat Scripts", 5)
 local DualUltima = MakeButton(ScriptsContent, "Dual Ultima", 6)
 local GalaxySlasher = MakeButton(ScriptsContent, "Galaxy Slasher (Don't Reanimate)", 7)
 local Carnage = MakeButton(ScriptsContent, "Carnage", 8)
-local NeptunianV = MakeButton(ScriptsContent, "Neptunian V", 9)
+local NeptunianV = MakeButton(ScriptsContent, "Neptunian V (Disable Anims)", 9)
 local ZenithBattleRifle = MakeButton(ScriptsContent, "Zenith Battle Rifle-70", 10)
-local StarslayerRailgun = MakeButton(ScriptsContent, "Starslayer Railgun (Don't Reanimate)", 11)
-local Chips = MakeButton(ScriptsContent, "Chips", 12)
-local VoidScythe = MakeButton(ScriptsContent, "Void Scythe", 13)
-local VoodooDoll = MakeButton(ScriptsContent, "Voodoo Doll", 14)
-local Quenox = MakeButton(ScriptsContent, "Quenox", 15)
-local Goner = MakeButton(ScriptsContent, "Goner", 16)
+local Chips = MakeButton(ScriptsContent, "Chips", 11)
+local VoidScythe = MakeButton(ScriptsContent, "Void Scythe", 12)
+local VoodooDoll = MakeButton(ScriptsContent, "Voodoo Doll", 13)
+local Quenox = MakeButton(ScriptsContent, "Quenox", 14)
+local Goner = MakeButton(ScriptsContent, "Goner", 15)
 
 local CopyDualUltimaHats = MakeButton(HatsContent, "Copy Dual Ultima Hat Id(s)", 1)
 local CopyGalaxySlasherHats = MakeButton(HatsContent, "Copy Galaxy Slasher Hat Id(s)", 2)
 local CopyCarnageHats = MakeButton(HatsContent, "Copy Carnage Hat Id(s)", 3)
 local CopyNeptunianVHats = MakeButton(HatsContent, "Copy Neptunian V Hat Id(s)", 4)
 local CopyZenithBattleRifleHats = MakeButton(HatsContent, "Copy Zenith Battle Rifle-70 Hat Id(s)", 5)
-local CopyStarslayerRailgunHats = MakeButton(HatsContent, "Copy Starslayer Railgun Hat Id(s)", 6)
-local CopyChipsHats = MakeButton(HatsContent, "Copy Chips Hat Id(s)", 7)
-local CopyVoidScytheHats = MakeButton(HatsContent, "Copy Void Scythe Hat Id(s)", 8)
-local CopyVoodooDollHats = MakeButton(HatsContent, "Copy Voodoo Doll Hat Id(s)", 9)
-local CopyQuenoxHats = MakeButton(HatsContent, "Copy Quenox Hat Id(s)", 10)
-local CopyGonerHats = MakeButton(HatsContent, "Copy Goner Hat Id(s)", 11)
+local CopyChipsHats = MakeButton(HatsContent, "Copy Chips Hat Id(s)", 6)
+local CopyVoidScytheHats = MakeButton(HatsContent, "Copy Void Scythe Hat Id(s)", 7)
+local CopyVoodooDollHats = MakeButton(HatsContent, "Copy Voodoo Doll Hat Id(s)", 8)
+local CopyQuenoxHats = MakeButton(HatsContent, "Copy Quenox Hat Id(s)", 9)
+local CopyGonerHats = MakeButton(HatsContent, "Copy Goner Hat Id(s)", 10)
 
 local Shiftlock = MakeButton(ExtraContent, "Shiftlock", 1)
 local TouchGui = MakeButton(ExtraContent, "TouchGui (Uses Keyboard Keys)", 2)
@@ -905,9 +903,8 @@ if IsGame("Just A Baseplate") then
         [CopyDualUltimaHats] = "4524991457,4820152700",
         [CopyGalaxySlasherHats] = "6202664431",
         [CopyCarnageHats] = "5134896593,5410674378",
-        [CopyNeptunianVHats] = "4506945409",
+        [CopyNeptunianVHats] = "112934510372081",
         [CopyZenithBattleRifleHats] = "4962510729,4962455546",
-        [CopyStarslayerRailgunHats] = "4623059912",
         [CopyChipsHats] = "4964938812",
         [CopyVoidScytheHats] = "5414429551",
         [CopyVoodooDollHats] = "7218265043,7170689370",
@@ -964,15 +961,11 @@ else
     end)
 
     CopyNeptunianVHats.MouseButton1Click:Connect(function()
-        CopyToClipboard("4506945409")
+        CopyToClipboard("112934510372081")
     end)
 
     CopyZenithBattleRifleHats.MouseButton1Click:Connect(function()
         CopyToClipboard("4962510729,4962455546")
-    end)
-
-    CopyStarslayerRailgunHats.MouseButton1Click:Connect(function()
-        CopyToClipboard("4623059912")
     end)
 
     CopyChipsHats.MouseButton1Click:Connect(function()
@@ -1049,17 +1042,6 @@ end)
 
 ZenithBattleRifle.MouseButton1Click:Connect(function()
     load(HatScripts .. "/ZenithAttackRifle.luau", "ZenithAttackRifle.luau")
-end)
-
-StarslayerRailgun.MouseButton1Click:Connect(function()
-    if IsGame("Just A Baseplate") then
-        local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
-        CmdEvent:FireServer("cmd", "-pd")
-        Wait(2)
-        load(HatScripts .. "/StarslayerRailgun.luau", "StarslayerRailgun.luau")
-    else
-        load(HatScripts .. "/StarslayerRailgun.luau", "StarslayerRailgun.luau")
-    end
 end)
 
 Chips.MouseButton1Click:Connect(function()
