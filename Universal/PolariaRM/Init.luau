@@ -1270,10 +1270,25 @@ local function Dragify(DragObject, MoveObject)
     local dragStart
     local startPos
 
-    DragObject.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1
-            or input.UserInputType == Enum.UserInputType.Touch then
+    local function ClampPosition(newX, newY)
+        local viewport = workspace.CurrentCamera.ViewportSize
+        local size = MoveObject.AbsoluteSize
+        local paddingX = 16
+        local paddingY = 12
 
+        local maxX = viewport.X - size.X - paddingX
+        local maxY = viewport.Y - size.Y - paddingY
+        local minX = paddingX
+        local minY = paddingY
+
+        newX = math.clamp(newX, minX, maxX)
+        newY = math.clamp(newY, minY, maxY)
+
+        return newX, newY
+    end
+
+    DragObject.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragInput = input
             dragStart = input.Position
@@ -1281,16 +1296,21 @@ local function Dragify(DragObject, MoveObject)
         end
     end)
 
-    UserInputService.InputChanged:Connect(function(input)
-        if dragging and input == dragInput then
-            local delta = input.Position - dragStart
+    DragObject.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
 
-            MoveObject.Position = UDim2.new(
-                startPos.X.Scale,
-                startPos.X.Offset + delta.X,
-                startPos.Y.Scale,
-                startPos.Y.Offset + delta.Y
-            )
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            local newX = startPos.X.Offset + delta.X
+            local newY = startPos.Y.Offset + delta.Y
+            
+            newX, newY = ClampPosition(newX, newY)
+            
+            MoveObject.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
         end
     end)
 
