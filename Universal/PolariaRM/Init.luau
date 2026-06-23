@@ -66,7 +66,7 @@ local LoadAsset = expect("function", getcustomasset, expect("function", getsynas
 
 local Assets = {
     ["PolariaRM/Assets/polaria_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/logo.png",
-    ["PolariaRM/Assets/polaria_dev.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/dev.png",
+    ["PolariaRM/Assets/polaria_dev.png"] = "https://avatars.githubusercontent.com/u/279942568",
     ["PolariaRM/Assets/polaria_shadow.png"] = "rbxassetid://15298624572",
 }
 
