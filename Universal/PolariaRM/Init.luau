@@ -129,7 +129,7 @@ end
 Shared.PolariaRM = Shared.PolariaRM or {}
 
 if Shared.PolariaRM.isLoaded then
-    Services.StarterGui:SetCore("SendNotification", {
+    StarterGui:SetCore("SendNotification", {
         Title = "PolariaRM",
         Text = "Polaria Remastered is already running!",
         Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
@@ -1614,9 +1614,9 @@ local function CreateButton(name, code)
         if backdoorRemote then
             runRemote(backdoorRemote, code)
         else
-            local SetCore = expect("function", Services.StarterGui.SetCore, nil)
+            local SetCore = expect("function", StarterGui.SetCore, nil)
             if SetCore then
-                SetCore(Services.StarterGui, "SendNotification", {
+                SetCore(StarterGui, "SendNotification", {
                     Title = "PolariaRM (Error)",
                     Text = "No backdoor found! Scan first.",
                     Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
@@ -1692,11 +1692,11 @@ CreateButton("Pity Hub", "require(3253460334)('" .. Player.Name .. "')")
 BtnExample:Destroy()
 
 Exe.MouseButton1Click:Connect(function()
-    local SetCore = expect("function", Services.StarterGui.SetCore, nil)
+    local SetCore = expect("function", StarterGui.SetCore, nil)
     if backdoorRemote and InputBox.Text ~= "" then
         runRemote(backdoorRemote, InputBox.Text)
     elseif not backdoorRemote and SetCore then
-        SetCore(Services.StarterGui, "SendNotification", {
+        SetCore(StarterGui, "SendNotification", {
             Title = "PolariaRM (Error)",
             Text = "No backdoor found! Scan first.",
             Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
@@ -1710,7 +1710,7 @@ Clr.MouseButton1Click:Connect(function()
 end)
 
 Re.MouseButton1Click:Connect(function()
-    local SetCore = expect("function", Services.StarterGui.SetCore, nil)
+    local SetCore = expect("function", StarterGui.SetCore, nil)
     local success, errorMsg = pcall(function()
         if backdoorRemote then
             local TARGET_USERNAME = Player.Name
@@ -1751,7 +1751,7 @@ Re.MouseButton1Click:Connect(function()
             
             runRemote(backdoorRemote, RefreshScript)
         elseif SetCore then
-            SetCore(Services.StarterGui, "SendNotification", {
+            SetCore(StarterGui, "SendNotification", {
                 Title = "PolariaRM (Error)",
                 Text = "No backdoor found! Scan first.",
                 Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
@@ -1761,7 +1761,7 @@ Re.MouseButton1Click:Connect(function()
     end)
     
     if not success and SetCore then
-        SetCore(Services.StarterGui, "SendNotification", {
+        SetCore(StarterGui, "SendNotification", {
             Title = "PolariaRM (Error)",
             Text = "Failed to execute: " .. tostring(errorMsg),
             Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
