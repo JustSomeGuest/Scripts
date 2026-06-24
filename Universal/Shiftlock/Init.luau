@@ -52,6 +52,7 @@ local Players = Services.Players
 local RunService = Services.RunService
 local UserInputService = Services.UserInputService
 local Workspace = Services.Workspace
+local StarterGui = Services.StarterGui
 
 local WriteFile = expect("function", writefile, function() return end)
 local IsFile = expect("function", isfile, function() return end)
@@ -124,7 +125,7 @@ end
 Shared.Shiftlock = Shared.Shiftlock or {}
 
 if Shared.Shiftlock.isLoaded then
-    Services.StarterGui:SetCore("SendNotification", {
+    StarterGui:SetCore("SendNotification", {
         Title = "Shiftlock",
         Text = "Shiftlock is already running!",
         Icon = GetAsset("Shiftlock/Assets/lock.png"),
