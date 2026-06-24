@@ -1010,6 +1010,13 @@ Shiftlock.MouseButton1Click:Connect(function()
     end)
 end)
 
+TouchGui.MouseButton1Click:Connect(function()
+    load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau", "Init.luau")
+    SafeCall(function()
+        Init.TouchGui()
+    end)
+end)
+
 Keyboard.MouseButton1Click:Connect(function()
     load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau", "Init.luau")
     SafeCall(function()
