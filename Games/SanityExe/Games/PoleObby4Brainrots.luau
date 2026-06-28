@@ -41,7 +41,7 @@ local function LoadGameScript(filePath)
         warn("[Sanity.exe]: Failed to download game script: " .. filePath)
         VoidUI:New("Label", {
             Text = "Error loading game!",
-            Parent = Tab
+            Parent = Tabgh://repo/JustSomeGuest/Scripts@main/Games/SanityExe/Games/PoleObby4Brainrots.luau
         })
     end
 end
