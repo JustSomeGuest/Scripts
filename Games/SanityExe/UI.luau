@@ -16,7 +16,6 @@ local function HttpGet(url)
 end
 
 local VoidUI = loadstring(HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
-VoidUI:SetTitle("Sanity.exe")
 
 local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local CURRENT_PLACE_ID = game.PlaceId
@@ -54,6 +53,7 @@ local function LoadSupportedGames()
 
     if not success or not gameListData then
         warn("[Sanity.exe]: Failed to load supported games list.")
+        VoidUI:SetTitle("Sanity.exe")
         VoidUI:New("Label", {
             Text = "Failed to load supported games list.",
             Parent = Tab
@@ -64,6 +64,7 @@ local function LoadSupportedGames()
     local loadFunction, loadError = loadstring(gameListData)
     if not loadFunction then
         warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(loadError))
+        VoidUI:SetTitle("Sanity.exe")
         VoidUI:New("Label", {
             Text = "Error parsing supported games list.",
             Parent = Tab
@@ -73,12 +74,11 @@ local function LoadSupportedGames()
 
     local SupportedGames = loadFunction()
     local foundGame = false
-    local foundGameName = "Sanity.exe"
 
     for _, gameInfo in ipairs(SupportedGames) do
         if tostring(gameInfo.PlaceId) == tostring(CURRENT_PLACE_ID) then
             foundGame = true
-            foundGameName = "Sanity.exe • " .. gameInfo.GameName
+            VoidUI:SetTitle("Sanity.exe • " .. gameInfo.GameName)
             local gameFilePath = gameInfo.FilePath
             if gameFilePath then
                 LoadGameScript(gameFilePath)
@@ -87,9 +87,8 @@ local function LoadSupportedGames()
         end
     end
 
-    VoidUI:SetTitle(foundGameName)
-
     if not foundGame then
+        VoidUI:SetTitle("Sanity.exe")
         VoidUI:New("Label", {
             Text = "Game not supported.",
             Parent = Tab
