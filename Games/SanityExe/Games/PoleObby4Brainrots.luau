@@ -2,8 +2,6 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
-
 if not VoidUI then
     warn("[Sanity.exe]: Failed to load VoidUI")
     return
