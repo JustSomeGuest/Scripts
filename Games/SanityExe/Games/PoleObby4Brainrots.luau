@@ -217,6 +217,27 @@ local function near(plate)
     return best
 end
 
+local function hold(p, dur)
+    if not p then
+        return false
+    end
+
+    local fired = false
+    local con = p.Triggered:Connect(function()
+        fired = true
+    end)
+
+    pcall(function()
+        p:InputHoldBegin()
+        task.wait((dur or p.HoldDuration or 0.5) + 0.15)
+        p:InputHoldEnd()
+    end)
+
+    con:Disconnect()
+
+    return fired
+end
+
 local function grab(b)
     if not b then
         return false
@@ -249,27 +270,6 @@ local function grab(b)
     end
 
     return false
-end
-
-local function hold(p, dur)
-    if not p then
-        return false
-    end
-
-    local fired = false
-    local con = p.Triggered:Connect(function()
-        fired = true
-    end)
-
-    pcall(function()
-        p:InputHoldBegin()
-        task.wait((dur or p.HoldDuration or 0.5) + 0.15)
-        p:InputHoldEnd()
-    end)
-
-    con:Disconnect()
-
-    return fired
 end
 
 local function myBase()
