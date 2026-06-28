@@ -16,11 +16,15 @@ local function HttpGet(url)
 end
 
 local VoidUI = loadstring(HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
+
+if not VoidUI then
+    warn("[Sanity.exe]: Failed to load VoidUI")
+    return
+end
+
 VoidUI:SetTitle("Sanity.exe")
 
-local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local CURRENT_PLACE_ID = game.PlaceId
-
 local Tab = VoidUI:New("Tab", {
     Text = "Main"
 })
@@ -34,7 +38,10 @@ local function LoadGameScript(filePath)
     if success and gameScript then
         local loadFunction, loadError = loadstring(gameScript)
         if loadFunction then
-            pcall(loadFunction)
+            local execSuccess, execErr = pcall(loadFunction)
+            if not execSuccess then
+                warn("[Sanity.exe]: Game script execution error: " .. tostring(execErr))
+            end
         else
             warn("[Sanity.exe]: Error loading game script: " .. tostring(loadError))
         end
@@ -49,7 +56,7 @@ end
 
 local function LoadSupportedGames()
     local success, gameListData = pcall(function()
-        return HttpGet(SUPPORTED_GAMES_URL)
+        return HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau")
     end)
 
     if not success or not gameListData then
@@ -80,12 +87,19 @@ local function LoadSupportedGames()
             local gameFilePath = gameInfo.FilePath
             if gameFilePath then
                 LoadGameScript(gameFilePath)
+            else
+                warn("[Sanity.exe]: No file path for game: " .. gameInfo.GameName)
+                VoidUI:New("Label", {
+                    Text = "No file path for: " .. gameInfo.GameName,
+                    Parent = Tab
+                })
             end
             break
         end
     end
 
     if not foundGame then
+        warn("[Sanity.exe]: Current game not supported. PlaceId: " .. tostring(CURRENT_PLACE_ID))
         VoidUI:New("Label", {
             Text = "Game not supported.",
             Parent = Tab
