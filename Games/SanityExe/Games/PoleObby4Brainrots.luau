@@ -169,27 +169,24 @@ local function isOnPlate(brainrot, plate)
     if not brainPos then
         return false
     end
-    
-    local platePos = plate.Position
+
     local plateSize = plate.Size
-    
     local halfX = plateSize.X / 2
+    local halfY = plateSize.Y / 2
     local halfZ = plateSize.Z / 2
-    
-    local distX = math.abs(brainPos.X - platePos.X)
-    local distZ = math.abs(brainPos.Z - platePos.Z)
-    
-    local heightOffset = brainPos.Y - platePos.Y
-    
-    if distX <= halfX and distZ <= halfZ and heightOffset >= 0 and heightOffset <= 25 then
-        return true
-    end
-    
+
+    local rel = plate.CFrame:PointToObjectSpace(brainPos)
+
     local cornerBuffer = 3
-    if distX <= halfX + cornerBuffer and distZ <= halfZ + cornerBuffer and heightOffset >= 0 and heightOffset <= 25 then
+    local distX = math.abs(rel.X)
+    local distZ = math.abs(rel.Z)
+
+    local heightAboveTop = rel.Y - halfY
+
+    if distX <= halfX + cornerBuffer and distZ <= halfZ + cornerBuffer and heightAboveTop >= -1 and heightAboveTop <= 25 then
         return true
     end
-    
+
     return false
 end
 
