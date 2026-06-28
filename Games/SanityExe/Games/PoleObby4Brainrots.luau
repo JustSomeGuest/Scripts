@@ -21,7 +21,7 @@ local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
 local Tab = VoidUI:New("Tab", {
-    Text = "Game"
+    Text = "Main"
 })
 
 local BrainrotSpawns = Workspace:FindFirstChild("BrainrotSpawns")
