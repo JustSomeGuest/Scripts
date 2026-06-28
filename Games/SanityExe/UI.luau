@@ -15,7 +15,7 @@ local function HttpGet(url)
     return game:HttpGet(url)
 end
 
-local VoidUI = loadstring(HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
+VoidUI = loadstring(HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
 
 if not VoidUI then
     warn("[Sanity.exe]: Failed to load VoidUI")
