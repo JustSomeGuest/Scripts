@@ -2,6 +2,48 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+local function expect(expected, value, fallback)
+    if type(value) == expected then
+        return value
+    end
+
+    if fallback ~= nil then
+        if type(fallback) == "function" then
+            return function(...)
+                warn("[Expect]: Missing executor functionality. Using fallback function.")
+                return fallback(...)
+            end
+        end
+
+        warn("[Expect]: Value has unexpected type. Using fallback value.")
+    end
+
+    return fallback
+end
+
+local cloneref = expect("function", cloneref, function(...) return ... end)
+
+local Services = setmetatable({}, {
+    __index = function(self, name)
+        local success, cache = pcall(function()
+            return cloneref(game:GetService(name))
+        end)
+        if success then
+            rawset(self, name, cache)
+            return cache
+        else
+            error("Invalid Service: " .. tostring(name))
+        end
+    end
+})
+
+local Players = Services.Players
+local Player = Players.LocalPlayer
+local Workspace = Services.Workspace
+local UserInputService = Services.UserInputService
+local RunService = Services.RunService
+local StarterGui = Services.StarterGui
+
 local Shared = (function()
     local Success, Env = pcall(getgenv)
     return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
@@ -14,15 +56,20 @@ if not VoidUI then
     return
 end
 
-local Players = game:GetService("Players")
-local Player = Players.LocalPlayer
-local Workspace = game:GetService("Workspace")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-
 local Tab = VoidUI:New("Tab", {
     Text = "Main"
 })
+
+local function Notify(Title, Text, Duration, Icon)
+    pcall(function()
+        StarterGui:SetCore("SendNotification", {
+            Title = Title or "Sanity.exe",
+            Text = Text or "",
+            Duration = Duration or 4,
+            Icon = Icon or nil
+        })
+    end)
+end
 
 local BrainrotSpawns = Workspace:FindFirstChild("BrainrotSpawns")
 local MobsFolder = Workspace:FindFirstChild("Mobs")
@@ -31,6 +78,7 @@ local Bases = Workspace:FindFirstChild("Bases")
 if not BrainrotSpawns then
     BrainrotSpawns = Workspace:WaitForChild("BrainrotSpawns", 10)
     if not BrainrotSpawns then
+        Notify("Sanity.exe", "BrainrotSpawns folder not found", 4)
         return
     end
 end
@@ -38,6 +86,7 @@ end
 if not MobsFolder then
     MobsFolder = Workspace:WaitForChild("Mobs", 10)
     if not MobsFolder then
+        Notify("Sanity.exe", "Mobs folder not found", 4)
         return
     end
 end
@@ -45,6 +94,7 @@ end
 if not Bases then
     Bases = Workspace:WaitForChild("Bases", 10)
     if not Bases then
+        Notify("Sanity.exe", "Bases folder not found", 4)
         return
     end
 end
