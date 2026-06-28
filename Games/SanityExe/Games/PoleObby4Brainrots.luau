@@ -348,7 +348,7 @@ local function BringBrainrot(Plate)
     return true
 end
 
-local function AutoFarmBrainrots(Plate, Place)
+local function AutoFarmBrainrots(Plate, AutoPlace)
     if not Plate then
         return
     end
@@ -359,7 +359,7 @@ local function AutoFarmBrainrots(Plate, Place)
 
     IsBusy = true
 
-    if Place then
+    if AutoPlace then
         local Slot = GetAvailableSlot()
         if not Slot then
             IsBusy = false
@@ -381,7 +381,7 @@ local function AutoFarmBrainrots(Plate, Place)
         return
     end
 
-    if Place then
+    if AutoPlace then
         local Slot = GetAvailableSlot()
         if Slot then
             if not PlaceBrainrot(Slot) then
