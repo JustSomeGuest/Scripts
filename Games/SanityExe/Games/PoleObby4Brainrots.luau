@@ -460,7 +460,7 @@ end
 
 local function bring(plate, tierName)
     if not plate then
-        alert("Sanity.exe", "No plate found for " .. tierName .. " tier", 3)
+        alert("Sanity.exe", "Waiting for brainrots to spawn in " .. tierName, 3)
         return false
     end
 
@@ -470,7 +470,7 @@ local function bring(plate, tierName)
 
     local b = near(plate)
     if not b then
-        alert("Sanity.exe", "No brainrots to grab in " .. tierName .. " tier", 3)
+        alert("Sanity.exe", "No brainrots to grab in " .. tierName, 3)
         return false
     end
 
@@ -576,21 +576,6 @@ local function addMainSection(tierName, last)
     end
     
     local plate = pf:FindFirstChild("Plate")
-    if not plate then
-        ui:New("Label", {
-            Text = tierName .. " (Waiting for plate...)",
-            Parent = mainTab
-        })
-        
-        local plateConnection
-        plateConnection = pf.ChildAdded:Connect(function(child)
-            if child.Name == "Plate" then
-                plateConnection:Disconnect()
-                updateMainSection(tierName)
-            end
-        end)
-        return
-    end
     
     ui:New("Label", {
         Text = tierName,
@@ -662,38 +647,6 @@ local function addMainSection(tierName, last)
     end
 end
 
-local function updateMainSection(tierName)
-    local pf = spawns:FindFirstChild(tierName)
-    if not pf then
-        return
-    end
-    
-    local plate = pf:FindFirstChild("Plate")
-    if not plate then
-        return
-    end
-    
-    local children = mainTab:GetChildren()
-    local sectionIndex = nil
-    
-    for i, child in ipairs(children) do
-        if child:IsA("TextLabel") and child.Text == tierName .. " (Waiting for plate...)" then
-            sectionIndex = i
-            break
-        end
-    end
-    
-    if sectionIndex then
-        for i = sectionIndex, sectionIndex + 6 do
-            if children[i] then
-                children[i]:Destroy()
-            end
-        end
-    end
-    
-    addMainSection(tierName, false)
-end
-
 ui:New("Label", {
     Text = "Teleport Locations",
     Parent = teleportTab
@@ -725,7 +678,7 @@ for _, tierName in ipairs(tiers) do
                     go(plate.Position + Vector3.new(0, 3, 0))
                     alert("Sanity.exe", "Teleported to " .. tierName .. " brainrots area", 3)
                 else
-                    alert("Sanity.exe", "No " .. tierName .. " brainrots area found", 3)
+                    alert("Sanity.exe", "Waiting for brainrots to spawn in " .. tierName, 3)
                 end
             end
         })
