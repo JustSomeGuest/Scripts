@@ -401,11 +401,13 @@ local SectionOrder = {
 local function CreatePlateSection(PlateName, IsLast)
     local PlateFolder = BrainrotSpawns:FindFirstChild(PlateName)
     if not PlateFolder then
+        warn("[Sanity.exe]: Plate folder not found: " .. PlateName)
         return
     end
     
     local Plate = PlateFolder:FindFirstChild("Plate")
     if not Plate then
+        warn("[Sanity.exe]: Plate not found in: " .. PlateName)
         return
     end
     
