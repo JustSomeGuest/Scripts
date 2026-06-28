@@ -173,25 +173,29 @@ local function isOnPlate(brainrot, plate)
     local platePos = plate.Position
     local plateSize = plate.Size
     
-    local distX = math.abs(brainPos.X - platePos.X)
-    local distZ = math.abs(brainPos.Z - platePos.Z)
-    
     local halfX = plateSize.X / 2
     local halfZ = plateSize.Z / 2
     
+    local distX = math.abs(brainPos.X - platePos.X)
+    local distZ = math.abs(brainPos.Z - platePos.Z)
+    
     local heightOffset = brainPos.Y - platePos.Y
     
-    if distX <= halfX and distZ <= halfZ and heightOffset >= 0 and heightOffset <= 20 then
+    if distX <= halfX and distZ <= halfZ and heightOffset >= 0 and heightOffset <= 25 then
+        return true
+    end
+    
+    local cornerBuffer = 3
+    if distX <= halfX + cornerBuffer and distZ <= halfZ + cornerBuffer and heightOffset >= 0 and heightOffset <= 25 then
         return true
     end
     
     return false
 end
 
-local function near(plate, dist)
-    dist = dist or 25
+local function near(plate)
     local best = nil
-    local bestDist = dist
+    local bestDist = math.huge
     local platePos = plate.Position
 
     for _, m in ipairs(mobs:GetChildren()) do
@@ -203,7 +207,7 @@ local function near(plate, dist)
                     local pos = posOf(m)
                     if pos then
                         local d = (pos - platePos).Magnitude
-                        if d < bestDist and isOnPlate(m, plate) then
+                        if isOnPlate(m, plate) and d < bestDist then
                             bestDist = d
                             best = m
                         end
