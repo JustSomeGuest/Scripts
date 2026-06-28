@@ -69,20 +69,21 @@ end
 Shared["Sanity.exe"] = Shared["Sanity.exe"] or {}
 
 if Shared["Sanity.exe"].IsLoaded then
+    warn("[Sanity.exe]: Already loaded, skipping init")
     return
 end
 
 Shared["Sanity.exe"].IsLoaded = true
-
-local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
-local CURRENT_PLACE_ID = game.PlaceId
 
 local function LoadUI()
     local uiScript = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.luau")
     if uiScript then
         local loadFunc, loadError = loadstring(uiScript)
         if loadFunc then
-            pcall(loadFunc)
+            local success, err = pcall(loadFunc)
+            if not success then
+                warn("[Sanity.exe]: UI execution error: " .. tostring(err))
+            end
         else
             warn("[Sanity.exe]: Error loading UI: " .. tostring(loadError))
         end
@@ -91,41 +92,49 @@ local function LoadUI()
     end
 end
 
-local success, gameListData = pcall(function()
-    return HttpGet(SUPPORTED_GAMES_URL)
-end)
+local function LoadSupportedGames()
+    local success, gameListData = pcall(function()
+        return HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau")
+    end)
 
-if success and gameListData then
+    if not success or not gameListData then
+        warn("[Sanity.exe]: Failed to load supported games list.")
+        LoadUI()
+        return
+    end
+
     local loadFunction, loadError = loadstring(gameListData)
-    if loadFunction then
-        local SupportedGames = loadFunction()
-        local foundGame = false
+    if not loadFunction then
+        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(loadError))
+        LoadUI()
+        return
+    end
 
-        for _, gameInfo in ipairs(SupportedGames) do
-            if tostring(gameInfo.PlaceId) == tostring(CURRENT_PLACE_ID) then
-                foundGame = true
-                break
-            end
+    local SupportedGames = loadFunction()
+    local foundGame = false
+
+    for _, gameInfo in ipairs(SupportedGames) do
+        if tostring(gameInfo.PlaceId) == tostring(game.PlaceId) then
+            foundGame = true
+            break
         end
+    end
 
-        if foundGame then
-            if QueueOnTP then
-                pcall(function()
-                    QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
-                end)
-            end
-        else
-            if QueueOnTP then
-                pcall(function()
-                    QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
-                end)
-            end
+    if foundGame then
+        if QueueOnTP then
+            pcall(function()
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+            end)
         end
     else
-        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(loadError))
+        if QueueOnTP then
+            pcall(function()
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+            end)
+        end
     end
-else
-    warn("[Sanity.exe]: Failed to load supported games list")
+
+    LoadUI()
 end
 
-LoadUI()
+LoadSupportedGames()
