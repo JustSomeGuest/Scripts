@@ -44,22 +44,76 @@ local Services = setmetatable({}, {
 
 local function HttpGet(url)
     local success, result = pcall(game.HttpGetAsync, game, url)
-
     if success then
         return result
     end
-
     return game:HttpGet(url)
 end
 
 local GuiService = Services.GuiService
-GuiService:SetGameplayPausedNotificationEnabled(false)
-
-local TPService = Services.TeleportService
+local TeleportService = Services.TeleportService
 local QueueOnTP = expect("function", queue_on_teleport, warn("[Sanity.exe]: Executor doesn't support queue_on_teleport"))
 
-HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.luau")
+GuiService:SetGameplayPausedNotificationEnabled(false)
 
-if QueueOnTP then
-    QueueOnTP('HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau")')
+Shared["Sanity.exe"] = Shared["Sanity.exe"] or {}
+
+if Shared["Sanity.exe"].IsLoaded then
+    return
+end
+
+Shared["Sanity.exe"].IsLoaded = true
+
+local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
+local CURRENT_PLACE_ID = game.PlaceId
+
+local success, gameListData = pcall(function()
+    return HttpGet(SUPPORTED_GAMES_URL)
+end)
+
+local function LoadUI()
+    local uiScript = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.luau")
+    if uiScript then
+        local loadFunc, loadError = loadstring(uiScript)
+        if loadFunc then
+            pcall(loadFunc)
+        else
+            warn("[Sanity.exe]: Error loading UI: " .. tostring(loadError))
+        end
+    else
+        warn("[Sanity.exe]: Failed to download UI script")
+    end
+end
+
+if success and gameListData then
+    local loadFunction, loadError = loadstring(gameListData)
+    if loadFunction then
+        local SupportedGames = loadFunction()
+        local foundGame = false
+
+        for _, gameInfo in ipairs(SupportedGames) do
+            if tostring(gameInfo.PlaceId) == tostring(CURRENT_PLACE_ID) then
+                foundGame = true
+                break
+            end
+        end
+
+        if foundGame then
+            if QueueOnTP then
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+            end
+            LoadUI()
+        else
+            if QueueOnTP then
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+            end
+            LoadUI()
+        end
+    else
+        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(loadError))
+        LoadUI()
+    end
+else
+    warn("[Sanity.exe]: Failed to load supported games list, loading UI anyway")
+    LoadUI()
 end
