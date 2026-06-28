@@ -1,69 +1,69 @@
-if not game:IsLoaded() then 
-    game.Loaded:Wait() 
+if not game:IsLoaded() then
+    game.Loaded:Wait()
 end
 
 local Shared = (function()
-    local Success, Env = pcall(getgenv)
-    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+    local ok, env = pcall(getgenv)
+    return (ok and env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
 end)()
 
-local function expect(expected, value, fallback)
-    if type(value) == expected then
-        return value
+local function check(t, val, fb)
+    if type(val) == t then
+        return val
     end
 
-    if fallback ~= nil then
-        if type(fallback) == "function" then
+    if fb ~= nil then
+        if type(fb) == "function" then
             return function(...)
                 warn("[Expect]: Missing executor functionality. Using fallback function.")
-                return fallback(...)
+                return fb(...)
             end
         end
 
         warn("[Expect]: Value has unexpected type. Using fallback value.")
     end
 
-    return fallback
+    return fb
 end
 
-local cloneref = expect("function", cloneref, function(...) return ... end)
+local cref = check("function", cloneref, function(...) return ... end)
 
-local Services = setmetatable({}, {
+local svc = setmetatable({}, {
     __index = function(self, name)
-        local success, cache = pcall(function()
-            return cloneref(game:GetService(name))
+        local ok, c = pcall(function()
+            return cref(game:GetService(name))
         end)
-        if success then
-            rawset(self, name, cache)
-            return cache
+        if ok then
+            rawset(self, name, c)
+            return c
         else
             error("Invalid Service: " .. tostring(name))
         end
     end
 })
 
-local function HttpGet(url)
-    local success, result = pcall(game.HttpGetAsync, game, url)
-    if success then
-        return result
+local function get(url)
+    local ok, res = pcall(game.HttpGetAsync, game, url)
+    if ok then
+        return res
     end
     return game:HttpGet(url)
 end
 
-local GuiService = Services.GuiService
-local TeleportService = Services.TeleportService
+local gui = svc.GuiService
+local tp = svc.TeleportService
 
-GuiService:SetGameplayPausedNotificationEnabled(false)
+gui:SetGameplayPausedNotificationEnabled(false)
 
-local QueueOnTP
-local queueSuccess, queueResult = pcall(function()
+local qtp
+local qok, qres = pcall(function()
     return queue_on_teleport
 end)
 
-if queueSuccess then
-    QueueOnTP = queueResult
+if qok then
+    qtp = qres
 else
-    QueueOnTP = nil
+    qtp = nil
 end
 
 Shared["Sanity.exe"] = Shared["Sanity.exe"] or {}
@@ -75,66 +75,66 @@ end
 
 Shared["Sanity.exe"].IsLoaded = true
 
-local function LoadUI()
-    local uiScript = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.luau")
-    if uiScript then
-        local loadFunc, loadError = loadstring(uiScript)
-        if loadFunc then
-            local success, err = pcall(loadFunc)
-            if not success then
-                warn("[Sanity.exe]: UI execution error: " .. tostring(err))
+local function loadUI()
+    local scr = get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.luau")
+    if scr then
+        local fn, err = loadstring(scr)
+        if fn then
+            local ok, e = pcall(fn)
+            if not ok then
+                warn("[Sanity.exe]: UI execution error: " .. tostring(e))
             end
         else
-            warn("[Sanity.exe]: Error loading UI: " .. tostring(loadError))
+            warn("[Sanity.exe]: Error loading UI: " .. tostring(err))
         end
     else
         warn("[Sanity.exe]: Failed to download UI script")
     end
 end
 
-local function LoadSupportedGames()
-    local success, gameListData = pcall(function()
-        return HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau")
+local function loadGames()
+    local ok, data = pcall(function()
+        return get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau")
     end)
 
-    if not success or not gameListData then
+    if not ok or not data then
         warn("[Sanity.exe]: Failed to load supported games list.")
-        LoadUI()
+        loadUI()
         return
     end
 
-    local loadFunction, loadError = loadstring(gameListData)
-    if not loadFunction then
-        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(loadError))
-        LoadUI()
+    local fn, err = loadstring(data)
+    if not fn then
+        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(err))
+        loadUI()
         return
     end
 
-    local SupportedGames = loadFunction()
-    local foundGame = false
+    local list = fn()
+    local found = false
 
-    for _, gameInfo in ipairs(SupportedGames) do
-        if tostring(gameInfo.PlaceId) == tostring(game.PlaceId) then
-            foundGame = true
+    for _, g in ipairs(list) do
+        if tostring(g.PlaceId) == tostring(game.PlaceId) then
+            found = true
             break
         end
     end
 
-    if foundGame then
-        if QueueOnTP then
+    if found then
+        if qtp then
             pcall(function()
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                qtp('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
             end)
         end
     else
-        if QueueOnTP then
+        if qtp then
             pcall(function()
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                qtp('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
             end)
         end
     end
 
-    LoadUI()
+    loadUI()
 end
 
-LoadSupportedGames()
+loadGames()
