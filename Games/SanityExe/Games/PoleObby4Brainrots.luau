@@ -2,180 +2,180 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local function expect(expected, value, fallback)
-    if type(value) == expected then
-        return value
+local function check(t, val, fb)
+    if type(val) == t then
+        return val
     end
 
-    if fallback ~= nil then
-        if type(fallback) == "function" then
+    if fb ~= nil then
+        if type(fb) == "function" then
             return function(...)
                 warn("[Expect]: Missing executor functionality. Using fallback function.")
-                return fallback(...)
+                return fb(...)
             end
         end
 
         warn("[Expect]: Value has unexpected type. Using fallback value.")
     end
 
-    return fallback
+    return fb
 end
 
-local cloneref = expect("function", cloneref, function(...) return ... end)
+local cref = check("function", cloneref, function(...) return ... end)
 
-local Services = setmetatable({}, {
+local svc = setmetatable({}, {
     __index = function(self, name)
-        local success, cache = pcall(function()
-            return cloneref(game:GetService(name))
+        local ok, c = pcall(function()
+            return cref(game:GetService(name))
         end)
-        if success then
-            rawset(self, name, cache)
-            return cache
+        if ok then
+            rawset(self, name, c)
+            return c
         else
             error("Invalid Service: " .. tostring(name))
         end
     end
 })
 
-local Players = Services.Players
-local Player = Players.LocalPlayer
-local Workspace = Services.Workspace
-local UserInputService = Services.UserInputService
-local RunService = Services.RunService
-local StarterGui = Services.StarterGui
+local plrs = svc.Players
+local plr = plrs.LocalPlayer
+local ws = svc.Workspace
+local uis = svc.UserInputService
+local rs = svc.RunService
+local sgui = svc.StarterGui
 
 local Shared = (function()
-    local Success, Env = pcall(getgenv)
-    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+    local ok, env = pcall(getgenv)
+    return (ok and env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
 end)()
 
-local VoidUI = Shared.VoidUI
+local ui = Shared.VoidUI
 
-if not VoidUI then
+if not ui then
     warn("[Sanity.exe]: Failed to load VoidUI")
     return
 end
 
-local Tab = VoidUI:New("Tab", {
+local tab = ui:New("Tab", {
     Text = "Main"
 })
 
-local function Notify(Title, Text, Duration, Icon)
+local function alert(t, txt, dur, icon)
     pcall(function()
-        StarterGui:SetCore("SendNotification", {
-            Title = Title or "Sanity.exe",
-            Text = Text or "",
-            Duration = Duration or 4,
-            Icon = Icon or nil
+        sgui:SetCore("SendNotification", {
+            Title = t or "Sanity.exe",
+            Text = txt or "",
+            Duration = dur or 4,
+            Icon = icon or nil
         })
     end)
 end
 
-local BrainrotSpawns = Workspace:FindFirstChild("BrainrotSpawns")
-local MobsFolder = Workspace:FindFirstChild("Mobs")
-local Bases = Workspace:FindFirstChild("Bases")
+local spawns = ws:FindFirstChild("BrainrotSpawns")
+local mobs = ws:FindFirstChild("Mobs")
+local bases = ws:FindFirstChild("Bases")
 
-if not BrainrotSpawns then
-    BrainrotSpawns = Workspace:WaitForChild("BrainrotSpawns", 10)
-    if not BrainrotSpawns then
-        Notify("Sanity.exe", "BrainrotSpawns folder not found", 4)
+if not spawns then
+    spawns = ws:WaitForChild("BrainrotSpawns", 10)
+    if not spawns then
+        alert("Sanity.exe", "BrainrotSpawns folder not found", 4)
         return
     end
 end
 
-if not MobsFolder then
-    MobsFolder = Workspace:WaitForChild("Mobs", 10)
-    if not MobsFolder then
-        Notify("Sanity.exe", "Mobs folder not found", 4)
+if not mobs then
+    mobs = ws:WaitForChild("Mobs", 10)
+    if not mobs then
+        alert("Sanity.exe", "Mobs folder not found", 4)
         return
     end
 end
 
-if not Bases then
-    Bases = Workspace:WaitForChild("Bases", 10)
-    if not Bases then
-        Notify("Sanity.exe", "Bases folder not found", 4)
+if not bases then
+    bases = ws:WaitForChild("Bases", 10)
+    if not bases then
+        alert("Sanity.exe", "Bases folder not found", 4)
         return
     end
 end
 
-local OriginalPosition = nil
-local IsBusy = false
+local home = nil
+local busy = false
 
-local function GetRootPart()
-    local Char = Player.Character
-    if not Char then
+local function root()
+    local char = plr.Character
+    if not char then
         return nil
     end
-    return Char:FindFirstChild("HumanoidRootPart") or Char:FindFirstChild("Head")
+    return char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Head")
 end
 
-local function SaveOriginalPosition()
-    local Root = GetRootPart()
-    if Root then
-        OriginalPosition = Root.Position
+local function saveHome()
+    local r = root()
+    if r then
+        home = r.Position
         return true
     end
     return false
 end
 
-local function TeleportTo(Position)
-    local Root = GetRootPart()
-    if Root then
-        Root.CFrame = CFrame.new(Position)
+local function go(pos)
+    local r = root()
+    if r then
+        r.CFrame = CFrame.new(pos)
     end
 end
 
-local function TeleportToOriginal()
-    if OriginalPosition then
-        TeleportTo(OriginalPosition)
+local function goHome()
+    if home then
+        go(home)
         return true
     end
     return false
 end
 
-local function GetModelPosition(Model)
-    local RootPart = Model:FindFirstChild("RootPart")
-    if RootPart then
-        return RootPart.Position
+local function posOf(m)
+    local rp = m:FindFirstChild("RootPart")
+    if rp then
+        return rp.Position
     end
 
-    local PrimaryPart = Model.PrimaryPart
-    if PrimaryPart then
-        return PrimaryPart.Position
+    local pp = m.PrimaryPart
+    if pp then
+        return pp.Position
     end
 
-    local HRP = Model:FindFirstChild("HumanoidRootPart")
-    if HRP then
-        return HRP.Position
+    local hrp = m:FindFirstChild("HumanoidRootPart")
+    if hrp then
+        return hrp.Position
     end
 
-    local Head = Model:FindFirstChild("Head")
-    if Head then
-        return Head.Position
+    local hd = m:FindFirstChild("Head")
+    if hd then
+        return hd.Position
     end
 
-    for _, Child in ipairs(Model:GetChildren()) do
-        if Child:IsA("BasePart") then
-            return Child.Position
+    for _, c in ipairs(m:GetChildren()) do
+        if c:IsA("BasePart") then
+            return c.Position
         end
     end
 
     return nil
 end
 
-local function GetPlayerBase()
-    for _, Base in ipairs(Bases:GetChildren()) do
-        local TitleFolder = Base:FindFirstChild("Title")
-        if TitleFolder then
-            local TitleGui = TitleFolder:FindFirstChild("TitleGui")
-            if TitleGui then
-                local Frame = TitleGui:FindFirstChild("Frame")
-                if Frame then
-                    local PlayerName = Frame:FindFirstChild("PlayerName")
-                    if PlayerName and PlayerName:IsA("TextLabel") then
-                        if PlayerName.Text == Player.Name then
-                            return Base
+local function myBase()
+    for _, b in ipairs(bases:GetChildren()) do
+        local tf = b:FindFirstChild("Title")
+        if tf then
+            local tg = tf:FindFirstChild("TitleGui")
+            if tg then
+                local fr = tg:FindFirstChild("Frame")
+                if fr then
+                    local pn = fr:FindFirstChild("PlayerName")
+                    if pn and pn:IsA("TextLabel") then
+                        if pn.Text == plr.Name then
+                            return b
                         end
                     end
                 end
@@ -185,26 +185,26 @@ local function GetPlayerBase()
     return nil
 end
 
-local function GetAvailableSlot()
-    local Base = GetPlayerBase()
-    if not Base then
+local function freeSlot()
+    local b = myBase()
+    if not b then
         return nil
     end
 
-    local Slots = Base:FindFirstChild("Slots")
-    if not Slots then
+    local slots = b:FindFirstChild("Slots")
+    if not slots then
         return nil
     end
 
-    for _, Slot in ipairs(Slots:GetChildren()) do
-        if Slot:IsA("Folder") or Slot:IsA("Model") then
-            local Collect = Slot:FindFirstChild("Collect")
-            if Collect and Collect:IsA("BasePart") and Collect.Transparency == 0 then
-                local ActiveBrainrot = Slot:FindFirstChild("ActiveBrainrot")
-                if not ActiveBrainrot then
-                    local BasePart = Slot:FindFirstChild("Base")
-                    if BasePart then
-                        return Slot
+    for _, s in ipairs(slots:GetChildren()) do
+        if s:IsA("Folder") or s:IsA("Model") then
+            local col = s:FindFirstChild("Collect")
+            if col and col:IsA("BasePart") and col.Transparency == 0 then
+                local ab = s:FindFirstChild("ActiveBrainrot")
+                if not ab then
+                    local bp = s:FindFirstChild("Base")
+                    if bp then
+                        return s
                     end
                 end
             end
@@ -214,81 +214,81 @@ local function GetAvailableSlot()
     return nil
 end
 
-local function GetPlacePrompt(Slot)
-    if not Slot then
+local function prompt(s)
+    if not s then
         return nil
     end
 
-    local BasePart = Slot:FindFirstChild("Base")
-    if BasePart then
-        local PlacePrompt = BasePart:FindFirstChild("PlacePrompt")
-        if PlacePrompt and PlacePrompt:IsA("ProximityPrompt") then
-            return PlacePrompt
+    local bp = s:FindFirstChild("Base")
+    if bp then
+        local pp = bp:FindFirstChild("PlacePrompt")
+        if pp and pp:IsA("ProximityPrompt") then
+            return pp
         end
     end
 
     return nil
 end
 
-local function GetSlotPosition(Slot)
-    if not Slot then
+local function slotPos(s)
+    if not s then
         return nil
     end
 
-    local BasePart = Slot:FindFirstChild("Base")
-    if BasePart then
-        return BasePart.Position
+    local bp = s:FindFirstChild("Base")
+    if bp then
+        return bp.Position
     end
 
     return nil
 end
 
-local function HoldPrompt(Prompt, Duration)
-    if not Prompt then
+local function hold(p, dur)
+    if not p then
         return false
     end
 
-    local Triggered = false
-    local Connection = Prompt.Triggered:Connect(function()
-        Triggered = true
+    local fired = false
+    local con = p.Triggered:Connect(function()
+        fired = true
     end)
 
     pcall(function()
-        Prompt:InputHoldBegin()
-        task.wait((Duration or Prompt.HoldDuration or 0.5) + 0.15)
-        Prompt:InputHoldEnd()
+        p:InputHoldBegin()
+        task.wait((dur or p.HoldDuration or 0.5) + 0.15)
+        p:InputHoldEnd()
     end)
 
-    Connection:Disconnect()
+    con:Disconnect()
 
-    return Triggered
+    return fired
 end
 
-local function GrabBrainrot(Brainrot)
-    if not Brainrot then
+local function grab(b)
+    if not b then
         return false
     end
 
-    local RootPart = Brainrot:FindFirstChild("RootPart")
-    if not RootPart then
+    local rp = b:FindFirstChild("RootPart")
+    if not rp then
         return false
     end
 
-    local Prompt = RootPart:FindFirstChild("ProximityPrompt")
-    if not Prompt then
+    local p = rp:FindFirstChild("ProximityPrompt")
+    if not p then
         return false
     end
 
-    for Attempt = 1, 2 do
-        local Pos = GetModelPosition(Brainrot)
-        if not Pos then
+    for _ = 1, 2 do
+        local pos = posOf(b)
+        if not pos then
             return false
         end
 
-        TeleportTo(Pos + Vector3.new(0, 2, 0))
+        go(pos + Vector3.new(0, 2, 0))
         task.wait(0.25)
 
-        if HoldPrompt(Prompt, Prompt.HoldDuration or 0.5) then
+        if hold(p, p.HoldDuration or 0.5) then
             return true
         end
 
@@ -298,26 +298,26 @@ local function GrabBrainrot(Brainrot)
     return false
 end
 
-local function PlaceBrainrot(Slot)
-    if not Slot then
+local function place(s)
+    if not s then
         return false
     end
 
-    local PlacePrompt = GetPlacePrompt(Slot)
-    if not PlacePrompt then
+    local pp = prompt(s)
+    if not pp then
         return false
     end
 
-    for Attempt = 1, 2 do
-        local SlotPos = GetSlotPosition(Slot)
-        if not SlotPos then
+    for _ = 1, 2 do
+        local sp = slotPos(s)
+        if not sp then
             return false
         end
 
-        TeleportTo(SlotPos + Vector3.new(0, 3, 0))
+        go(sp + Vector3.new(0, 3, 0))
         task.wait(0.25)
 
-        if HoldPrompt(PlacePrompt, PlacePrompt.HoldDuration or 0.5) then
+        if hold(pp, pp.HoldDuration or 0.5) then
             task.wait(0.5)
             return true
         end
@@ -328,23 +328,23 @@ local function PlaceBrainrot(Slot)
     return false
 end
 
-local function GetNearbyBrainrot(PlatePos, Radius)
-    Radius = Radius or 25
-    local Closest = nil
-    local ClosestDist = Radius
+local function near(platePos, dist)
+    dist = dist or 25
+    local best = nil
+    local bestDist = dist
 
-    for _, Mob in ipairs(MobsFolder:GetChildren()) do
-        if Mob:IsA("Model") then
-            local RootPart = Mob:FindFirstChild("RootPart")
-            if RootPart then
-                local Prompt = RootPart:FindFirstChild("ProximityPrompt")
-                if Prompt then
-                    local Pos = GetModelPosition(Mob)
-                    if Pos then
-                        local Dist = (Pos - PlatePos).Magnitude
-                        if Dist < ClosestDist then
-                            ClosestDist = Dist
-                            Closest = Mob
+    for _, m in ipairs(mobs:GetChildren()) do
+        if m:IsA("Model") then
+            local rp = m:FindFirstChild("RootPart")
+            if rp then
+                local p = rp:FindFirstChild("ProximityPrompt")
+                if p then
+                    local pos = posOf(m)
+                    if pos then
+                        local d = (pos - platePos).Magnitude
+                        if d < bestDist then
+                            bestDist = d
+                            best = m
                         end
                     end
                 end
@@ -352,105 +352,105 @@ local function GetNearbyBrainrot(PlatePos, Radius)
         end
     end
 
-    return Closest
+    return best
 end
 
-local function BringBrainrot(Plate)
-    if not Plate then
+local function bring(plate)
+    if not plate then
         return false
     end
 
-    if IsBusy then
+    if busy then
         return false
     end
 
-    IsBusy = true
+    busy = true
 
-    local Brainrot = GetNearbyBrainrot(Plate.Position)
-    if not Brainrot then
-        IsBusy = false
+    local b = near(plate.Position)
+    if not b then
+        busy = false
         return false
     end
 
-    SaveOriginalPosition()
+    saveHome()
 
-    if not GrabBrainrot(Brainrot) then
-        TeleportToOriginal()
-        IsBusy = false
+    if not grab(b) then
+        goHome()
+        busy = false
         return false
     end
 
-    local Slot = GetAvailableSlot()
-    if not Slot then
-        TeleportToOriginal()
-        IsBusy = false
+    local s = freeSlot()
+    if not s then
+        goHome()
+        busy = false
         return false
     end
 
-    if not PlaceBrainrot(Slot) then
-        TeleportToOriginal()
-        IsBusy = false
+    if not place(s) then
+        goHome()
+        busy = false
         return false
     end
 
-    TeleportToOriginal()
-    IsBusy = false
+    goHome()
+    busy = false
     return true
 end
 
-local function AutoFarmBrainrots(Plate, AutoPlace)
-    if not Plate then
+local function farm(plate, doPlace)
+    if not plate then
         return
     end
 
-    if IsBusy then
+    if busy then
         return
     end
 
-    IsBusy = true
+    busy = true
 
-    if AutoPlace then
-        local Slot = GetAvailableSlot()
-        if not Slot then
-            IsBusy = false
+    if doPlace then
+        local s = freeSlot()
+        if not s then
+            busy = false
             return
         end
     end
 
-    local Brainrot = GetNearbyBrainrot(Plate.Position)
-    if not Brainrot then
-        IsBusy = false
+    local b = near(plate.Position)
+    if not b then
+        busy = false
         return
     end
 
-    SaveOriginalPosition()
+    saveHome()
 
-    if not GrabBrainrot(Brainrot) then
-        TeleportToOriginal()
-        IsBusy = false
+    if not grab(b) then
+        goHome()
+        busy = false
         return
     end
 
-    if AutoPlace then
-        local Slot = GetAvailableSlot()
-        if Slot then
-            if not PlaceBrainrot(Slot) then
-                TeleportToOriginal()
-                IsBusy = false
+    if doPlace then
+        local s = freeSlot()
+        if s then
+            if not place(s) then
+                goHome()
+                busy = false
                 return
             end
         else
-            TeleportToOriginal()
-            IsBusy = false
+            goHome()
+            busy = false
             return
         end
     end
 
-    TeleportToOriginal()
-    IsBusy = false
+    goHome()
+    busy = false
 end
 
-local SectionOrder = {
+local tiers = {
     "Common",
     "Rare",
     "Epic",
@@ -462,99 +462,99 @@ local SectionOrder = {
     "Admin"
 }
 
-local function CreatePlateSection(PlateName, IsLast)
-    local PlateFolder = BrainrotSpawns:FindFirstChild(PlateName)
-    if not PlateFolder then
+local function addSection(name, last)
+    local pf = spawns:FindFirstChild(name)
+    if not pf then
         return
     end
     
-    local Plate = PlateFolder:FindFirstChild("Plate")
-    if not Plate then
+    local plate = pf:FindFirstChild("Plate")
+    if not plate then
         return
     end
     
-    VoidUI:New("Label", {
-        Text = PlateName,
-        Parent = Tab
+    ui:New("Label", {
+        Text = name,
+        Parent = tab
     })
     
-    VoidUI:New("Button", {
+    ui:New("Button", {
         Text = "Bring Brainrot",
-        Parent = Tab,
+        Parent = tab,
         Callback = function()
-            BringBrainrot(Plate)
+            bring(plate)
         end
     })
     
-    local ToggleState = false
-    local ToggleConnection = nil
+    local on1 = false
+    local con1 = nil
     
-    VoidUI:New("Toggle", {
+    ui:New("Toggle", {
         Text = "AutoFarm Brainrots (Grab Only)",
-        Parent = Tab,
+        Parent = tab,
         Default = false,
         Callback = function(state)
-            ToggleState = state
+            on1 = state
             
-            if ToggleConnection then
-                ToggleConnection:Disconnect()
-                ToggleConnection = nil
+            if con1 then
+                con1:Disconnect()
+                con1 = nil
             end
             
             if state then
-                ToggleConnection = RunService.RenderStepped:Connect(function()
-                    if ToggleState then
-                        AutoFarmBrainrots(Plate, false)
+                con1 = rs.RenderStepped:Connect(function()
+                    if on1 then
+                        farm(plate, false)
                     end
                 end)
             end
         end
     })
     
-    local ToggleState2 = false
-    local ToggleConnection2 = nil
+    local on2 = false
+    local con2 = nil
     
-    VoidUI:New("Toggle", {
+    ui:New("Toggle", {
         Text = "AutoFarm Brainrots (Grab & Place)",
-        Parent = Tab,
+        Parent = tab,
         Default = false,
         Callback = function(state)
-            ToggleState2 = state
+            on2 = state
             
-            if ToggleConnection2 then
-                ToggleConnection2:Disconnect()
-                ToggleConnection2 = nil
+            if con2 then
+                con2:Disconnect()
+                con2 = nil
             end
             
             if state then
-                ToggleConnection2 = RunService.RenderStepped:Connect(function()
-                    if ToggleState2 then
-                        AutoFarmBrainrots(Plate, true)
+                con2 = rs.RenderStepped:Connect(function()
+                    if on2 then
+                        farm(plate, true)
                     end
                 end)
             end
         end
     })
     
-    if not IsLast then
-        VoidUI:New("Divider", {
-            Parent = Tab
+    if not last then
+        ui:New("Divider", {
+            Parent = tab
         })
     end
 end
 
-local TotalSections = #SectionOrder
-local CurrentIndex = 0
+local total = #tiers
+local n = 0
 
-for _, SectionName in ipairs(SectionOrder) do
-    CurrentIndex = CurrentIndex + 1
-    local IsLast = (CurrentIndex == TotalSections)
+for _, name in ipairs(tiers) do
+    n = n + 1
+    local last = (n == total)
     
-    local PlateFolder = BrainrotSpawns:FindFirstChild(SectionName)
-    if PlateFolder then
-        local Plate = PlateFolder:FindFirstChild("Plate")
-        if Plate then
-            CreatePlateSection(SectionName, IsLast)
+    local pf = spawns:FindFirstChild(name)
+    if pf then
+        local plate = pf:FindFirstChild("Plate")
+        if plate then
+            addSection(name, last)
         end
     end
 end
