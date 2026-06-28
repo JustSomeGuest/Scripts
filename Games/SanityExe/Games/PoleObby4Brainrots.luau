@@ -348,7 +348,7 @@ local function BringBrainrot(Plate)
     return true
 end
 
-local function AutoFarmBrainrots(Plate)
+local function AutoFarmBrainrots(Plate, Place)
     if not Plate then
         return
     end
@@ -359,14 +359,16 @@ local function AutoFarmBrainrots(Plate)
 
     IsBusy = true
 
-    local Brainrot = GetNearbyBrainrot(Plate.Position)
-    if not Brainrot then
-        IsBusy = false
-        return
+    if Place then
+        local Slot = GetAvailableSlot()
+        if not Slot then
+            IsBusy = false
+            return
+        end
     end
 
-    local Slot = GetAvailableSlot()
-    if not Slot then
+    local Brainrot = GetNearbyBrainrot(Plate.Position)
+    if not Brainrot then
         IsBusy = false
         return
     end
@@ -379,10 +381,19 @@ local function AutoFarmBrainrots(Plate)
         return
     end
 
-    if not PlaceBrainrot(Slot) then
-        TeleportToOriginal()
-        IsBusy = false
-        return
+    if Place then
+        local Slot = GetAvailableSlot()
+        if Slot then
+            if not PlaceBrainrot(Slot) then
+                TeleportToOriginal()
+                IsBusy = false
+                return
+            end
+        else
+            TeleportToOriginal()
+            IsBusy = false
+            return
+        end
     end
 
     TeleportToOriginal()
@@ -412,7 +423,7 @@ local function CreatePlateSection(PlateName, IsLast)
         return
     end
     
-    VoidUI:New("Section", {
+    VoidUI:New("Label", {
         Text = PlateName,
         Parent = Tab
     })
@@ -429,7 +440,7 @@ local function CreatePlateSection(PlateName, IsLast)
     local ToggleConnection = nil
     
     VoidUI:New("Toggle", {
-        Text = "AutoFarm Brainrots",
+        Text = "AutoFarm Brainrots (Grab Only)",
         Parent = Tab,
         Default = false,
         Callback = function(state)
@@ -443,7 +454,32 @@ local function CreatePlateSection(PlateName, IsLast)
             if state then
                 ToggleConnection = RunService.RenderStepped:Connect(function()
                     if ToggleState then
-                        AutoFarmBrainrots(Plate)
+                        AutoFarmBrainrots(Plate, false)
+                    end
+                end)
+            end
+        end
+    })
+    
+    local ToggleState2 = false
+    local ToggleConnection2 = nil
+    
+    VoidUI:New("Toggle", {
+        Text = "AutoFarm Brainrots (Grab & Place)",
+        Parent = Tab,
+        Default = false,
+        Callback = function(state)
+            ToggleState2 = state
+            
+            if ToggleConnection2 then
+                ToggleConnection2:Disconnect()
+                ToggleConnection2 = nil
+            end
+            
+            if state then
+                ToggleConnection2 = RunService.RenderStepped:Connect(function()
+                    if ToggleState2 then
+                        AutoFarmBrainrots(Plate, true)
                     end
                 end)
             end
