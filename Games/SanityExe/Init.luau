@@ -55,7 +55,16 @@ local TeleportService = Services.TeleportService
 
 GuiService:SetGameplayPausedNotificationEnabled(false)
 
-local QueueOnTP = select(2, pcall(function() return queue_on_teleport end))
+local QueueOnTP
+local queueSuccess, queueResult = pcall(function()
+    return queue_on_teleport
+end)
+
+if queueSuccess then
+    QueueOnTP = queueResult
+else
+    QueueOnTP = nil
+end
 
 Shared["Sanity.exe"] = Shared["Sanity.exe"] or {}
 
@@ -67,10 +76,6 @@ Shared["Sanity.exe"].IsLoaded = true
 
 local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local CURRENT_PLACE_ID = game.PlaceId
-
-local success, gameListData = pcall(function()
-    return HttpGet(SUPPORTED_GAMES_URL)
-end)
 
 local function LoadUI()
     local uiScript = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.luau")
@@ -85,6 +90,10 @@ local function LoadUI()
         warn("[Sanity.exe]: Failed to download UI script")
     end
 end
+
+local success, gameListData = pcall(function()
+    return HttpGet(SUPPORTED_GAMES_URL)
+end)
 
 if success and gameListData then
     local loadFunction, loadError = loadstring(gameListData)
@@ -105,20 +114,18 @@ if success and gameListData then
                     QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
                 end)
             end
-            LoadUI()
         else
             if QueueOnTP then
                 pcall(function()
                     QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
                 end)
             end
-            LoadUI()
         end
     else
         warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(loadError))
-        LoadUI()
     end
 else
-    warn("[Sanity.exe]: Failed to load supported games list, loading UI anyway")
-    LoadUI()
+    warn("[Sanity.exe]: Failed to load supported games list")
 end
+
+LoadUI()
