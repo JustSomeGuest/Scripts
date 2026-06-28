@@ -655,46 +655,6 @@ local function addMainSection(name, last)
     end
 end
 
-local function addTeleportSection(name, last)
-    local pf = spawns:FindFirstChild(name)
-    if not pf then
-        return
-    end
-    
-    local plate = pf:FindFirstChild("Plate")
-    if not plate then
-        return
-    end
-    
-    ui:New("Label", {
-        Text = name,
-        Parent = teleportTab
-    })
-    
-    ui:New("Button", {
-        Text = "Teleport to " .. name .. " Brainrots",
-        Parent = teleportTab,
-        Callback = function()
-            local b = near(plate)
-            if b then
-                local pos = posOf(b)
-                if pos then
-                    go(pos + Vector3.new(0, 2, 0))
-                    alert("Sanity.exe", "Teleported to " .. name .. " brainrot", 3)
-                end
-            else
-                alert("Sanity.exe", "No " .. name .. " brainrots found", 3)
-            end
-        end
-    })
-    
-    if not last then
-        ui:New("Divider", {
-            Parent = teleportTab
-        })
-    end
-end
-
 ui:New("Label", {
     Text = "Teleport Locations",
     Parent = teleportTab
@@ -714,6 +674,27 @@ ui:New("Button", {
     end
 })
 
+for _, name in ipairs(tiers) do
+    local pf = spawns:FindFirstChild(name)
+    if pf then
+        local plate = pf:FindFirstChild("Plate")
+        if plate then
+            ui:New("Button", {
+                Text = "Teleport to " .. name .. " Brainrots Area",
+                Parent = teleportTab,
+                Callback = function()
+                    if plate then
+                        go(plate.Position + Vector3.new(0, 3, 0))
+                        alert("Sanity.exe", "Teleported to " .. name .. " brainrots area", 3)
+                    else
+                        alert("Sanity.exe", "No " .. name .. " brainrots area found", 3)
+                    end
+                end
+            })
+        end
+    end
+end
+
 ui:New("Divider", {
     Parent = teleportTab
 })
@@ -730,7 +711,6 @@ for _, name in ipairs(tiers) do
         local plate = pf:FindFirstChild("Plate")
         if plate then
             addMainSection(name, last)
-            addTeleportSection(name, last)
         end
     end
 end
