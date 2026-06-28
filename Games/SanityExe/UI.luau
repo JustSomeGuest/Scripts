@@ -27,10 +27,6 @@ end
 local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local CURRENT_PLACE_ID = game.PlaceId
 
-local Tab = VoidUI:New("Tab", {
-    Text = "Main"
-})
-
 local function LoadGameScript(filePath)
     local url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/" .. filePath
     local success, gameScript = pcall(function()
@@ -46,6 +42,9 @@ local function LoadGameScript(filePath)
         end
     else
         warn("[Sanity.exe]: Failed to download game script: " .. filePath)
+        local Tab = VoidUI:New("Tab", {
+            Text = "Main"
+        })
         VoidUI:New("Label", {
             Text = "Error loading game!",
             Parent = Tab
@@ -61,6 +60,9 @@ local function LoadSupportedGames()
     if not success or not gameListData then
         warn("[Sanity.exe]: Failed to load supported games list.")
         VoidUI:SetTitle("Sanity.exe")
+        local Tab = VoidUI:New("Tab", {
+            Text = "Main"
+        })
         VoidUI:New("Label", {
             Text = "Failed to load supported games list.",
             Parent = Tab
@@ -72,6 +74,9 @@ local function LoadSupportedGames()
     if not loadFunction then
         warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(loadError))
         VoidUI:SetTitle("Sanity.exe")
+        local Tab = VoidUI:New("Tab", {
+            Text = "Main"
+        })
         VoidUI:New("Label", {
             Text = "Error parsing supported games list.",
             Parent = Tab
@@ -96,6 +101,9 @@ local function LoadSupportedGames()
 
     if not foundGame then
         VoidUI:SetTitle("Sanity.exe")
+        local Tab = VoidUI:New("Tab", {
+            Text = "Main"
+        })
         VoidUI:New("Label", {
             Text = "Game not supported.",
             Parent = Tab
