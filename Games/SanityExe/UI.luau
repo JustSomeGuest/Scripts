@@ -3,130 +3,130 @@ if not game:IsLoaded() then
 end
 
 local Shared = (function()
-    local Success, Env = pcall(getgenv)
-    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+    local ok, env = pcall(getgenv)
+    return (ok and env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
 end)()
 
-local function HttpGet(url)
-    local success, result = pcall(game.HttpGetAsync, game, url)
-    if success then
-        return result
+local function get(url)
+    local ok, res = pcall(game.HttpGetAsync, game, url)
+    if ok then
+        return res
     end
     return game:HttpGet(url)
 end
 
-Shared.VoidUI = loadstring(HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
+Shared.VoidUI = loadstring(get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
 
-local VoidUI = Shared.VoidUI
+local ui = Shared.VoidUI
 
-if not VoidUI then
+if not ui then
   warn("[Sanity.exe]: Failed to load VoidUI")
   return
 end
 
-local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
-local CURRENT_PLACE_ID = game.PlaceId
+local LIST = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
+local PID = game.PlaceId
 
-local function LoadGameScript(filePath)
-    local url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/" .. filePath
-    local success, gameScript = pcall(function()
-        return HttpGet(url)
+local function loadGame(path)
+    local url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/" .. path
+    local ok, scr = pcall(function()
+        return get(url)
     end)
 
-    if success and gameScript then
-        local loadFunction, loadError = loadstring(gameScript)
-        if loadFunction then
-            pcall(loadFunction)
+    if ok and scr then
+        local fn, err = loadstring(scr)
+        if fn then
+            pcall(fn)
         else
-            warn("[Sanity.exe]: Error loading game script: " .. tostring(loadError))
+            warn("[Sanity.exe]: Error loading game script: " .. tostring(err))
         end
     else
-        warn("[Sanity.exe]: Failed to download game script: " .. filePath)
-        local Tab = VoidUI:New("Tab", {
+        warn("[Sanity.exe]: Failed to download game script: " .. path)
+        local tab = ui:New("Tab", {
             Text = "Main"
         })
-        VoidUI:New("Label", {
+        ui:New("Label", {
             Text = "Error loading game!",
-            Parent = Tab
+            Parent = tab
         })
     end
 end
 
-local function LoadSupportedGames()
-    local success, gameListData = pcall(function()
-        return HttpGet(SUPPORTED_GAMES_URL)
+local function loadList()
+    local ok, data = pcall(function()
+        return get(LIST)
     end)
 
-    if not success or not gameListData then
+    if not ok or not data then
         warn("[Sanity.exe]: Failed to load supported games list.")
-        VoidUI:SetTitle("Sanity.exe")
-        local Tab = VoidUI:New("Tab", {
+        ui:SetTitle("Sanity.exe")
+        local tab = ui:New("Tab", {
             Text = "Main"
         })
-        VoidUI:New("Label", {
+        ui:New("Label", {
             Text = "Failed to load supported games list.",
-            Parent = Tab
+            Parent = tab
         })
         return
     end
 
-    local loadFunction, loadError = loadstring(gameListData)
-    if not loadFunction then
-        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(loadError))
-        VoidUI:SetTitle("Sanity.exe")
-        local Tab = VoidUI:New("Tab", {
+    local fn, err = loadstring(data)
+    if not fn then
+        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(err))
+        ui:SetTitle("Sanity.exe")
+        local tab = ui:New("Tab", {
             Text = "Main"
         })
-        VoidUI:New("Label", {
+        ui:New("Label", {
             Text = "Error parsing supported games list.",
-            Parent = Tab
+            Parent = tab
         })
         return
     end
 
-    local SupportedGames = loadFunction()
-    local foundGame = false
+    local list = fn()
+    local found = false
 
-    for _, gameInfo in ipairs(SupportedGames) do
-        if tostring(gameInfo.PlaceId) == tostring(CURRENT_PLACE_ID) then
-            foundGame = true
-            VoidUI:SetTitle("Sanity.exe • " .. gameInfo.GameName)
-            local gameFilePath = gameInfo.FilePath
-            if gameFilePath then
-                LoadGameScript(gameFilePath)
+    for _, g in ipairs(list) do
+        if tostring(g.PlaceId) == tostring(PID) then
+            found = true
+            ui:SetTitle("Sanity.exe • " .. g.GameName)
+            local path = g.FilePath
+            if path then
+                loadGame(path)
             end
             break
         end
     end
 
-    if not foundGame then
-        VoidUI:SetTitle("Sanity.exe")
-        local Tab = VoidUI:New("Tab", {
+    if not found then
+        ui:SetTitle("Sanity.exe")
+        local tab = ui:New("Tab", {
             Text = "Main"
         })
-        VoidUI:New("Label", {
+        ui:New("Label", {
             Text = "Game not supported.",
-            Parent = Tab
+            Parent = tab
         })
-        VoidUI:New("Divider", {
-            Parent = Tab
+        ui:New("Divider", {
+            Parent = tab
         })
-        VoidUI:New("Label", {
+        ui:New("Label", {
             Text = "Supported Games:",
-            Parent = Tab
+            Parent = tab
         })
 
-        for _, gameInfo in ipairs(SupportedGames) do
-            VoidUI:New("Button", {
-                Text = gameInfo.GameName .. " (" .. tostring(gameInfo.PlaceId) .. ")",
-                Parent = Tab,
+        for _, g in ipairs(list) do
+            ui:New("Button", {
+                Text = g.GameName .. " (" .. tostring(g.PlaceId) .. ")",
+                Parent = tab,
                 Callback = function()
-                    setclipboard(tostring(gameInfo.PlaceId))
-                    warn("[Sanity.exe]: Place ID copied: " .. tostring(gameInfo.PlaceId))
+                    setclipboard(tostring(g.PlaceId))
+                    warn("[Sanity.exe]: Place ID copied: " .. tostring(g.PlaceId))
                 end
             })
         end
     end
 end
 
-LoadSupportedGames()
+loadList()
