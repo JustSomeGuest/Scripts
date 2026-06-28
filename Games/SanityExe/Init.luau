@@ -52,9 +52,10 @@ end
 
 local GuiService = Services.GuiService
 local TeleportService = Services.TeleportService
-local QueueOnTP = expect("function", queue_on_teleport, warn("[Sanity.exe]: Executor doesn't support queue_on_teleport"))
 
 GuiService:SetGameplayPausedNotificationEnabled(false)
+
+local QueueOnTP = select(2, pcall(function() return queue_on_teleport end))
 
 Shared["Sanity.exe"] = Shared["Sanity.exe"] or {}
 
@@ -100,12 +101,16 @@ if success and gameListData then
 
         if foundGame then
             if QueueOnTP then
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                pcall(function()
+                    QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                end)
             end
             LoadUI()
         else
             if QueueOnTP then
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                pcall(function()
+                    QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                end)
             end
             LoadUI()
         end
