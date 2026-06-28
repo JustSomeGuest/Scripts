@@ -164,6 +164,113 @@ local function posOf(m)
     return nil
 end
 
+local function isOnPlate(brainrot, plate)
+    local brainPos = posOf(brainrot)
+    if not brainPos then
+        return false
+    end
+    
+    local platePos = plate.Position
+    local plateSize = plate.Size
+    
+    local distX = math.abs(brainPos.X - platePos.X)
+    local distZ = math.abs(brainPos.Z - platePos.Z)
+    
+    local halfX = plateSize.X / 2
+    local halfZ = plateSize.Z / 2
+    
+    local heightOffset = brainPos.Y - platePos.Y
+    
+    if distX <= halfX and distZ <= halfZ and heightOffset >= 0 and heightOffset <= 20 then
+        return true
+    end
+    
+    return false
+end
+
+local function near(plate, dist)
+    dist = dist or 25
+    local best = nil
+    local bestDist = dist
+    local platePos = plate.Position
+
+    for _, m in ipairs(mobs:GetChildren()) do
+        if m:IsA("Model") then
+            local rp = m:FindFirstChild("RootPart")
+            if rp then
+                local p = rp:FindFirstChild("ProximityPrompt")
+                if p then
+                    local pos = posOf(m)
+                    if pos then
+                        local d = (pos - platePos).Magnitude
+                        if d < bestDist and isOnPlate(m, plate) then
+                            bestDist = d
+                            best = m
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    return best
+end
+
+local function grab(b)
+    if not b then
+        return false
+    end
+
+    local rp = b:FindFirstChild("RootPart")
+    if not rp then
+        return false
+    end
+
+    local p = rp:FindFirstChild("ProximityPrompt")
+    if not p then
+        return false
+    end
+
+    for _ = 1, 2 do
+        local pos = posOf(b)
+        if not pos then
+            return false
+        end
+
+        go(pos + Vector3.new(0, 2, 0))
+        task.wait(0.25)
+
+        if hold(p, p.HoldDuration or 0.5) then
+            return true
+        end
+
+        task.wait(0.15)
+    end
+
+    return false
+end
+
+local function hold(p, dur)
+    if not p then
+        return false
+    end
+
+    local fired = false
+    local con = p.Triggered:Connect(function()
+        fired = true
+    end)
+
+    pcall(function()
+        p:InputHoldBegin()
+        task.wait((dur or p.HoldDuration or 0.5) + 0.15)
+        p:InputHoldEnd()
+    end)
+
+    con:Disconnect()
+
+    return fired
+end
+
 local function myBase()
     for _, b in ipairs(bases:GetChildren()) do
         local tf = b:FindFirstChild("Title")
@@ -243,61 +350,6 @@ local function slotPos(s)
     return nil
 end
 
-local function hold(p, dur)
-    if not p then
-        return false
-    end
-
-    local fired = false
-    local con = p.Triggered:Connect(function()
-        fired = true
-    end)
-
-    pcall(function()
-        p:InputHoldBegin()
-        task.wait((dur or p.HoldDuration or 0.5) + 0.15)
-        p:InputHoldEnd()
-    end)
-
-    con:Disconnect()
-
-    return fired
-end
-
-local function grab(b)
-    if not b then
-        return false
-    end
-
-    local rp = b:FindFirstChild("RootPart")
-    if not rp then
-        return false
-    end
-
-    local p = rp:FindFirstChild("ProximityPrompt")
-    if not p then
-        return false
-    end
-
-    for _ = 1, 2 do
-        local pos = posOf(b)
-        if not pos then
-            return false
-        end
-
-        go(pos + Vector3.new(0, 2, 0))
-        task.wait(0.25)
-
-        if hold(p, p.HoldDuration or 0.5) then
-            return true
-        end
-
-        task.wait(0.15)
-    end
-
-    return false
-end
-
 local function place(s)
     if not s then
         return false
@@ -328,33 +380,6 @@ local function place(s)
     return false
 end
 
-local function near(platePos, dist)
-    dist = dist or 25
-    local best = nil
-    local bestDist = dist
-
-    for _, m in ipairs(mobs:GetChildren()) do
-        if m:IsA("Model") then
-            local rp = m:FindFirstChild("RootPart")
-            if rp then
-                local p = rp:FindFirstChild("ProximityPrompt")
-                if p then
-                    local pos = posOf(m)
-                    if pos then
-                        local d = (pos - platePos).Magnitude
-                        if d < bestDist then
-                            bestDist = d
-                            best = m
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    return best
-end
-
 local function bring(plate)
     if not plate then
         return false
@@ -366,7 +391,7 @@ local function bring(plate)
 
     busy = true
 
-    local b = near(plate.Position)
+    local b = near(plate)
     if not b then
         busy = false
         return false
@@ -417,7 +442,7 @@ local function farm(plate, doPlace)
         end
     end
 
-    local b = near(plate.Position)
+    local b = near(plate)
     if not b then
         busy = false
         return
