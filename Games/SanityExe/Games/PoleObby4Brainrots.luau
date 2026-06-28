@@ -2,6 +2,13 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+local Shared = (function()
+    local Success, Env = pcall(getgenv)
+    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+end)()
+
+local VoidUI = Shared.VoidUI
+
 if not VoidUI then
     warn("[Sanity.exe]: Failed to load VoidUI")
     return
