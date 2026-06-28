@@ -17,6 +17,11 @@ end
 
 local VoidUI = Shared.VoidUI
 
+if not VoidUI then
+  warn("[Sanity.exe]: Failed to load VoidUI")
+  return
+end
+
 local SUPPORTED_GAMES_LIST = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local CURRENT_PLACE_ID = game.PlaceId
 
