@@ -20,9 +20,15 @@ Shared.VoidUI = loadstring(get("https://raw.githubusercontent.com/JustSomeGuest/
 local ui = Shared.VoidUI
 
 if not ui then
-  warn("[Sanity.exe]: Failed to load VoidUI")
-  return
+    warn("[Sanity.exe]: Failed to load VoidUI")
+    return
 end
+
+ui:SetTheme({
+    Accent = "255, 255, 255"
+})
+
+ui:SetLogo("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Assets/sanity_logo.png")
 
 local LIST = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local PID = game.PlaceId
