@@ -30,6 +30,9 @@ local Tab = VoidUI:New("Tab", {
     Text = "Main"
 })
 
+local GameSupported = false
+local SupportedGames = {}
+
 local function LoadGameScript(filePath)
     local url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/" .. filePath
     local success, gameScript = pcall(function()
@@ -48,10 +51,6 @@ local function LoadGameScript(filePath)
         end
     else
         warn("[Sanity.exe]: Failed to download game script: " .. filePath)
-        VoidUI:New("Label", {
-            Text = "Error loading game!",
-            Parent = Tab
-        })
     end
 end
 
@@ -79,7 +78,7 @@ local function LoadSupportedGames()
         return
     end
 
-    local SupportedGames = loadFunction()
+    SupportedGames = loadFunction()
     local foundGame = false
 
     for _, gameInfo in ipairs(SupportedGames) do
@@ -87,13 +86,10 @@ local function LoadSupportedGames()
             foundGame = true
             local gameFilePath = gameInfo.FilePath
             if gameFilePath then
+                GameSupported = true
                 LoadGameScript(gameFilePath)
             else
                 warn("[Sanity.exe]: No file path for game: " .. gameInfo.GameName)
-                VoidUI:New("Label", {
-                    Text = "No file path for: " .. gameInfo.GameName,
-                    Parent = Tab
-                })
             end
             break
         end
