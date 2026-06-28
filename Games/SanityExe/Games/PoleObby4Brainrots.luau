@@ -17,7 +17,7 @@ end
 
 local VoidUI = Shared.VoidUI
 
-local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
+local SUPPORTED_GAMES_LIST = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local CURRENT_PLACE_ID = game.PlaceId
 
 local Tab = VoidUI:New("Tab", {
@@ -48,7 +48,7 @@ end
 
 local function LoadSupportedGames()
     local success, gameListData = pcall(function()
-        return HttpGet(SUPPORTED_GAMES_URL)
+        return HttpGet(SUPPORTED_GAMES_LIST)
     end)
 
     if not success or not gameListData then
