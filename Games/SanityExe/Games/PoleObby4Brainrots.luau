@@ -460,7 +460,7 @@ end
 
 local function bring(plate, tierName)
     if not plate then
-        alert("Sanity.exe", "Waiting for brainrots to spawn in " .. tierName, 3)
+        alert("Sanity.exe", "Waiting for terrain to spawn in " .. tierName, 3)
         return false
     end
 
@@ -563,11 +563,17 @@ local function farm(plate, doPlace)
     busy = false
 end
 
-local tiers = {}
-
-for _, child in ipairs(spawns:GetChildren()) do
-    table.insert(tiers, child.Name)
-end
+local tierOrder = {
+    "Common",
+    "Rare",
+    "Epic",
+    "Legendary",
+    "Mythical",
+    "Exclusive",
+    "OG",
+    "Secret",
+    "Admin"
+}
 
 local function addMainSection(tierName, last)
     local pf = spawns:FindFirstChild(tierName)
@@ -666,7 +672,7 @@ ui:New("Button", {
     end
 })
 
-for _, tierName in ipairs(tiers) do
+for _, tierName in ipairs(tierOrder) do
     local pf = spawns:FindFirstChild(tierName)
     if pf then
         local plate = pf:FindFirstChild("Plate")
@@ -678,7 +684,7 @@ for _, tierName in ipairs(tiers) do
                     go(plate.Position + Vector3.new(0, 3, 0))
                     alert("Sanity.exe", "Teleported to " .. tierName .. " brainrots area", 3)
                 else
-                    alert("Sanity.exe", "Waiting for brainrots to spawn in " .. tierName, 3)
+                    alert("Sanity.exe", "Waiting for terrain to spawn in " .. tierName, 3)
                 end
             end
         })
@@ -689,10 +695,10 @@ ui:New("Divider", {
     Parent = teleportTab
 })
 
-local total = #tiers
+local total = #tierOrder
 local n = 0
 
-for _, tierName in ipairs(tiers) do
+for _, tierName in ipairs(tierOrder) do
     n = n + 1
     local last = (n == total)
     addMainSection(tierName, last)
