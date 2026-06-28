@@ -17,12 +17,12 @@ end
 
 Shared.VoidUI = loadstring(HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
 
+local VoidUI = Shared.VoidUI
+
 if not VoidUI then
   warn("[Sanity.exe]: Failed to load VoidUI")
   return
 end
-
-local VoidUI = Shared.VoidUI
 
 local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local CURRENT_PLACE_ID = game.PlaceId
