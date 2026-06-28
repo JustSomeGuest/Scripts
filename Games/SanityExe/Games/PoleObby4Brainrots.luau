@@ -15,7 +15,7 @@ local function HttpGet(url)
     return game:HttpGet(url)
 end
 
-local VoidUI = loadstring(HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
+local VoidUI = Shared.VoidUI
 
 local SUPPORTED_GAMES_URL = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local CURRENT_PLACE_ID = game.PlaceId
