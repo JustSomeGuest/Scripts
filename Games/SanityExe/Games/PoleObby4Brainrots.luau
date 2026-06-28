@@ -2,6 +2,13 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
+
+if not VoidUI then
+    warn("[Sanity.exe]: Failed to load VoidUI")
+    return
+end
+
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local Workspace = game:GetService("Workspace")
@@ -19,7 +26,6 @@ local Bases = Workspace:FindFirstChild("Bases")
 if not BrainrotSpawns then
     BrainrotSpawns = Workspace:WaitForChild("BrainrotSpawns", 10)
     if not BrainrotSpawns then
-        warn("[Sanity.exe]: BrainrotSpawns folder not found")
         return
     end
 end
@@ -27,7 +33,6 @@ end
 if not MobsFolder then
     MobsFolder = Workspace:WaitForChild("Mobs", 10)
     if not MobsFolder then
-        warn("[Sanity.exe]: Mobs folder not found")
         return
     end
 end
@@ -35,7 +40,6 @@ end
 if not Bases then
     Bases = Workspace:WaitForChild("Bases", 10)
     if not Bases then
-        warn("[Sanity.exe]: Bases folder not found")
         return
     end
 end
@@ -296,9 +300,8 @@ local function GetNearbyBrainrot(PlatePos, Radius)
     return Closest
 end
 
-local function StealBrainrot(Plate)
+local function BringBrainrot(Plate)
     if not Plate then
-        warn("[Sanity.exe]: No plate provided")
         return false
     end
 
@@ -310,7 +313,6 @@ local function StealBrainrot(Plate)
 
     local Brainrot = GetNearbyBrainrot(Plate.Position)
     if not Brainrot then
-        warn("[Sanity.exe]: No brainrot near the plate")
         IsBusy = false
         return false
     end
@@ -318,7 +320,6 @@ local function StealBrainrot(Plate)
     SaveOriginalPosition()
 
     if not GrabBrainrot(Brainrot) then
-        warn("[Sanity.exe]: Failed to grab brainrot: " .. Brainrot.Name)
         TeleportToOriginal()
         IsBusy = false
         return false
@@ -326,14 +327,12 @@ local function StealBrainrot(Plate)
 
     local Slot = GetAvailableSlot()
     if not Slot then
-        warn("[Sanity.exe]: No available slot found")
         TeleportToOriginal()
         IsBusy = false
         return false
     end
 
     if not PlaceBrainrot(Slot) then
-        warn("[Sanity.exe]: Failed to place brainrot: " .. Brainrot.Name)
         TeleportToOriginal()
         IsBusy = false
         return false
@@ -341,7 +340,6 @@ local function StealBrainrot(Plate)
 
     TeleportToOriginal()
     IsBusy = false
-    warn("[Sanity.exe]: Stole and placed brainrot: " .. Brainrot.Name)
     return true
 end
 
@@ -390,8 +388,8 @@ local SectionOrder = {
     "Common",
     "Rare",
     "Epic",
-    "Mythic",
     "Legendary",
+    "Mythic",
     "Secret",
     "Exclusive",
     "OG",
@@ -401,13 +399,11 @@ local SectionOrder = {
 local function CreatePlateSection(PlateName, IsLast)
     local PlateFolder = BrainrotSpawns:FindFirstChild(PlateName)
     if not PlateFolder then
-        warn("[Sanity.exe]: Plate folder not found: " .. PlateName)
         return
     end
     
     local Plate = PlateFolder:FindFirstChild("Plate")
     if not Plate then
-        warn("[Sanity.exe]: Plate not found in: " .. PlateName)
         return
     end
     
@@ -417,10 +413,10 @@ local function CreatePlateSection(PlateName, IsLast)
     })
     
     VoidUI:New("Button", {
-        Text = "Grab Brainrot",
+        Text = "Bring Brainrot",
         Parent = Tab,
         Callback = function()
-            StealBrainrot(Plate)
+            BringBrainrot(Plate)
         end
     })
     
