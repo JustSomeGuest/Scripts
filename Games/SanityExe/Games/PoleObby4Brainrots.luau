@@ -57,8 +57,12 @@ if not ui then
     return
 end
 
-local tab = ui:New("Tab", {
+local mainTab = ui:New("Tab", {
     Text = "Main"
+})
+
+local teleportTab = ui:New("Tab", {
+    Text = "Teleports"
 })
 
 local function alert(t, txt, dur, icon)
@@ -182,6 +186,15 @@ end
 local function goHome()
     if home then
         go(home)
+        return true
+    end
+    return false
+end
+
+local function goTo(target)
+    local r = root()
+    if r and target then
+        r.CFrame = target.CFrame
         return true
     end
     return false
@@ -341,6 +354,17 @@ local function myBase()
                     end
                 end
             end
+        end
+    end
+    return nil
+end
+
+local function getPlayerBaseHome()
+    local b = myBase()
+    if b then
+        local homePart = b:FindFirstChild("Home")
+        if homePart then
+            return homePart
         end
     end
     return nil
@@ -550,7 +574,7 @@ local tiers = {
     "Admin"
 }
 
-local function addSection(name, last)
+local function addMainSection(name, last)
     local pf = spawns:FindFirstChild(name)
     if not pf then
         return
@@ -563,12 +587,12 @@ local function addSection(name, last)
     
     ui:New("Label", {
         Text = name,
-        Parent = tab
+        Parent = mainTab
     })
     
     ui:New("Button", {
         Text = "Bring Brainrot",
-        Parent = tab,
+        Parent = mainTab,
         Callback = function()
             bring(plate)
         end
@@ -579,7 +603,7 @@ local function addSection(name, last)
     
     ui:New("Toggle", {
         Text = "AutoFarm Brainrots (Grab Only)",
-        Parent = tab,
+        Parent = mainTab,
         Default = false,
         Callback = function(state)
             on1 = state
@@ -604,7 +628,7 @@ local function addSection(name, last)
     
     ui:New("Toggle", {
         Text = "AutoFarm Brainrots (Grab & Place)",
-        Parent = tab,
+        Parent = mainTab,
         Default = false,
         Callback = function(state)
             on2 = state
@@ -626,10 +650,73 @@ local function addSection(name, last)
     
     if not last then
         ui:New("Divider", {
-            Parent = tab
+            Parent = mainTab
         })
     end
 end
+
+local function addTeleportSection(name, last)
+    local pf = spawns:FindFirstChild(name)
+    if not pf then
+        return
+    end
+    
+    local plate = pf:FindFirstChild("Plate")
+    if not plate then
+        return
+    end
+    
+    ui:New("Label", {
+        Text = name,
+        Parent = teleportTab
+    })
+    
+    ui:New("Button", {
+        Text = "Teleport to " .. name .. " Brainrots",
+        Parent = teleportTab,
+        Callback = function()
+            local b = near(plate)
+            if b then
+                local pos = posOf(b)
+                if pos then
+                    go(pos + Vector3.new(0, 2, 0))
+                    alert("Sanity.exe", "Teleported to " .. name .. " brainrot", 3)
+                end
+            else
+                alert("Sanity.exe", "No " .. name .. " brainrots found", 3)
+            end
+        end
+    })
+    
+    if not last then
+        ui:New("Divider", {
+            Parent = teleportTab
+        })
+    end
+end
+
+ui:New("Label", {
+    Text = "Teleport Locations",
+    Parent = teleportTab
+})
+
+ui:New("Button", {
+    Text = "Teleport to Base",
+    Parent = teleportTab,
+    Callback = function()
+        local homePart = getPlayerBaseHome()
+        if homePart then
+            goTo(homePart)
+            alert("Sanity.exe", "Teleported to base", 3)
+        else
+            alert("Sanity.exe", "Base home not found", 3)
+        end
+    end
+})
+
+ui:New("Divider", {
+    Parent = teleportTab
+})
 
 local total = #tiers
 local n = 0
@@ -642,7 +729,8 @@ for _, name in ipairs(tiers) do
     if pf then
         local plate = pf:FindFirstChild("Plate")
         if plate then
-            addSection(name, last)
+            addMainSection(name, last)
+            addTeleportSection(name, last)
         end
     end
 end
