@@ -556,16 +556,12 @@ local TierOrder = {
     "God"
 }
 
-local ValidTiers = {}
-
-for _, TierName in ipairs(TierOrder) do
+local function GetTierPosition(TierName)
     local TierFolder = ItemSpawners:FindFirstChild(TierName)
     if TierFolder and TierFolder:IsA("BasePart") then
-        table.insert(ValidTiers, {
-            Name = TierName,
-            Position = TierFolder.Position
-        })
+        return TierFolder.Position
     end
+    return nil
 end
 
 CleanKillParts()
@@ -587,13 +583,18 @@ UI:New("Button", {
     end
 })
 
-for _, TierData in ipairs(ValidTiers) do
+for _, TierName in ipairs(TierOrder) do
     UI:New("Button", {
-        Text = "Teleport to " .. TierData.Name,
+        Text = "Teleport to " .. TierName,
         Parent = TeleportTab,
         Callback = function()
-            Go(TierData.Position + Vector3.new(0, 3, 0))
-            Alert("Sanity.exe", "Teleported to " .. TierData.Name, 3)
+            local Pos = GetTierPosition(TierName)
+            if Pos then
+                Go(Pos + Vector3.new(0, 3, 0))
+                Alert("Sanity.exe", "Teleported to " .. TierName, 3)
+            else
+                Alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
+            end
         end
     })
 end
@@ -607,11 +608,9 @@ UI:New("Section", {
     Parent = MainTab
 })
 
-local TotalTiers = #ValidTiers
+local TotalTiers = #TierOrder
 
-for i, TierData in ipairs(ValidTiers) do
-    local TierName = TierData.Name
-    local PlatePos = TierData.Position
+for i, TierName in ipairs(TierOrder) do
     local IsLast = (i == TotalTiers)
     
     UI:New("Label", {
@@ -623,7 +622,8 @@ for i, TierData in ipairs(ValidTiers) do
         Text = "Bring Brainrot",
         Parent = MainTab,
         Callback = function()
-            Bring(TierName, PlatePos)
+            local Pos = GetTierPosition(TierName)
+            Bring(TierName, Pos)
         end
     })
     
@@ -645,7 +645,8 @@ for i, TierData in ipairs(ValidTiers) do
             if State then
                 Con1 = RunSvc.RenderStepped:Connect(function()
                     if On1 then
-                        Farm(TierName, PlatePos, false)
+                        local Pos = GetTierPosition(TierName)
+                        Farm(TierName, Pos, false)
                     end
                 end)
             end
@@ -670,7 +671,8 @@ for i, TierData in ipairs(ValidTiers) do
             if State then
                 Con2 = RunSvc.RenderStepped:Connect(function()
                     if On2 then
-                        Farm(TierName, PlatePos, true)
+                        local Pos = GetTierPosition(TierName)
+                        Farm(TierName, Pos, true)
                     end
                 end)
             end
