@@ -565,9 +565,9 @@ local tierOrder = {
     "Epic",
     "Legendary",
     "Mythical",
-    "Exclusive",
-    "OG",
     "Secret",
+    "OG",
+    "Exclusive",
     "Admin"
 }
 
