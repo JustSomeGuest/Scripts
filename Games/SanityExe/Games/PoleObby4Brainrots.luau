@@ -61,6 +61,10 @@ local mainTab = ui:New("Tab", {
     Text = "Main"
 })
 
+local teleportTab = ui:New("Tab", {
+    Text = "Teleports"
+})
+
 local function alert(t, txt, dur, icon)
     pcall(function()
         sgui:SetCore("SendNotification", {
@@ -104,40 +108,56 @@ local home = nil
 local busy = false
 local carryCount = 0
 local maxCarry = 0
-local baseHomePos = nil
+local homeBase = nil
 
 local function getMaxCarry()
-    local menus = pgui:FindFirstChild("MainUI") and pgui.MainUI:FindFirstChild("Menus")
+    local mainUI = pgui:FindFirstChild("MainUI")
+    if not mainUI then
+        return 1
+    end
+    
+    local menus = mainUI:FindFirstChild("Menus")
     if not menus then
         return 1
     end
-
+    
     local upgradeShop = menus:FindFirstChild("UpgradeShop")
     if not upgradeShop then
         return 1
     end
-
+    
     local handler = upgradeShop:FindFirstChild("Handler")
     if not handler then
         return 1
     end
-
+    
     local carry = handler:FindFirstChild("Carry")
     if not carry then
         return 1
     end
-
-    local stat1 = carry:FindFirstChild("Stats") and carry.Stats:FindFirstChild("1")
+    
+    local stats = carry:FindFirstChild("Stats")
+    if not stats then
+        return 1
+    end
+    
+    local stat1 = stats:FindFirstChild("1")
     if not stat1 then
         return 1
     end
-
+    
     local textLabel = stat1:FindFirstChild("TextLabel")
     if not textLabel or not textLabel:IsA("TextLabel") then
         return 1
     end
-
-    return tonumber(textLabel.Text) or 1
+    
+    local maxCarryText = textLabel.Text
+    local num = tonumber(maxCarryText)
+    if num then
+        return num
+    end
+    
+    return 1
 end
 
 local function root()
@@ -167,6 +187,14 @@ end
 local function goHome()
     if home then
         go(home)
+        return true
+    end
+    return false
+end
+
+local function goToBase()
+    if homeBase then
+        go(homeBase)
         return true
     end
     return false
@@ -343,19 +371,15 @@ end
 local function getPlayerBaseHome()
     local b = myBase()
     if b then
+        homeBase = b.Position
         local homePart = b:FindFirstChild("Home")
         if homePart then
+            homeBase = homePart.Position
             return homePart
         end
+        return b
     end
     return nil
-end
-
-local function saveBaseHome()
-    local homePart = getPlayerBaseHome()
-    if homePart then
-        baseHomePos = homePart.Position
-    end
 end
 
 local function freeSlot()
@@ -536,30 +560,18 @@ local function farm(plate, doPlace)
             busy = false
             return
         end
-
-        goHome()
-        busy = false
-        return
-    end
-
-    carryCount = carryCount + 1
-    maxCarry = getMaxCarry()
-
-    if carryCount >= maxCarry then
-        local homePart = getPlayerBaseHome()
-        if homePart then
-            goTo(homePart)
+    else
+        carryCount = carryCount + 1
+        maxCarry = getMaxCarry()
+        if carryCount >= maxCarry then
+            goToBase()
+            carryCount = 0
+            busy = false
+            return
         end
-
-        task.wait(1)
-
-        goHome()
-
-        carryCount = 0
-        busy = false
-        return
     end
 
+    goHome()
     busy = false
 end
 
@@ -575,42 +587,6 @@ local tierOrder = {
     "Admin"
 }
 
-saveBaseHome()
-
-ui:New("Label", {
-    Text = "Teleports",
-    Parent = mainTab
-})
-
-ui:New("Button", {
-    Text = "Teleport to Base",
-    Parent = mainTab,
-    Callback = function()
-        if baseHomePos then
-            go(baseHomePos)
-            alert("Sanity.exe", "Teleported to base", 3)
-        else
-            local homePart = getPlayerBaseHome()
-            if homePart then
-                baseHomePos = homePart.Position
-                go(baseHomePos)
-                alert("Sanity.exe", "Teleported to base", 3)
-            else
-                alert("Sanity.exe", "Base home not found", 3)
-            end
-        end
-    end
-})
-
-ui:New("Divider", {
-    Parent = mainTab
-})
-
-ui:New("Label", {
-    Text = "Brainrots",
-    Parent = mainTab
-})
-
 local function addMainSection(tierName, last)
     local pf = spawns:FindFirstChild(tierName)
     if not pf then
@@ -619,7 +595,7 @@ local function addMainSection(tierName, last)
     
     local plate = pf:FindFirstChild("Plate")
     
-    ui:New("Label", {
+    ui:New("Section", {
         Text = tierName,
         Parent = mainTab
     })
@@ -688,6 +664,48 @@ local function addMainSection(tierName, last)
         })
     end
 end
+
+ui:New("Section", {
+    Text = "Teleport Locations",
+    Parent = teleportTab
+})
+
+ui:New("Button", {
+    Text = "Teleport to Base",
+    Parent = teleportTab,
+    Callback = function()
+        local homePart = getPlayerBaseHome()
+        if homePart then
+            goTo(homePart)
+            alert("Sanity.exe", "Teleported to base", 3)
+        else
+            alert("Sanity.exe", "Base home not found", 3)
+        end
+    end
+})
+
+for _, tierName in ipairs(tierOrder) do
+    local pf = spawns:FindFirstChild(tierName)
+    if pf then
+        local plate = pf:FindFirstChild("Plate")
+        ui:New("Button", {
+            Text = "Teleport to " .. tierName .. " Brainrots Area",
+            Parent = teleportTab,
+            Callback = function()
+                if plate then
+                    go(plate.Position + Vector3.new(0, 3, 0))
+                    alert("Sanity.exe", "Teleported to " .. tierName .. " brainrots area", 3)
+                else
+                    alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
+                end
+            end
+        })
+    end
+end
+
+ui:New("Divider", {
+    Parent = teleportTab
+})
 
 local total = #tierOrder
 local n = 0
