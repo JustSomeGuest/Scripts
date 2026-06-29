@@ -61,10 +61,6 @@ local MainTab = UI:New("Tab", {
     Text = "Main"
 })
 
-local TeleportTab = UI:New("Tab", {
-    Text = "Teleports"
-})
-
 local function Alert(Title, Text, Duration, Icon)
     pcall(function()
         StarterGui:SetCore("SendNotification", {
@@ -587,7 +583,41 @@ local TierOrder = {
     "Admin"
 }
 
-local function AddMainSection(TierName, Last)
+UI:New("Section", {
+    Text = "Teleports",
+    Parent = MainTab
+})
+
+UI:New("Button", {
+    Text = "Teleport to Base",
+    Parent = MainTab,
+    Callback = function()
+        local HomePart = GetPlayerBaseHome()
+        if HomePart then
+            GoTo(HomePart)
+            Alert("Sanity.exe", "Teleported to base", 3)
+        else
+            Alert("Sanity.exe", "Base home not found", 3)
+        end
+    end
+})
+
+UI:New("Divider", {
+    Parent = MainTab
+})
+
+UI:New("Section", {
+    Text = "Brainrots",
+    Parent = MainTab
+})
+
+local Total = #TierOrder
+local N = 0
+
+for _, TierName in ipairs(TierOrder) do
+    N = N + 1
+    local Last = (N == Total)
+    
     local PF = Spawns:FindFirstChild(TierName)
     if not PF then
         return
@@ -595,13 +625,13 @@ local function AddMainSection(TierName, Last)
     
     local Plate = PF:FindFirstChild("Plate")
     
-    UI:New("Section", {
+    UI:New("Label", {
         Text = TierName,
         Parent = MainTab
     })
     
     UI:New("Button", {
-        Text = "Bring Brainrot",
+        Text = "Grab Brainrot",
         Parent = MainTab,
         Callback = function()
             Bring(Plate, TierName)
@@ -612,7 +642,7 @@ local function AddMainSection(TierName, Last)
     local Con1 = nil
     
     UI:New("Toggle", {
-        Text = "AutoFarm Brainrots (Grab Only)",
+        Text = "AutoFarm (Grab Only)",
         Parent = MainTab,
         Default = false,
         Callback = function(State)
@@ -637,7 +667,7 @@ local function AddMainSection(TierName, Last)
     local Con2 = nil
     
     UI:New("Toggle", {
-        Text = "AutoFarm Brainrots (Grab & Place)",
+        Text = "AutoFarm (Grab & Place)",
         Parent = MainTab,
         Default = false,
         Callback = function(State)
@@ -663,55 +693,4 @@ local function AddMainSection(TierName, Last)
             Parent = MainTab
         })
     end
-end
-
-UI:New("Section", {
-    Text = "Teleport Locations",
-    Parent = TeleportTab
-})
-
-UI:New("Button", {
-    Text = "Teleport to Base",
-    Parent = TeleportTab,
-    Callback = function()
-        local HomePart = GetPlayerBaseHome()
-        if HomePart then
-            GoTo(HomePart)
-            Alert("Sanity.exe", "Teleported to base", 3)
-        else
-            Alert("Sanity.exe", "Base home not found", 3)
-        end
-    end
-})
-
-for _, TierName in ipairs(TierOrder) do
-    local PF = Spawns:FindFirstChild(TierName)
-    if PF then
-        local Plate = PF:FindFirstChild("Plate")
-        UI:New("Button", {
-            Text = "Teleport to " .. TierName .. " Brainrots Area",
-            Parent = TeleportTab,
-            Callback = function()
-                if Plate then
-                    Go(Plate.Position + Vector3.new(0, 3, 0))
-                    Alert("Sanity.exe", "Teleported to " .. TierName .. " brainrots area", 3)
-                else
-                    Alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
-                end
-            end
-        })
-    end
-end
-
-UI:New("Divider", {
-    Parent = TeleportTab
-})
-
-local Total = #TierOrder
-local N = 0
-
-for _, TierName in ipairs(TierOrder) do
-    N = N + 1
-    local Last = (N == Total)
-    AddMainSection(TierName, Last)
 end
