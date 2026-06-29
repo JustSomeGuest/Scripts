@@ -584,6 +584,25 @@ local TierOrder = {
     "Admin"
 }
 
+local ValidTiers = {}
+for _, TierName in ipairs(TierOrder) do
+    local PF = Spawns:FindFirstChild(TierName)
+    if PF then
+        local Plate = PF:FindFirstChild("Plate")
+        if Plate then
+            table.insert(ValidTiers, {
+                Name = TierName,
+                Plate = Plate
+            })
+        end
+    end
+end
+
+if #ValidTiers == 0 then
+    warn("[Sanity.exe]: No valid spawn tiers found!")
+    return
+end
+
 UI:New("Section", {
     Text = "Teleports",
     Parent = MainTab
@@ -612,19 +631,10 @@ UI:New("Section", {
     Parent = MainTab
 })
 
-local Total = #TierOrder
-local N = 0
-
-for _, TierName in ipairs(TierOrder) do
-    N = N + 1
-    local Last = (N == Total)
-    
-    local PF = Spawns:FindFirstChild(TierName)
-    if not PF then
-        return
-    end
-    
-    local Plate = PF:FindFirstChild("Plate")
+for i, TierData in ipairs(ValidTiers) do
+    local TierName = TierData.Name
+    local Plate = TierData.Plate
+    local IsLast = (i == #ValidTiers)
     
     UI:New("Label", {
         Text = TierName,
@@ -689,7 +699,7 @@ for _, TierName in ipairs(TierOrder) do
         end
     })
     
-    if not Last then
+    if not IsLast then
         UI:New("Divider", {
             Parent = MainTab
         })
