@@ -61,10 +61,6 @@ local mainTab = ui:New("Tab", {
     Text = "Main"
 })
 
-local teleportTab = ui:New("Tab", {
-    Text = "Teleports"
-})
-
 local function alert(t, txt, dur, icon)
     pcall(function()
         sgui:SetCore("SendNotification", {
@@ -108,6 +104,7 @@ local home = nil
 local busy = false
 local carryCount = 0
 local maxCarry = 0
+local baseHomePos = nil
 
 local function getMaxCarry()
     local menus = pgui:FindFirstChild("MainUI") and pgui.MainUI:FindFirstChild("Menus")
@@ -354,6 +351,13 @@ local function getPlayerBaseHome()
     return nil
 end
 
+local function saveBaseHome()
+    local homePart = getPlayerBaseHome()
+    if homePart then
+        baseHomePos = homePart.Position
+    end
+end
+
 local function freeSlot()
     local b = myBase()
     if not b then
@@ -440,42 +444,6 @@ local function place(s)
     end
 
     return false
-end
-
-local function stagedTeleport(targetPos, tierName)
-    local r = root()
-    if not r then return false end
-    
-    local currentPos = r.Position
-    local distance = (targetPos - currentPos).Magnitude
-    
-    if distance < 100 then
-        go(targetPos)
-        return true
-    end
-    
-    local stagingPoints = {}
-    
-    local commonPlate = spawns:FindFirstChild("Common") and spawns.Common:FindFirstChild("Plate")
-    if commonPlate then
-        table.insert(stagingPoints, commonPlate.Position + Vector3.new(0, 3, 0))
-    end
-    
-    if tierName == "Admin" or tierName == "Base" then
-        local secretPlate = spawns:FindFirstChild("Secret") and spawns.Secret:FindFirstChild("Plate")
-        if secretPlate then
-            table.insert(stagingPoints, secretPlate.Position + Vector3.new(0, 3, 0))
-        end
-    end
-    
-    table.insert(stagingPoints, targetPos)
-    
-    for _, pos in ipairs(stagingPoints) do
-        go(pos)
-        task.wait(0.5)
-    end
-    
-    return true
 end
 
 local function bring(plate, tierName)
@@ -607,6 +575,42 @@ local tierOrder = {
     "Admin"
 }
 
+saveBaseHome()
+
+ui:New("Label", {
+    Text = "Teleports",
+    Parent = mainTab
+})
+
+ui:New("Button", {
+    Text = "Teleport to Base",
+    Parent = mainTab,
+    Callback = function()
+        if baseHomePos then
+            go(baseHomePos)
+            alert("Sanity.exe", "Teleported to base", 3)
+        else
+            local homePart = getPlayerBaseHome()
+            if homePart then
+                baseHomePos = homePart.Position
+                go(baseHomePos)
+                alert("Sanity.exe", "Teleported to base", 3)
+            else
+                alert("Sanity.exe", "Base home not found", 3)
+            end
+        end
+    end
+})
+
+ui:New("Divider", {
+    Parent = mainTab
+})
+
+ui:New("Label", {
+    Text = "Brainrots",
+    Parent = mainTab
+})
+
 local function addMainSection(tierName, last)
     local pf = spawns:FindFirstChild(tierName)
     if not pf then
@@ -684,48 +688,6 @@ local function addMainSection(tierName, last)
         })
     end
 end
-
-ui:New("Label", {
-    Text = "Teleport Locations",
-    Parent = teleportTab
-})
-
-ui:New("Button", {
-    Text = "Teleport to Base",
-    Parent = teleportTab,
-    Callback = function()
-        local homePart = getPlayerBaseHome()
-        if homePart then
-            stagedTeleport(homePart.Position, "Base")
-            alert("Sanity.exe", "Teleported to base", 3)
-        else
-            alert("Sanity.exe", "Base home not found", 3)
-        end
-    end
-})
-
-for _, tierName in ipairs(tierOrder) do
-    local pf = spawns:FindFirstChild(tierName)
-    if pf then
-        local plate = pf:FindFirstChild("Plate")
-        ui:New("Button", {
-            Text = "Teleport to " .. tierName .. " Brainrots Area",
-            Parent = teleportTab,
-            Callback = function()
-                if plate then
-                    stagedTeleport(plate.Position + Vector3.new(0, 3, 0), tierName)
-                    alert("Sanity.exe", "Teleported to " .. tierName .. " brainrots area", 3)
-                else
-                    alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
-                end
-            end
-        })
-    end
-end
-
-ui:New("Divider", {
-    Parent = teleportTab
-})
 
 local total = #tierOrder
 local n = 0
