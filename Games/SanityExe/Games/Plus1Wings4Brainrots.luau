@@ -212,16 +212,33 @@ end
 
 CleanKillParts()
 
-Workspace.ChildAdded:Connect(function(Child)
-    if Child.Name == "KillParts" then
-        Child.ChildAdded:Connect(function(Obj)
-            pcall(function()
-                Obj:Destroy()
-            end)
-        end)
-        CleanKillParts()
+local KillPartsConnection
+local function StartKillPartsCleaner()
+    if KillPartsConnection then
+        KillPartsConnection:Disconnect()
     end
-end)
+    
+    KillPartsConnection = Workspace.ChildAdded:Connect(function(Child)
+        if Child.Name == "KillParts" then
+            while #Child:GetChildren() > 0 do
+                for _, Obj in ipairs(Child:GetChildren()) do
+                    pcall(function()
+                        Obj:Destroy()
+                    end)
+                end
+                task.wait()
+            end
+            
+            Child.ChildAdded:Connect(function(Obj)
+                pcall(function()
+                    Obj:Destroy()
+                end)
+            end)
+        end
+    end)
+end
+
+StartKillPartsCleaner()
 
 local Busy = false
 local CarryCount = 0
