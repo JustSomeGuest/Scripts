@@ -373,10 +373,16 @@ local function GetPlayerBaseHome()
     local HomePart = Base:FindFirstChild("Home")
     if HomePart then
         HomeBase = HomePart.Position
-        return HomePart
+        return HomeBase
     end
 
-    return Base
+    local BasePos = GetPos(Base)
+    if BasePos then
+        HomeBase = BasePos
+        return HomeBase
+    end
+
+    return nil
 end
 
 local function GetFreeSlot()
@@ -612,9 +618,9 @@ UI:New("Button", {
     Text = "Teleport to Base",
     Parent = MainTab,
     Callback = function()
-        local HomePart = GetPlayerBaseHome()
-        if HomePart then
-            GoTo(HomePart)
+        local HomePos = GetPlayerBaseHome()
+        if HomePos then
+            Go(HomePos)
             Alert("Sanity.exe", "Teleported to base", 3)
         else
             Alert("Sanity.exe", "Base not found", 3)
