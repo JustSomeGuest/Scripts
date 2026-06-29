@@ -369,27 +369,6 @@ local function GetClosestBrainrot(TierName, CurrentPos)
     return Best
 end
 
-local function Hold(Prompt, Duration)
-    if not Prompt then
-        return false
-    end
-
-    local Fired = false
-    local Con = Prompt.Triggered:Connect(function()
-        Fired = true
-    end)
-
-    pcall(function()
-        Prompt:InputHoldBegin()
-        task.wait((Duration or Prompt.HoldDuration or 0.5) + 0.15)
-        Prompt:InputHoldEnd()
-    end)
-
-    Con:Disconnect()
-
-    return Fired
-end
-
 local function Grab(Brainrot)
     if not Brainrot then
         return false
@@ -411,11 +390,8 @@ local function Grab(Brainrot)
         task.wait(0.15)
     end
 
-    if Hold(Prompt, Prompt.HoldDuration or 0.5) then
-        return true
-    end
-
-    return false
+    fireproximityprompt(Prompt)
+    return true
 end
 
 local function Place(Slot)
@@ -434,12 +410,9 @@ local function Place(Slot)
         task.wait(0.15)
     end
 
-    if Hold(PlacePrompt, PlacePrompt.HoldDuration or 0.5) then
-        task.wait(0.5)
-        return true
-    end
-
-    return false
+    fireproximityprompt(PlacePrompt)
+    task.wait(0.5)
+    return true
 end
 
 local function Bring(TierName)
