@@ -7,132 +7,132 @@ local Shared = (function()
     return (ok and env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
 end)()
 
-local function get(url)
-    local ok, res = pcall(game.HttpGetAsync, game, url)
+local function Get(Url)
+    local ok, res = pcall(game.HttpGetAsync, game, Url)
     if ok then
         return res
     end
-    return game:HttpGet(url)
+    return game:HttpGet(Url)
 end
 
-Shared.VoidUI = loadstring(get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
+Shared.VoidUI = loadstring(Get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
 
-local ui = Shared.VoidUI
+local UI = Shared.VoidUI
 
-if not ui then
+if not UI then
     warn("[Sanity.exe]: Failed to load VoidUI")
     return
 end
 
-ui:SetTheme({
+UI:SetTheme({
     Accent = "255, 255, 255"
 })
 
-ui:SetLogo("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Assets/sanity_logo.png")
+UI:SetLogo("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Assets/sanity_logo.png")
 
-local LIST = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
-local PID = game.PlaceId
+local ListUrl = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
+local PlaceId = game.PlaceId
 
-local function loadGame(path)
-    local url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/" .. path
-    local ok, scr = pcall(function()
-        return get(url)
+local function LoadGame(Path)
+    local Url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/" .. Path
+    local ok, Scr = pcall(function()
+        return Get(Url)
     end)
 
-    if ok and scr then
-        local fn, err = loadstring(scr)
-        if fn then
-            pcall(fn)
+    if ok and Scr then
+        local Fn, Err = loadstring(Scr)
+        if Fn then
+            pcall(Fn)
         else
-            warn("[Sanity.exe]: Error loading game script: " .. tostring(err))
+            warn("[Sanity.exe]: Error loading game script: " .. tostring(Err))
         end
     else
-        warn("[Sanity.exe]: Failed to download game script: " .. path)
-        local tab = ui:New("Tab", {
+        warn("[Sanity.exe]: Failed to download game script: " .. Path)
+        local Tab = UI:New("Tab", {
             Text = "Main"
         })
-        ui:New("Label", {
+        UI:New("Label", {
             Text = "Error loading game!",
-            Parent = tab
+            Parent = Tab
         })
     end
 end
 
-local function loadList()
-    local ok, data = pcall(function()
-        return get(LIST)
+local function LoadList()
+    local ok, Data = pcall(function()
+        return Get(ListUrl)
     end)
 
-    if not ok or not data then
+    if not ok or not Data then
         warn("[Sanity.exe]: Failed to load supported games list.")
-        ui:SetTitle("Sanity.exe")
-        local tab = ui:New("Tab", {
+        UI:SetTitle("Sanity.exe")
+        local Tab = UI:New("Tab", {
             Text = "Main"
         })
-        ui:New("Label", {
+        UI:New("Label", {
             Text = "Failed to load supported games list.",
-            Parent = tab
+            Parent = Tab
         })
         return
     end
 
-    local fn, err = loadstring(data)
-    if not fn then
-        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(err))
-        ui:SetTitle("Sanity.exe")
-        local tab = ui:New("Tab", {
+    local Fn, Err = loadstring(Data)
+    if not Fn then
+        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(Err))
+        UI:SetTitle("Sanity.exe")
+        local Tab = UI:New("Tab", {
             Text = "Main"
         })
-        ui:New("Label", {
+        UI:New("Label", {
             Text = "Error parsing supported games list.",
-            Parent = tab
+            Parent = Tab
         })
         return
     end
 
-    local list = fn()
-    local found = false
+    local List = Fn()
+    local Found = false
 
-    for _, g in ipairs(list) do
-        if tostring(g.PlaceId) == tostring(PID) then
-            found = true
-            ui:SetTitle("Sanity.exe • " .. g.GameName)
-            local path = g.FilePath
-            if path then
-                loadGame(path)
+    for _, Game in ipairs(List) do
+        if tostring(Game.PlaceId) == tostring(PlaceId) then
+            Found = true
+            UI:SetTitle("Sanity.exe • " .. Game.GameName)
+            local Path = Game.FilePath
+            if Path then
+                LoadGame(Path)
             end
             break
         end
     end
 
-    if not found then
-        ui:SetTitle("Sanity.exe")
-        local tab = ui:New("Tab", {
+    if not Found then
+        UI:SetTitle("Sanity.exe")
+        local Tab = UI:New("Tab", {
             Text = "Main"
         })
-        ui:New("Label", {
+        UI:New("Label", {
             Text = "Game not supported.",
-            Parent = tab
+            Parent = Tab
         })
-        ui:New("Divider", {
-            Parent = tab
+        UI:New("Divider", {
+            Parent = Tab
         })
-        ui:New("Label", {
+        UI:New("Label", {
             Text = "Supported Games:",
-            Parent = tab
+            Parent = Tab
         })
 
-        for _, g in ipairs(list) do
-            ui:New("Button", {
-                Text = g.GameName .. " (" .. tostring(g.PlaceId) .. ")",
-                Parent = tab,
+        for _, Game in ipairs(List) do
+            UI:New("Button", {
+                Text = Game.GameName .. " (" .. tostring(Game.PlaceId) .. ")",
+                Parent = Tab,
                 Callback = function()
-                    setclipboard(tostring(g.PlaceId))
-                    warn("[Sanity.exe]: Place ID copied: " .. tostring(g.PlaceId))
+                    setclipboard(tostring(Game.PlaceId))
+                    warn("[Sanity.exe]: Place ID copied: " .. tostring(Game.PlaceId))
                 end
             })
         end
     end
 end
 
-loadList()
+LoadList()
