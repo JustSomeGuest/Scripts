@@ -61,7 +61,7 @@ local MainTab = UI:New("Tab", {
     Text = "Main"
 })
 
-local function Alert(Title, Text, Duration, Icon)
+local function Notify(Title, Text, Duration, Icon)
     pcall(function()
         StarterGui:SetCore("SendNotification", {
             Title = Title or "Sanity.exe",
@@ -79,7 +79,7 @@ local Bases = Workspace:FindFirstChild("Bases")
 if not Spawns then
     Spawns = Workspace:WaitForChild("BrainrotSpawns", 10)
     if not Spawns then
-        Alert("Sanity.exe", "BrainrotSpawns folder not found", 4)
+        Notify("Sanity.exe", "BrainrotSpawns folder not found", 4)
         return
     end
 end
@@ -87,7 +87,7 @@ end
 if not Mobs then
     Mobs = Workspace:WaitForChild("Mobs", 10)
     if not Mobs then
-        Alert("Sanity.exe", "Mobs folder not found", 4)
+        Notify("Sanity.exe", "Mobs folder not found", 4)
         return
     end
 end
@@ -95,7 +95,7 @@ end
 if not Bases then
     Bases = Workspace:WaitForChild("Bases", 10)
     if not Bases then
-        Alert("Sanity.exe", "Bases folder not found", 4)
+        Notify("Sanity.exe", "Bases folder not found", 4)
         return
     end
 end
@@ -475,7 +475,7 @@ end
 
 local function Bring(Plate, TierName)
     if not Plate then
-        Alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
+        Notify("Sanity.exe", "Waiting for terrain to spawn.", 3)
         return false
     end
 
@@ -485,7 +485,7 @@ local function Bring(Plate, TierName)
 
     local Brainrot = GetNearest(Plate)
     if not Brainrot then
-        Alert("Sanity.exe", "Waiting for brainrots to spawn.", 3)
+        Notify("Sanity.exe", "Waiting for brainrots to spawn.", 3)
         return false
     end
 
@@ -621,9 +621,9 @@ UI:New("Button", {
         local HomePos = GetPlayerBaseHome()
         if HomePos then
             Go(HomePos)
-            Alert("Sanity.exe", "Teleported to base", 3)
+            Notify("Sanity.exe", "Teleported to base", 3)
         else
-            Alert("Sanity.exe", "Base not found", 3)
+            Notify("Sanity.exe", "Base not found", 3)
         end
     end
 })
@@ -712,4 +712,4 @@ for i, TierData in ipairs(ValidTiers) do
     end
 end
 
-Alert("Sanity.exe", "Loaded successfully!", 3)
+Notify("Sanity.exe", "Loaded successfully!", 3)
