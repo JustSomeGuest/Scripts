@@ -43,7 +43,6 @@ local Workspace = Services.Workspace
 local UserInput = Services.UserInputService
 local RunSvc = Services.RunService
 local StarterGui = Services.StarterGui
-local PlayerGui = Player:WaitForChild("PlayerGui")
 
 local Shared = (function()
     local ok, env = pcall(getgenv)
@@ -104,7 +103,7 @@ local function GetPlotSpawn()
     
     local Spawn = Floor1:FindFirstChild("spawn")
     if Spawn then
-        return Spawn
+        return Spawn.Position
     end
     
     return nil
@@ -227,15 +226,15 @@ end)
 local HomePos = nil
 local Busy = false
 local CarryCount = 0
-local MaxCarry = 0
+local MaxCarry = 1
 local SavedPlotPosition = nil
 
 local function SavePlotPosition()
     local Plot = GetPlayerPlot()
     if Plot then
-        local Spawn = GetPlotSpawn()
-        if Spawn then
-            SavedPlotPosition = Spawn.Position
+        local SpawnPos = GetPlotSpawn()
+        if SpawnPos then
+            SavedPlotPosition = SpawnPos
         else
             SavedPlotPosition = Plot.Position + Vector3.new(0, 3, 0)
         end
@@ -280,24 +279,16 @@ local function Go(Pos)
     end
 end
 
-local function GoHome()
-    if HomePos then
-        Go(HomePos)
-        return true
-    end
-    return false
-end
-
 local function GoToPlot()
     if SavedPlotPosition then
-        Go(SavedPlotPosition + Vector3.new(0, 3, 0))
+        Go(SavedPlotPosition)
         return true
     end
     
-    local Spawn = GetPlotSpawn()
-    if Spawn then
-        SavedPlotPosition = Spawn.Position
-        Go(SavedPlotPosition + Vector3.new(0, 3, 0))
+    local SpawnPos = GetPlotSpawn()
+    if SpawnPos then
+        SavedPlotPosition = SpawnPos
+        Go(SavedPlotPosition)
         return true
     end
     
@@ -334,39 +325,48 @@ local function GetPos(Model)
     return nil
 end
 
-local function GetNearestBrainrot(TierName)
-    local TierPos = TierPositions[TierName]
-    if not TierPos then
-        return nil
-    end
-    
+local function GetBrainrots(TierName)
     local TierFolder = ItemSpawners:FindFirstChild(TierName)
     if not TierFolder then
-        return nil
+        return {}
     end
     
-    local Best = nil
-    local BestDist = 30
-
+    local Brainrots = {}
     for _, Child in ipairs(TierFolder:GetChildren()) do
         if Child:IsA("Model") then
             local Mesh = Child:FindFirstChild("Mesh")
             if Mesh then
                 local Prompt = Mesh:FindFirstChild("ProximityPrompt")
                 if Prompt then
-                    local Pos = GetPos(Child)
-                    if Pos then
-                        local Dist = (Pos - TierPos).Magnitude
-                        if Dist < BestDist then
-                            BestDist = Dist
-                            Best = Child
-                        end
-                    end
+                    table.insert(Brainrots, Child)
                 end
             end
         end
     end
+    
+    return Brainrots
+end
 
+local function GetClosestBrainrot(TierName, CurrentPos)
+    local Brainrots = GetBrainrots(TierName)
+    if #Brainrots == 0 then
+        return nil
+    end
+    
+    local Best = nil
+    local BestDist = math.huge
+    
+    for _, Brainrot in ipairs(Brainrots) do
+        local Pos = GetPos(Brainrot)
+        if Pos then
+            local Dist = (Pos - CurrentPos).Magnitude
+            if Dist < BestDist then
+                BestDist = Dist
+                Best = Brainrot
+            end
+        end
+    end
+    
     return Best
 end
 
@@ -406,20 +406,14 @@ local function Grab(Brainrot)
         return false
     end
 
-    for _ = 1, 2 do
-        local Pos = GetPos(Brainrot)
-        if not Pos then
-            return false
-        end
-
+    local Pos = GetPos(Brainrot)
+    if Pos then
         Go(Pos + Vector3.new(0, 2, 0))
-        task.wait(0.25)
-
-        if Hold(Prompt, Prompt.HoldDuration or 0.5) then
-            return true
-        end
-
         task.wait(0.15)
+    end
+
+    if Hold(Prompt, Prompt.HoldDuration or 0.5) then
+        return true
     end
 
     return false
@@ -435,70 +429,58 @@ local function Place(Slot)
         return false
     end
 
-    for _ = 1, 2 do
-        local SlotPos = GetSlotPos(Slot)
-        if not SlotPos then
-            return false
-        end
-
+    local SlotPos = GetSlotPos(Slot)
+    if SlotPos then
         Go(SlotPos + Vector3.new(0, 3, 0))
-        task.wait(0.25)
-
-        if Hold(PlacePrompt, PlacePrompt.HoldDuration or 0.5) then
-            task.wait(0.5)
-            return true
-        end
-
         task.wait(0.15)
+    end
+
+    if Hold(PlacePrompt, PlacePrompt.HoldDuration or 0.5) then
+        task.wait(0.5)
+        return true
     end
 
     return false
 end
 
 local function Bring(TierName)
+    if Busy then
+        return false
+    end
+
     local TierPos = TierPositions[TierName]
     if not TierPos then
         return false
     end
 
-    if Busy then
-        return false
-    end
-
-    local Brainrot = GetNearestBrainrot(TierName)
-    if not Brainrot then
+    local Brainrots = GetBrainrots(TierName)
+    if #Brainrots == 0 then
         return false
     end
 
     Busy = true
 
     if not HomePos then
-        local Spawn = GetPlotSpawn()
-        if Spawn then
-            HomePos = Spawn.Position
+        local SpawnPos = GetPlotSpawn()
+        if SpawnPos then
+            HomePos = SpawnPos
         end
     end
 
-    Go(TierPos + Vector3.new(0, 3, 0))
-    task.wait(0.1)
-
-    if not Grab(Brainrot) then
-        GoHome()
-        Busy = false
-        return false
-    end
-
-    local Slot = GetFreeSlot()
-    if not Slot then
-        GoHome()
-        Busy = false
-        return false
-    end
-
-    if not Place(Slot) then
-        GoHome()
-        Busy = false
-        return false
+    local Root = GetRoot()
+    if Root then
+        local StartPos = Root.Position
+        local ClosestBrainrot = GetClosestBrainrot(TierName, StartPos)
+        
+        if ClosestBrainrot then
+            Grab(ClosestBrainrot)
+            task.wait(0.1)
+            
+            local Slot = GetFreeSlot()
+            if Slot then
+                Place(Slot)
+            end
+        end
     end
 
     GoHome()
@@ -506,7 +488,7 @@ local function Bring(TierName)
     return true
 end
 
-local function Farm(TierName, DoPlace)
+local function FarmGrabOnly(TierName)
     local TierPos = TierPositions[TierName]
     if not TierPos then
         return
@@ -516,59 +498,92 @@ local function Farm(TierName, DoPlace)
         return
     end
 
-    Busy = true
-
-    if DoPlace then
-        local Slot = GetFreeSlot()
-        if not Slot then
-            Busy = false
-            return
-        end
-    end
-
-    local Brainrot = GetNearestBrainrot(TierName)
-    if not Brainrot then
-        Busy = false
+    MaxCarry = GetMaxCarry()
+    if CarryCount >= MaxCarry then
+        GoToPlot()
+        task.wait(1)
+        CarryCount = 0
         return
     end
 
+    local Brainrots = GetBrainrots(TierName)
+    if #Brainrots == 0 then
+        return
+    end
+
+    Busy = true
+
     if not HomePos then
-        local Spawn = GetPlotSpawn()
-        if Spawn then
-            HomePos = Spawn.Position
+        local SpawnPos = GetPlotSpawn()
+        if SpawnPos then
+            HomePos = SpawnPos
         end
     end
 
     Go(TierPos + Vector3.new(0, 3, 0))
     task.wait(0.1)
 
-    if not Grab(Brainrot) then
-        GoHome()
-        Busy = false
+    local Root = GetRoot()
+    if Root then
+        local StartPos = Root.Position
+        local ClosestBrainrot = GetClosestBrainrot(TierName, StartPos)
+        
+        if ClosestBrainrot then
+            if Grab(ClosestBrainrot) then
+                CarryCount = CarryCount + 1
+            end
+        end
+    end
+
+    GoHome()
+    Busy = false
+end
+
+local function FarmGrabAndPlace(TierName)
+    local TierPos = TierPositions[TierName]
+    if not TierPos then
         return
     end
 
-    if DoPlace then
-        local Slot = GetFreeSlot()
-        if Slot then
-            if not Place(Slot) then
-                GoHome()
-                Busy = false
-                return
-            end
-        else
-            GoHome()
-            Busy = false
-            return
+    if Busy then
+        return
+    end
+
+    local Slot = GetFreeSlot()
+    if not Slot then
+        return
+    end
+
+    local Brainrots = GetBrainrots(TierName)
+    if #Brainrots == 0 then
+        return
+    end
+
+    Busy = true
+
+    if not HomePos then
+        local SpawnPos = GetPlotSpawn()
+        if SpawnPos then
+            HomePos = SpawnPos
         end
-    else
-        CarryCount = CarryCount + 1
-        MaxCarry = GetMaxCarry()
-        if CarryCount >= MaxCarry then
-            GoToPlot()
-            CarryCount = 0
-            Busy = false
-            return
+    end
+
+    Go(TierPos + Vector3.new(0, 3, 0))
+    task.wait(0.1)
+
+    local Root = GetRoot()
+    if Root then
+        local StartPos = Root.Position
+        local ClosestBrainrot = GetClosestBrainrot(TierName, StartPos)
+        
+        if ClosestBrainrot then
+            if Grab(ClosestBrainrot) then
+                task.wait(0.1)
+                Slot = GetFreeSlot()
+                if Slot then
+                    Place(Slot)
+                end
+            end
         end
     end
 
@@ -667,7 +682,7 @@ for i, TierName in ipairs(TierOrder) do
             if State then
                 Con1 = RunSvc.RenderStepped:Connect(function()
                     if On1 then
-                        Farm(TierName, false)
+                        FarmGrabOnly(TierName)
                     end
                 end)
             end
@@ -692,7 +707,7 @@ for i, TierName in ipairs(TierOrder) do
             if State then
                 Con2 = RunSvc.RenderStepped:Connect(function()
                     if On2 then
-                        Farm(TierName, true)
+                        FarmGrabAndPlace(TierName)
                     end
                 end)
             end
