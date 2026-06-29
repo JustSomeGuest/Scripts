@@ -442,6 +442,42 @@ local function place(s)
     return false
 end
 
+local function stagedTeleport(targetPos, tierName)
+    local r = root()
+    if not r then return false end
+    
+    local currentPos = r.Position
+    local distance = (targetPos - currentPos).Magnitude
+    
+    if distance < 100 then
+        go(targetPos)
+        return true
+    end
+    
+    local stagingPoints = {}
+    
+    local commonPlate = spawns:FindFirstChild("Common") and spawns.Common:FindFirstChild("Plate")
+    if commonPlate then
+        table.insert(stagingPoints, commonPlate.Position + Vector3.new(0, 3, 0))
+    end
+    
+    if tierName == "Admin" or tierName == "Base" then
+        local secretPlate = spawns:FindFirstChild("Secret") and spawns.Secret:FindFirstChild("Plate")
+        if secretPlate then
+            table.insert(stagingPoints, secretPlate.Position + Vector3.new(0, 3, 0))
+        end
+    end
+    
+    table.insert(stagingPoints, targetPos)
+    
+    for _, pos in ipairs(stagingPoints) do
+        go(pos)
+        task.wait(0.5)
+    end
+    
+    return true
+end
+
 local function bring(plate, tierName)
     if not plate then
         alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
@@ -660,7 +696,7 @@ ui:New("Button", {
     Callback = function()
         local homePart = getPlayerBaseHome()
         if homePart then
-            goTo(homePart)
+            stagedTeleport(homePart.Position, "Base")
             alert("Sanity.exe", "Teleported to base", 3)
         else
             alert("Sanity.exe", "Base home not found", 3)
@@ -677,7 +713,7 @@ for _, tierName in ipairs(tierOrder) do
             Parent = teleportTab,
             Callback = function()
                 if plate then
-                    go(plate.Position + Vector3.new(0, 3, 0))
+                    stagedTeleport(plate.Position + Vector3.new(0, 3, 0), tierName)
                     alert("Sanity.exe", "Teleported to " .. tierName .. " brainrots area", 3)
                 else
                     alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
