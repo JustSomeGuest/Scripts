@@ -7,7 +7,7 @@ local Shared = (function()
     return (ok and env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
 end)()
 
-local function check(t, val, fb)
+local function Check(t, val, fb)
     if type(val) == t then
         return val
     end
@@ -26,12 +26,12 @@ local function check(t, val, fb)
     return fb
 end
 
-local cref = check("function", cloneref, function(...) return ... end)
+local CloneRef = Check("function", cloneref, function(...) return ... end)
 
-local svc = setmetatable({}, {
+local Services = setmetatable({}, {
     __index = function(self, name)
         local ok, c = pcall(function()
-            return cref(game:GetService(name))
+            return CloneRef(game:GetService(name))
         end)
         if ok then
             rawset(self, name, c)
@@ -42,7 +42,7 @@ local svc = setmetatable({}, {
     end
 })
 
-local function get(url)
+local function Get(url)
     local ok, res = pcall(game.HttpGetAsync, game, url)
     if ok then
         return res
@@ -50,20 +50,20 @@ local function get(url)
     return game:HttpGet(url)
 end
 
-local gui = svc.GuiService
-local tp = svc.TeleportService
+local GuiSvc = Services.GuiService
+local TpSvc = Services.TeleportService
 
-gui:SetGameplayPausedNotificationEnabled(false)
+GuiSvc:SetGameplayPausedNotificationEnabled(false)
 
-local qtp
+local QueueOnTP
 local qok, qres = pcall(function()
     return queue_on_teleport
 end)
 
 if qok then
-    qtp = qres
+    QueueOnTP = qres
 else
-    qtp = nil
+    QueueOnTP = nil
 end
 
 Shared["Sanity.exe"] = Shared["Sanity.exe"] or {}
@@ -75,14 +75,69 @@ end
 
 Shared["Sanity.exe"].IsLoaded = true
 
-local function loadUI()
-    local scr = get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.luau")
+local Hui = select(2, pcall(gethui)) or warn("[Sanity.exe]: Failed to use gethui.")
+local CoreGui = Services.CoreGui
+
+local function FindTitle()
+    local Title = nil
+    if Hui then
+        local VoidUI = Hui:FindFirstChild("VoidUI")
+        if VoidUI then
+            local Main = VoidUI:FindFirstChild("Main")
+            if Main then
+                local Topbar = Main:FindFirstChild("Topbar")
+                if Topbar then
+                    Title = Topbar:FindFirstChild("Title")
+                end
+            end
+        end
+    end
+    
+    if not Title and CoreGui then
+        local VoidUI = CoreGui:FindFirstChild("VoidUI")
+        if VoidUI then
+            local Main = VoidUI:FindFirstChild("Main")
+            if Main then
+                local Topbar = Main:FindFirstChild("Topbar")
+                if Topbar then
+                    Title = Topbar:FindFirstChild("Title")
+                end
+            end
+        end
+    end
+    
+    return Title
+end
+
+local function OnDestroy(VoidUI)
+    if VoidUI then
+        VoidUI.AncestryChanged:Connect(function(_, Parent)
+            if Parent == nil then
+                Shared["Sanity.exe"].IsLoaded = false
+            end
+        end)
+    end
+end
+
+local Title = FindTitle()
+if Title and Title.Text and Title.Text:find("Sanity.exe") then
+    OnDestroy(Title.Parent and Title.Parent.Parent and Title.Parent.Parent.Parent)
+end
+
+local function LoadUI()
+    local scr = Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.luau")
     if scr then
         local fn, err = loadstring(scr)
         if fn then
             local ok, e = pcall(fn)
             if not ok then
                 warn("[Sanity.exe]: UI execution error: " .. tostring(e))
+            else
+                task.wait(1)
+                local Title = FindTitle()
+                if Title and Title.Text and Title.Text:find("Sanity.exe") then
+                    OnDestroy(Title.Parent and Title.Parent.Parent and Title.Parent.Parent.Parent)
+                end
             end
         else
             warn("[Sanity.exe]: Error loading UI: " .. tostring(err))
@@ -92,21 +147,21 @@ local function loadUI()
     end
 end
 
-local function loadGames()
+local function LoadGames()
     local ok, data = pcall(function()
-        return get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau")
+        return Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau")
     end)
 
     if not ok or not data then
         warn("[Sanity.exe]: Failed to load supported games list.")
-        loadUI()
+        LoadUI()
         return
     end
 
     local fn, err = loadstring(data)
     if not fn then
         warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(err))
-        loadUI()
+        LoadUI()
         return
     end
 
@@ -121,20 +176,20 @@ local function loadGames()
     end
 
     if found then
-        if qtp then
+        if QueueOnTP then
             pcall(function()
-                qtp('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
             end)
         end
     else
-        if qtp then
+        if QueueOnTP then
             pcall(function()
-                qtp('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
             end)
         end
     end
 
-    loadUI()
+    LoadUI()
 end
 
-loadGames()
+LoadGames()
