@@ -247,50 +247,19 @@ end
 SavePlotPosition()
 
 local function GetMaxCarry()
-    local GUI = PlayerGui:FindFirstChild("GUI")
-    if not GUI then
-        return 1
-    end
-    
-    local Frames = GUI:FindFirstChild("Frames")
-    if not Frames then
-        return 1
-    end
-    
-    local Upgrades = Frames:FindFirstChild("Upgrades")
+    local Upgrades = Player:FindFirstChild("Upgrades")
     if not Upgrades then
         return 1
     end
     
-    local ScrollingFrame = Upgrades:FindFirstChild("ScrollingFrame")
-    if not ScrollingFrame then
+    local CarryLevel = Upgrades:FindFirstChild("CarryLevel")
+    if not CarryLevel then
         return 1
     end
     
-    local Carry = ScrollingFrame:FindFirstChild("Carry")
-    if not Carry then
-        return 1
-    end
-    
-    local Stats = Carry:FindFirstChild("Stats")
-    if not Stats then
-        return 1
-    end
-    
-    local Before = Stats:FindFirstChild("Before")
-    if not Before then
-        return 1
-    end
-    
-    local TextLabel = Before:FindFirstChild("Text")
-    if not TextLabel or not TextLabel:IsA("TextLabel") then
-        return 1
-    end
-    
-    local MaxCarryText = TextLabel.Text
-    local Num = tonumber(MaxCarryText)
-    if Num then
-        return Num
+    local Value = CarryLevel.Value
+    if Value and Value > 0 then
+        return Value
     end
     
     return 1
