@@ -65,7 +65,7 @@ local TeleportTab = UI:New("Tab", {
     Text = "Teleports"
 })
 
-local function Alert(Title, Text, Duration, Icon)
+local function Notify(Title, Text, Duration, Icon)
     pcall(function()
         StarterGui:SetCore("SendNotification", {
             Title = Title or "Sanity.exe",
@@ -183,7 +183,7 @@ local Mobs = Workspace:FindFirstChild("Mobs")
 if not ItemSpawners then
     ItemSpawners = Workspace:WaitForChild("ItemSpawners", 10)
     if not ItemSpawners then
-        Alert("Sanity.exe", "ItemSpawners folder not found", 4)
+        Notify("Sanity.exe", "ItemSpawners folder not found", 4)
         return
     end
 end
@@ -430,7 +430,7 @@ end
 
 local function Bring(TierName, PlatePos)
     if not PlatePos then
-        Alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
+        Notify("Sanity.exe", "Waiting for terrain to spawn.", 3)
         return false
     end
 
@@ -440,7 +440,7 @@ local function Bring(TierName, PlatePos)
 
     local Brainrot = GetNearestBrainrot(PlatePos)
     if not Brainrot then
-        Alert("Sanity.exe", "Waiting for brainrots to spawn.", 3)
+        Notify("Sanity.exe", "Waiting for brainrots to spawn.", 3)
         return false
     end
 
@@ -576,9 +576,9 @@ UI:New("Button", {
     Parent = TeleportTab,
     Callback = function()
         if GoToPlot() then
-            Alert("Sanity.exe", "Teleported to plot", 3)
+            Notify("Sanity.exe", "Teleported to plot", 3)
         else
-            Alert("Sanity.exe", "Plot not found", 3)
+            Notify("Sanity.exe", "Plot not found", 3)
         end
     end
 })
@@ -591,9 +591,9 @@ for _, TierName in ipairs(TierOrder) do
             local Pos = GetTierPosition(TierName)
             if Pos then
                 Go(Pos + Vector3.new(0, 3, 0))
-                Alert("Sanity.exe", "Teleported to " .. TierName, 3)
+                Notify("Sanity.exe", "Teleported to " .. TierName, 3)
             else
-                Alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
+                Notify("Sanity.exe", "Waiting for terrain to spawn.", 3)
             end
         end
     })
@@ -686,4 +686,4 @@ for i, TierName in ipairs(TierOrder) do
     end
 end
 
-Alert("Sanity.exe", "Loaded successfully!", 3)
+Notify("Sanity.exe", "Loaded successfully!", 3)
