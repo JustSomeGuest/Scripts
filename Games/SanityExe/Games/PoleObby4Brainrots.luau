@@ -108,6 +108,7 @@ local home = nil
 local busy = false
 local carryCount = 0
 local maxCarry = 0
+local homeBase = nil
 
 local function getMaxCarry()
     local mainUI = pgui:FindFirstChild("MainUI")
@@ -186,6 +187,14 @@ end
 local function goHome()
     if home then
         go(home)
+        return true
+    end
+    return false
+end
+
+local function goToBase()
+    if homeBase then
+        go(homeBase)
         return true
     end
     return false
@@ -362,10 +371,13 @@ end
 local function getPlayerBaseHome()
     local b = myBase()
     if b then
+        homeBase = b.Position
         local homePart = b:FindFirstChild("Home")
         if homePart then
+            homeBase = homePart.Position
             return homePart
         end
+        return b
     end
     return nil
 end
@@ -552,7 +564,7 @@ local function farm(plate, doPlace)
         carryCount = carryCount + 1
         maxCarry = getMaxCarry()
         if carryCount >= maxCarry then
-            goHome()
+            goToBase()
             carryCount = 0
             busy = false
             return
