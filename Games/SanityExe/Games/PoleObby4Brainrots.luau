@@ -548,18 +548,30 @@ local function farm(plate, doPlace)
             busy = false
             return
         end
-    else
-        carryCount = carryCount + 1
-        maxCarry = getMaxCarry()
-        if carryCount >= maxCarry then
-            goHome()
-            carryCount = 0
-            busy = false
-            return
-        end
+
+        goHome()
+        busy = false
+        return
     end
 
-    goHome()
+    carryCount = carryCount + 1
+    maxCarry = getMaxCarry()
+
+    if carryCount >= maxCarry then
+        local homePart = getPlayerBaseHome()
+        if homePart then
+            goTo(homePart)
+        end
+
+        task.wait(1)
+
+        goHome()
+
+        carryCount = 0
+        busy = false
+        return
+    end
+
     busy = false
 end
 
