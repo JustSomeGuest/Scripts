@@ -187,6 +187,19 @@ if not ItemSpawners then
     end
 end
 
+local TierPositions = {
+    Common = Vector3.new(34.124996185302734, -0.4796893000602722, 134.0006103515625),
+    Uncommon = Vector3.new(35.00000762939453, 0.5203498005867004, 295.3023986816406),
+    Rare = Vector3.new(31.67853546142578, -0.4796893000602722, 516.22607421875),
+    Epic = Vector3.new(31.849994659423828, -0.4796893000602722, 824.543701171875),
+    Legendary = Vector3.new(33.599998474121094, -0.4796893000602722, 1253.241455078125),
+    Mythical = Vector3.new(31.324993133544922, -0.4796893000602722, 1821.6500244140625),
+    Secret = Vector3.new(32.17498016357422, -0.4796893000602722, 2554.925537109375),
+    Celestial = Vector3.new(35.04998779296875, -0.4796893000602722, 4051.859619140625),
+    Cosmic = Vector3.new(34.04998779296875, -0.4796893000602722, 6135.2001953125),
+    God = Vector3.new(32.549983978271484, -0.4796893000602722, 10007.447265625)
+}
+
 local function CleanKillParts()
     local KillParts = Workspace:FindFirstChild("KillParts")
     if KillParts then
@@ -215,29 +228,46 @@ local HomePos = nil
 local Busy = false
 local CarryCount = 0
 local MaxCarry = 0
+local SavedPlotPosition = nil
+
+local function SavePlotPosition()
+    local Plot = GetPlayerPlot()
+    if Plot then
+        local Spawn = GetPlotSpawn()
+        if Spawn then
+            SavedPlotPosition = Spawn.Position
+        else
+            SavedPlotPosition = Plot.Position + Vector3.new(0, 3, 0)
+        end
+        return true
+    end
+    return false
+end
+
+SavePlotPosition()
 
 local function GetMaxCarry()
-    local MainUI = PlayerGui:FindFirstChild("MainUI")
-    if not MainUI then
+    local GUI = PlayerGui:FindFirstChild("GUI")
+    if not GUI then
         return 1
     end
     
-    local Menus = MainUI:FindFirstChild("Menus")
-    if not Menus then
+    local Frames = GUI:FindFirstChild("Frames")
+    if not Frames then
         return 1
     end
     
-    local UpgradeShop = Menus:FindFirstChild("UpgradeShop")
-    if not UpgradeShop then
+    local Upgrades = Frames:FindFirstChild("Upgrades")
+    if not Upgrades then
         return 1
     end
     
-    local Handler = UpgradeShop:FindFirstChild("Handler")
-    if not Handler then
+    local ScrollingFrame = Upgrades:FindFirstChild("ScrollingFrame")
+    if not ScrollingFrame then
         return 1
     end
     
-    local Carry = Handler:FindFirstChild("Carry")
+    local Carry = ScrollingFrame:FindFirstChild("Carry")
     if not Carry then
         return 1
     end
@@ -247,12 +277,12 @@ local function GetMaxCarry()
         return 1
     end
     
-    local Stat1 = Stats:FindFirstChild("1")
-    if not Stat1 then
+    local Before = Stats:FindFirstChild("Before")
+    if not Before then
         return 1
     end
     
-    local TextLabel = Stat1:FindFirstChild("TextLabel")
+    local TextLabel = Before:FindFirstChild("Text")
     if not TextLabel or not TextLabel:IsA("TextLabel") then
         return 1
     end
@@ -290,11 +320,18 @@ local function GoHome()
 end
 
 local function GoToPlot()
-    local Spawn = GetPlotSpawn()
-    if Spawn then
-        Go(Spawn.Position + Vector3.new(0, 3, 0))
+    if SavedPlotPosition then
+        Go(SavedPlotPosition + Vector3.new(0, 3, 0))
         return true
     end
+    
+    local Spawn = GetPlotSpawn()
+    if Spawn then
+        SavedPlotPosition = Spawn.Position
+        Go(SavedPlotPosition + Vector3.new(0, 3, 0))
+        return true
+    end
+    
     return false
 end
 
@@ -328,14 +365,19 @@ local function GetPos(Model)
     return nil
 end
 
-local function GetNearestBrainrot(TierFolder)
+local function GetNearestBrainrot(TierName)
+    local TierPos = TierPositions[TierName]
+    if not TierPos then
+        return nil
+    end
+    
+    local TierFolder = ItemSpawners:FindFirstChild(TierName)
     if not TierFolder then
         return nil
     end
     
     local Best = nil
-    local BestDist = math.huge
-    local TierPos = TierFolder.Position
+    local BestDist = 30
 
     for _, Child in ipairs(TierFolder:GetChildren()) do
         if Child:IsA("Model") then
@@ -444,8 +486,9 @@ local function Place(Slot)
     return false
 end
 
-local function Bring(TierName, TierFolder)
-    if not TierFolder then
+local function Bring(TierName)
+    local TierPos = TierPositions[TierName]
+    if not TierPos then
         return false
     end
 
@@ -453,7 +496,7 @@ local function Bring(TierName, TierFolder)
         return false
     end
 
-    local Brainrot = GetNearestBrainrot(TierFolder)
+    local Brainrot = GetNearestBrainrot(TierName)
     if not Brainrot then
         return false
     end
@@ -466,6 +509,9 @@ local function Bring(TierName, TierFolder)
             HomePos = Spawn.Position
         end
     end
+
+    Go(TierPos + Vector3.new(0, 3, 0))
+    task.wait(0.1)
 
     if not Grab(Brainrot) then
         GoHome()
@@ -491,8 +537,9 @@ local function Bring(TierName, TierFolder)
     return true
 end
 
-local function Farm(TierName, TierFolder, DoPlace)
-    if not TierFolder then
+local function Farm(TierName, DoPlace)
+    local TierPos = TierPositions[TierName]
+    if not TierPos then
         return
     end
 
@@ -510,7 +557,7 @@ local function Farm(TierName, TierFolder, DoPlace)
         end
     end
 
-    local Brainrot = GetNearestBrainrot(TierFolder)
+    local Brainrot = GetNearestBrainrot(TierName)
     if not Brainrot then
         Busy = false
         return
@@ -522,6 +569,9 @@ local function Farm(TierName, TierFolder, DoPlace)
             HomePos = Spawn.Position
         end
     end
+
+    Go(TierPos + Vector3.new(0, 3, 0))
+    task.wait(0.1)
 
     if not Grab(Brainrot) then
         GoHome()
@@ -570,10 +620,6 @@ local TierOrder = {
     "God"
 }
 
-local function GetTierFolder(TierName)
-    return ItemSpawners:FindFirstChild(TierName)
-end
-
 UI:New("Section", {
     Text = "Teleports",
     Parent = TeleportTab
@@ -596,12 +642,12 @@ for _, TierName in ipairs(TierOrder) do
         Text = "Teleport to " .. TierName,
         Parent = TeleportTab,
         Callback = function()
-            local Tier = GetTierFolder(TierName)
-            if Tier then
-                Go(Tier.Position + Vector3.new(0, 3, 0))
+            local Pos = TierPositions[TierName]
+            if Pos then
+                Go(Pos + Vector3.new(0, 3, 0))
                 Notify("Sanity.exe", "Teleported to " .. TierName, 3)
             else
-                Notify("Sanity.exe", "Tier not found", 3)
+                Notify("Sanity.exe", "Position not found", 3)
             end
         end
     })
@@ -630,8 +676,7 @@ for i, TierName in ipairs(TierOrder) do
         Text = "Bring Brainrot",
         Parent = MainTab,
         Callback = function()
-            local Tier = GetTierFolder(TierName)
-            Bring(TierName, Tier)
+            Bring(TierName)
         end
     })
     
@@ -653,8 +698,7 @@ for i, TierName in ipairs(TierOrder) do
             if State then
                 Con1 = RunSvc.RenderStepped:Connect(function()
                     if On1 then
-                        local Tier = GetTierFolder(TierName)
-                        Farm(TierName, Tier, false)
+                        Farm(TierName, false)
                     end
                 end)
             end
@@ -679,8 +723,7 @@ for i, TierName in ipairs(TierOrder) do
             if State then
                 Con2 = RunSvc.RenderStepped:Connect(function()
                     if On2 then
-                        local Tier = GetTierFolder(TierName)
-                        Farm(TierName, Tier, true)
+                        Farm(TierName, true)
                     end
                 end)
             end
