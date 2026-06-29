@@ -366,16 +366,17 @@ end
 
 local function GetPlayerBaseHome()
     local Base = GetMyBase()
-    if Base then
-        HomeBase = Base.Position
-        local HomePart = Base:FindFirstChild("Home")
-        if HomePart then
-            HomeBase = HomePart.Position
-            return HomePart
-        end
-        return Base
+    if not Base then
+        return nil
     end
-    return nil
+
+    local HomePart = Base:FindFirstChild("Home")
+    if HomePart then
+        HomeBase = HomePart.Position
+        return HomePart
+    end
+
+    return Base
 end
 
 local function GetFreeSlot()
