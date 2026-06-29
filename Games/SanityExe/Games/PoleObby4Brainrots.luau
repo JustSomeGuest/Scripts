@@ -597,7 +597,7 @@ UI:New("Button", {
             GoTo(HomePart)
             Alert("Sanity.exe", "Teleported to base", 3)
         else
-            Alert("Sanity.exe", "Base home not found", 3)
+            Alert("Sanity.exe", "Base not found", 3)
         end
     end
 })
