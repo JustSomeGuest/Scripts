@@ -9,23 +9,13 @@ end)()
 
 local function get(url)
     local ok, res = pcall(game.HttpGetAsync, game, url)
-    if not ok then
-        ok, res = pcall(game.HttpGet, game, url)
+    if ok then
+        return res
     end
-    
-    if ok and res then
-        local fn, err = loadstring(res)
-        if fn then
-            return fn()
-        else
-            warn("[Sanity.exe]: Failed to parse response from " .. url .. ": " .. tostring(err))
-        end
-    else
-        warn("[Sanity.exe]: Failed to fetch " .. url)
-    end
+    return game:HttpGet(url)
 end
 
-Shared.VoidUI = get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau")
+Shared.VoidUI = loadstring(get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
 
 local ui = Shared.VoidUI
 
@@ -45,9 +35,19 @@ local PID = game.PlaceId
 
 local function loadGame(path)
     local url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/" .. path
-    local scr = get(url)
-    
-    if scr then
+    local ok, scr = pcall(function()
+        return get(url)
+    end)
+
+    if ok and scr then
+        local fn, err = loadstring(scr)
+        if fn then
+            pcall(fn)
+        else
+            warn("[Sanity.exe]: Error loading game script: " .. tostring(err))
+        end
+    else
+        warn("[Sanity.exe]: Failed to download game script: " .. path)
         local tab = ui:New("Tab", {
             Text = "Main"
         })
@@ -59,9 +59,11 @@ local function loadGame(path)
 end
 
 local function loadList()
-    local list = get(LIST)
+    local ok, data = pcall(function()
+        return get(LIST)
+    end)
 
-    if not list then
+    if not ok or not data then
         warn("[Sanity.exe]: Failed to load supported games list.")
         ui:SetTitle("Sanity.exe")
         local tab = ui:New("Tab", {
@@ -74,6 +76,21 @@ local function loadList()
         return
     end
 
+    local fn, err = loadstring(data)
+    if not fn then
+        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(err))
+        ui:SetTitle("Sanity.exe")
+        local tab = ui:New("Tab", {
+            Text = "Main"
+        })
+        ui:New("Label", {
+            Text = "Error parsing supported games list.",
+            Parent = tab
+        })
+        return
+    end
+
+    local list = fn()
     local found = false
 
     for _, g in ipairs(list) do
