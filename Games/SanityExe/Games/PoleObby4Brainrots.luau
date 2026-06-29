@@ -711,3 +711,5 @@ for i, TierData in ipairs(ValidTiers) do
         })
     end
 end
+
+Alert("Sanity.exe", "Loaded successfully!", 3)
