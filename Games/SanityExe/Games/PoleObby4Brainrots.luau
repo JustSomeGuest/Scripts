@@ -460,7 +460,7 @@ end
 
 local function bring(plate, tierName)
     if not plate then
-        alert("Sanity.exe", "Waiting for terrain to spawn in " .. tierName, 3)
+        alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
         return false
     end
 
@@ -470,7 +470,7 @@ local function bring(plate, tierName)
 
     local b = near(plate)
     if not b then
-        alert("Sanity.exe", "No brainrots to grab in " .. tierName, 3)
+        alert("Sanity.exe", "Waiting for brainrots to spawn.", 3)
         return false
     end
 
@@ -684,7 +684,7 @@ for _, tierName in ipairs(tierOrder) do
                     go(plate.Position + Vector3.new(0, 3, 0))
                     alert("Sanity.exe", "Teleported to " .. tierName .. " brainrots area", 3)
                 else
-                    alert("Sanity.exe", "Waiting for terrain to spawn in " .. tierName, 3)
+                    alert("Sanity.exe", "Waiting for terrain to spawn.", 3)
                 end
             end
         })
