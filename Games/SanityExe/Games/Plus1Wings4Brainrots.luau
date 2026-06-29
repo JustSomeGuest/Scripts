@@ -223,7 +223,6 @@ Workspace.ChildAdded:Connect(function(Child)
     end
 end)
 
-local HomePos = nil
 local Busy = false
 local CarryCount = 0
 local MaxCarry = 1
@@ -460,13 +459,6 @@ local function Bring(TierName)
 
     Busy = true
 
-    if not HomePos then
-        local SpawnPos = GetPlotSpawn()
-        if SpawnPos then
-            HomePos = SpawnPos
-        end
-    end
-
     local Root = GetRoot()
     if Root then
         local StartPos = Root.Position
@@ -483,7 +475,7 @@ local function Bring(TierName)
         end
     end
 
-    GoHome()
+    GoToPlot()
     Busy = false
     return true
 end
@@ -513,13 +505,6 @@ local function FarmGrabOnly(TierName)
 
     Busy = true
 
-    if not HomePos then
-        local SpawnPos = GetPlotSpawn()
-        if SpawnPos then
-            HomePos = SpawnPos
-        end
-    end
-
     Go(TierPos + Vector3.new(0, 3, 0))
     task.wait(0.1)
 
@@ -535,7 +520,7 @@ local function FarmGrabOnly(TierName)
         end
     end
 
-    GoHome()
+    GoToPlot()
     Busy = false
 end
 
@@ -561,13 +546,6 @@ local function FarmGrabAndPlace(TierName)
 
     Busy = true
 
-    if not HomePos then
-        local SpawnPos = GetPlotSpawn()
-        if SpawnPos then
-            HomePos = SpawnPos
-        end
-    end
-
     Go(TierPos + Vector3.new(0, 3, 0))
     task.wait(0.1)
 
@@ -587,7 +565,7 @@ local function FarmGrabAndPlace(TierName)
         end
     end
 
-    GoHome()
+    GoToPlot()
     Busy = false
 end
 
