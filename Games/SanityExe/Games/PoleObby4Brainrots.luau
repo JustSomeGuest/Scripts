@@ -110,53 +110,37 @@ local carryCount = 0
 local maxCarry = 0
 
 local function getMaxCarry()
-    local mainUI = pgui:FindFirstChild("MainUI")
-    if not mainUI then
-        return 1
-    end
-    
-    local menus = mainUI:FindFirstChild("Menus")
+    local menus = pgui:FindFirstChild("MainUI") and pgui.MainUI:FindFirstChild("Menus")
     if not menus then
         return 1
     end
-    
+
     local upgradeShop = menus:FindFirstChild("UpgradeShop")
     if not upgradeShop then
         return 1
     end
-    
+
     local handler = upgradeShop:FindFirstChild("Handler")
     if not handler then
         return 1
     end
-    
+
     local carry = handler:FindFirstChild("Carry")
     if not carry then
         return 1
     end
-    
-    local stats = carry:FindFirstChild("Stats")
-    if not stats then
-        return 1
-    end
-    
-    local stat1 = stats:FindFirstChild("1")
+
+    local stat1 = carry:FindFirstChild("Stats") and carry.Stats:FindFirstChild("1")
     if not stat1 then
         return 1
     end
-    
+
     local textLabel = stat1:FindFirstChild("TextLabel")
     if not textLabel or not textLabel:IsA("TextLabel") then
         return 1
     end
-    
-    local maxCarryText = textLabel.Text
-    local num = tonumber(maxCarryText)
-    if num then
-        return num
-    end
-    
-    return 1
+
+    return tonumber(textLabel.Text) or 1
 end
 
 local function root()
