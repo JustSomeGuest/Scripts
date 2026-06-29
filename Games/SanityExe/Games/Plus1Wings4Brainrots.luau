@@ -178,7 +178,6 @@ local function GetSlotPos(Slot)
 end
 
 local ItemSpawners = Workspace:FindFirstChild("ItemSpawners")
-local Mobs = Workspace:FindFirstChild("Mobs")
 
 if not ItemSpawners then
     ItemSpawners = Workspace:WaitForChild("ItemSpawners", 10)
@@ -198,6 +197,19 @@ local function CleanKillParts()
         end
     end
 end
+
+CleanKillParts()
+
+Workspace.ChildAdded:Connect(function(Child)
+    if Child.Name == "KillParts" then
+        Child.ChildAdded:Connect(function(Obj)
+            pcall(function()
+                Obj:Destroy()
+            end)
+        end)
+        CleanKillParts()
+    end
+end)
 
 local HomePos = nil
 local Busy = false
@@ -316,23 +328,27 @@ local function GetPos(Model)
     return nil
 end
 
-local function GetNearestBrainrot(PlatePos, Radius)
-    Radius = Radius or 30
+local function GetNearestBrainrot(TierFolder)
+    if not TierFolder then
+        return nil
+    end
+    
     local Best = nil
-    local BestDist = Radius
+    local BestDist = math.huge
+    local TierPos = TierFolder.Position
 
-    for _, Mob in ipairs(Mobs:GetChildren()) do
-        if Mob:IsA("Model") then
-            local Mesh = Mob:FindFirstChild("Mesh")
+    for _, Child in ipairs(TierFolder:GetChildren()) do
+        if Child:IsA("Model") then
+            local Mesh = Child:FindFirstChild("Mesh")
             if Mesh then
                 local Prompt = Mesh:FindFirstChild("ProximityPrompt")
                 if Prompt then
-                    local Pos = GetPos(Mob)
+                    local Pos = GetPos(Child)
                     if Pos then
-                        local Dist = (Pos - PlatePos).Magnitude
+                        local Dist = (Pos - TierPos).Magnitude
                         if Dist < BestDist then
                             BestDist = Dist
-                            Best = Mob
+                            Best = Child
                         end
                     end
                 end
@@ -428,9 +444,8 @@ local function Place(Slot)
     return false
 end
 
-local function Bring(TierName, PlatePos)
-    if not PlatePos then
-        Notify("Sanity.exe", "Waiting for terrain to spawn.", 3)
+local function Bring(TierName, TierFolder)
+    if not TierFolder then
         return false
     end
 
@@ -438,9 +453,8 @@ local function Bring(TierName, PlatePos)
         return false
     end
 
-    local Brainrot = GetNearestBrainrot(PlatePos)
+    local Brainrot = GetNearestBrainrot(TierFolder)
     if not Brainrot then
-        Notify("Sanity.exe", "Waiting for brainrots to spawn.", 3)
         return false
     end
 
@@ -477,8 +491,8 @@ local function Bring(TierName, PlatePos)
     return true
 end
 
-local function Farm(TierName, PlatePos, DoPlace)
-    if not PlatePos then
+local function Farm(TierName, TierFolder, DoPlace)
+    if not TierFolder then
         return
     end
 
@@ -496,7 +510,7 @@ local function Farm(TierName, PlatePos, DoPlace)
         end
     end
 
-    local Brainrot = GetNearestBrainrot(PlatePos)
+    local Brainrot = GetNearestBrainrot(TierFolder)
     if not Brainrot then
         Busy = false
         return
@@ -556,15 +570,9 @@ local TierOrder = {
     "God"
 }
 
-local function GetTierPosition(TierName)
-    local TierFolder = ItemSpawners:FindFirstChild(TierName)
-    if TierFolder and TierFolder:IsA("BasePart") then
-        return TierFolder.Position
-    end
-    return nil
+local function GetTierFolder(TierName)
+    return ItemSpawners:FindFirstChild(TierName)
 end
-
-CleanKillParts()
 
 UI:New("Section", {
     Text = "Teleports",
@@ -588,12 +596,12 @@ for _, TierName in ipairs(TierOrder) do
         Text = "Teleport to " .. TierName,
         Parent = TeleportTab,
         Callback = function()
-            local Pos = GetTierPosition(TierName)
-            if Pos then
-                Go(Pos + Vector3.new(0, 3, 0))
+            local Tier = GetTierFolder(TierName)
+            if Tier then
+                Go(Tier.Position + Vector3.new(0, 3, 0))
                 Notify("Sanity.exe", "Teleported to " .. TierName, 3)
             else
-                Notify("Sanity.exe", "Waiting for terrain to spawn.", 3)
+                Notify("Sanity.exe", "Tier not found", 3)
             end
         end
     })
@@ -622,8 +630,8 @@ for i, TierName in ipairs(TierOrder) do
         Text = "Bring Brainrot",
         Parent = MainTab,
         Callback = function()
-            local Pos = GetTierPosition(TierName)
-            Bring(TierName, Pos)
+            local Tier = GetTierFolder(TierName)
+            Bring(TierName, Tier)
         end
     })
     
@@ -645,8 +653,8 @@ for i, TierName in ipairs(TierOrder) do
             if State then
                 Con1 = RunSvc.RenderStepped:Connect(function()
                     if On1 then
-                        local Pos = GetTierPosition(TierName)
-                        Farm(TierName, Pos, false)
+                        local Tier = GetTierFolder(TierName)
+                        Farm(TierName, Tier, false)
                     end
                 end)
             end
@@ -671,8 +679,8 @@ for i, TierName in ipairs(TierOrder) do
             if State then
                 Con2 = RunSvc.RenderStepped:Connect(function()
                     if On2 then
-                        local Pos = GetTierPosition(TierName)
-                        Farm(TierName, Pos, true)
+                        local Tier = GetTierFolder(TierName)
+                        Farm(TierName, Tier, true)
                     end
                 end)
             end
