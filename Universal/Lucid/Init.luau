@@ -75,9 +75,11 @@ local Inconsolata = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.
 
 local Assets = {
     ["Lucid/Assets/lucid_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/logo.png",
+    ["Lucid/Assets/lucid_home.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/home.png",
     ["Lucid/Assets/lucid_executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/executor.png",
     ["Lucid/Assets/lucid_search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/search.png",
     ["Lucid/Assets/lucid_scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/scripts.png",
+    ["Lucid/Assets/lucid_settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/settings.png",
     ["Lucid/Assets/lucid_close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/close.png",
 }
 
