@@ -898,6 +898,7 @@ if IsGame("Just A Baseplate") then
 
         if Shared.GelatekHubConfig.KeepHatsAttached then
             CmdEvent:FireServer("cmd", "-net")
+        end
     end)
 
     local hatIdMap = {
