@@ -896,7 +896,8 @@ if IsGame("Just A Baseplate") then
         WaitForDeath()
         Wait(0.1)
 
-        CmdEvent:FireServer("cmd", "-net")
+        if Shared.GelatekHubConfig.KeepHatsAttached then
+            CmdEvent:FireServer("cmd", "-net")
     end)
 
     local hatIdMap = {
