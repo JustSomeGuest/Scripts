@@ -376,14 +376,32 @@ local function applySlotSelection(slot, selected)
     ):Play()
 end
 
-local function updateInventory()
-    for _, child in ipairs(UI.HotbarFrame:GetChildren()) do
-        if child:IsA("ImageButton") then child:Destroy() end
-    end
-    for _, child in ipairs(UI.Tools:GetChildren()) do
-        if child:IsA("ImageButton") then child:Destroy() end
-    end
+local slotConnections = {}
 
+local function getReusableSlot(parent, template, index)
+    local slotName = "Slot_" .. tostring(index)
+    local slot = parent:FindFirstChild(slotName)
+    if not slot then
+        slot = template:Clone()
+        slot.Name = slotName
+        slot.Parent = parent
+    end
+    slot.Visible = true
+    return slot
+end
+
+local function hideExcessSlots(parent, count)
+    for _, child in ipairs(parent:GetChildren()) do
+        if child:IsA("ImageButton") then
+            local index = tonumber(string.match(child.Name, "Slot_(%d+)"))
+            if index and index > count then
+                child.Visible = false
+            end
+        end
+    end
+end
+
+local function updateInventory()
     local ch = LocalPlayer.Character
     local equippedTool = ch and ch:FindFirstChildOfClass("Tool")
     
@@ -411,9 +429,12 @@ local function updateInventory()
 
     for i = 1, hotbarCount do
         local tool = allTools[i]
-        local slot = UI.HotbarTemplate:Clone()
+        local slot = getReusableSlot(UI.HotbarFrame, UI.HotbarTemplate, i)
         slot.LayoutOrder = i
-        slot.Parent = UI.HotbarFrame
+        
+        if slotConnections[slot] then 
+            slotConnections[slot]:Disconnect() 
+        end
         
         if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
             slot.SlotIcon.Image = tool.TextureId
@@ -425,7 +446,7 @@ local function updateInventory()
         
         applySlotSelection(slot, tool == equippedTool)
         
-        slot.MouseButton1Click:Connect(function()
+        slotConnections[slot] = slot.MouseButton1Click:Connect(function()
             if tool.Parent == ch then
                 tool.Parent = LocalPlayer.Backpack
             else
@@ -434,6 +455,7 @@ local function updateInventory()
             end
         end)
     end
+    hideExcessSlots(UI.HotbarFrame, hotbarCount)
 
     local bpIndex = 1
     for i = 7, #allTools do
@@ -446,10 +468,13 @@ local function updateInventory()
         end
         
         if matches then
-            local slot = UI.BackpackTemplate:Clone()
+            local slot = getReusableSlot(UI.Tools, UI.BackpackTemplate, bpIndex)
             slot.LayoutOrder = bpIndex
-            slot.Parent = UI.Tools
             bpIndex = bpIndex + 1
+            
+            if slotConnections[slot] then 
+                slotConnections[slot]:Disconnect() 
+            end
             
             if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
                 slot.SlotIcon.Image = tool.TextureId
@@ -461,7 +486,7 @@ local function updateInventory()
 
             applySlotSelection(slot, tool == equippedTool)
             
-            slot.MouseButton1Click:Connect(function()
+            slotConnections[slot] = slot.MouseButton1Click:Connect(function()
                 if tool.Parent == ch then
                     tool.Parent = LocalPlayer.Backpack
                 else
@@ -471,6 +496,8 @@ local function updateInventory()
             end)
         end
     end
+    
+    hideExcessSlots(UI.Tools, bpIndex - 1)
 end
 
 local updateQueued = false
