@@ -376,14 +376,10 @@ local function applySlotSelection(slot, selected)
     ):Play()
 end
 
-local function updateInventory()
-    for _, child in ipairs(UI.HotbarFrame:GetChildren()) do
-        if child:IsA("ImageButton") then child:Destroy() end
-    end
-    for _, child in ipairs(UI.Tools:GetChildren()) do
-        if child:IsA("ImageButton") then child:Destroy() end
-    end
+local hotbarSlots = {}
+local backpackSlots = {}
 
+local function updateInventory()
     local ch = LocalPlayer.Character
     local equippedTool = ch and ch:FindFirstChildOfClass("Tool")
     
@@ -409,11 +405,37 @@ local function updateInventory()
     local hotbarCount = math.min(#allTools, 6)
     UI.HotbarFrame.Size = UDim2.new(0, (hotbarCount * 44) + (math.max(0, hotbarCount - 1) * 6), 0, 44)
 
+    local newHotbarSlots = {}
+    local hotbarRecycle = {}
+    
+    for _, child in ipairs(UI.HotbarFrame:GetChildren()) do
+        if child:IsA("ImageButton") then
+            local ref = child:GetAttribute("ToolRef")
+            if ref then
+                hotbarSlots[ref] = child
+            else
+                table.insert(hotbarRecycle, child)
+            end
+        end
+    end
+
     for i = 1, hotbarCount do
         local tool = allTools[i]
-        local slot = UI.HotbarTemplate:Clone()
+        local slot = hotbarSlots[tool]
+        
+        if not slot then
+            if #hotbarRecycle > 0 then
+                slot = table.remove(hotbarRecycle, 1)
+            else
+                slot = UI.HotbarTemplate:Clone()
+            end
+            hotbarSlots[tool] = slot
+        end
+        
         slot.LayoutOrder = i
         slot.Parent = UI.HotbarFrame
+        slot:SetAttribute("ToolRef", tool)
+        newHotbarSlots[tool] = true
         
         if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
             slot.SlotIcon.Image = tool.TextureId
@@ -435,6 +457,30 @@ local function updateInventory()
         end)
     end
 
+    for _, slot in ipairs(hotbarRecycle) do
+        slot:Destroy()
+    end
+    for toolRef, slot in pairs(hotbarSlots) do
+        if not newHotbarSlots[toolRef] then
+            slot:Destroy()
+            hotbarSlots[toolRef] = nil
+        end
+    end
+
+    local newBackpackSlots = {}
+    local backpackRecycle = {}
+    
+    for _, child in ipairs(UI.Tools:GetChildren()) do
+        if child:IsA("ImageButton") then
+            local ref = child:GetAttribute("ToolRef")
+            if ref then
+                backpackSlots[ref] = child
+            else
+                table.insert(backpackRecycle, child)
+            end
+        end
+    end
+
     local bpIndex = 1
     for i = 7, #allTools do
         local tool = allTools[i]
@@ -446,9 +492,20 @@ local function updateInventory()
         end
         
         if matches then
-            local slot = UI.BackpackTemplate:Clone()
+            local slot = backpackSlots[tool]
+            if not slot then
+                if #backpackRecycle > 0 then
+                    slot = table.remove(backpackRecycle, 1)
+                else
+                    slot = UI.BackpackTemplate:Clone()
+                end
+                backpackSlots[tool] = slot
+            end
+            
             slot.LayoutOrder = bpIndex
             slot.Parent = UI.Tools
+            slot:SetAttribute("ToolRef", tool)
+            newBackpackSlots[tool] = true
             bpIndex = bpIndex + 1
             
             if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
@@ -469,6 +526,16 @@ local function updateInventory()
                     tool.Parent = ch
                 end
             end)
+        end
+    end
+
+    for _, slot in ipairs(backpackRecycle) do
+        slot:Destroy()
+    end
+    for toolRef, slot in pairs(backpackSlots) do
+        if not newBackpackSlots[toolRef] then
+            slot:Destroy()
+            backpackSlots[toolRef] = nil
         end
     end
 end
