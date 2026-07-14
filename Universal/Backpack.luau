@@ -112,7 +112,7 @@ UI.MainUI.BackgroundTransparency = 1
 UI.MainUI.BorderSizePixel = 0
 UI.MainUI.Name = "UI"
 UI.MainUI.Position = UDim2.new(0.5, 0, 1, -6)
-UI.MainUI.Size = UDim2.new(0.5, 6, 0.9, 0)
+UI.MainUI.Size = UDim2.new(0.5, 28, 0.9, 0)
 UI.MainUI.Parent = UI.InvGui
 
 UI.UILayout = Instance.new("UIListLayout")
@@ -229,6 +229,7 @@ UI.ToolsPadding = Instance.new("UIPadding")
 UI.ToolsPadding.Name = "ToolsPadding"
 UI.ToolsPadding.PaddingBottom = UDim.new(0, 6)
 UI.ToolsPadding.PaddingLeft = UDim.new(0, 6)
+UI.ToolsPadding.PaddingRight = UDim.new(0, 8)
 UI.ToolsPadding.PaddingTop = UDim.new(0, 6)
 UI.ToolsPadding.Parent = UI.Tools
 
