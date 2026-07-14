@@ -48,7 +48,6 @@ local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
 Shared.__Inventory = Shared.__Inventory or {}
-local UI = {}
 
 if Shared.__Inventory.IsLoaded then
     pcall(function()
@@ -71,6 +70,8 @@ end
 local Fallback = Services.CoreGui:FindFirstChild("TopBarApp")
 if Fallback then Fallback = Fallback:FindFirstChild("TopBarApp") end
 if Fallback then Fallback = Fallback:FindFirstChild("TopBarFrame") end
+
+local UI = {}
 
 UI.BackpackContainer = Instance.new("Frame")
 UI.BackpackContainer.BackgroundColor3 = Color3.fromRGB(18, 18, 21)
