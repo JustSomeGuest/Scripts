@@ -73,20 +73,20 @@ if Fallback then Fallback = Fallback:FindFirstChild("TopBarFrame") end
 
 local UI = {}
 
-UI.BackpackContainer = Instance.new("Frame")
-UI.BackpackContainer.BackgroundColor3 = Color3.fromRGB(18, 18, 21)
-UI.BackpackContainer.BackgroundTransparency = 0.08
-UI.BackpackContainer.BorderSizePixel = 0
-UI.BackpackContainer.LayoutOrder = -2147483647
-UI.BackpackContainer.Name = "__BackpackContainer"
-UI.BackpackContainer.Position = UDim2.fromOffset(214, 2)
-UI.BackpackContainer.Size = UDim2.fromOffset(44, 44)
-UI.BackpackContainer.Parent = TopbarPlus or Fallback or Hui
+UI.BackpackBtn = Instance.new("Frame")
+UI.BackpackBtn.BackgroundColor3 = Color3.fromRGB(18, 18, 21)
+UI.BackpackBtn.BackgroundTransparency = 0.08
+UI.BackpackBtn.BorderSizePixel = 0
+UI.BackpackBtn.LayoutOrder = -2147483647
+UI.BackpackBtn.Name = "__TB_Backpack"
+UI.BackpackBtn.Position = UDim2.fromOffset(214, 2)
+UI.BackpackBtn.Size = UDim2.fromOffset(44, 44)
+UI.BackpackBtn.Parent = TopbarPlus or Fallback or Hui
 
 UI.Corner = Instance.new("UICorner")
 UI.Corner.CornerRadius = UDim.new(1, 0)
 UI.Corner.Name = "Corner"
-UI.Corner.Parent = UI.BackpackContainer
+UI.Corner.Parent = UI.BackpackBtn
 
 UI.Backpack = Instance.new("ImageButton")
 UI.Backpack.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -97,7 +97,7 @@ UI.Backpack.Image = "rbxasset://textures/ui/TopBar/inventoryOff.png"
 UI.Backpack.Name = "__Backpack"
 UI.Backpack.Position = UDim2.fromScale(0.5, 0.5)
 UI.Backpack.Size = UDim2.fromOffset(36, 36)
-UI.Backpack.Parent = UI.BackpackContainer
+UI.Backpack.Parent = UI.BackpackBtn
 
 UI.InvGui = Instance.new("ScreenGui")
 UI.InvGui.Name = "__Inventory"
@@ -124,7 +124,7 @@ UI.UILayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
 UI.UILayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 UI.UILayout.Parent = UI.MainUI
 
-UI.BackpackFrame = Instance.new("Frame")
+UI.BackpackFrame = Instance.new("CanvasGroup")
 UI.BackpackFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 UI.BackpackFrame.BackgroundTransparency = 0.3
 UI.BackpackFrame.BorderSizePixel = 0
@@ -291,7 +291,7 @@ UI.HTIcon.Parent = UI.HotbarTemplate
 UI.HTStroke = Instance.new("UIStroke")
 UI.HTStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UI.HTStroke.Color = Color3.fromRGB(0, 0, 0)
-UI.HTStroke.Name = "HTStroke"
+UI.HTStroke.Name = "SlotStroke"
 UI.HTStroke.Thickness = 2
 UI.HTStroke.Transparency = 0.5
 UI.HTStroke.Parent = UI.HotbarTemplate
@@ -330,92 +330,15 @@ local SelectedColor = Color3.fromRGB(59, 130, 246)
 local SelectedTransparency = 0
 
 local function setBackpackTransparency(target)
-    local elements = {
-        {UI.BackpackFrame, 0.3},
-        {UI.SearchBox, 0.6}
-    }
-
-    for _, item in ipairs(elements) do
-        local obj, default = item[1], item[2]
-        local val = default + (1 - default) * target
-
-        TweenService:Create(
-            obj,
-            TweenInfo.new(0.2, Enum.EasingStyle.Quad),
-            {BackgroundTransparency = val}
-        ):Play()
-    end
-
-    local strokeVal = 0.8 + (1 - 0.8) * target
-
     TweenService:Create(
-        UI.SearchBoxStroke,
+        UI.BackpackFrame,
         TweenInfo.new(0.2, Enum.EasingStyle.Quad),
-        {Transparency = strokeVal}
-    ):Play()
-
-    for _, str in ipairs(UI.BackpackFrame:GetDescendants()) do
-        if str:IsA("UIStroke") and str.Name ~= "SearchBoxStroke" and str.Name ~= "HTStroke" then
-            local val = 1 * target
-
-            TweenService:Create(
-                str,
-                TweenInfo.new(0.2, Enum.EasingStyle.Quad),
-                {Transparency = val}
-            ):Play()
-        end
-    end
-
-    for _, descendant in ipairs(UI.Tools:GetChildren()) do
-        if descendant:IsA("ImageButton") then
-            local slotVal = 0.4 + 0.6 * target
-
-            TweenService:Create(
-                descendant,
-                TweenInfo.new(0.2, Enum.EasingStyle.Quad),
-                {BackgroundTransparency = slotVal}
-            ):Play()
-
-            local label = descendant:FindFirstChild("SlotLabel")
-            if label then
-                TweenService:Create(
-                    label,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad),
-                    {TextTransparency = target}
-                ):Play()
-            end
-
-            local icon = descendant:FindFirstChild("SlotIcon")
-            if icon then
-                TweenService:Create(
-                    icon,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad),
-                    {ImageTransparency = target}
-                ):Play()
-            end
-
-            local htStroke = descendant:FindFirstChild("HTStroke")
-            if htStroke then
-                local strokeTransparencyGoal = htStroke:GetAttribute("Selected") and SelectedTransparency or UnselectedTransparency
-                local fadedGoal = strokeTransparencyGoal + (1 - strokeTransparencyGoal) * target
-                TweenService:Create(
-                    htStroke,
-                    TweenInfo.new(0.2, Enum.EasingStyle.Quad),
-                    {Transparency = fadedGoal}
-                ):Play()
-            end
-        end
-    end
-
-    TweenService:Create(
-        UI.SearchBox,
-        TweenInfo.new(0.2, Enum.EasingStyle.Quad),
-        {TextTransparency = target}
+        {GroupTransparency = target}
     ):Play()
 end
 
 UI.BackpackFrame.Visible = false
-setBackpackTransparency(1)
+UI.BackpackFrame.GroupTransparency = 1
 
 local function toggleBackpack()
     isOpen = not isOpen
@@ -440,15 +363,17 @@ pcall(function()
     StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
 end)
 
-local function applySlotSelection(slot, selected, fadedIn)
+local function applySlotSelection(slot, selected)
     local stroke = slot.HTStroke
     stroke:SetAttribute("Selected", selected)
-    stroke.Color = selected and SelectedColor or UnselectedColor
-    if fadedIn then
-        stroke.Transparency = selected and SelectedTransparency or UnselectedTransparency
-    else
-        stroke.Transparency = 1
-    end
+    TweenService:Create(
+        stroke,
+        TweenInfo.new(0.2, Enum.EasingStyle.Quad),
+        {
+            Color = selected and SelectedColor or UnselectedColor,
+            Transparency = selected and SelectedTransparency or UnselectedTransparency
+        }
+    ):Play()
 end
 
 local function updateInventory()
@@ -498,7 +423,7 @@ local function updateInventory()
             slot.SlotLabel.Text = tool.Name
         end
         
-        applySlotSelection(slot, tool == equippedTool, true)
+        applySlotSelection(slot, tool == equippedTool)
         
         slot.MouseButton1Click:Connect(function()
             if tool.Parent == ch then
@@ -534,7 +459,7 @@ local function updateInventory()
                 slot.SlotLabel.Text = tool.Name
             end
 
-            applySlotSelection(slot, tool == equippedTool, isOpen)
+            applySlotSelection(slot, tool == equippedTool)
             
             slot.MouseButton1Click:Connect(function()
                 if tool.Parent == ch then
@@ -545,10 +470,6 @@ local function updateInventory()
                 end
             end)
         end
-    end
-    
-    if isOpen then
-        setBackpackTransparency(0)
     end
 end
 
