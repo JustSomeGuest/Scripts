@@ -233,7 +233,7 @@ UI.ToolsPadding.PaddingTop = UDim.new(0, 6)
 UI.ToolsPadding.Parent = UI.Tools
 
 UI.ToolsLayout = Instance.new("UIGridLayout")
-UI.ToolsLayout.CellPadding = UDim2.new(0, 6, 0, 6)
+UI.ToolsLayout.CellPadding = UDim2.new(0, 8, 0, 8)
 UI.ToolsLayout.CellSize = UDim2.new(0, 60, 0, 60)
 UI.ToolsLayout.Name = "ToolsLayout"
 UI.ToolsLayout.Parent = UI.Tools
@@ -257,7 +257,7 @@ UI.HotbarLayout.FillDirection = Enum.FillDirection.Horizontal
 UI.HotbarLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 UI.HotbarLayout.HorizontalFlex = Enum.UIFlexAlignment.None
 UI.HotbarLayout.Name = "HotbarLayout"
-UI.HotbarLayout.Padding = UDim.new(0, 6)
+UI.HotbarLayout.Padding = UDim.new(0, 8)
 UI.HotbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.HotbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 UI.HotbarLayout.Parent = UI.HotbarFrame
