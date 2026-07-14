@@ -449,7 +449,7 @@ local function applySlotSelection(slot, selected, fadedIn)
     end
 end
 
-local function UpdateInventory()
+local function updateInventory()
     for _, child in ipairs(UI.HotbarFrame:GetChildren()) do
         if child:IsA("ImageButton") then child:Destroy() end
     end
@@ -551,22 +551,22 @@ local function UpdateInventory()
 end
 
 local updateQueued = false
-local function UpdateInv()
+local function updateInv()
     if updateQueued then return end
     updateQueued = true
     task.defer(function()
         updateQueued = false
-        UpdateInventory()
+        updateInventory()
     end)
 end
 
-LocalPlayer.Backpack.ChildAdded:Connect(UpdateInv)
-LocalPlayer.Backpack.ChildRemoved:Connect(UpdateInv)
+LocalPlayer.Backpack.ChildAdded:Connect(updateInv)
+LocalPlayer.Backpack.ChildRemoved:Connect(updateInv)
 
 local function hookChar(char)
-    char.ChildAdded:Connect(UpdateInv)
-    char.ChildRemoved:Connect(UpdateInv)
-    UpdateInventory()
+    char.ChildAdded:Connect(updateInv)
+    char.ChildRemoved:Connect(updateInv)
+    updateInventory()
 end
 
 if LocalPlayer.Character then task.spawn(hookChar, LocalPlayer.Character) end
@@ -574,7 +574,7 @@ LocalPlayer.CharacterAdded:Connect(hookChar)
 
 UI.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
     currentSearch = UI.SearchBox.Text
-    UpdateInventory()
+    updateInventory()
 end)
 
 local hotbarKeys = {
@@ -614,5 +614,5 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     end
 end)
 
-UpdateInventory()
+updateInventory()
 return UI
