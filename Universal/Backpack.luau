@@ -111,7 +111,7 @@ UI.MainUI.BackgroundTransparency = 1
 UI.MainUI.BorderSizePixel = 0
 UI.MainUI.Name = "UI"
 UI.MainUI.Position = UDim2.new(0.5, 0, 1, -6)
-UI.MainUI.Size = UDim2.new(0.5, 4, 0.9, 0)
+UI.MainUI.Size = UDim2.new(0.5, 6, 0.9, 0)
 UI.MainUI.Parent = UI.InvGui
 
 UI.UILayout = Instance.new("UIListLayout")
@@ -226,9 +226,9 @@ UI.Tools.Parent = UI.ToolsFrame
 
 UI.ToolsPadding = Instance.new("UIPadding")
 UI.ToolsPadding.Name = "ToolsPadding"
-UI.ToolsPadding.PaddingBottom = UDim.new(0, 4)
-UI.ToolsPadding.PaddingLeft = UDim.new(0, 4)
-UI.ToolsPadding.PaddingTop = UDim.new(0, 4)
+UI.ToolsPadding.PaddingBottom = UDim.new(0, 6)
+UI.ToolsPadding.PaddingLeft = UDim.new(0, 6)
+UI.ToolsPadding.PaddingTop = UDim.new(0, 6)
 UI.ToolsPadding.Parent = UI.Tools
 
 UI.ToolsLayout = Instance.new("UIGridLayout")
@@ -256,7 +256,7 @@ UI.HotbarLayout.FillDirection = Enum.FillDirection.Horizontal
 UI.HotbarLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 UI.HotbarLayout.HorizontalFlex = Enum.UIFlexAlignment.None
 UI.HotbarLayout.Name = "HotbarLayout"
-UI.HotbarLayout.Padding = UDim.new(0, 4)
+UI.HotbarLayout.Padding = UDim.new(0, 6)
 UI.HotbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.HotbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 UI.HotbarLayout.Parent = UI.HotbarFrame
@@ -288,10 +288,10 @@ UI.HTIcon.Parent = UI.HotbarTemplate
 
 UI.HTStroke = Instance.new("UIStroke")
 UI.HTStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.HTStroke.Color = Color3.fromRGB(0, 163, 255)
-UI.HTStroke.Name = "SelectedStroke"
-UI.HTStroke.Thickness = 0
-UI.HTStroke.Transparency = 1
+UI.HTStroke.Color = Color3.fromRGB(0, 0, 0)
+UI.HTStroke.Name = "HTStroke"
+UI.HTStroke.Thickness = 2
+UI.HTStroke.Transparency = 0.5
 UI.HTStroke.Parent = UI.HotbarTemplate
 
 UI.HTRatio = Instance.new("UIAspectRatioConstraint")
@@ -315,13 +315,17 @@ UI.HTLabel.TextWrapped = true
 UI.HTLabel.Parent = UI.HotbarTemplate
 
 UI.BackpackTemplate = UI.HotbarTemplate:Clone()
-UI.BackpackTemplate.SelectedStroke.Enabled = true
 UI.BackpackTemplate.Size = UDim2.new(0, 60, 0, 60)
 
 local isOpen = false
 local currentSearch = ""
 local toolOrder = setmetatable({}, {__mode = "k"})
 local orderCounter = 0
+
+local UnselectedColor = Color3.fromRGB(0, 0, 0)
+local UnselectedTransparency = 0.5
+local SelectedColor = Color3.fromRGB(59, 130, 246)
+local SelectedTransparency = 0
 
 local function setBackpackTransparency(target)
     local elements = {
@@ -349,7 +353,7 @@ local function setBackpackTransparency(target)
     ):Play()
 
     for _, str in ipairs(UI.BackpackFrame:GetDescendants()) do
-        if str:IsA("UIStroke") and str.Name ~= "SearchBoxStroke" and str.Name ~= "SelectedStroke" then
+        if str:IsA("UIStroke") and str.Name ~= "SearchBoxStroke" and str.Name ~= "HTStroke" then
             local val = 1 * target
 
             TweenService:Create(
@@ -388,12 +392,14 @@ local function setBackpackTransparency(target)
                 ):Play()
             end
 
-            local selectedStroke = descendant:FindFirstChild("SelectedStroke")
-            if selectedStroke and selectedStroke.Enabled then
+            local htStroke = descendant:FindFirstChild("HTStroke")
+            if htStroke then
+                local strokeTransparencyGoal = htStroke:GetAttribute("Selected") and SelectedTransparency or UnselectedTransparency
+                local fadedGoal = strokeTransparencyGoal + (1 - strokeTransparencyGoal) * target
                 TweenService:Create(
-                    selectedStroke,
+                    htStroke,
                     TweenInfo.new(0.2, Enum.EasingStyle.Quad),
-                    {Transparency = target}
+                    {Transparency = fadedGoal}
                 ):Play()
             end
         end
@@ -432,7 +438,18 @@ pcall(function()
     StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
 end)
 
-local function updateInventoryImpl()
+local function applySlotSelection(slot, selected, fadedIn)
+    local stroke = slot.HTStroke
+    stroke:SetAttribute("Selected", selected)
+    stroke.Color = selected and SelectedColor or UnselectedColor
+    if fadedIn then
+        stroke.Transparency = selected and SelectedTransparency or UnselectedTransparency
+    else
+        stroke.Transparency = 1
+    end
+end
+
+local function UpdateInventory()
     for _, child in ipairs(UI.HotbarFrame:GetChildren()) do
         if child:IsA("ImageButton") then child:Destroy() end
     end
@@ -442,7 +459,6 @@ local function updateInventoryImpl()
 
     local ch = LocalPlayer.Character
     local equippedTool = ch and ch:FindFirstChildOfClass("Tool")
-    local backpackStrokeTarget = isOpen and 0 or 1
     
     local allTools = {}
     for _, tool in ipairs(LocalPlayer.Backpack:GetChildren()) do
@@ -464,7 +480,7 @@ local function updateInventoryImpl()
     end)
 
     local hotbarCount = math.min(#allTools, 6)
-    UI.HotbarFrame.Size = UDim2.new(0, (hotbarCount * 44) + (math.max(0, hotbarCount - 1) * 4), 0, 44)
+    UI.HotbarFrame.Size = UDim2.new(0, (hotbarCount * 44) + (math.max(0, hotbarCount - 1) * 6), 0, 44)
 
     for i = 1, hotbarCount do
         local tool = allTools[i]
@@ -480,15 +496,7 @@ local function updateInventoryImpl()
             slot.SlotLabel.Text = tool.Name
         end
         
-        if tool == equippedTool then
-            slot.SelectedStroke.Enabled = true
-            slot.SelectedStroke.Thickness = 2
-            slot.SelectedStroke.Transparency = 0
-        else
-            slot.SelectedStroke.Enabled = false
-            slot.SelectedStroke.Thickness = 0
-            slot.SelectedStroke.Transparency = 1
-        end
+        applySlotSelection(slot, tool == equippedTool, true)
         
         slot.MouseButton1Click:Connect(function()
             if tool.Parent == ch then
@@ -524,15 +532,7 @@ local function updateInventoryImpl()
                 slot.SlotLabel.Text = tool.Name
             end
 
-            if tool == equippedTool then
-                slot.SelectedStroke.Enabled = true
-                slot.SelectedStroke.Thickness = 2
-                slot.SelectedStroke.Transparency = backpackStrokeTarget
-            else
-                slot.SelectedStroke.Enabled = false
-                slot.SelectedStroke.Thickness = 0
-                slot.SelectedStroke.Transparency = 1
-            end
+            applySlotSelection(slot, tool == equippedTool, isOpen)
             
             slot.MouseButton1Click:Connect(function()
                 if tool.Parent == ch then
@@ -551,22 +551,22 @@ local function updateInventoryImpl()
 end
 
 local updateQueued = false
-local function updateInventory()
+local function UpdateInv()
     if updateQueued then return end
     updateQueued = true
     task.defer(function()
         updateQueued = false
-        updateInventoryImpl()
+        UpdateInventory()
     end)
 end
 
-LocalPlayer.Backpack.ChildAdded:Connect(updateInventory)
-LocalPlayer.Backpack.ChildRemoved:Connect(updateInventory)
+LocalPlayer.Backpack.ChildAdded:Connect(UpdateInv)
+LocalPlayer.Backpack.ChildRemoved:Connect(UpdateInv)
 
 local function hookChar(char)
-    char.ChildAdded:Connect(updateInventory)
-    char.ChildRemoved:Connect(updateInventory)
-    updateInventoryImpl()
+    char.ChildAdded:Connect(UpdateInv)
+    char.ChildRemoved:Connect(UpdateInv)
+    UpdateInventory()
 end
 
 if LocalPlayer.Character then task.spawn(hookChar, LocalPlayer.Character) end
@@ -574,7 +574,7 @@ LocalPlayer.CharacterAdded:Connect(hookChar)
 
 UI.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
     currentSearch = UI.SearchBox.Text
-    updateInventoryImpl()
+    UpdateInventory()
 end)
 
 local hotbarKeys = {
@@ -614,5 +614,5 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     end
 end)
 
-updateInventoryImpl()
+UpdateInventory()
 return UI
