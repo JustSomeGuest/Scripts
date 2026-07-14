@@ -364,7 +364,7 @@ pcall(function()
 end)
 
 local function applySlotSelection(slot, selected)
-    local stroke = slot.HTStroke
+    local stroke = slot.SlotStroke
     stroke:SetAttribute("Selected", selected)
     TweenService:Create(
         stroke,
