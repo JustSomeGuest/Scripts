@@ -47,6 +47,7 @@ local Scripts = {
     SoundDock = "Universal/SoundDock.luau",
     DeltaKD = "Universal/DeltaKD.luau",
     TouchGui = "Universal/TouchGui.luau",
+    Backpack = "Universal/Backpack.luau",
 
     SanityExe = "Games/SanityExe/Init.luau"
 }
