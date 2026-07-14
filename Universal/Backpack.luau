@@ -283,7 +283,7 @@ UI.HTIcon.Interactable = false
 UI.HTIcon.Name = "SlotIcon"
 UI.HTIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 UI.HTIcon.ScaleType = Enum.ScaleType.Fit
-UI.HTIcon.Size = UDim2.new(1, -6, 1, -6)
+UI.HTIcon.Size = UDim2.new(1, -8, 1, -8)
 UI.HTIcon.Parent = UI.HotbarTemplate
 
 UI.HTStroke = Instance.new("UIStroke")
@@ -307,7 +307,7 @@ UI.HTLabel.FontFace = Font.new("rbxasset://fonts/families/BuilderSans.json", Enu
 UI.HTLabel.Interactable = false
 UI.HTLabel.Name = "SlotLabel"
 UI.HTLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-UI.HTLabel.Size = UDim2.new(1, -6, 1, -6)
+UI.HTLabel.Size = UDim2.new(1, -8, 1, -8)
 UI.HTLabel.Text = ""
 UI.HTLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 UI.HTLabel.TextScaled = true
