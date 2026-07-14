@@ -233,7 +233,7 @@ UI.ToolsPadding.PaddingTop = UDim.new(0, 6)
 UI.ToolsPadding.Parent = UI.Tools
 
 UI.ToolsLayout = Instance.new("UIGridLayout")
-UI.ToolsLayout.CellPadding = UDim2.new(0, 4, 0, 4)
+UI.ToolsLayout.CellPadding = UDim2.new(0, 6, 0, 6)
 UI.ToolsLayout.CellSize = UDim2.new(0, 60, 0, 60)
 UI.ToolsLayout.Name = "ToolsLayout"
 UI.ToolsLayout.Parent = UI.Tools
