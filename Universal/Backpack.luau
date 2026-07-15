@@ -91,6 +91,7 @@ UI.Corner.Parent = UI.BackpackBtn
 UI.Backpack = Instance.new("ImageButton")
 UI.Backpack.AnchorPoint = Vector2.new(0.5, 0.5)
 UI.Backpack.AutoButtonColor = true
+UI.Backpack.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 UI.Backpack.BackgroundTransparency = 1
 UI.Backpack.BorderSizePixel = 0
 UI.Backpack.Image = "rbxasset://textures/ui/TopBar/inventoryOff.png"
@@ -346,10 +347,12 @@ local function toggleBackpack()
     isOpen = not isOpen
     if isOpen then
         UI.Backpack.Image = "rbxasset://textures/ui/TopBar/inventoryOn.png"
+        UI.Backpack.BackgroundTransparency = 0.85
         UI.BackpackFrame.Visible = true
         setBackpackTransparency(0)
     else
         UI.Backpack.Image = "rbxasset://textures/ui/TopBar/inventoryOff.png"
+        UI.Backpack.BackgroundTransparency = 1
         setBackpackTransparency(1)
         task.delay(0.2, function()
             if not isOpen then
