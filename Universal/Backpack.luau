@@ -67,9 +67,6 @@ local TopbarPlus = PlayerGui:FindFirstChild("TopbarStandard")
 if TopbarPlus and TopbarPlus:FindFirstChild("Holders") and TopbarPlus.Holders:FindFirstChild("Left") then
     TopbarPlus = TopbarPlus.Holders.Left
 end
-local Fallback = Services.CoreGui:FindFirstChild("TopBarApp")
-if Fallback then Fallback = Fallback:FindFirstChild("TopBarApp") end
-if Fallback then Fallback = Fallback:FindFirstChild("TopBarFrame") end
 
 local UI = {}
 
@@ -79,9 +76,9 @@ UI.BackpackBtn.BackgroundTransparency = 0.08
 UI.BackpackBtn.BorderSizePixel = 0
 UI.BackpackBtn.LayoutOrder = -2147483647
 UI.BackpackBtn.Name = "__TB_Backpack"
-UI.BackpackBtn.Position = UDim2.fromOffset(214, 2)
+UI.BackpackBtn.Position = UDim2.fromOffset(216, 12)
 UI.BackpackBtn.Size = UDim2.fromOffset(44, 44)
-UI.BackpackBtn.Parent = TopbarPlus or Fallback or Hui
+UI.BackpackBtn.Parent = TopbarPlus or Hui
 
 UI.Corner = Instance.new("UICorner")
 UI.Corner.CornerRadius = UDim.new(1, 0)
