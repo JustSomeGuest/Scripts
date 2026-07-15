@@ -94,7 +94,7 @@ UI.Backpack.AutoButtonColor = true
 UI.Backpack.BackgroundTransparency = 1
 UI.Backpack.BorderSizePixel = 0
 UI.Backpack.Image = "rbxasset://textures/ui/TopBar/inventoryOff.png"
-UI.Backpack.Name = "Icon"
+UI.Backpack.Name = "__Backpack"
 UI.Backpack.Position = UDim2.fromScale(0.5, 0.5)
 UI.Backpack.Size = UDim2.fromOffset(36, 36)
 UI.Backpack.Parent = UI.BackpackBtn
@@ -324,6 +324,7 @@ local currentSearch = ""
 local toolOrder = setmetatable({}, {__mode = "k"})
 local orderCounter = 0
 local activeTweens = setmetatable({}, {__mode = "k"})
+local lastEquippedTool = nil
 
 local UnselectedColor = Color3.fromRGB(0, 0, 0)
 local UnselectedTransparency = 0.5
@@ -431,6 +432,10 @@ local function updateInventory()
             slot.SlotLabel.Text = tool.Name
         end
         
+        if tool == lastEquippedTool and tool ~= equippedTool then
+            slot.SlotStroke.Color = SelectedColor
+            slot.SlotStroke.Transparency = SelectedTransparency
+        end
         applySlotSelection(slot, tool == equippedTool)
         
         slot.MouseButton1Click:Connect(function()
@@ -467,6 +472,10 @@ local function updateInventory()
                 slot.SlotLabel.Text = tool.Name
             end
 
+            if tool == lastEquippedTool and tool ~= equippedTool then
+                slot.SlotStroke.Color = SelectedColor
+                slot.SlotStroke.Transparency = SelectedTransparency
+            end
             applySlotSelection(slot, tool == equippedTool)
             
             slot.MouseButton1Click:Connect(function()
@@ -479,6 +488,8 @@ local function updateInventory()
             end)
         end
     end
+
+    lastEquippedTool = equippedTool
 end
 
 local updateQueued = false
