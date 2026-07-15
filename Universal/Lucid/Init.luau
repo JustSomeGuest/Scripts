@@ -904,9 +904,8 @@ Players: %s/%s
 Server Age: %s mins
 Job ID: %s
 
-Executor: %s
 Place ID: %s
-Game ID: %s]], username, displayName, userId, fps, ping, memory, playerCount, maxPlayers, serverAge, jobId, executor, placeId, gameId)
+Game ID: %s]], username, displayName, userId, fps, ping, memory, playerCount, maxPlayers, serverAge, jobId, placeId, gameId)
 
     if UI["InfoLabel"] then
         UI["InfoLabel"]["Text"] = infoText
@@ -1686,7 +1685,6 @@ Players: 0/0
 Server Age: 0 mins
 Job ID: Unknown
 
-Executor: Unknown
 Place ID: 0
 Game ID: Unknown]]
 UI["InfoLabel"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
