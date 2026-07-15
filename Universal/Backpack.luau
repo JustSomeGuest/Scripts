@@ -132,7 +132,6 @@ UI.BackpackFrame.LayoutOrder = 1
 UI.BackpackFrame.Name = "Backpack"
 UI.BackpackFrame.Size = UDim2.new(0.2, 0, 0.3, 0)
 UI.BackpackFrame.Parent = UI.MainUI
-UI.BackpackFrame:SetAttribute("IsBackpackRegion", true)
 
 UI.BackpackCorner = Instance.new("UICorner")
 UI.BackpackCorner.CornerRadius = UDim.new(0, 6)
@@ -264,29 +263,18 @@ UI.HotbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.HotbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 UI.HotbarLayout.Parent = UI.HotbarFrame
 
-UI.SlotWrapperTemplate = Instance.new("Frame")
-UI.SlotWrapperTemplate.BackgroundTransparency = 1
-UI.SlotWrapperTemplate.BorderSizePixel = 0
-UI.SlotWrapperTemplate.Name = "SlotWrapper"
-UI.SlotWrapperTemplate.Size = UDim2.new(0, 44, 1, 0)
-
-UI.SlotWrapperCorner = Instance.new("UICorner")
-UI.SlotWrapperCorner.CornerRadius = UDim.new(0, 6)
-UI.SlotWrapperCorner.Name = "WrapperCorner"
-UI.SlotWrapperCorner.Parent = UI.SlotWrapperTemplate
-
-UI.ToolButtonTemplate = Instance.new("ImageButton")
-UI.ToolButtonTemplate.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-UI.ToolButtonTemplate.BackgroundTransparency = 0.4
-UI.ToolButtonTemplate.BorderSizePixel = 0
-UI.ToolButtonTemplate.LayoutOrder = -1
-UI.ToolButtonTemplate.Name = "Slot"
-UI.ToolButtonTemplate.Size = UDim2.new(0, 44, 1, 0)
+UI.HotbarTemplate = Instance.new("ImageButton")
+UI.HotbarTemplate.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+UI.HotbarTemplate.BackgroundTransparency = 0.4
+UI.HotbarTemplate.BorderSizePixel = 0
+UI.HotbarTemplate.LayoutOrder = -1
+UI.HotbarTemplate.Name = "Slot"
+UI.HotbarTemplate.Size = UDim2.new(0, 44, 1, 0)
 
 UI.HTCorner = Instance.new("UICorner")
 UI.HTCorner.CornerRadius = UDim.new(0, 6)
 UI.HTCorner.Name = "SlotCorner"
-UI.HTCorner.Parent = UI.ToolButtonTemplate
+UI.HTCorner.Parent = UI.HotbarTemplate
 
 UI.HTIcon = Instance.new("ImageLabel")
 UI.HTIcon.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -298,7 +286,7 @@ UI.HTIcon.Name = "SlotIcon"
 UI.HTIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 UI.HTIcon.ScaleType = Enum.ScaleType.Fit
 UI.HTIcon.Size = UDim2.new(1, -8, 1, -8)
-UI.HTIcon.Parent = UI.ToolButtonTemplate
+UI.HTIcon.Parent = UI.HotbarTemplate
 
 UI.HTStroke = Instance.new("UIStroke")
 UI.HTStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
@@ -306,11 +294,11 @@ UI.HTStroke.Color = Color3.fromRGB(0, 0, 0)
 UI.HTStroke.Name = "SlotStroke"
 UI.HTStroke.Thickness = 2
 UI.HTStroke.Transparency = 0.5
-UI.HTStroke.Parent = UI.ToolButtonTemplate
+UI.HTStroke.Parent = UI.HotbarTemplate
 
 UI.HTRatio = Instance.new("UIAspectRatioConstraint")
 UI.HTRatio.Name = "SlotRatio"
-UI.HTRatio.Parent = UI.ToolButtonTemplate
+UI.HTRatio.Parent = UI.HotbarTemplate
 
 UI.HTLabel = Instance.new("TextLabel")
 UI.HTLabel.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -326,9 +314,9 @@ UI.HTLabel.Text = ""
 UI.HTLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 UI.HTLabel.TextScaled = true
 UI.HTLabel.TextWrapped = true
-UI.HTLabel.Parent = UI.ToolButtonTemplate
+UI.HTLabel.Parent = UI.HotbarTemplate
 
-UI.BackpackTemplate = UI.ToolButtonTemplate:Clone()
+UI.BackpackTemplate = UI.HotbarTemplate:Clone()
 UI.BackpackTemplate.Size = UDim2.new(0, 60, 0, 60)
 
 local isOpen = false
@@ -337,23 +325,6 @@ local toolOrder = setmetatable({}, {__mode = "k"})
 local orderCounter = 0
 local activeTweens = setmetatable({}, {__mode = "k"})
 local lastEquippedTool = nil
-
-local HotbarSlotCount = 6
-local GhostColor = Color3.fromRGB(0, 0, 0)
-local GhostTransparency = 0.55
-local hotbarSlots = table.create(HotbarSlotCount, false)
-local hotbarWrappers = {}
-
-local dragState = {
-    Active = false,
-    Started = false,
-    Tool = nil,
-    FromSlot = nil,
-    StartPos = nil,
-    Icon = nil,
-}
-
-local updateInventory
 
 local UnselectedColor = Color3.fromRGB(0, 0, 0)
 local UnselectedTransparency = 0.5
@@ -386,7 +357,6 @@ local function toggleBackpack()
             end
         end)
     end
-    updateInventory()
 end
 
 UI.Backpack.MouseButton1Click:Connect(toggleBackpack)
@@ -415,217 +385,9 @@ local function applySlotSelection(slot, selected)
     tween:Play()
 end
 
-local function styleOccupiedButton(button, tool, equippedTool)
-    if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
-        button.SlotIcon.Image = tool.TextureId
-        button.SlotLabel.Text = ""
-    else
-        button.SlotIcon.Image = ""
-        button.SlotLabel.Text = tool.Name
-    end
-    if tool == lastEquippedTool and tool ~= equippedTool then
-        button.SlotStroke.Color = SelectedColor
-        button.SlotStroke.Transparency = SelectedTransparency
-    end
-    applySlotSelection(button, tool == equippedTool)
-end
-
-local function bindEquipClick(button, tool, ch, equippedTool)
-    button.MouseButton1Click:Connect(function()
-        if tool.Parent == ch then
-            tool.Parent = LocalPlayer.Backpack
-        else
-            if equippedTool then equippedTool.Parent = LocalPlayer.Backpack end
-            tool.Parent = ch
-        end
-    end)
-end
-
-local function isInHotbar(tool)
-    for i = 1, HotbarSlotCount do
-        if hotbarSlots[i] == tool then
-            return true
-        end
-    end
-    return false
-end
-
-local function firstEmptyHotbarSlot()
-    for i = 1, HotbarSlotCount do
-        if not hotbarSlots[i] then
-            return i
-        end
-    end
-    return nil
-end
-
-local function findDropTarget(pos)
-    local hits = PlayerGui:GetGuiObjectsAtPosition(pos.X, pos.Y)
-    for _, obj in ipairs(hits) do
-        local node = obj
-        while node and node ~= PlayerGui do
-            local slotIndex = node:GetAttribute("HotbarSlotIndex")
-            if slotIndex then
-                return "Hotbar", slotIndex
-            end
-            if node:GetAttribute("IsBackpackRegion") then
-                return "Backpack", nil
-            end
-            node = node.Parent
-        end
-    end
-    return nil, nil
-end
-
-local function handleDrop(tool, fromSlot, dropPos)
-    if not tool or (tool.Parent ~= LocalPlayer.Character and tool.Parent ~= LocalPlayer.Backpack) then
-        return
-    end
-
-    local targetType, targetIndex = findDropTarget(dropPos)
-    if not targetType then
-        return
-    end
-
-    if targetType == "Backpack" then
-        if fromSlot.Type == "Hotbar" then
-            hotbarSlots[fromSlot.Index] = false
-        end
-        return
-    end
-
-    if fromSlot.Type == "Hotbar" then
-        if fromSlot.Index == targetIndex then
-            return
-        end
-        hotbarSlots[fromSlot.Index], hotbarSlots[targetIndex] = hotbarSlots[targetIndex], hotbarSlots[fromSlot.Index]
-    else
-        hotbarSlots[targetIndex] = tool
-    end
-end
-
-local function startActualDrag(tool)
-    local icon = Instance.new("ImageLabel")
-    icon.AnchorPoint = Vector2.new(0, 0)
-    icon.BackgroundColor3 = Color3.fromRGB(59, 130, 246)
-    icon.BackgroundTransparency = 0.25
-    icon.BorderSizePixel = 0
-    icon.Name = "DragIcon"
-    icon.ScaleType = Enum.ScaleType.Fit
-    icon.Size = UDim2.fromOffset(44, 44)
-    icon.ZIndex = 1000
-
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 6)
-    corner.Parent = icon
-
-    local label = Instance.new("TextLabel")
-    label.AnchorPoint = Vector2.new(0.5, 0.5)
-    label.BackgroundTransparency = 1
-    label.FontFace = Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-    label.Position = UDim2.fromScale(0.5, 0.5)
-    label.Size = UDim2.new(1, -6, 1, -6)
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.TextScaled = true
-    label.TextWrapped = true
-    label.Text = ""
-    label.Parent = icon
-
-    if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
-        icon.Image = tool.TextureId
-    else
-        label.Text = tool.Name
-    end
-
-    icon.Parent = UI.InvGui
-    dragState.Icon = icon
-end
-
-local function endDrag(dropPos)
-    if dragState.Started then
-        handleDrop(dragState.Tool, dragState.FromSlot, dropPos)
-        updateInventory()
-    end
-    if dragState.Icon then
-        dragState.Icon:Destroy()
-    end
-    dragState.Active = false
-    dragState.Started = false
-    dragState.Tool = nil
-    dragState.FromSlot = nil
-    dragState.StartPos = nil
-    dragState.Icon = nil
-end
-
-local function beginPotentialDrag(tool, sourceInfo, inputPos)
-    if dragState.Active then
-        return
-    end
-    dragState.Active = true
-    dragState.Started = false
-    dragState.Tool = tool
-    dragState.FromSlot = sourceInfo
-    dragState.StartPos = inputPos
-end
-
-local function hookDrag(button, tool, sourceInfo)
-    button.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            beginPotentialDrag(tool, sourceInfo, Vector2.new(input.Position.X, input.Position.Y))
-        end
-    end)
-end
-
-UserInputService.InputChanged:Connect(function(input)
-    if not dragState.Active then
-        return
-    end
-    if input.UserInputType ~= Enum.UserInputType.MouseMovement and input.UserInputType ~= Enum.UserInputType.Touch then
-        return
-    end
-    local currentPos = Vector2.new(input.Position.X, input.Position.Y)
-    if not dragState.Started then
-        if (currentPos - dragState.StartPos).Magnitude > 6 then
-            dragState.Started = true
-            startActualDrag(dragState.Tool)
-            if dragState.FromSlot.Type == "Hotbar" then
-                local wrapper = hotbarWrappers[dragState.FromSlot.Index]
-                if wrapper then
-                    local innerButton = wrapper:FindFirstChild("Slot")
-                    if innerButton then
-                        innerButton.Visible = false
-                    end
-                    wrapper.BackgroundColor3 = GhostColor
-                    wrapper.BackgroundTransparency = GhostTransparency
-                end
-            end
-        end
-    end
-    if dragState.Started and dragState.Icon then
-        dragState.Icon.Position = UDim2.fromOffset(currentPos.X - 22, currentPos.Y - 22)
-    end
-end)
-
-UserInputService.InputEnded:Connect(function(input)
-    if not dragState.Active then
-        return
-    end
-    if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch then
-        return
-    end
-    endDrag(Vector2.new(input.Position.X, input.Position.Y))
-end)
-
-function updateInventory()
-    for i = 1, HotbarSlotCount do
-        local occupant = hotbarSlots[i]
-        if occupant and occupant.Parent ~= LocalPlayer.Character and occupant.Parent ~= LocalPlayer.Backpack then
-            hotbarSlots[i] = false
-        end
-    end
-
+local function updateInventory()
     for _, child in ipairs(UI.HotbarFrame:GetChildren()) do
-        if child:IsA("Frame") then child:Destroy() end
+        if child:IsA("ImageButton") then child:Destroy() end
     end
     for _, child in ipairs(UI.Tools:GetChildren()) do
         if child:IsA("ImageButton") then child:Destroy() end
@@ -633,7 +395,7 @@ function updateInventory()
 
     local ch = LocalPlayer.Character
     local equippedTool = ch and ch:FindFirstChildOfClass("Tool")
-
+    
     local allTools = {}
     for _, tool in ipairs(LocalPlayer.Backpack:GetChildren()) do
         if tool:IsA("Tool") then table.insert(allTools, tool) end
@@ -646,10 +408,6 @@ function updateInventory()
         if not toolOrder[tool] then
             orderCounter = orderCounter + 1
             toolOrder[tool] = orderCounter
-            local slot = firstEmptyHotbarSlot()
-            if slot then
-                hotbarSlots[slot] = tool
-            end
         end
     end
 
@@ -657,65 +415,77 @@ function updateInventory()
         return toolOrder[a] < toolOrder[b]
     end)
 
-    local visibleHotbarCount = 0
-    for i = 1, HotbarSlotCount do
-        if hotbarSlots[i] or isOpen then
-            visibleHotbarCount = visibleHotbarCount + 1
+    local hotbarCount = math.min(#allTools, 6)
+    UI.HotbarFrame.Size = UDim2.new(0, (hotbarCount * 44) + (math.max(0, hotbarCount - 1) * 6), 0, 44)
+
+    for i = 1, hotbarCount do
+        local tool = allTools[i]
+        local slot = UI.HotbarTemplate:Clone()
+        slot.LayoutOrder = i
+        slot.Parent = UI.HotbarFrame
+        
+        if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
+            slot.SlotIcon.Image = tool.TextureId
+            slot.SlotLabel.Text = ""
+        else
+            slot.SlotIcon.Image = ""
+            slot.SlotLabel.Text = tool.Name
         end
-    end
-    UI.HotbarFrame.Size = UDim2.new(0, (visibleHotbarCount * 44) + (math.max(0, visibleHotbarCount - 1) * 6), 0, 44)
-
-    table.clear(hotbarWrappers)
-
-    for i = 1, HotbarSlotCount do
-        local tool = hotbarSlots[i]
-        if tool then
-            local wrapper = UI.SlotWrapperTemplate:Clone()
-            wrapper.LayoutOrder = i
-            wrapper:SetAttribute("HotbarSlotIndex", i)
-            wrapper.Parent = UI.HotbarFrame
-            hotbarWrappers[i] = wrapper
-
-            local button = UI.ToolButtonTemplate:Clone()
-            button.Size = UDim2.new(1, 0, 1, 0)
-            button.Parent = wrapper
-
-            styleOccupiedButton(button, tool, equippedTool)
-            bindEquipClick(button, tool, ch, equippedTool)
-            hookDrag(button, tool, {Type = "Hotbar", Index = i})
-        elseif isOpen then
-            local ghost = UI.SlotWrapperTemplate:Clone()
-            ghost.Name = "GhostSlot"
-            ghost.LayoutOrder = i
-            ghost.BackgroundColor3 = GhostColor
-            ghost.BackgroundTransparency = GhostTransparency
-            ghost.Active = false
-            ghost:SetAttribute("HotbarSlotIndex", i)
-            ghost.Parent = UI.HotbarFrame
-            hotbarWrappers[i] = ghost
+        
+        if tool == lastEquippedTool and tool ~= equippedTool then
+            slot.SlotStroke.Color = SelectedColor
+            slot.SlotStroke.Transparency = SelectedTransparency
         end
+        applySlotSelection(slot, tool == equippedTool)
+        
+        slot.MouseButton1Click:Connect(function()
+            if tool.Parent == ch then
+                tool.Parent = LocalPlayer.Backpack
+            else
+                if equippedTool then equippedTool.Parent = LocalPlayer.Backpack end
+                tool.Parent = ch
+            end
+        end)
     end
 
-    local bpIndex = 0
-    for _, tool in ipairs(allTools) do
-        if not isInHotbar(tool) then
-            local matches = true
-            if currentSearch ~= "" then
-                if not string.find(string.lower(tool.Name), string.lower(currentSearch), 1, true) then
-                    matches = false
+    local bpIndex = 1
+    for i = 7, #allTools do
+        local tool = allTools[i]
+        local matches = true
+        if currentSearch ~= "" then
+            if not string.find(string.lower(tool.Name), string.lower(currentSearch), 1, true) then
+                matches = false
+            end
+        end
+        
+        if matches then
+            local slot = UI.BackpackTemplate:Clone()
+            slot.LayoutOrder = bpIndex
+            slot.Parent = UI.Tools
+            bpIndex = bpIndex + 1
+            
+            if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
+                slot.SlotIcon.Image = tool.TextureId
+                slot.SlotLabel.Text = ""
+            else
+                slot.SlotIcon.Image = ""
+                slot.SlotLabel.Text = tool.Name
+            end
+
+            if tool == lastEquippedTool and tool ~= equippedTool then
+                slot.SlotStroke.Color = SelectedColor
+                slot.SlotStroke.Transparency = SelectedTransparency
+            end
+            applySlotSelection(slot, tool == equippedTool)
+            
+            slot.MouseButton1Click:Connect(function()
+                if tool.Parent == ch then
+                    tool.Parent = LocalPlayer.Backpack
+                else
+                    if equippedTool then equippedTool.Parent = LocalPlayer.Backpack end
+                    tool.Parent = ch
                 end
-            end
-
-            if matches then
-                bpIndex = bpIndex + 1
-                local slot = UI.BackpackTemplate:Clone()
-                slot.LayoutOrder = bpIndex
-                slot.Parent = UI.Tools
-
-                styleOccupiedButton(slot, tool, equippedTool)
-                bindEquipClick(slot, tool, ch, equippedTool)
-                hookDrag(slot, tool, {Type = "Backpack"})
-            end
+            end)
         end
     end
 
@@ -762,10 +532,20 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     if gpe then return end
     local slotNum = hotbarKeys[input.KeyCode]
     if slotNum then
-        local tool = hotbarSlots[slotNum]
+        local ch = LocalPlayer.Character
+        local equippedTool = ch and ch:FindFirstChildOfClass("Tool")
+        local allTools = {}
+        for _, tool in ipairs(LocalPlayer.Backpack:GetChildren()) do
+            if tool:IsA("Tool") then table.insert(allTools, tool) end
+        end
+        if equippedTool then table.insert(allTools, equippedTool) end
+
+        table.sort(allTools, function(a, b)
+            return (toolOrder[a] or 0) < (toolOrder[b] or 0)
+        end)
+        
+        local tool = allTools[slotNum]
         if tool then
-            local ch = LocalPlayer.Character
-            local equippedTool = ch and ch:FindFirstChildOfClass("Tool")
             if tool.Parent == ch then
                 tool.Parent = LocalPlayer.Backpack
             else
