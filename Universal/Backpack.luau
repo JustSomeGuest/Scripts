@@ -89,16 +89,21 @@ UI.Corner.Name = "Corner"
 UI.Corner.Parent = UI.BackpackBtn
 
 UI.Backpack = Instance.new("ImageButton")
-UI.Backpack.AnchorPoint = Vector2.new(0.5, 0.5)
-UI.Backpack.AutoButtonColor = true
-UI.Backpack.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-UI.Backpack.BackgroundTransparency = 1
-UI.Backpack.BorderSizePixel = 0
-UI.Backpack.Image = "rbxasset://textures/ui/TopBar/inventoryOff.png"
-UI.Backpack.Name = "Icon"
-UI.Backpack.Position = UDim2.fromScale(0.5, 0.5)
-UI.Backpack.Size = UDim2.fromOffset(36, 36)
-UI.Backpack.Parent = UI.BackpackBtn
+UI.BackpackIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+UI.BackpackIcon.AutoButtonColor = true
+UI.BackpackIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+UI.BackpackIcon.BackgroundTransparency = 1
+UI.BackpackIcon.BorderSizePixel = 0
+UI.BackpackIcon.Image = "rbxasset://textures/ui/TopBar/inventoryOff.png"
+UI.BackpackIcon.Name = "Icon"
+UI.BackpackIcon.Position = UDim2.fromScale(0.5, 0.5)
+UI.BackpackIcon.Size = UDim2.fromOffset(36, 36)
+UI.BackpackIcon.Parent = UI.BackpackBtn
+
+UI.BackpackIconCorner = Instance.new("UICorner")
+UI.BackpackIconCorner.CornerRadius = UDim.new(1, 0)
+UI.BackpackIconCorner.Name = "IconCorner"
+UI.BackpackIconCorner.Parent = UI.BackpackIcon
 
 UI.InvGui = Instance.new("ScreenGui")
 UI.InvGui.Name = "__Inventory"
@@ -346,13 +351,13 @@ UI.BackpackFrame.GroupTransparency = 1
 local function toggleBackpack()
     isOpen = not isOpen
     if isOpen then
-        UI.Backpack.Image = "rbxasset://textures/ui/TopBar/inventoryOn.png"
-        UI.Backpack.BackgroundTransparency = 0.85
+        UI.BackpackIcon.Image = "rbxasset://textures/ui/TopBar/inventoryOn.png"
+        UI.BackpackIcon.BackgroundTransparency = 0.85
         UI.BackpackFrame.Visible = true
         setBackpackTransparency(0)
     else
-        UI.Backpack.Image = "rbxasset://textures/ui/TopBar/inventoryOff.png"
-        UI.Backpack.BackgroundTransparency = 1
+        UI.BackpackIcon.Image = "rbxasset://textures/ui/TopBar/inventoryOff.png"
+        UI.BackpackIcon.BackgroundTransparency = 1
         setBackpackTransparency(1)
         task.delay(0.2, function()
             if not isOpen then
@@ -362,7 +367,7 @@ local function toggleBackpack()
     end
 end
 
-UI.Backpack.MouseButton1Click:Connect(toggleBackpack)
+UI.BackpackIcon.MouseButton1Click:Connect(toggleBackpack)
 
 pcall(function()
     StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
