@@ -88,7 +88,7 @@ UI.Corner.CornerRadius = UDim.new(1, 0)
 UI.Corner.Name = "Corner"
 UI.Corner.Parent = UI.BackpackBtn
 
-UI.Backpack = Instance.new("ImageButton")
+UI.BackpackIcon = Instance.new("ImageButton")
 UI.BackpackIcon.AnchorPoint = Vector2.new(0.5, 0.5)
 UI.BackpackIcon.AutoButtonColor = true
 UI.BackpackIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
