@@ -82,7 +82,7 @@ UI.BackpackBtn.BackgroundTransparency = 0.08
 UI.BackpackBtn.BorderSizePixel = 0
 UI.BackpackBtn.LayoutOrder = -2147483647
 UI.BackpackBtn.Name = "__BackpackBtn"
-UI.BackpackBtn.Position = UDim2.fromOffset(16, 60)
+UI.BackpackBtn.Position = UDim2.fromOffset(16, 4)
 UI.BackpackBtn.Size = UDim2.fromOffset(44, 44)
 UI.BackpackBtn.Parent = TopbarPlus or UI.InvGui
 
