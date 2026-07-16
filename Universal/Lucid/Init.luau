@@ -374,7 +374,11 @@ local function HideExec()
         end
 
         for _, Obj in ipairs(Parent:GetDescendants()) do
-            if Obj:IsA("ScreenGui") and not Safe[Obj.Name] and IsSus(Obj.Name) then
+            if Obj:IsA("ScreenGui")
+                and Obj.Name ~= "__Inventory"
+                and not Safe[Obj.Name]
+                and IsSus(Obj.Name) then
+
                 pcall(function()
                     Obj.Enabled = false
                 end)
