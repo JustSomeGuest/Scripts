@@ -47,13 +47,13 @@ local UserInputService = Services.UserInputService
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
-Shared.__Inventory = Shared.__Inventory or {}
+Shared.Backpack = Shared.Backpack or {}
 
-if Shared.__Inventory.IsLoaded then
+if Shared.Backpack.IsLoaded then
     pcall(function()
         StarterGui:SetCore("SendNotification", {
-            Title = "Inventory",
-            Text = "Inventory is already running!",
+            Title = "Backpack",
+            Text = "Backpack is already running!",
             Icon = "rbxasset://textures/ui/TopBar/inventoryOn.png",
             Duration = 4
         })
@@ -61,7 +61,7 @@ if Shared.__Inventory.IsLoaded then
     return
 end
 
-Shared.__Inventory.IsLoaded = true
+Shared.Backpack.IsLoaded = true
 
 local TopbarPlus = PlayerGui:FindFirstChild("TopbarStandard")
 if TopbarPlus and TopbarPlus:FindFirstChild("Holders") and TopbarPlus.Holders:FindFirstChild("Left") then
