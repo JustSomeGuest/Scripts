@@ -1,5 +1,5 @@
-if not game:IsLoaded() then 
-    game.Loaded:Wait() 
+if not game:IsLoaded() then
+    game.Loaded:Wait()
 end
 
 local Shared = (function()
@@ -7,56 +7,70 @@ local Shared = (function()
     return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
 end)()
 
-local function expect(expected, value, fallback)
-    if type(value) == expected then
-        return value
+local function expect(ExpectedType, Value, Fallback)
+    if type(Value) == ExpectedType then
+        return Value
     end
 
-    if fallback ~= nil then
-        if type(fallback) == "function" then
+    if Fallback ~= nil then
+        if type(Fallback) == "function" then
             return function(...)
                 warn("[Expect]: Missing executor functionality. Using fallback function.")
-                return fallback(...)
+                return Fallback(...)
             end
         end
 
         warn("[Expect]: Value has unexpected type. Using fallback value.")
     end
 
-    return fallback
+    return Fallback
 end
 
 local cloneref = expect("function", cloneref, function(...) return ... end)
 
 local Services = setmetatable({}, {
-    __index = function(self, name)
-        local success, cache = pcall(function()
-            return cloneref(game:GetService(name))
+    __index = function(Self, Name)
+        local Success, Cache = pcall(function()
+            return cloneref(game:GetService(Name))
         end)
-        if success then
-            rawset(self, name, cache)
-            return cache
+
+        if Success then
+            rawset(Self, Name, Cache)
+            return Cache
         else
-            error("Invalid Service: " .. tostring(name))
+            error("Invalid Service: " .. tostring(Name))
         end
     end
 })
 
-local Success, Hui = pcall(function()
-    return gethui and gethui()
-end)
-
-local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
-
+local Hui = (gethui and gethui()) or Services.CoreGui
+local TweenService = Services.TweenService
 local Players = Services.Players
 local Player = Players.LocalPlayer
 local RunService = Services.RunService
 local HttpService = Services.HttpService
-local TweenService = Services.TweenService
 local UserInputService = Services.UserInputService
 local Stats = Services.Stats
 local MarketplaceService = Services.MarketplaceService
 local StarterGui = Services.StarterGui
+
+local function Tween(Object, Speed, Properties, EasingStyle, EasingDirection)
+    if EasingStyle == nil then
+        EasingStyle = "Quad"
+    end
+
+    if EasingDirection == nil then
+        EasingDirection = "Out"
+    end
+
+    local TweenInformation = TweenInfo.new(
+        Speed,
+        Enum.EasingStyle[EasingStyle],
+        Enum.EasingDirection[EasingDirection]
+    )
+
+    return TweenService:Create(Object, TweenInformation, Properties)
+end
 
 local WriteFile = expect("function", writefile, function() return end)
 local IsFile = expect("function", isfile, function() return end)
@@ -156,7 +170,7 @@ Show.Name = "Show"
 Show.BorderSizePixel = 0
 Show.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Show.Size = UDim2.new(0,40,0,40)
-Show.Visible = false
+Show.Visible = true
 Show.Position = UDim2.new(0, 20, 0, 6)
 Show.Parent = PolariaRM
 
@@ -206,9 +220,10 @@ local Container = Instance.new("Frame")
 Container.Name = "Container"
 Container.BorderSizePixel = 0
 Container.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Container.Size = UDim2.new(0.7, 0, 0.9, 0)
+Container.Size = UDim2.new(0, 0, 0, 0)
 Container.Position = UDim2.new(0, 20, 0, 6)
 Container.BackgroundTransparency = 1
+Container.Visible = false
 Container.Parent = PolariaRM
 
 local Shadow = Instance.new("ImageLabel")
@@ -1356,18 +1371,49 @@ CreditsTab.MouseButton1Click:Connect(function()
 end)
 
 Close.MouseButton1Click:Connect(function()
+    local hideTween = Tween(Container, 0.3, {
+        Size = UDim2.new(0, 0, 0, 0),
+        Position = UDim2.new(0, Container.Position.X.Offset + Container.AbsoluteSize.X/2, 0, Container.Position.Y.Offset + Container.AbsoluteSize.Y/2, 0)
+    }, "Quad", "In")
+    
+    hideTween:Play()
+    hideTween.Completed:Wait()
     PolariaRM:Destroy()
     Shared.PolariaRM.isLoaded = false
 end)
 
 Hide.MouseButton1Click:Connect(function()
+    local hideTween = Tween(Container, 0.3, {
+        Size = UDim2.new(0, 0, 0, 0),
+        Position = UDim2.new(0, Container.Position.X.Offset + Container.AbsoluteSize.X/2, 0, Container.Position.Y.Offset + Container.AbsoluteSize.Y/2, 0)
+    }, "Quad", "In")
+    
+    hideTween:Play()
+    hideTween.Completed:Wait()
     Container.Visible = false
     Show.Visible = true
+    
+    Show.Size = UDim2.new(0, 0, 0, 0)
+    local showTween = Tween(Show, 0.3, {
+        Size = UDim2.new(0, 40, 0, 40)
+    }, "Back", "Out")
+    showTween:Play()
 end)
 
 Show.MouseButton1Click:Connect(function()
-    Container.Visible = true
     Show.Visible = false
+    Container.Visible = true
+    
+    Container.Size = UDim2.new(0, 0, 0, 0)
+    local showTween = Tween(Container, 0.3, {
+        Size = UDim2.new(0.7, 0, 0.9, 0)
+    }, "Back", "Out")
+    showTween:Play()
+    
+    local hideShowTween = Tween(Show, 0.3, {
+        Size = UDim2.new(0, 0, 0, 0)
+    }, "Quad", "In")
+    hideShowTween:Play()
 end)
 
 Container.Visible = false
