@@ -26,7 +26,7 @@ local function expect(ExpectedType, Value, Fallback)
     return Fallback
 end
 
-local cloneref = expect("function", cloneref, function(...) return ... end)
+local cloneref = expect("function", cloneref, function(...) return ... end) or function(v) return v end
 
 local Services = setmetatable({}, {
     __index = function(Self, Name)
@@ -138,10 +138,10 @@ local function load(url, scriptName)
     end
 end
 
-local WriteFile = expect("function", writefile, "writefile")
-local IsFile = expect("function", isfile, "isfile")
-local IsFolder = expect("function", isfolder, "isfolder")
-local MakeFolder = expect("function", makefolder, "makefolder")
+local WriteFile = expect("function", writefile, function() return end)
+local IsFile = expect("function", isfile, function() return false end)
+local IsFolder = expect("function", isfolder, function() return false end)
+local MakeFolder = expect("function", makefolder, function() return end)
 
 local function CheckAudioPackage()
     if not WriteFile or not IsFile or not MakeFolder or not IsFolder then
@@ -667,31 +667,29 @@ UI["EnableAntivoid"], UI["AntivoidToggle"] = MakeToggleButton(UI["ReanimationCon
 
 MakeLabel(UI["ScriptsContent"], "Free Scripts", 1)
 UI["GaleFighter"] = MakeButton(UI["ScriptsContent"], "Gale Fighter", 2)
-UI["Ender"] = MakeButton(UI["ScriptsContent"], "Ender", 3) 
+UI["Ender"] = MakeButton(UI["ScriptsContent"], "Ender", 3)
 UI["Caducus"] = MakeButton(UI["ScriptsContent"], "Caducus", 4)
 
 MakeLabel(UI["ScriptsContent"], "Hat Scripts", 5)
 UI["DualUltima"] = MakeButton(UI["ScriptsContent"], "Dual Ultima", 6)
-UI["GalaxySlasher"] = MakeButton(UI["ScriptsContent"], "Galaxy Slasher (Don't Reanimate)", 7)
-UI["Carnage"] = MakeButton(UI["ScriptsContent"], "Carnage", 8)
-UI["NeptunianV"] = MakeButton(UI["ScriptsContent"], "Neptunian V (Disable Anims)", 9)
-UI["ZenithBattleRifle"] = MakeButton(UI["ScriptsContent"], "Zenith Battle Rifle-70", 10)
-UI["Chips"] = MakeButton(UI["ScriptsContent"], "Chips", 11)
-UI["VoidScythe"] = MakeButton(UI["ScriptsContent"], "Void Scythe", 12)
-UI["VoodooDoll"] = MakeButton(UI["ScriptsContent"], "Voodoo Doll", 13)
-UI["Quenox"] = MakeButton(UI["ScriptsContent"], "Quenox", 14)
-UI["Goner"] = MakeButton(UI["ScriptsContent"], "Goner", 15)
+UI["Carnage"] = MakeButton(UI["ScriptsContent"], "Carnage", 7)
+UI["NeptunianV"] = MakeButton(UI["ScriptsContent"], "Neptunian V (Disable Anims)", 8)
+UI["ZenithBattleRifle"] = MakeButton(UI["ScriptsContent"], "Zenith Battle Rifle-70", 9)
+UI["Chips"] = MakeButton(UI["ScriptsContent"], "Chips", 10)
+UI["VoidScythe"] = MakeButton(UI["ScriptsContent"], "Void Scythe", 11)
+UI["VoodooDoll"] = MakeButton(UI["ScriptsContent"], "Voodoo Doll", 12)
+UI["Quenox"] = MakeButton(UI["ScriptsContent"], "Quenox", 13)
+UI["Goner"] = MakeButton(UI["ScriptsContent"], "Goner", 14)
 
 UI["CopyDualUltimaHats"] = MakeButton(UI["HatsContent"], "Copy Dual Ultima Hat Id(s)", 1)
-UI["CopyGalaxySlasherHats"] = MakeButton(UI["HatsContent"], "Copy Galaxy Slasher Hat Id(s)", 2)
-UI["CopyCarnageHats"] = MakeButton(UI["HatsContent"], "Copy Carnage Hat Id(s)", 3)
-UI["CopyNeptunianVHats"] = MakeButton(UI["HatsContent"], "Copy Neptunian V Hat Id(s)", 4)
-UI["CopyZenithBattleRifleHats"] = MakeButton(UI["HatsContent"], "Copy Zenith Battle Rifle-70 Hat Id(s)", 5)
-UI["CopyChipsHats"] = MakeButton(UI["HatsContent"], "Copy Chips Hat Id(s)", 6)
-UI["CopyVoidScytheHats"] = MakeButton(UI["HatsContent"], "Copy Void Scythe Hat Id(s)", 7)
-UI["CopyVoodooDollHats"] = MakeButton(UI["HatsContent"], "Copy Voodoo Doll Hat Id(s)", 8)
-UI["CopyQuenoxHats"] = MakeButton(UI["HatsContent"], "Copy Quenox Hat Id(s)", 9)
-UI["CopyGonerHats"] = MakeButton(UI["HatsContent"], "Copy Goner Hat Id(s)", 10)
+UI["CopyCarnageHats"] = MakeButton(UI["HatsContent"], "Copy Carnage Hat Id(s)", 2)
+UI["CopyNeptunianVHats"] = MakeButton(UI["HatsContent"], "Copy Neptunian V Hat Id(s)", 3)
+UI["CopyZenithBattleRifleHats"] = MakeButton(UI["HatsContent"], "Copy Zenith Battle Rifle-70 Hat Id(s)", 4)
+UI["CopyChipsHats"] = MakeButton(UI["HatsContent"], "Copy Chips Hat Id(s)", 5)
+UI["CopyVoidScytheHats"] = MakeButton(UI["HatsContent"], "Copy Void Scythe Hat Id(s)", 6)
+UI["CopyVoodooDollHats"] = MakeButton(UI["HatsContent"], "Copy Voodoo Doll Hat Id(s)", 7)
+UI["CopyQuenoxHats"] = MakeButton(UI["HatsContent"], "Copy Quenox Hat Id(s)", 8)
+UI["CopyGonerHats"] = MakeButton(UI["HatsContent"], "Copy Goner Hat Id(s)", 9)
 
 UI["Shiftlock"] = MakeButton(UI["ExtraContent"], "Shiftlock", 1)
 UI["TouchGui"] = MakeButton(UI["ExtraContent"], "TouchGui (Uses Keyboard Keys)", 2)
@@ -919,7 +917,6 @@ if IsGame("Just A Baseplate") then
 
     local hatIdMap = {
         [UI["CopyDualUltimaHats"]] = "4524991457,4820152700",
-        [UI["CopyGalaxySlasherHats"]] = "6202664431",
         [UI["CopyCarnageHats"]] = "5134896593,5410674378",
         [UI["CopyNeptunianVHats"]] = "112934510372081",
         [UI["CopyZenithBattleRifleHats"]] = "4962510729,4962455546",
@@ -968,10 +965,6 @@ else
 
     UI["CopyDualUltimaHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("4524991457,4820152700")
-    end)
-
-    UI["CopyGalaxySlasherHats"]["MouseButton1Click"]:Connect(function()
-        CopyToClipboard("6202664431")
     end)
 
     UI["CopyCarnageHats"]["MouseButton1Click"]:Connect(function()
@@ -1044,17 +1037,6 @@ end)
 
 UI["DualUltima"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/DualUltima.luau", "DualUltima.luau")
-end)
-
-UI["GalaxySlasher"]["MouseButton1Click"]:Connect(function()
-    if IsGame("Just A Baseplate") then
-        local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
-        CmdEvent:FireServer("cmd", "-pd")
-        Wait(2)
-        load(HatScripts .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
-    else
-        load(HatScripts .. "/GalaxySlasher.luau", "GalaxySlasher.luau")
-    end
 end)
 
 UI["Carnage"]["MouseButton1Click"]:Connect(function()
