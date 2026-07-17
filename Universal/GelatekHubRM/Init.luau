@@ -79,7 +79,7 @@ local Modules = Base .. "Modules"
 
 Shared.GelatekHubRM = Shared.GelatekHubRM or {}
 
-if Shared.GelatekHubRM.isLoaded then
+if Shared.GelatekHubRM.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "GelatekHubRM",
         Text = "Gelatek Hub Remastered is already running!",
@@ -88,7 +88,7 @@ if Shared.GelatekHubRM.isLoaded then
     return
 end
 
-Shared.GelatekHubRM.isLoaded = true
+Shared.GelatekHubRM.IsLoaded = true
 
 local function SafeCall(func, ...)
     local ok, result = pcall(func, ...)
@@ -804,13 +804,17 @@ Dragify(UI["Frame"], UI["Main"])
 
 local function HideMain()
     SafeCall(function()
-        Tween(UI["Shadow"], 0.3, { ImageTransparency = 1 }, "Quad", "InOut"):Play()
+        Tween(UI["Main"], 0.3, { Size = UDim2.new(0, 0, 0, 0) }, "Back", "In"):Play()
         Tween(UI["Main"], 0.3, { BackgroundTransparency = 1 }, "Quad", "InOut"):Play()
+        Tween(UI["Shadow"], 0.3, { ImageTransparency = 1 }, "Quad", "InOut"):Play()
         local fadeOut = Tween(UI["Frame"], 0.3, { GroupTransparency = 1 }, "Quad", "InOut")
         fadeOut:Play()
         fadeOut.Completed:Wait()
         UI["Main"]["Visible"] = false
+        UI["Main"]["Size"] = UDim2.new(0.7, 0, 0.9, 0)
+        UI["Main"]["BackgroundTransparency"] = 1
         UI["Show"]["Visible"] = true
+        Tween(UI["Show"], 0.2, { Size = UDim2.new(0, 32, 0, 32) }, "Back", "Out"):Play()
         Tween(UI["Show"], 0.2, { BackgroundTransparency = 0 }, "Quad", "Out"):Play()
     end)
 end
@@ -821,7 +825,10 @@ local function ShowMain()
         fadeOutShow:Play()
         fadeOutShow.Completed:Wait()
         UI["Show"]["Visible"] = false
+        UI["Show"]["Size"] = UDim2.new(0, 0, 0, 0)
         UI["Main"]["Visible"] = true
+        UI["Main"]["Size"] = UDim2.new(0, 0, 0, 0)
+        Tween(UI["Main"], 0.3, { Size = UDim2.new(0.7, 0, 0.9, 0) }, "Back", "Out"):Play()
         Tween(UI["Shadow"], 0.3, { ImageTransparency = 0.2 }, "Quad", "InOut"):Play()
         Tween(UI["Main"], 0.3, { BackgroundTransparency = 1 }, "Quad", "InOut"):Play()
         Tween(UI["Frame"], 0.3, { GroupTransparency = 0 }, "Quad", "InOut"):Play()
@@ -1073,12 +1080,13 @@ end)
 
 UI["Close"]["MouseButton1Click"]:Connect(function()
     SafeCall(function()
-        Tween(UI["Shadow"], 0.3, { ImageTransparency = 1 }, "Quad", "InOut"):Play()
+        Tween(UI["Main"], 0.3, { Size = UDim2.new(0, 0, 0, 0) }, "Back", "In"):Play()
         Tween(UI["Main"], 0.3, { BackgroundTransparency = 1 }, "Quad", "InOut"):Play()
+        Tween(UI["Shadow"], 0.3, { ImageTransparency = 1 }, "Quad", "InOut"):Play()
         local fadeOut = Tween(UI["Frame"], 0.3, { GroupTransparency = 1 }, "Quad", "InOut")
         fadeOut:Play()
         fadeOut.Completed:Wait()
         UI["GelatekHub"]:Destroy()
-        Shared.GelatekHubRM.isLoaded = false
+        Shared.GelatekHubRM.IsLoaded = false
     end)
 end)
