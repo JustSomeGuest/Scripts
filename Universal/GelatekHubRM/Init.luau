@@ -1,5 +1,5 @@
-if not game:IsLoaded() then 
-    game.Loaded:Wait() 
+if not game:IsLoaded() then
+    game.Loaded:Wait()
 end
 
 local Shared = (function()
@@ -7,55 +7,69 @@ local Shared = (function()
     return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
 end)()
 
-local function expect(expected, value, fallback)
-    if type(value) == expected then
-        return value
+local function expect(ExpectedType, Value, Fallback)
+    if type(Value) == ExpectedType then
+        return Value
     end
 
-    if fallback ~= nil then
-        if type(fallback) == "function" then
+    if Fallback ~= nil then
+        if type(Fallback) == "function" then
             return function(...)
                 warn("[Expect]: Missing executor functionality. Using fallback function.")
-                return fallback(...)
+                return Fallback(...)
             end
         end
 
         warn("[Expect]: Value has unexpected type. Using fallback value.")
     end
 
-    return fallback
+    return Fallback
 end
 
 local cloneref = expect("function", cloneref, function(...) return ... end)
 
 local Services = setmetatable({}, {
-    __index = function(self, name)
-        local success, cache = pcall(function()
-            return cloneref(game:GetService(name))
+    __index = function(Self, Name)
+        local Success, Cache = pcall(function()
+            return cloneref(game:GetService(Name))
         end)
-        if success then
-            rawset(self, name, cache)
-            return cache
+
+        if Success then
+            rawset(Self, Name, Cache)
+            return Cache
         else
-            error("Invalid Service: " .. tostring(name))
+            error("Invalid Service: " .. tostring(Name))
         end
     end
 })
 
-local Success, Hui = pcall(function()
-    return gethui and gethui()
-end)
-
-local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
-
+local Hui = (gethui and gethui()) or Services.CoreGui
+local TweenService = Services.TweenService
 local Players = Services.Players
 local ReplicatedStorage = Services.ReplicatedStorage
 local Workspace = Services.Workspace
 local GuiService = Services.GuiService
 local UserInputService = Services.UserInputService
-local TweenService = Services.TweenService
 local MarketplaceService = Services.MarketplaceService
 local StarterGui = Services.StarterGui
+
+local function Tween(Object, Speed, Properties, EasingStyle, EasingDirection)
+    if EasingStyle == nil then
+        EasingStyle = "Quad"
+    end
+
+    if EasingDirection == nil then
+        EasingDirection = "Out"
+    end
+
+    local TweenInformation = TweenInfo.new(
+        Speed,
+        Enum.EasingStyle[EasingStyle],
+        Enum.EasingDirection[EasingDirection]
+    )
+
+    return TweenService:Create(Object, TweenInformation, Properties)
+end
 
 local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM/"
 local Scripts = Base .. "Scripts"
@@ -191,209 +205,211 @@ local function WaitForDeath()
     end)
 end
 
-local GelatekHub = Instance.new("ScreenGui")
-GelatekHub.DisplayOrder = 1
-GelatekHub.Name = "GelatekHub"
-GelatekHub.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-GelatekHub.ResetOnSpawn = false
-GelatekHub.Parent = CoreGui
+local UI = {}
 
-local Show = Instance.new("TextButton")
-Show.TextWrapped = true
-Show.BorderSizePixel = 0
-Show.TextScaled = true
-Show.TextColor3 = Color3.fromRGB(255, 88, 91)
-Show.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Show.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-Show.Size = UDim2.new(0, 32, 0, 32)
-Show.Text = "G"
-Show.Name = "Show"
-Show.Visible = false
-Show.Position = UDim2.new(0, 18, 0, 6)
-Show.Parent = GelatekHub
+UI["GelatekHub"] = Instance.new("ScreenGui")
+UI["GelatekHub"]["DisplayOrder"] = 1
+UI["GelatekHub"]["Name"] = "GelatekHub"
+UI["GelatekHub"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
+UI["GelatekHub"]["ResetOnSpawn"] = false
+UI["GelatekHub"]["Parent"] = Hui
 
-local ShowStroke = Instance.new("UIStroke")
-ShowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-ShowStroke.Color = Color3.fromRGB(255, 88, 91)
-ShowStroke.Parent = Show
+UI["Show"] = Instance.new("TextButton")
+UI["Show"]["TextWrapped"] = true
+UI["Show"]["BorderSizePixel"] = 0
+UI["Show"]["TextScaled"] = true
+UI["Show"]["TextColor3"] = Color3.fromRGB(255, 88, 91)
+UI["Show"]["BackgroundColor3"] = Color3.fromRGB(31, 31, 31)
+UI["Show"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["Show"]["Size"] = UDim2.new(0, 32, 0, 32)
+UI["Show"]["Text"] = "G"
+UI["Show"]["Name"] = "Show"
+UI["Show"]["Visible"] = false
+UI["Show"]["Position"] = UDim2.new(0, 18, 0, 6)
+UI["Show"]["Parent"] = UI["GelatekHub"]
 
-local ShowCorner = Instance.new("UICorner")
-ShowCorner.CornerRadius = UDim.new(0, 4)
-ShowCorner.Parent = Show
+UI["ShowStroke"] = Instance.new("UIStroke")
+UI["ShowStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+UI["ShowStroke"]["Color"] = Color3.fromRGB(255, 88, 91)
+UI["ShowStroke"]["Parent"] = UI["Show"]
 
-local Main = Instance.new("Frame")
-Main.BorderSizePixel = 0
-Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Main.Size = UDim2.new(0.7, 0, 0.9, 0)
-Main.Position = UDim2.new(0, 18, 0, 6)
-Main.Name = "Main"
-Main.BackgroundTransparency = 1
-Main.Parent = GelatekHub
+UI["ShowCorner"] = Instance.new("UICorner")
+UI["ShowCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["ShowCorner"]["Parent"] = UI["Show"]
 
-local Shadow = Instance.new("ImageLabel")
-Shadow.BorderSizePixel = 0
-Shadow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Shadow.ImageTransparency = 0.2
-Shadow.AnchorPoint = Vector2.new(0.5, 0.5)
-Shadow.Image = "rbxassetid://15298624572"
-Shadow.Size = UDim2.new(1.059, 0, 1.088, 0)
-Shadow.BackgroundTransparency = 1
-Shadow.Name = "Shadow"
-Shadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-Shadow.Parent = Main
+UI["Main"] = Instance.new("Frame")
+UI["Main"]["BorderSizePixel"] = 0
+UI["Main"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Main"]["Size"] = UDim2.new(0.7, 0, 0.9, 0)
+UI["Main"]["Position"] = UDim2.new(0, 18, 0, 6)
+UI["Main"]["Name"] = "Main"
+UI["Main"]["BackgroundTransparency"] = 1
+UI["Main"]["Parent"] = UI["GelatekHub"]
 
-local Frame = Instance.new("CanvasGroup")
-Frame.ZIndex = 2
-Frame.BorderSizePixel = 0
-Frame.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Frame.Size = UDim2.new(1, 0, 1, 0)
-Frame.Name = "Frame"
-Frame.Parent = Main
+UI["Shadow"] = Instance.new("ImageLabel")
+UI["Shadow"]["BorderSizePixel"] = 0
+UI["Shadow"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Shadow"]["ImageTransparency"] = 0.2
+UI["Shadow"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+UI["Shadow"]["Image"] = "rbxassetid://15298624572"
+UI["Shadow"]["Size"] = UDim2.new(1.059, 0, 1.088, 0)
+UI["Shadow"]["BackgroundTransparency"] = 1
+UI["Shadow"]["Name"] = "Shadow"
+UI["Shadow"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
+UI["Shadow"]["Parent"] = UI["Main"]
 
-local FrameCorner = Instance.new("UICorner")
-FrameCorner.CornerRadius = UDim.new(0, 4)
-FrameCorner.Parent = Frame
+UI["Frame"] = Instance.new("CanvasGroup")
+UI["Frame"]["ZIndex"] = 2
+UI["Frame"]["BorderSizePixel"] = 0
+UI["Frame"]["BackgroundColor3"] = Color3.fromRGB(31, 31, 31)
+UI["Frame"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["Frame"]["Name"] = "Frame"
+UI["Frame"]["Parent"] = UI["Main"]
 
-local FrameLayout = Instance.new("UIListLayout")
-FrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-FrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-FrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
-FrameLayout.Parent = Frame
+UI["FrameCorner"] = Instance.new("UICorner")
+UI["FrameCorner"]["CornerRadius"] = UDim.new(0, 4)
+UI["FrameCorner"]["Parent"] = UI["Frame"]
 
-local Topbar = Instance.new("Frame")
-Topbar.BorderSizePixel = 0
-Topbar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Topbar.Size = UDim2.new(1, 0, 0.1, 0)
-Topbar.Name = "Topbar"
-Topbar.LayoutOrder = 1
-Topbar.BackgroundTransparency = 1
-Topbar.Parent = Frame
+UI["FrameLayout"] = Instance.new("UIListLayout")
+UI["FrameLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["FrameLayout"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["FrameLayout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["FrameLayout"]["Parent"] = UI["Frame"]
 
-local TopbarLayout = Instance.new("UIListLayout")
-TopbarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-TopbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-TopbarLayout.Padding = UDim.new(0, 4)
-TopbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
-TopbarLayout.FillDirection = Enum.FillDirection.Horizontal
-TopbarLayout.Parent = Topbar
+UI["Topbar"] = Instance.new("Frame")
+UI["Topbar"]["BorderSizePixel"] = 0
+UI["Topbar"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Topbar"]["Size"] = UDim2.new(1, 0, 0.1, 0)
+UI["Topbar"]["Name"] = "Topbar"
+UI["Topbar"]["LayoutOrder"] = 1
+UI["Topbar"]["BackgroundTransparency"] = 1
+UI["Topbar"]["Parent"] = UI["Frame"]
 
-local TopbarPadding = Instance.new("UIPadding")
-TopbarPadding.PaddingTop = UDim.new(0, 4)
-TopbarPadding.PaddingRight = UDim.new(0, 4)
-TopbarPadding.PaddingLeft = UDim.new(0, 4)
-TopbarPadding.PaddingBottom = UDim.new(0, 4)
-TopbarPadding.Parent = Topbar
+UI["TopbarLayout"] = Instance.new("UIListLayout")
+UI["TopbarLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["TopbarLayout"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["TopbarLayout"]["Padding"] = UDim.new(0, 4)
+UI["TopbarLayout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["TopbarLayout"]["FillDirection"] = Enum.FillDirection.Horizontal
+UI["TopbarLayout"]["Parent"] = UI["Topbar"]
 
-local Title = Instance.new("TextLabel")
-Title.TextWrapped = true
-Title.TextSize = 14
-Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.TextScaled = true
-Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Title.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-Title.TextColor3 = Color3.fromRGB(255, 88, 91)
-Title.BackgroundTransparency = 1
-Title.Size = UDim2.new(0.8, 0, 1, 0)
-Title.Text = "Gelatek Hub Remastered • " .. MarketplaceService:GetProductInfo(game.PlaceId).Name
-Title.LayoutOrder = 1
-Title.Name = "Title"
-Title.Parent = Topbar
+UI["TopbarPadding"] = Instance.new("UIPadding")
+UI["TopbarPadding"]["PaddingTop"] = UDim.new(0, 4)
+UI["TopbarPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["TopbarPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["TopbarPadding"]["PaddingBottom"] = UDim.new(0, 4)
+UI["TopbarPadding"]["Parent"] = UI["Topbar"]
 
-local TitlePadding = Instance.new("UIPadding")
-TitlePadding.PaddingTop = UDim.new(0, 1)
-TitlePadding.PaddingBottom = UDim.new(0, 1)
-TitlePadding.Parent = Title
+UI["Title"] = Instance.new("TextLabel")
+UI["Title"]["TextWrapped"] = true
+UI["Title"]["TextSize"] = 14
+UI["Title"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["Title"]["TextScaled"] = true
+UI["Title"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Title"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["Title"]["TextColor3"] = Color3.fromRGB(255, 88, 91)
+UI["Title"]["BackgroundTransparency"] = 1
+UI["Title"]["Size"] = UDim2.new(0.8, 0, 1, 0)
+UI["Title"]["Text"] = "Gelatek Hub Remastered • " .. MarketplaceService:GetProductInfo(game.PlaceId).Name
+UI["Title"]["LayoutOrder"] = 1
+UI["Title"]["Name"] = "Title"
+UI["Title"]["Parent"] = UI["Topbar"]
 
-local Hide = Instance.new("TextButton")
-Hide.TextWrapped = true
-Hide.BorderSizePixel = 0
-Hide.TextScaled = true
-Hide.TextColor3 = Color3.fromRGB(255, 88, 91)
-Hide.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Hide.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-Hide.BackgroundTransparency = 1
-Hide.Size = UDim2.new(0.2, 0, 1, 0)
-Hide.LayoutOrder = 2
-Hide.Text = "-"
-Hide.Name = "Hide"
-Hide.Parent = Topbar
+UI["TitlePadding"] = Instance.new("UIPadding")
+UI["TitlePadding"]["PaddingTop"] = UDim.new(0, 1)
+UI["TitlePadding"]["PaddingBottom"] = UDim.new(0, 1)
+UI["TitlePadding"]["Parent"] = UI["Title"]
 
-local HideRatio = Instance.new("UIAspectRatioConstraint")
-HideRatio.Parent = Hide
+UI["Hide"] = Instance.new("TextButton")
+UI["Hide"]["TextWrapped"] = true
+UI["Hide"]["BorderSizePixel"] = 0
+UI["Hide"]["TextScaled"] = true
+UI["Hide"]["TextColor3"] = Color3.fromRGB(255, 88, 91)
+UI["Hide"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Hide"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["Hide"]["BackgroundTransparency"] = 1
+UI["Hide"]["Size"] = UDim2.new(0.2, 0, 1, 0)
+UI["Hide"]["LayoutOrder"] = 2
+UI["Hide"]["Text"] = "-"
+UI["Hide"]["Name"] = "Hide"
+UI["Hide"]["Parent"] = UI["Topbar"]
 
-local Close = Instance.new("TextButton")
-Close.TextWrapped = true
-Close.BorderSizePixel = 0
-Close.TextScaled = true
-Close.TextColor3 = Color3.fromRGB(255, 88, 91)
-Close.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Close.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-Close.BackgroundTransparency = 1
-Close.Size = UDim2.new(0.2, 0, 1, 0)
-Close.LayoutOrder = 3
-Close.Text = "×"
-Close.Name = "Close"
-Close.Parent = Topbar
+UI["HideRatio"] = Instance.new("UIAspectRatioConstraint")
+UI["HideRatio"]["Parent"] = UI["Hide"]
 
-local CloseRatio = Instance.new("UIAspectRatioConstraint")
-CloseRatio.Parent = Close
+UI["Close"] = Instance.new("TextButton")
+UI["Close"]["TextWrapped"] = true
+UI["Close"]["BorderSizePixel"] = 0
+UI["Close"]["TextScaled"] = true
+UI["Close"]["TextColor3"] = Color3.fromRGB(255, 88, 91)
+UI["Close"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Close"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["Close"]["BackgroundTransparency"] = 1
+UI["Close"]["Size"] = UDim2.new(0.2, 0, 1, 0)
+UI["Close"]["LayoutOrder"] = 3
+UI["Close"]["Text"] = "×"
+UI["Close"]["Name"] = "Close"
+UI["Close"]["Parent"] = UI["Topbar"]
 
-local FrameContent = Instance.new("Frame")
-FrameContent.BorderSizePixel = 0
-FrameContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-FrameContent.Size = UDim2.new(1, 0, 0.9, 0)
-FrameContent.Name = "FrameContent"
-FrameContent.LayoutOrder = 2
-FrameContent.BackgroundTransparency = 1
-FrameContent.Parent = Frame
+UI["CloseRatio"] = Instance.new("UIAspectRatioConstraint")
+UI["CloseRatio"]["Parent"] = UI["Close"]
 
-local FrameContentLayout = Instance.new("UIListLayout")
-FrameContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-FrameContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-FrameContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-FrameContentLayout.FillDirection = Enum.FillDirection.Horizontal
-FrameContentLayout.Parent = FrameContent
+UI["FrameContent"] = Instance.new("Frame")
+UI["FrameContent"]["BorderSizePixel"] = 0
+UI["FrameContent"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["FrameContent"]["Size"] = UDim2.new(1, 0, 0.9, 0)
+UI["FrameContent"]["Name"] = "FrameContent"
+UI["FrameContent"]["LayoutOrder"] = 2
+UI["FrameContent"]["BackgroundTransparency"] = 1
+UI["FrameContent"]["Parent"] = UI["Frame"]
 
-local Tabs = Instance.new("ScrollingFrame")
-Tabs.ScrollingDirection = Enum.ScrollingDirection.Y
-Tabs.BorderSizePixel = 0
-Tabs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Tabs.Name = "Tabs"
-Tabs.AutomaticCanvasSize = Enum.AutomaticSize.Y
-Tabs.Size = UDim2.new(0.25, 0, 1, 0)
-Tabs.ScrollBarThickness = 0
-Tabs.LayoutOrder = 1
-Tabs.BackgroundTransparency = 1
-Tabs.Parent = FrameContent
+UI["FrameContentLayout"] = Instance.new("UIListLayout")
+UI["FrameContentLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["FrameContentLayout"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+UI["FrameContentLayout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["FrameContentLayout"]["FillDirection"] = Enum.FillDirection.Horizontal
+UI["FrameContentLayout"]["Parent"] = UI["FrameContent"]
 
-local TabsLayout = Instance.new("UIListLayout")
-TabsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-TabsLayout.Padding = UDim.new(0, 9)
-TabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-TabsLayout.Parent = Tabs
+UI["Tabs"] = Instance.new("ScrollingFrame")
+UI["Tabs"]["ScrollingDirection"] = Enum.ScrollingDirection.Y
+UI["Tabs"]["BorderSizePixel"] = 0
+UI["Tabs"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Tabs"]["Name"] = "Tabs"
+UI["Tabs"]["AutomaticCanvasSize"] = Enum.AutomaticSize.Y
+UI["Tabs"]["Size"] = UDim2.new(0.25, 0, 1, 0)
+UI["Tabs"]["ScrollBarThickness"] = 0
+UI["Tabs"]["LayoutOrder"] = 1
+UI["Tabs"]["BackgroundTransparency"] = 1
+UI["Tabs"]["Parent"] = UI["FrameContent"]
 
-local TabsPadding = Instance.new("UIPadding")
-TabsPadding.PaddingTop = UDim.new(0, 4)
-TabsPadding.PaddingRight = UDim.new(0, 4)
-TabsPadding.PaddingLeft = UDim.new(0, 4)
-TabsPadding.PaddingBottom = UDim.new(0, 4)
-TabsPadding.Parent = Tabs
+UI["TabsLayout"] = Instance.new("UIListLayout")
+UI["TabsLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+UI["TabsLayout"]["Padding"] = UDim.new(0, 9)
+UI["TabsLayout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["TabsLayout"]["Parent"] = UI["Tabs"]
 
-local Contents = Instance.new("Frame")
-Contents.BorderSizePixel = 0
-Contents.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Contents.Size = UDim2.new(0.75, 0, 1, 0)
-Contents.Name = "Contents"
-Contents.LayoutOrder = 2
-Contents.BackgroundTransparency = 1
-Contents.Parent = FrameContent
+UI["TabsPadding"] = Instance.new("UIPadding")
+UI["TabsPadding"]["PaddingTop"] = UDim.new(0, 4)
+UI["TabsPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["TabsPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["TabsPadding"]["PaddingBottom"] = UDim.new(0, 4)
+UI["TabsPadding"]["Parent"] = UI["Tabs"]
 
-local ContentsPadding = Instance.new("UIPadding")
-ContentsPadding.PaddingTop = UDim.new(0, 4)
-ContentsPadding.PaddingRight = UDim.new(0, 4)
-ContentsPadding.PaddingLeft = UDim.new(0, 4)
-ContentsPadding.PaddingBottom = UDim.new(0, 4)
-ContentsPadding.Parent = Contents
+UI["Contents"] = Instance.new("Frame")
+UI["Contents"]["BorderSizePixel"] = 0
+UI["Contents"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Contents"]["Size"] = UDim2.new(0.75, 0, 1, 0)
+UI["Contents"]["Name"] = "Contents"
+UI["Contents"]["LayoutOrder"] = 2
+UI["Contents"]["BackgroundTransparency"] = 1
+UI["Contents"]["Parent"] = UI["FrameContent"]
+
+UI["ContentsPadding"] = Instance.new("UIPadding")
+UI["ContentsPadding"]["PaddingTop"] = UDim.new(0, 4)
+UI["ContentsPadding"]["PaddingRight"] = UDim.new(0, 4)
+UI["ContentsPadding"]["PaddingLeft"] = UDim.new(0, 4)
+UI["ContentsPadding"]["PaddingBottom"] = UDim.new(0, 4)
+UI["ContentsPadding"]["Parent"] = UI["Contents"]
 
 local function MakeScrollContent(name, layoutOrder, scrollbarThickness)
     local sf = Instance.new("ScrollingFrame")
@@ -409,7 +425,7 @@ local function MakeScrollContent(name, layoutOrder, scrollbarThickness)
     sf.ScrollBarThickness = scrollbarThickness or 0
     sf.LayoutOrder = layoutOrder
     sf.BackgroundTransparency = 1
-    sf.Parent = Contents
+    sf.Parent = UI["Contents"]
     local layout = Instance.new("UIListLayout")
     layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
     layout.Padding = UDim.new(0, 4)
@@ -418,13 +434,13 @@ local function MakeScrollContent(name, layoutOrder, scrollbarThickness)
     return sf
 end
 
-local HomeContent = MakeScrollContent("HomeContent", 1, 5)
-HomeContent.Visible = true
-local ReanimationContent = MakeScrollContent("ReanimationContent", 2, 0)
-local ScriptsContent = MakeScrollContent("ScriptsContent", 3, 0)
-local HatsContent = MakeScrollContent("HatsContent", 4, 0)
-local ExtraContent = MakeScrollContent("ExtraContent", 5, 0)
-local CreditsContent = MakeScrollContent("CreditsContent", 6, 5)
+UI["HomeContent"] = MakeScrollContent("HomeContent", 1, 5)
+UI["HomeContent"]["Visible"] = true
+UI["ReanimationContent"] = MakeScrollContent("ReanimationContent", 2, 0)
+UI["ScriptsContent"] = MakeScrollContent("ScriptsContent", 3, 0)
+UI["HatsContent"] = MakeScrollContent("HatsContent", 4, 0)
+UI["ExtraContent"] = MakeScrollContent("ExtraContent", 5, 0)
+UI["CreditsContent"] = MakeScrollContent("CreditsContent", 6, 5)
 
 local function MakeDivider(parent, layoutOrder)
     local d = Instance.new("Frame")
@@ -595,121 +611,121 @@ local function MakeTabButton(parent, text, layoutOrder)
     return btn, underlay, lbl
 end
 
-local Welcome = Instance.new("Frame")
-Welcome.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
-Welcome.Size = UDim2.new(0, 300, 0, 31)
-Welcome.Name = "Welcome"
-Welcome.LayoutOrder = 1
-Welcome.Parent = HomeContent
-Instance.new("UICorner", Welcome).CornerRadius = UDim.new(0, 4)
-MakePadding(Welcome)
+UI["Welcome"] = Instance.new("Frame")
+UI["Welcome"]["BackgroundColor3"] = Color3.fromRGB(43, 43, 43)
+UI["Welcome"]["Size"] = UDim2.new(0, 300, 0, 31)
+UI["Welcome"]["Name"] = "Welcome"
+UI["Welcome"]["LayoutOrder"] = 1
+UI["Welcome"]["Parent"] = UI["HomeContent"]
+Instance.new("UICorner", UI["Welcome"]).CornerRadius = UDim.new(0, 4)
+MakePadding(UI["Welcome"])
 
-local WelcomeLabel = Instance.new("TextLabel")
-WelcomeLabel.TextWrapped = true
-WelcomeLabel.TextXAlignment = Enum.TextXAlignment.Left
-WelcomeLabel.TextScaled = true
-WelcomeLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-WelcomeLabel.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-WelcomeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-WelcomeLabel.BackgroundTransparency = 1
-WelcomeLabel.Size = UDim2.new(1, 0, 1, 0)
-WelcomeLabel.Text = "Hello! Thanks for using our hub. We hope you enjoy it!"
-WelcomeLabel.Parent = Welcome
+UI["WelcomeLabel"] = Instance.new("TextLabel")
+UI["WelcomeLabel"]["TextWrapped"] = true
+UI["WelcomeLabel"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["WelcomeLabel"]["TextScaled"] = true
+UI["WelcomeLabel"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["WelcomeLabel"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+UI["WelcomeLabel"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["WelcomeLabel"]["BackgroundTransparency"] = 1
+UI["WelcomeLabel"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["WelcomeLabel"]["Text"] = "Hello! Thanks for using our hub. We hope you enjoy it!"
+UI["WelcomeLabel"]["Parent"] = UI["Welcome"]
 
-local Version = Instance.new("Frame")
-Version.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
-Version.Size = UDim2.new(0, 300, 0, 31)
-Version.Name = "Version"
-Version.LayoutOrder = 2
-Version.Parent = HomeContent
-Instance.new("UICorner", Version).CornerRadius = UDim.new(0, 4)
-MakePadding(Version)
+UI["Version"] = Instance.new("Frame")
+UI["Version"]["BackgroundColor3"] = Color3.fromRGB(43, 43, 43)
+UI["Version"]["Size"] = UDim2.new(0, 300, 0, 31)
+UI["Version"]["Name"] = "Version"
+UI["Version"]["LayoutOrder"] = 2
+UI["Version"]["Parent"] = UI["HomeContent"]
+Instance.new("UICorner", UI["Version"]).CornerRadius = UDim.new(0, 4)
+MakePadding(UI["Version"])
 
-local VersionLabel = Instance.new("TextLabel")
-VersionLabel.TextWrapped = true
-VersionLabel.TextXAlignment = Enum.TextXAlignment.Left
-VersionLabel.TextScaled = true
-VersionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-VersionLabel.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-VersionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-VersionLabel.BackgroundTransparency = 1
-VersionLabel.Size = UDim2.new(1, 0, 1, 0)
-VersionLabel.Text = "Current Version: 1.2"
-VersionLabel.Parent = Version
+UI["VersionLabel"] = Instance.new("TextLabel")
+UI["VersionLabel"]["TextWrapped"] = true
+UI["VersionLabel"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["VersionLabel"]["TextScaled"] = true
+UI["VersionLabel"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["VersionLabel"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+UI["VersionLabel"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["VersionLabel"]["BackgroundTransparency"] = 1
+UI["VersionLabel"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["VersionLabel"]["Text"] = "Current Version: 1.2"
+UI["VersionLabel"]["Parent"] = UI["Version"]
 
-local ReanimateBtn = MakeButton(ReanimationContent, "Reanimate", 1)
-local Deanimate = MakeButton(ReanimationContent, "Deanimate", 2)
-MakeDivider(ReanimationContent, 3)
-local EnablePermadeath, PermadeathToggle = MakeToggleButton(ReanimationContent, "Permanent Death", 4)
-local EnableTorsoFling, TorsoFlingToggle = MakeToggleButton(ReanimationContent, "Torso Fling", 5)
-local EnableBulletFling, BulletFlingToggle = MakeToggleButton(ReanimationContent, "Bullet Fling", 6)
-local EnableCollisions, CollisionsToggle = MakeToggleButton(ReanimationContent, "Collisions", 7)
-local EnableNetless, NetlessToggle = MakeToggleButton(ReanimationContent, "Keep Hats Attached", 8)
-local EnableHeadless, HeadlessToggle = MakeToggleButton(ReanimationContent, "Headless On Permadeath", 9)
-local DisableAnims, DisableAnimsToggle = MakeToggleButton(ReanimationContent, "Disable Animations", 10)
-local EnableAntivoid, AntivoidToggle = MakeToggleButton(ReanimationContent, "Antivoid", 11)
+UI["ReanimateBtn"] = MakeButton(UI["ReanimationContent"], "Reanimate", 1)
+UI["Deanimate"] = MakeButton(UI["ReanimationContent"], "Deanimate", 2)
+MakeDivider(UI["ReanimationContent"], 3)
+UI["EnablePermadeath"], UI["PermadeathToggle"] = MakeToggleButton(UI["ReanimationContent"], "Permanent Death", 4)
+UI["EnableTorsoFling"], UI["TorsoFlingToggle"] = MakeToggleButton(UI["ReanimationContent"], "Torso Fling", 5)
+UI["EnableBulletFling"], UI["BulletFlingToggle"] = MakeToggleButton(UI["ReanimationContent"], "Bullet Fling", 6)
+UI["EnableCollisions"], UI["CollisionsToggle"] = MakeToggleButton(UI["ReanimationContent"], "Collisions", 7)
+UI["EnableNetless"], UI["NetlessToggle"] = MakeToggleButton(UI["ReanimationContent"], "Keep Hats Attached", 8)
+UI["EnableHeadless"], UI["HeadlessToggle"] = MakeToggleButton(UI["ReanimationContent"], "Headless On Permadeath", 9)
+UI["DisableAnims"], UI["DisableAnimsToggle"] = MakeToggleButton(UI["ReanimationContent"], "Disable Animations", 10)
+UI["EnableAntivoid"], UI["AntivoidToggle"] = MakeToggleButton(UI["ReanimationContent"], "Antivoid", 11)
 
-MakeLabel(ScriptsContent, "Free Scripts", 1)
-local GaleFighter = MakeButton(ScriptsContent, "Gale Fighter", 2)
-local Ender = MakeButton(ScriptsContent, "Ender", 3) 
-local Caducus = MakeButton(ScriptsContent, "Caducus", 4)
+MakeLabel(UI["ScriptsContent"], "Free Scripts", 1)
+UI["GaleFighter"] = MakeButton(UI["ScriptsContent"], "Gale Fighter", 2)
+UI["Ender"] = MakeButton(UI["ScriptsContent"], "Ender", 3) 
+UI["Caducus"] = MakeButton(UI["ScriptsContent"], "Caducus", 4)
 
-MakeLabel(ScriptsContent, "Hat Scripts", 5)
-local DualUltima = MakeButton(ScriptsContent, "Dual Ultima", 6)
-local GalaxySlasher = MakeButton(ScriptsContent, "Galaxy Slasher (Don't Reanimate)", 7)
-local Carnage = MakeButton(ScriptsContent, "Carnage", 8)
-local NeptunianV = MakeButton(ScriptsContent, "Neptunian V (Disable Anims)", 9)
-local ZenithBattleRifle = MakeButton(ScriptsContent, "Zenith Battle Rifle-70", 10)
-local Chips = MakeButton(ScriptsContent, "Chips", 11)
-local VoidScythe = MakeButton(ScriptsContent, "Void Scythe", 12)
-local VoodooDoll = MakeButton(ScriptsContent, "Voodoo Doll", 13)
-local Quenox = MakeButton(ScriptsContent, "Quenox", 14)
-local Goner = MakeButton(ScriptsContent, "Goner", 15)
+MakeLabel(UI["ScriptsContent"], "Hat Scripts", 5)
+UI["DualUltima"] = MakeButton(UI["ScriptsContent"], "Dual Ultima", 6)
+UI["GalaxySlasher"] = MakeButton(UI["ScriptsContent"], "Galaxy Slasher (Don't Reanimate)", 7)
+UI["Carnage"] = MakeButton(UI["ScriptsContent"], "Carnage", 8)
+UI["NeptunianV"] = MakeButton(UI["ScriptsContent"], "Neptunian V (Disable Anims)", 9)
+UI["ZenithBattleRifle"] = MakeButton(UI["ScriptsContent"], "Zenith Battle Rifle-70", 10)
+UI["Chips"] = MakeButton(UI["ScriptsContent"], "Chips", 11)
+UI["VoidScythe"] = MakeButton(UI["ScriptsContent"], "Void Scythe", 12)
+UI["VoodooDoll"] = MakeButton(UI["ScriptsContent"], "Voodoo Doll", 13)
+UI["Quenox"] = MakeButton(UI["ScriptsContent"], "Quenox", 14)
+UI["Goner"] = MakeButton(UI["ScriptsContent"], "Goner", 15)
 
-local CopyDualUltimaHats = MakeButton(HatsContent, "Copy Dual Ultima Hat Id(s)", 1)
-local CopyGalaxySlasherHats = MakeButton(HatsContent, "Copy Galaxy Slasher Hat Id(s)", 2)
-local CopyCarnageHats = MakeButton(HatsContent, "Copy Carnage Hat Id(s)", 3)
-local CopyNeptunianVHats = MakeButton(HatsContent, "Copy Neptunian V Hat Id(s)", 4)
-local CopyZenithBattleRifleHats = MakeButton(HatsContent, "Copy Zenith Battle Rifle-70 Hat Id(s)", 5)
-local CopyChipsHats = MakeButton(HatsContent, "Copy Chips Hat Id(s)", 6)
-local CopyVoidScytheHats = MakeButton(HatsContent, "Copy Void Scythe Hat Id(s)", 7)
-local CopyVoodooDollHats = MakeButton(HatsContent, "Copy Voodoo Doll Hat Id(s)", 8)
-local CopyQuenoxHats = MakeButton(HatsContent, "Copy Quenox Hat Id(s)", 9)
-local CopyGonerHats = MakeButton(HatsContent, "Copy Goner Hat Id(s)", 10)
+UI["CopyDualUltimaHats"] = MakeButton(UI["HatsContent"], "Copy Dual Ultima Hat Id(s)", 1)
+UI["CopyGalaxySlasherHats"] = MakeButton(UI["HatsContent"], "Copy Galaxy Slasher Hat Id(s)", 2)
+UI["CopyCarnageHats"] = MakeButton(UI["HatsContent"], "Copy Carnage Hat Id(s)", 3)
+UI["CopyNeptunianVHats"] = MakeButton(UI["HatsContent"], "Copy Neptunian V Hat Id(s)", 4)
+UI["CopyZenithBattleRifleHats"] = MakeButton(UI["HatsContent"], "Copy Zenith Battle Rifle-70 Hat Id(s)", 5)
+UI["CopyChipsHats"] = MakeButton(UI["HatsContent"], "Copy Chips Hat Id(s)", 6)
+UI["CopyVoidScytheHats"] = MakeButton(UI["HatsContent"], "Copy Void Scythe Hat Id(s)", 7)
+UI["CopyVoodooDollHats"] = MakeButton(UI["HatsContent"], "Copy Voodoo Doll Hat Id(s)", 8)
+UI["CopyQuenoxHats"] = MakeButton(UI["HatsContent"], "Copy Quenox Hat Id(s)", 9)
+UI["CopyGonerHats"] = MakeButton(UI["HatsContent"], "Copy Goner Hat Id(s)", 10)
 
-local Shiftlock = MakeButton(ExtraContent, "Shiftlock", 1)
-local TouchGui = MakeButton(ExtraContent, "TouchGui (Uses Keyboard Keys)", 2)
-local Keyboard = MakeButton(ExtraContent, "Mobile Keyboard", 3)
+UI["Shiftlock"] = MakeButton(UI["ExtraContent"], "Shiftlock", 1)
+UI["TouchGui"] = MakeButton(UI["ExtraContent"], "TouchGui (Uses Keyboard Keys)", 2)
+UI["Keyboard"] = MakeButton(UI["ExtraContent"], "Mobile Keyboard", 3)
 
-local CreditsLabel = Instance.new("TextLabel")
-CreditsLabel.TextWrapped = true
-CreditsLabel.TextXAlignment = Enum.TextXAlignment.Left
-CreditsLabel.TextSize = 14
-CreditsLabel.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
-CreditsLabel.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-CreditsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-CreditsLabel.RichText = true
-CreditsLabel.Size = UDim2.new(1, 0, 0, 0)
-CreditsLabel.Text = "<b>Original Creator:</b> Gelatekussy\n<b>Remastered By:</b> JustAGuest\n\n<b>Special Thanks:</b> Everyone who supported Gelatek Hub.\n\nThis remaster is based on the original Gelatek Hub. Full credit for the original project and its foundation belongs to Gelatekussy."
-CreditsLabel.AutomaticSize = Enum.AutomaticSize.Y
-CreditsLabel.LayoutOrder = 1
-CreditsLabel.Parent = CreditsContent
-MakePadding(CreditsLabel)
-Instance.new("UICorner", CreditsLabel).CornerRadius = UDim.new(0, 4)
+UI["CreditsLabel"] = Instance.new("TextLabel")
+UI["CreditsLabel"]["TextWrapped"] = true
+UI["CreditsLabel"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["CreditsLabel"]["TextSize"] = 14
+UI["CreditsLabel"]["BackgroundColor3"] = Color3.fromRGB(43, 43, 43)
+UI["CreditsLabel"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+UI["CreditsLabel"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["CreditsLabel"]["RichText"] = true
+UI["CreditsLabel"]["Size"] = UDim2.new(1, 0, 0, 0)
+UI["CreditsLabel"]["Text"] = "<b>Original Creator:</b> Gelatekussy\n<b>Remastered By:</b> JustAGuest\n\n<b>Special Thanks:</b> Everyone who supported Gelatek Hub.\n\nThis remaster is based on the original Gelatek Hub. Full credit for the original project and its foundation belongs to Gelatekussy."
+UI["CreditsLabel"]["AutomaticSize"] = Enum.AutomaticSize.Y
+UI["CreditsLabel"]["LayoutOrder"] = 1
+UI["CreditsLabel"]["Parent"] = UI["CreditsContent"]
+MakePadding(UI["CreditsLabel"])
+Instance.new("UICorner", UI["CreditsLabel"]).CornerRadius = UDim.new(0, 4)
 
-local HomeTab, HomeTabUnderlay, HomeTabLabel = MakeTabButton(Tabs, "Home", 1)
-HomeTabLabel.TextTransparency = 0
-HomeTabUnderlay.Size = UDim2.new(1, 0, 0, 2)
+UI["HomeTab"], UI["HomeTabUnderlay"], UI["HomeTabLabel"] = MakeTabButton(UI["Tabs"], "Home", 1)
+UI["HomeTabLabel"]["TextTransparency"] = 0
+UI["HomeTabUnderlay"]["Size"] = UDim2.new(1, 0, 0, 2)
 
-local ReanimationTab, ReanimationTabUnderlay, ReanimationTabLabel = MakeTabButton(Tabs, "Reanimation", 2)
-local ScriptsTab, ScriptsTabUnderlay, ScriptsTabLabel = MakeTabButton(Tabs, "Scripts", 3)
-local HatsTab, HatsTabUnderlay, HatsTabLabel = MakeTabButton(Tabs, "Hats", 4)
-local ExtraTab, ExtraTabUnderlay, ExtraTabLabel = MakeTabButton(Tabs, "Extra", 5)
-local CreditsTab, CreditsTabUnderlay, CreditsTabLabel = MakeTabButton(Tabs, "Credits", 6)
+UI["ReanimationTab"], UI["ReanimationTabUnderlay"], UI["ReanimationTabLabel"] = MakeTabButton(UI["Tabs"], "Reanimation", 2)
+UI["ScriptsTab"], UI["ScriptsTabUnderlay"], UI["ScriptsTabLabel"] = MakeTabButton(UI["Tabs"], "Scripts", 3)
+UI["HatsTab"], UI["HatsTabUnderlay"], UI["HatsTabLabel"] = MakeTabButton(UI["Tabs"], "Hats", 4)
+UI["ExtraTab"], UI["ExtraTabUnderlay"], UI["ExtraTabLabel"] = MakeTabButton(UI["Tabs"], "Extra", 5)
+UI["CreditsTab"], UI["CreditsTabUnderlay"], UI["CreditsTabLabel"] = MakeTabButton(UI["Tabs"], "Credits", 6)
 
 local function TweenUnderlay(underlay, sizeX)
     local ok, tween = SafeCall(function()
-        return TweenService:Create(underlay, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        return Tween(underlay, 0.2, {
             Size = UDim2.new(sizeX, 0, 0, 2)
         })
     end)
@@ -718,7 +734,7 @@ end
 
 local function TweenText(label, transparency)
     local ok, tween = SafeCall(function()
-        return TweenService:Create(label, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        return Tween(label, 0.2, {
             TextTransparency = transparency
         })
     end)
@@ -785,45 +801,45 @@ local function Dragify(DragObject, MoveObject)
     end)
 end
 
-Dragify(Show)
-Dragify(Frame, Main)
+Dragify(UI["Show"])
+Dragify(UI["Frame"], UI["Main"])
 
 local function HideMain()
     SafeCall(function()
-        TweenService:Create(Shadow, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { ImageTransparency = 1 }):Play()
-        TweenService:Create(Main, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { BackgroundTransparency = 1 }):Play()
-        local fadeOut = TweenService:Create(Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { GroupTransparency = 1 })
+        Tween(UI["Shadow"], 0.3, { ImageTransparency = 1 }, "Quad", "InOut"):Play()
+        Tween(UI["Main"], 0.3, { BackgroundTransparency = 1 }, "Quad", "InOut"):Play()
+        local fadeOut = Tween(UI["Frame"], 0.3, { GroupTransparency = 1 }, "Quad", "InOut")
         fadeOut:Play()
         fadeOut.Completed:Wait()
-        Main.Visible = false
-        Show.Visible = true
-        TweenService:Create(Show, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 }):Play()
+        UI["Main"]["Visible"] = false
+        UI["Show"]["Visible"] = true
+        Tween(UI["Show"], 0.2, { BackgroundTransparency = 0 }, "Quad", "Out"):Play()
     end)
 end
 
 local function ShowMain()
     SafeCall(function()
-        local fadeOutShow = TweenService:Create(Show, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 1 })
+        local fadeOutShow = Tween(UI["Show"], 0.2, { BackgroundTransparency = 1 }, "Quad", "Out")
         fadeOutShow:Play()
         fadeOutShow.Completed:Wait()
-        Show.Visible = false
-        Main.Visible = true
-        TweenService:Create(Shadow, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { ImageTransparency = 0.2 }):Play()
-        TweenService:Create(Main, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { BackgroundTransparency = 1 }):Play()
-        TweenService:Create(Frame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { GroupTransparency = 0 }):Play()
+        UI["Show"]["Visible"] = false
+        UI["Main"]["Visible"] = true
+        Tween(UI["Shadow"], 0.3, { ImageTransparency = 0.2 }, "Quad", "InOut"):Play()
+        Tween(UI["Main"], 0.3, { BackgroundTransparency = 1 }, "Quad", "InOut"):Play()
+        Tween(UI["Frame"], 0.3, { GroupTransparency = 0 }, "Quad", "InOut"):Play()
     end)
 end
 
-Hide.MouseButton1Click:Connect(HideMain)
-Show.MouseButton1Click:Connect(ShowMain)
+UI["Hide"]["MouseButton1Click"]:Connect(HideMain)
+UI["Show"]["MouseButton1Click"]:Connect(ShowMain)
 
 local TabMap = {
-    Home = { Content = HomeContent, Underlay = HomeTabUnderlay, Label = HomeTabLabel },
-    Reanimation = { Content = ReanimationContent, Underlay = ReanimationTabUnderlay, Label = ReanimationTabLabel },
-    Scripts = { Content = ScriptsContent, Underlay = ScriptsTabUnderlay, Label = ScriptsTabLabel },
-    Hats = { Content = HatsContent, Underlay = HatsTabUnderlay, Label = HatsTabLabel },
-    Extra = { Content = ExtraContent, Underlay = ExtraTabUnderlay, Label = ExtraTabLabel },
-    Credits = { Content = CreditsContent, Underlay = CreditsTabUnderlay, Label = CreditsTabLabel },
+    Home = { Content = UI["HomeContent"], Underlay = UI["HomeTabUnderlay"], Label = UI["HomeTabLabel"] },
+    Reanimation = { Content = UI["ReanimationContent"], Underlay = UI["ReanimationTabUnderlay"], Label = UI["ReanimationTabLabel"] },
+    Scripts = { Content = UI["ScriptsContent"], Underlay = UI["ScriptsTabUnderlay"], Label = UI["ScriptsTabLabel"] },
+    Hats = { Content = UI["HatsContent"], Underlay = UI["HatsTabUnderlay"], Label = UI["HatsTabLabel"] },
+    Extra = { Content = UI["ExtraContent"], Underlay = UI["ExtraTabUnderlay"], Label = UI["ExtraTabLabel"] },
+    Credits = { Content = UI["CreditsContent"], Underlay = UI["CreditsTabUnderlay"], Label = UI["CreditsTabLabel"] },
 }
 
 local function SelectTab(tabName)
@@ -840,12 +856,12 @@ local function SelectTab(tabName)
     end
 end
 
-HomeTab.MouseButton1Click:Connect(function() SelectTab("Home") end)
-ReanimationTab.MouseButton1Click:Connect(function() SelectTab("Reanimation") end)
-ScriptsTab.MouseButton1Click:Connect(function() SelectTab("Scripts") end)
-HatsTab.MouseButton1Click:Connect(function() SelectTab("Hats") end)
-ExtraTab.MouseButton1Click:Connect(function() SelectTab("Extra") end)
-CreditsTab.MouseButton1Click:Connect(function() SelectTab("Credits") end)
+UI["HomeTab"]["MouseButton1Click"]:Connect(function() SelectTab("Home") end)
+UI["ReanimationTab"]["MouseButton1Click"]:Connect(function() SelectTab("Reanimation") end)
+UI["ScriptsTab"]["MouseButton1Click"]:Connect(function() SelectTab("Scripts") end)
+UI["HatsTab"]["MouseButton1Click"]:Connect(function() SelectTab("Hats") end)
+UI["ExtraTab"]["MouseButton1Click"]:Connect(function() SelectTab("Extra") end)
+UI["CreditsTab"]["MouseButton1Click"]:Connect(function() SelectTab("Credits") end)
 
 SelectTab("Home")
 
@@ -866,19 +882,19 @@ local function MakeToggle(button, toggleFrame, configKey)
     end)
 end
 
-MakeToggle(EnablePermadeath, PermadeathToggle, "PermanentDeath")
-MakeToggle(EnableTorsoFling, TorsoFlingToggle, "TorsoFling")
-MakeToggle(EnableBulletFling, BulletFlingToggle, "BulletFling")
-MakeToggle(EnableCollisions, CollisionsToggle, "EnableCollisions")
-MakeToggle(EnableNetless, NetlessToggle, "KeepHatsAttached")
-MakeToggle(EnableHeadless, HeadlessToggle, "HeadlessOnPerma")
-MakeToggle(EnableAntivoid, AntivoidToggle, "Antivoid")
-MakeToggle(DisableAnims, DisableAnimsToggle, "DisableAnims")
+MakeToggle(UI["EnablePermadeath"], UI["PermadeathToggle"], "PermanentDeath")
+MakeToggle(UI["EnableTorsoFling"], UI["TorsoFlingToggle"], "TorsoFling")
+MakeToggle(UI["EnableBulletFling"], UI["BulletFlingToggle"], "BulletFling")
+MakeToggle(UI["EnableCollisions"], UI["CollisionsToggle"], "EnableCollisions")
+MakeToggle(UI["EnableNetless"], UI["NetlessToggle"], "KeepHatsAttached")
+MakeToggle(UI["EnableHeadless"], UI["HeadlessToggle"], "HeadlessOnPerma")
+MakeToggle(UI["EnableAntivoid"], UI["AntivoidToggle"], "Antivoid")
+MakeToggle(UI["DisableAnims"], UI["DisableAnimsToggle"], "DisableAnims")
 
 if IsGame("Just A Baseplate") then
     local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
 
-    ReanimateBtn.MouseButton1Click:Connect(function()
+    UI["ReanimateBtn"]["MouseButton1Click"]:Connect(function()
         if Shared.GelatekHubConfig.PermanentDeath then
             CmdEvent:FireServer("cmd", "-pd")
         end
@@ -902,16 +918,16 @@ if IsGame("Just A Baseplate") then
     end)
 
     local hatIdMap = {
-        [CopyDualUltimaHats] = "4524991457,4820152700",
-        [CopyGalaxySlasherHats] = "6202664431",
-        [CopyCarnageHats] = "5134896593,5410674378",
-        [CopyNeptunianVHats] = "112934510372081",
-        [CopyZenithBattleRifleHats] = "4962510729,4962455546",
-        [CopyChipsHats] = "4964938812",
-        [CopyVoidScytheHats] = "5414429551",
-        [CopyVoodooDollHats] = "7218265043,7170689370",
-        [CopyQuenoxHats] = "4820152700,4794315940,4524991457,4315489767,4458601937,4506945409",
-        [CopyGonerHats] = "6869866014",
+        [UI["CopyDualUltimaHats"]] = "4524991457,4820152700",
+        [UI["CopyGalaxySlasherHats"]] = "6202664431",
+        [UI["CopyCarnageHats"]] = "5134896593,5410674378",
+        [UI["CopyNeptunianVHats"]] = "112934510372081",
+        [UI["CopyZenithBattleRifleHats"]] = "4962510729,4962455546",
+        [UI["CopyChipsHats"]] = "4964938812",
+        [UI["CopyVoidScytheHats"]] = "5414429551",
+        [UI["CopyVoodooDollHats"]] = "7218265043,7170689370",
+        [UI["CopyQuenoxHats"]] = "4820152700,4794315940,4524991457,4315489767,4458601937,4506945409",
+        [UI["CopyGonerHats"]] = "6869866014",
     }
 
     for btn, ids in pairs(hatIdMap) do
@@ -950,87 +966,87 @@ else
         end)
     end
 
-    CopyDualUltimaHats.MouseButton1Click:Connect(function()
+    UI["CopyDualUltimaHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("4524991457,4820152700")
     end)
 
-    CopyGalaxySlasherHats.MouseButton1Click:Connect(function()
+    UI["CopyGalaxySlasherHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("6202664431")
     end)
 
-    CopyCarnageHats.MouseButton1Click:Connect(function()
+    UI["CopyCarnageHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("5134896593,5410674378")
     end)
 
-    CopyNeptunianVHats.MouseButton1Click:Connect(function()
+    UI["CopyNeptunianVHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("112934510372081")
     end)
 
-    CopyZenithBattleRifleHats.MouseButton1Click:Connect(function()
+    UI["CopyZenithBattleRifleHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("4962510729,4962455546")
     end)
 
-    CopyChipsHats.MouseButton1Click:Connect(function()
+    UI["CopyChipsHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("4964938812")
     end)
 
-    CopyVoidScytheHats.MouseButton1Click:Connect(function()
+    UI["CopyVoidScytheHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("5414429551")
     end)
 
-    CopyVoodooDollHats.MouseButton1Click:Connect(function()
+    UI["CopyVoodooDollHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("7218265043,7170689370")
     end)
 
-    CopyQuenoxHats.MouseButton1Click:Connect(function()
+    UI["CopyQuenoxHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("4820152700,4794315940,4524991457,4315489767,4458601937,4506945409")
     end)
 
-    CopyGonerHats.MouseButton1Click:Connect(function()
+    UI["CopyGonerHats"]["MouseButton1Click"]:Connect(function()
         CopyToClipboard("6869866014")
     end)
 end
 
-Deanimate.MouseButton1Click:Connect(BetterStopScript)
+UI["Deanimate"]["MouseButton1Click"]:Connect(BetterStopScript)
 
-GaleFighter.MouseButton1Click:Connect(function()
+UI["GaleFighter"]["MouseButton1Click"]:Connect(function()
     load(FreeScripts .. "/GaleFighter.luau", "GaleFighter.luau")
 end)
 
-Ender.MouseButton1Click:Connect(function()
+UI["Ender"]["MouseButton1Click"]:Connect(function()
     load(FreeScripts .. "/Ender.luau", "Ender.luau")
 end)
 
-Caducus.MouseButton1Click:Connect(function()
+UI["Caducus"]["MouseButton1Click"]:Connect(function()
     load(FreeScripts .. "/Caducus.luau", "Caducus.luau")
 end)
 
-Shiftlock.MouseButton1Click:Connect(function()
+UI["Shiftlock"]["MouseButton1Click"]:Connect(function()
     load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau", "Init.luau")
     SafeCall(function()
         Init.Shiftlock()
     end)
 end)
 
-TouchGui.MouseButton1Click:Connect(function()
+UI["TouchGui"]["MouseButton1Click"]:Connect(function()
     load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau", "Init.luau")
     SafeCall(function()
         Init.TouchGui()
     end)
 end)
 
-Keyboard.MouseButton1Click:Connect(function()
+UI["Keyboard"]["MouseButton1Click"]:Connect(function()
     load("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau", "Init.luau")
     SafeCall(function()
         Init.DeltaKD()
     end)
 end)
 
-DualUltima.MouseButton1Click:Connect(function()
+UI["DualUltima"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/DualUltima.luau", "DualUltima.luau")
 end)
 
-GalaxySlasher.MouseButton1Click:Connect(function()
+UI["GalaxySlasher"]["MouseButton1Click"]:Connect(function()
     if IsGame("Just A Baseplate") then
         local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
         CmdEvent:FireServer("cmd", "-pd")
@@ -1041,41 +1057,46 @@ GalaxySlasher.MouseButton1Click:Connect(function()
     end
 end)
 
-Carnage.MouseButton1Click:Connect(function()
+UI["Carnage"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/Carnage.luau", "Carnage.luau")
 end)
 
-NeptunianV.MouseButton1Click:Connect(function()
+UI["NeptunianV"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/Neptunian.luau", "Neptunian.luau")
 end)
 
-ZenithBattleRifle.MouseButton1Click:Connect(function()
+UI["ZenithBattleRifle"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/ZenithAttackRifle.luau", "ZenithAttackRifle.luau")
 end)
 
-Chips.MouseButton1Click:Connect(function()
+UI["Chips"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/Chips.luau", "Chips.luau")
 end)
 
-VoidScythe.MouseButton1Click:Connect(function()
+UI["VoidScythe"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/VoidScythe.luau", "VoidScythe.luau")
 end)
 
-VoodooDoll.MouseButton1Click:Connect(function()
+UI["VoodooDoll"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/VoodooDoll.luau", "VoodooDoll.luau")
 end)
 
-Quenox.MouseButton1Click:Connect(function()
+UI["Quenox"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/Quenox.luau", "Quenox.luau")
 end)
 
-Goner.MouseButton1Click:Connect(function()
+UI["Goner"]["MouseButton1Click"]:Connect(function()
     load(HatScripts .. "/Goner.luau", "Goner.luau")
 end)
 
-Close.MouseButton1Click:Connect(function()
+UI["Close"]["MouseButton1Click"]:Connect(function()
     SafeCall(function()
-        GelatekHub:Destroy()
+        Tween(UI["Shadow"], 0.3, { ImageTransparency = 1 }, "Quad", "InOut"):Play()
+        Tween(UI["Main"], 0.3, { BackgroundTransparency = 1 }, "Quad", "InOut"):Play()
+        local fadeOut = Tween(UI["Frame"], 0.3, { GroupTransparency = 1 }, "Quad", "InOut")
+        fadeOut:Play()
+        fadeOut.Completed:Wait()
+        UI["GelatekHub"]:Destroy()
         Shared.GelatekHubRM.isLoaded = false
     end)
-end)
+  end
