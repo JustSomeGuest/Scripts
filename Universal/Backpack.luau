@@ -296,6 +296,7 @@ UI["HotbarTemplate"]["BorderSizePixel"] = 0
 UI["HotbarTemplate"]["LayoutOrder"] = -1
 UI["HotbarTemplate"]["Name"] = "Slot"
 UI["HotbarTemplate"]["Size"] = UDim2.new(0, 44, 1, 0)
+UI["HotbarTemplate"]["Visible"] = false
 UI["HotbarTemplate"]["Parent"] = UI["HotbarFrame"]
 
 UI["HTCorner"] = Instance.new("UICorner")
@@ -345,6 +346,7 @@ UI["HTLabel"]["Parent"] = UI["HotbarTemplate"]
 
 UI["BackpackTemplate"] = UI["HotbarTemplate"]:Clone()
 UI["BackpackTemplate"]["Size"] = UDim2.new(0, 60, 0, 60)
+UI["BackpackTemplate"]["Visible"] = false
 UI["BackpackTemplate"]["Parent"] = UI["Tools"]
 
 local isOpen = false
@@ -454,6 +456,7 @@ local function updateInventory()
     for i = 1, hotbarCount do
         local tool = allTools[i]
         local slot = UI["HotbarTemplate"]:Clone()
+        slot["Visible"] = true
         slot["LayoutOrder"] = i
         slot["Parent"] = UI["HotbarFrame"]
         
@@ -493,6 +496,7 @@ local function updateInventory()
         
         if matches then
             local slot = UI["BackpackTemplate"]:Clone()
+            slot["Visible"] = true
             slot["LayoutOrder"] = bpIndex
             slot["Parent"] = UI["Tools"]
             bpIndex = bpIndex + 1
