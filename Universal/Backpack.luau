@@ -70,13 +70,13 @@ local function Tween(Object, Speed, Properties, EasingStyle, EasingDirection)
     return TweenService:Create(Object, TweenInformation, Properties)
 end
 
-Shared.Inventory = Shared.Inventory or {}
+Shared.Backpack = Shared.Backpack or {}
 
-if Shared.Inventory.IsLoaded then
+if Shared.Backpack.IsLoaded then
     pcall(function()
         StarterGui:SetCore("SendNotification", {
-            Title = "Inventory",
-            Text = "Inventory is already running!",
+            Title = "Backpack",
+            Text = "Backpack is already running!",
             Icon = "rbxasset://textures/ui/TopBar/inventoryOn.png",
             Duration = 4
         })
@@ -84,7 +84,7 @@ if Shared.Inventory.IsLoaded then
     return
 end
 
-Shared.Inventory.IsLoaded = true
+Shared.Backpack.IsLoaded = true
 
 local TopbarPlus = PlayerGui:FindFirstChild("TopbarStandard")
 if TopbarPlus and TopbarPlus:FindFirstChild("Holders") and TopbarPlus.Holders:FindFirstChild("Left") then
@@ -296,6 +296,7 @@ UI["HotbarTemplate"]["BorderSizePixel"] = 0
 UI["HotbarTemplate"]["LayoutOrder"] = -1
 UI["HotbarTemplate"]["Name"] = "Slot"
 UI["HotbarTemplate"]["Size"] = UDim2.new(0, 44, 1, 0)
+UI["HotbarTemplate"]["Parent"] = UI["HotbarFrame"]
 
 UI["HTCorner"] = Instance.new("UICorner")
 UI["HTCorner"]["CornerRadius"] = UDim.new(0, 6)
@@ -344,6 +345,7 @@ UI["HTLabel"]["Parent"] = UI["HotbarTemplate"]
 
 UI["BackpackTemplate"] = UI["HotbarTemplate"]:Clone()
 UI["BackpackTemplate"]["Size"] = UDim2.new(0, 60, 0, 60)
+UI["BackpackTemplate"]["Parent"] = UI["Tools"]
 
 local isOpen = false
 local currentSearch = ""
@@ -358,7 +360,8 @@ local SelectedColor = Color3.fromRGB(59, 130, 246)
 local SelectedTransparency = 0
 
 local function setBackpackTransparency(target)
-    Tween(UI["BackpackFrame"], 0.2, {GroupTransparency = target})
+    local tween = Tween(UI["BackpackFrame"], 0.2, {GroupTransparency = target})
+    tween:Play()
 end
 
 UI["BackpackFrame"]["Visible"] = false
@@ -370,12 +373,14 @@ local function toggleBackpack()
         UI["BackpackIcon"]["Image"] = "rbxasset://textures/ui/TopBar/inventoryOn.png"
         UI["BackpackIcon"]["BackgroundTransparency"] = 0.85
         UI["BackpackFrame"]["Visible"] = true
-        setBackpackTransparency(0)
+        local tween = Tween(UI["BackpackFrame"], 0.2, {GroupTransparency = 0})
+        tween:Play()
     else
         UI["BackpackIcon"]["Image"] = "rbxasset://textures/ui/TopBar/inventoryOff.png"
         UI["BackpackIcon"]["BackgroundTransparency"] = 1
-        setBackpackTransparency(1)
-        task.delay(0.2, function()
+        local tween = Tween(UI["BackpackFrame"], 0.2, {GroupTransparency = 1})
+        tween:Play()
+        task.delay(0.25, function()
             if not isOpen then
                 UI["BackpackFrame"]["Visible"] = false
             end
@@ -411,10 +416,14 @@ end
 
 local function updateInventory()
     for _, child in ipairs(UI["HotbarFrame"]:GetChildren()) do
-        if child:IsA("ImageButton") then child:Destroy() end
+        if child:IsA("ImageButton") and child ~= UI["HotbarTemplate"] then 
+            child:Destroy() 
+        end
     end
     for _, child in ipairs(UI["Tools"]:GetChildren()) do
-        if child:IsA("ImageButton") then child:Destroy() end
+        if child:IsA("ImageButton") and child ~= UI["BackpackTemplate"] then 
+            child:Destroy() 
+        end
     end
 
     local ch = LocalPlayer.Character
@@ -436,7 +445,7 @@ local function updateInventory()
     end
 
     table.sort(allTools, function(a, b)
-        return toolOrder[a] < toolOrder[b]
+        return (toolOrder[a] or 0) < (toolOrder[b] or 0)
     end)
 
     local hotbarCount = math.min(#allTools, 6)
@@ -535,7 +544,9 @@ local function hookChar(char)
     updateInventory()
 end
 
-if LocalPlayer.Character then task.spawn(hookChar, LocalPlayer.Character) end
+if LocalPlayer.Character then 
+    task.spawn(hookChar, LocalPlayer.Character) 
+end
 LocalPlayer["CharacterAdded"]:Connect(hookChar)
 
 UI["SearchBox"]:GetPropertyChangedSignal("Text"):Connect(function()
