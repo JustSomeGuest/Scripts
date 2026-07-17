@@ -12,7 +12,7 @@ local Init = Shared.Init
 
 local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/"
 
-local function GetScript(URL)
+local function Get(URL)
     local Success, Response = pcall(game.HttpGetAsync, game, URL)
 
     if not Success then
@@ -55,10 +55,10 @@ local Scripts = {
 for Name, Path in pairs(Scripts) do
     Init[Name] = function()
         coroutine.wrap(function()
-            GetScript(Repo .. "Welcome.luau")
+            Get(Repo .. "Welcome.luau")
         end)()
 
-        return GetScript(Repo .. Path)
+        return Get(Repo .. Path)
     end
 end
 
