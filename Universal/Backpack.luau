@@ -70,13 +70,13 @@ local function Tween(Object, Speed, Properties, EasingStyle, EasingDirection)
     return TweenService:Create(Object, TweenInformation, Properties)
 end
 
-Shared.Backpack = Shared.Backpack or {}
+Shared.Inventory = Shared.Inventory or {}
 
-if Shared.Backpack.IsLoaded then
+if Shared.Inventory.IsLoaded then
     pcall(function()
         StarterGui:SetCore("SendNotification", {
-            Title = "Backpack",
-            Text = "Backpack is already running!",
+            Title = "Inventory",
+            Text = "Inventory is already running!",
             Icon = "rbxasset://textures/ui/TopBar/inventoryOn.png",
             Duration = 4
         })
@@ -84,7 +84,7 @@ if Shared.Backpack.IsLoaded then
     return
 end
 
-Shared.Backpack.IsLoaded = true
+Shared.Inventory.IsLoaded = true
 
 local TopbarPlus = PlayerGui:FindFirstChild("TopbarStandard")
 if TopbarPlus and TopbarPlus:FindFirstChild("Holders") and TopbarPlus.Holders:FindFirstChild("Left") then
