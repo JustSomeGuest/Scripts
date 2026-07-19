@@ -132,66 +132,57 @@ local function CreateBlacklistUI(UserData)
 
     UI["BlacklistUI"] = Instance.new("ScreenGui")
     UI["BlacklistUI"]["Name"] = [[BlacklistUI]]
-    UI["BlacklistUI"]["IgnoreGuiInset"] = true
     UI["BlacklistUI"]["DisplayOrder"] = 999
+    UI["BlacklistUI"]["IgnoreGuiInset"] = true
     UI["BlacklistUI"]["ResetOnSpawn"] = false
     UI["BlacklistUI"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
     UI["BlacklistUI"]["Parent"] = Hui
 
-    UI["Background"] = Instance.new("Frame")
-    UI["Background"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
-    UI["Background"]["BackgroundTransparency"] = 0.5
-    UI["Background"]["BorderSizePixel"] = 0
-    UI["Background"]["Name"] = [[Background]]
-    UI["Background"]["Size"] = UDim2.new(1, 0, 1, 0)
-    UI["Background"]["Parent"] = UI["BlacklistUI"]
-
     UI["Frame"] = Instance.new("Frame")
     UI["Frame"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
-    UI["Frame"]["BackgroundColor3"] = Color3.fromRGB(20, 20, 20)
-    UI["Frame"]["BackgroundTransparency"] = 0
+    UI["Frame"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
     UI["Frame"]["BorderSizePixel"] = 0
     UI["Frame"]["Name"] = [[Frame]]
     UI["Frame"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
     UI["Frame"]["Size"] = UDim2.new(0, 0, 0, 0)
     UI["Frame"]["Parent"] = UI["BlacklistUI"]
 
-    UI["Corner"] = Instance.new("UICorner")
-    UI["Corner"]["CornerRadius"] = UDim.new(0, 8)
-    UI["Corner"]["Name"] = [[Corner]]
-    UI["Corner"]["Parent"] = UI["Frame"]
+    UI["FrameCorner"] = Instance.new("UICorner")
+    UI["FrameCorner"]["CornerRadius"] = UDim.new(0, 4)
+    UI["FrameCorner"]["Name"] = [[FrameCorner]]
+    UI["FrameCorner"]["Parent"] = UI["Frame"]
 
-    UI["Layout"] = Instance.new("UIListLayout")
-    UI["Layout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
-    UI["Layout"]["Name"] = [[Layout]]
-    UI["Layout"]["Padding"] = UDim.new(0, 12)
-    UI["Layout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
-    UI["Layout"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
-    UI["Layout"]["Parent"] = UI["Frame"]
+    UI["FrameLayout"] = Instance.new("UIListLayout")
+    UI["FrameLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
+    UI["FrameLayout"]["Name"] = [[FrameLayout]]
+    UI["FrameLayout"]["Padding"] = UDim.new(0, 2)
+    UI["FrameLayout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+    UI["FrameLayout"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
+    UI["FrameLayout"]["Parent"] = UI["Frame"]
 
-    UI["Padding"] = Instance.new("UIPadding")
-    UI["Padding"]["Name"] = [[Padding]]
-    UI["Padding"]["PaddingBottom"] = UDim.new(0, 24)
-    UI["Padding"]["PaddingLeft"] = UDim.new(0, 24)
-    UI["Padding"]["PaddingRight"] = UDim.new(0, 24)
-    UI["Padding"]["PaddingTop"] = UDim.new(0, 24)
-    UI["Padding"]["Parent"] = UI["Frame"]
+    UI["FramePadding"] = Instance.new("UIPadding")
+    UI["FramePadding"]["Name"] = [[FramePadding]]
+    UI["FramePadding"]["PaddingBottom"] = UDim.new(0, 8)
+    UI["FramePadding"]["PaddingLeft"] = UDim.new(0, 8)
+    UI["FramePadding"]["PaddingRight"] = UDim.new(0, 8)
+    UI["FramePadding"]["PaddingTop"] = UDim.new(0, 8)
+    UI["FramePadding"]["Parent"] = UI["Frame"]
 
-    UI["Stroke"] = Instance.new("UIStroke")
-    UI["Stroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
-    UI["Stroke"]["Color"] = Color3.fromRGB(255, 0, 0)
-    UI["Stroke"]["Name"] = [[Stroke]]
-    UI["Stroke"]["Thickness"] = 2
-    UI["Stroke"]["Parent"] = UI["Frame"]
+    UI["FrameStroke"] = Instance.new("UIStroke")
+    UI["FrameStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+    UI["FrameStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+    UI["FrameStroke"]["Name"] = [[FrameStroke]]
+    UI["FrameStroke"]["Thickness"] = 2
+    UI["FrameStroke"]["Parent"] = UI["Frame"]
 
-    UI["StrokeGradient"] = Instance.new("UIGradient")
-    UI["StrokeGradient"]["Color"] = ColorSequence.new{
+    UI["FrameStrokeGradient"] = Instance.new("UIGradient")
+    UI["FrameStrokeGradient"]["Color"] = ColorSequence.new{
         ColorSequenceKeypoint.new(0.000, Color3.fromRGB(0, 0, 0)),
-        ColorSequenceKeypoint.new(0.500, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(0.500, Color3.fromRGB(0, 0, 255)),
         ColorSequenceKeypoint.new(1.000, Color3.fromRGB(0, 0, 0))
     }
-    UI["StrokeGradient"]["Name"] = [[StrokeGradient]]
-    UI["StrokeGradient"]["Parent"] = UI["Stroke"]
+    UI["FrameStrokeGradient"]["Name"] = [[FrameStrokeGradient]]
+    UI["FrameStrokeGradient"]["Parent"] = UI["FrameStroke"]
 
     local titleText = "You have been blacklisted!"
     if UserData.Title then
@@ -202,71 +193,91 @@ local function CreateBlacklistUI(UserData)
     UI["Title"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
     UI["Title"]["BackgroundTransparency"] = 1
     UI["Title"]["BorderSizePixel"] = 0
-    UI["Title"]["FontFace"] = Font.new([[rbxasset://fonts/families/Sarpanch.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    UI["Title"]["FontFace"] = Font.new([[rbxasset://fonts/families/Sarpanch.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     UI["Title"]["LayoutOrder"] = 1
     UI["Title"]["Name"] = [[Title]]
-    UI["Title"]["Size"] = UDim2.new(1, 0, 0, 40)
+    UI["Title"]["RichText"] = true
+    UI["Title"]["Size"] = UDim2.new(1, 0, 0, 46)
     UI["Title"]["Text"] = titleText
-    UI["Title"]["TextColor3"] = Color3.fromRGB(255, 60, 60)
-    UI["Title"]["TextScaled"] = true
+    UI["Title"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+    UI["Title"]["TextSize"] = 36
     UI["Title"]["TextWrapped"] = true
     UI["Title"]["Parent"] = UI["Frame"]
 
     UI["TitleConstraint"] = Instance.new("UISizeConstraint")
+    UI["TitleConstraint"]["MaxSize"] = Vector2.new(9999, 46)
+    UI["TitleConstraint"]["MinSize"] = Vector2.new(0, 46)
     UI["TitleConstraint"]["Name"] = [[TitleConstraint]]
-    UI["TitleConstraint"]["MaxSize"] = Vector2.new(math.huge, 40)
     UI["TitleConstraint"]["Parent"] = UI["Title"]
+
+    UI["TitleStroke"] = Instance.new("UIStroke")
+    UI["TitleStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
+    UI["TitleStroke"]["Name"] = [[TitleStroke]]
+    UI["TitleStroke"]["Thickness"] = 2
+    UI["TitleStroke"]["Parent"] = UI["Title"]
+
+    UI["TitleStrokeGradient"] = Instance.new("UIGradient")
+    UI["TitleStrokeGradient"]["Color"] = ColorSequence.new{
+        ColorSequenceKeypoint.new(0.000, Color3.fromRGB(0, 0, 0)),
+        ColorSequenceKeypoint.new(0.500, Color3.fromRGB(0, 0, 255)),
+        ColorSequenceKeypoint.new(1.000, Color3.fromRGB(0, 0, 0))
+    }
+    UI["TitleStrokeGradient"]["Name"] = [[TitleStrokeGradient]]
+    UI["TitleStrokeGradient"]["Parent"] = UI["TitleStroke"]
 
     local reasonText = "Reason: " .. (UserData.Reason or "Unknown")
     local byText = "By: " .. (UserData.By or "System")
 
     UI["Description"] = Instance.new("TextLabel")
+    UI["Description"]["AutomaticSize"] = Enum.AutomaticSize.Y
     UI["Description"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
     UI["Description"]["BackgroundTransparency"] = 1
     UI["Description"]["BorderSizePixel"] = 0
     UI["Description"]["FontFace"] = Font.new([[rbxasset://fonts/families/Sarpanch.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-    UI["Description"]["LayoutOrder"] = 2
+    UI["Description"]["LayoutOrder"] = 1
     UI["Description"]["Name"] = [[Description]]
-    UI["Description"]["Size"] = UDim2.new(1, 0, 0, 60)
+    UI["Description"]["RichText"] = true
+    UI["Description"]["Size"] = UDim2.new(1, 0, 0, 0)
     UI["Description"]["Text"] = reasonText .. "\n" .. byText
-    UI["Description"]["TextColor3"] = Color3.fromRGB(200, 200, 200)
-    UI["Description"]["TextScaled"] = true
+    UI["Description"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+    UI["Description"]["TextSize"] = 22
     UI["Description"]["TextWrapped"] = true
     UI["Description"]["TextXAlignment"] = Enum.TextXAlignment.Left
-    UI["Description"]["TextYAlignment"] = Enum.TextYAlignment.Center
+    UI["Description"]["TextYAlignment"] = Enum.TextYAlignment.Top
     UI["Description"]["Parent"] = UI["Frame"]
 
     UI["Buttons"] = Instance.new("Frame")
     UI["Buttons"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
     UI["Buttons"]["BackgroundTransparency"] = 1
     UI["Buttons"]["BorderSizePixel"] = 0
-    UI["Buttons"]["LayoutOrder"] = 3
+    UI["Buttons"]["LayoutOrder"] = 2
     UI["Buttons"]["Name"] = [[Buttons]]
-    UI["Buttons"]["Size"] = UDim2.new(1, 0, 0, 45)
+    UI["Buttons"]["Size"] = UDim2.new(1, 0, 0.2, 0)
     UI["Buttons"]["Parent"] = UI["Frame"]
 
     UI["ButtonsLayout"] = Instance.new("UIListLayout")
     UI["ButtonsLayout"]["FillDirection"] = Enum.FillDirection.Horizontal
     UI["ButtonsLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
     UI["ButtonsLayout"]["Name"] = [[ButtonsLayout]]
-    UI["ButtonsLayout"]["Padding"] = UDim.new(0, 12)
+    UI["ButtonsLayout"]["Padding"] = UDim.new(0, 9)
     UI["ButtonsLayout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
     UI["ButtonsLayout"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
     UI["ButtonsLayout"]["Parent"] = UI["Buttons"]
 
     UI["ButtonsConstraint"] = Instance.new("UISizeConstraint")
-    UI["ButtonsConstraint"]["MaxSize"] = Vector2.new(9999, 45)
+    UI["ButtonsConstraint"]["MaxSize"] = Vector2.new(9999, 40)
+    UI["ButtonsConstraint"]["MinSize"] = Vector2.new(0, 40)
     UI["ButtonsConstraint"]["Name"] = [[ButtonsConstraint]]
     UI["ButtonsConstraint"]["Parent"] = UI["Buttons"]
 
     UI["Understood"] = Instance.new("TextButton")
-    UI["Understood"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0)
-    UI["Understood"]["BackgroundTransparency"] = 0.9
+    UI["Understood"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+    UI["Understood"]["BackgroundTransparency"] = 0.95
     UI["Understood"]["BorderSizePixel"] = 0
     UI["Understood"]["FontFace"] = Font.new([[rbxasset://fonts/families/Sarpanch.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     UI["Understood"]["LayoutOrder"] = 1
     UI["Understood"]["Name"] = [[Understood]]
-    UI["Understood"]["Size"] = UDim2.new(1, 0, 1, 0)
+    UI["Understood"]["Size"] = UDim2.new(0.2, 0, 0.3, 0)
     UI["Understood"]["Text"] = [[I Understand]]
     UI["Understood"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
     UI["Understood"]["TextScaled"] = true
@@ -280,7 +291,7 @@ local function CreateBlacklistUI(UserData)
 
     UI["UnderstoodStroke"] = Instance.new("UIStroke")
     UI["UnderstoodStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
-    UI["UnderstoodStroke"]["Color"] = Color3.fromRGB(255, 0, 0)
+    UI["UnderstoodStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
     UI["UnderstoodStroke"]["Name"] = [[UnderstoodStroke]]
     UI["UnderstoodStroke"]["Thickness"] = 2
     UI["UnderstoodStroke"]["Parent"] = UI["Understood"]
@@ -288,20 +299,20 @@ local function CreateBlacklistUI(UserData)
     UI["UnderstoodStrokeGradient"] = Instance.new("UIGradient")
     UI["UnderstoodStrokeGradient"]["Color"] = ColorSequence.new{
         ColorSequenceKeypoint.new(0.000, Color3.fromRGB(0, 0, 0)),
-        ColorSequenceKeypoint.new(0.500, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(0.500, Color3.fromRGB(0, 0, 255)),
         ColorSequenceKeypoint.new(1.000, Color3.fromRGB(0, 0, 0))
     }
     UI["UnderstoodStrokeGradient"]["Name"] = [[UnderstoodStrokeGradient]]
     UI["UnderstoodStrokeGradient"]["Parent"] = UI["UnderstoodStroke"]
 
     UI["Discord"] = Instance.new("TextButton")
-    UI["Discord"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0)
-    UI["Discord"]["BackgroundTransparency"] = 0.9
+    UI["Discord"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+    UI["Discord"]["BackgroundTransparency"] = 0.95
     UI["Discord"]["BorderSizePixel"] = 0
     UI["Discord"]["FontFace"] = Font.new([[rbxasset://fonts/families/Sarpanch.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
     UI["Discord"]["LayoutOrder"] = 2
     UI["Discord"]["Name"] = [[Discord]]
-    UI["Discord"]["Size"] = UDim2.new(1, 0, 1, 0)
+    UI["Discord"]["Size"] = UDim2.new(0.2, 0, 0.3, 0)
     UI["Discord"]["Text"] = [[Discord]]
     UI["Discord"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
     UI["Discord"]["TextScaled"] = true
@@ -315,7 +326,7 @@ local function CreateBlacklistUI(UserData)
 
     UI["DiscordStroke"] = Instance.new("UIStroke")
     UI["DiscordStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
-    UI["DiscordStroke"]["Color"] = Color3.fromRGB(255, 0, 0)
+    UI["DiscordStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
     UI["DiscordStroke"]["Name"] = [[DiscordStroke]]
     UI["DiscordStroke"]["Thickness"] = 2
     UI["DiscordStroke"]["Parent"] = UI["Discord"]
@@ -323,7 +334,7 @@ local function CreateBlacklistUI(UserData)
     UI["DiscordStrokeGradient"] = Instance.new("UIGradient")
     UI["DiscordStrokeGradient"]["Color"] = ColorSequence.new{
         ColorSequenceKeypoint.new(0.000, Color3.fromRGB(0, 0, 0)),
-        ColorSequenceKeypoint.new(0.500, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(0.500, Color3.fromRGB(0, 0, 255)),
         ColorSequenceKeypoint.new(1.000, Color3.fromRGB(0, 0, 0))
     }
     UI["DiscordStrokeGradient"]["Name"] = [[DiscordStrokeGradient]]
@@ -340,7 +351,7 @@ local function CreateBlacklistUI(UserData)
         end)
     end
 
-    local slideIn = BetterTween(UI["Frame"], 0.5, {Size = UDim2.new(0.4, 0, 0.35, 0)}, "Quad", "Out")
+    local slideIn = BetterTween(UI["Frame"], 0.5, {Size = UDim2.new(0.5, 0, 0.7, 0)}, "Quad", "Out")
     slideIn:Play()
 
     UI["Understood"]["MouseButton1Click"]:Connect(function()
