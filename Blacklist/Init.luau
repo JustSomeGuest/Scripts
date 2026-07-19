@@ -132,8 +132,8 @@ local function CreateBlacklistUI(UserData)
 
     UI["BlacklistUI"] = Instance.new("ScreenGui")
     UI["BlacklistUI"]["Name"] = [[BlacklistUI]]
-    UI["BlacklistUI"]["DisplayOrder"] = 999
-    UI["BlacklistUI"]["IgnoreGuiInset"] = true
+    UI["BlacklistUI"]["DisplayOrder"] = 1
+    UI["BlacklistUI"]["IgnoreGuiInset"] = false
     UI["BlacklistUI"]["ResetOnSpawn"] = false
     UI["BlacklistUI"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
     UI["BlacklistUI"]["Parent"] = Hui
@@ -205,7 +205,7 @@ local function CreateBlacklistUI(UserData)
     UI["Title"]["Parent"] = UI["Frame"]
 
     UI["TitleConstraint"] = Instance.new("UISizeConstraint")
-    UI["TitleConstraint"]["MaxSize"] = Vector2.new(9999, 46)
+    UI["TitleConstraint"]["MaxSize"] = Vector2.new(math.huge, 46)
     UI["TitleConstraint"]["MinSize"] = Vector2.new(0, 46)
     UI["TitleConstraint"]["Name"] = [[TitleConstraint]]
     UI["TitleConstraint"]["Parent"] = UI["Title"]
@@ -265,7 +265,7 @@ local function CreateBlacklistUI(UserData)
     UI["ButtonsLayout"]["Parent"] = UI["Buttons"]
 
     UI["ButtonsConstraint"] = Instance.new("UISizeConstraint")
-    UI["ButtonsConstraint"]["MaxSize"] = Vector2.new(9999, 40)
+    UI["ButtonsConstraint"]["MaxSize"] = Vector2.new(math.huge, 40)
     UI["ButtonsConstraint"]["MinSize"] = Vector2.new(0, 40)
     UI["ButtonsConstraint"]["Name"] = [[ButtonsConstraint]]
     UI["ButtonsConstraint"]["Parent"] = UI["Buttons"]
