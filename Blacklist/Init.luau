@@ -121,10 +121,10 @@ end
 
 local Users = Get(Repo .. "Blacklist/Users.luau")
 
-local existingUI = nil
+local ExistingUI = nil
 
 local function CreateBlacklistUI(UserData)
-    if existingUI then
+    if ExistingUI then
         return
     end
 
@@ -296,12 +296,12 @@ local function CreateBlacklistUI(UserData)
 
     AnimateScreenGui(UI["BlacklistUI"])
 
-    local function closeUI()
+    local function CloseUI()
         local slideOut = BetterTween(UI["Frame"], 0.3, {Size = UDim2.new(0, 0, 0, 0)}, "Quad", "In")
         slideOut:Play()
         slideOut.Completed:Connect(function()
             UI["BlacklistUI"]:Destroy()
-            existingUI = nil
+            ExistingUI = nil
         end)
     end
 
@@ -309,7 +309,7 @@ local function CreateBlacklistUI(UserData)
     slideIn:Play()
 
     UI["Understood"]["MouseButton1Click"]:Connect(function()
-        closeUI()
+        CloseUI()
     end)
 
     UI["Understood"]["MouseEnter"]:Connect(function()
@@ -332,7 +332,7 @@ local function CreateBlacklistUI(UserData)
         releaseTween:Play()
     end)
 
-    existingUI = UI["BlacklistUI"]
+    ExistingUI = UI["BlacklistUI"]
 end
 
 function Blacklist.IsBlacklisted()
