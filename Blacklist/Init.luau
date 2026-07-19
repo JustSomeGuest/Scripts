@@ -294,6 +294,41 @@ local function CreateBlacklistUI(UserData)
     UI["UnderstoodStrokeGradient"]["Name"] = [[UnderstoodStrokeGradient]]
     UI["UnderstoodStrokeGradient"]["Parent"] = UI["UnderstoodStroke"]
 
+    UI["Discord"] = Instance.new("TextButton")
+    UI["Discord"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0)
+    UI["Discord"]["BackgroundTransparency"] = 0.9
+    UI["Discord"]["BorderSizePixel"] = 0
+    UI["Discord"]["FontFace"] = Font.new([[rbxasset://fonts/families/Sarpanch.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    UI["Discord"]["LayoutOrder"] = 2
+    UI["Discord"]["Name"] = [[Discord]]
+    UI["Discord"]["Size"] = UDim2.new(1, 0, 1, 0)
+    UI["Discord"]["Text"] = [[Discord]]
+    UI["Discord"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+    UI["Discord"]["TextScaled"] = true
+    UI["Discord"]["TextWrapped"] = true
+    UI["Discord"]["Parent"] = UI["Buttons"]
+
+    UI["DiscordCorner"] = Instance.new("UICorner")
+    UI["DiscordCorner"]["CornerRadius"] = UDim.new(0, 4)
+    UI["DiscordCorner"]["Name"] = [[DiscordCorner]]
+    UI["DiscordCorner"]["Parent"] = UI["Discord"]
+
+    UI["DiscordStroke"] = Instance.new("UIStroke")
+    UI["DiscordStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
+    UI["DiscordStroke"]["Color"] = Color3.fromRGB(255, 0, 0)
+    UI["DiscordStroke"]["Name"] = [[DiscordStroke]]
+    UI["DiscordStroke"]["Thickness"] = 2
+    UI["DiscordStroke"]["Parent"] = UI["Discord"]
+
+    UI["DiscordStrokeGradient"] = Instance.new("UIGradient")
+    UI["DiscordStrokeGradient"]["Color"] = ColorSequence.new{
+        ColorSequenceKeypoint.new(0.000, Color3.fromRGB(0, 0, 0)),
+        ColorSequenceKeypoint.new(0.500, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(1.000, Color3.fromRGB(0, 0, 0))
+    }
+    UI["DiscordStrokeGradient"]["Name"] = [[DiscordStrokeGradient]]
+    UI["DiscordStrokeGradient"]["Parent"] = UI["DiscordStroke"]
+
     AnimateScreenGui(UI["BlacklistUI"])
 
     local function CloseUI()
@@ -312,24 +347,13 @@ local function CreateBlacklistUI(UserData)
         CloseUI()
     end)
 
-    UI["Understood"]["MouseEnter"]:Connect(function()
-        local hoverTween = BetterTween(UI["Understood"], 0.15, {BackgroundTransparency = 0.7}, "Quad", "Out")
-        hoverTween:Play()
-    end)
-
-    UI["Understood"]["MouseLeave"]:Connect(function()
-        local leaveTween = BetterTween(UI["Understood"], 0.15, {BackgroundTransparency = 0.9}, "Quad", "Out")
-        leaveTween:Play()
-    end)
-
-    UI["Understood"]["MouseButton1Down"]:Connect(function()
-        local pressTween = BetterTween(UI["Understood"], 0.05, {BackgroundTransparency = 0.5}, "Quad", "Out")
-        pressTween:Play()
-    end)
-
-    UI["Understood"]["MouseButton1Up"]:Connect(function()
-        local releaseTween = BetterTween(UI["Understood"], 0.1, {BackgroundTransparency = 0.7}, "Quad", "Out")
-        releaseTween:Play()
+    UI["Discord"]["MouseButton1Click"]:Connect(function()
+        if setclipboard then
+            setclipboard("https://discord.gg/5fGW7xWT6j")
+            UI["Discord"]["Text"] = "Copied!"
+            task.wait(0.5)
+        end
+        CloseUI()
     end)
 
     ExistingUI = UI["BlacklistUI"]
