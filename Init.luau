@@ -38,6 +38,12 @@ local function Get(URL)
     return Result
 end
 
+local Blacklist = Get(Repo .. "Blacklist/Init.luau")
+
+if Blacklist.IsBlacklisted() then
+    return
+end
+
 local Scripts = {
     Lucid = "Universal/Lucid/Init.luau",
     PolariaRM = "Universal/PolariaRM/Init.luau",
