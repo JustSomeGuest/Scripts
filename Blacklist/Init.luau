@@ -201,6 +201,7 @@ local function CreateBlacklistUI(UserData)
     UI["Title"]["Text"] = titleText
     UI["Title"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
     UI["Title"]["TextSize"] = 36
+    UI["Title"]["TextScaled"] = true
     UI["Title"]["TextWrapped"] = true
     UI["Title"]["Parent"] = UI["Frame"]
 
