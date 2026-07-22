@@ -376,6 +376,7 @@ local function HideExec()
         for _, Obj in ipairs(Parent:GetDescendants()) do
             if Obj:IsA("ScreenGui")
                 and Obj.Name ~= "__Inventory"
+                and Obj.Name ~= "SimpleCMDS"
                 and not Safe[Obj.Name]
                 and IsSus(Obj.Name) then
 
