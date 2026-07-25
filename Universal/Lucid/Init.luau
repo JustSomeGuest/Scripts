@@ -106,7 +106,6 @@ Shared.Lucid = {
         ["Lucid/Assets/lucid_scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/scripts.png",
         ["Lucid/Assets/lucid_settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/settings.png",
         ["Lucid/Assets/lucid_close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/close.png",
-        ["Lucid/Assets/lucid_click.mp3"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Assets/Click.mp3",
     },
     Settings = {
         Animations = true,
@@ -3466,7 +3465,7 @@ UI["InputBox"]:GetPropertyChangedSignal("Text"):Connect(function()
 end)
 
 local ClickSound = Instance.new("Sound")
-ClickSound.SoundId = GetAsset("Lucid/Assets/lucid_click.mp3")
+ClickSound.SoundId = "rbxassetid://6895079853"
 ClickSound.Volume = 0.5
 ClickSound.Parent = UI["ScreenGui"]
 
