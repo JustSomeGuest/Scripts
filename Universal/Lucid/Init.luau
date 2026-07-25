@@ -1841,6 +1841,8 @@ UI["Highlight"]["TextSize"] = 18
 UI["Highlight"]["TextWrapped"] = true
 UI["Highlight"]["TextXAlignment"] = Enum.TextXAlignment.Left
 UI["Highlight"]["TextYAlignment"] = Enum.TextYAlignment.Top
+UI["Highlight"]["Active"] = false
+UI["Highlight"]["Selectable"] = false
 UI["Highlight"]["Parent"] = UI["InputFrame"]
 
 UI["InputBox"] = Instance.new("TextBox")
