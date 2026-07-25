@@ -994,7 +994,71 @@ Save some scripts to see them here.]]
         UI["NoSavedScriptsLabel"]["Visible"] = false
     end
     
+    local builtInScripts = {}
+    local normalScripts = {}
+    
     for _, scriptData in ipairs(scripts) do
+        if scriptData.Name:find("%(Built%-In%)") then
+            table.insert(builtInScripts, scriptData)
+        else
+            table.insert(normalScripts, scriptData)
+        end
+    end
+    
+    table.sort(builtInScripts, function(a, b)
+        return (a.Name or ""):lower() < (b.Name or ""):lower()
+    end)
+    
+    table.sort(normalScripts, function(a, b)
+        return (a.Name or ""):lower() < (b.Name or ""):lower()
+    end)
+    
+    for _, scriptData in ipairs(builtInScripts) do
+        local clone = UI["SavedScriptTemplate"]:Clone()
+        clone["Name"] = Funcs.SanitizeName(scriptData.Name)
+        clone["Visible"] = true
+        clone["Parent"] = scroll
+
+        local cloneStroke = clone:FindFirstChildOfClass("UIStroke")
+        if cloneStroke then cloneStroke["Color"] = Settings.SecondaryAccentColor end
+        
+        local infoFrame = clone:FindFirstChild("SavedScriptInfo")
+        if infoFrame then
+            local titleLabel = infoFrame:FindFirstChild("SavedScriptTitle")
+            local descLabel = infoFrame:FindFirstChild("SavedScriptDesc")
+            if titleLabel then titleLabel["Text"] = scriptData.Name or "Unknown" end
+            if descLabel then descLabel["Text"] = scriptData.Description or "No description" end
+        end
+        
+        local actionsFrame = clone:FindFirstChild("SavedScriptActions")
+        if actionsFrame then
+            local runBtn = actionsFrame:FindFirstChild("RunSavedScript")
+            local deleteBtn = actionsFrame:FindFirstChild("DeleteSavedScript")
+
+            for _, btn in ipairs({runBtn, deleteBtn}) do
+                if btn then
+                    btn["BackgroundColor3"] = Settings.AccentColor
+                    local btnStroke = btn:FindFirstChildOfClass("UIStroke")
+                    if btnStroke then btnStroke["Color"] = Settings.SecondaryAccentColor end
+                end
+            end
+
+            if runBtn then
+                runBtn.MouseButton1Click:Connect(function()
+                    local success, err = loadstring(scriptData.Code or "")()
+                    if not success then warn("Failed to execute saved script: ", err) end
+                end)
+            end
+            if deleteBtn then
+                deleteBtn.MouseButton1Click:Connect(function()
+                    Funcs.DeleteScript(scriptData.Name)
+                    Funcs.RefreshSavedScripts(UI["SearchBox2"]["Text"])
+                end)
+            end
+        end
+    end
+    
+    for _, scriptData in ipairs(normalScripts) do
         local clone = UI["SavedScriptTemplate"]:Clone()
         clone["Name"] = Funcs.SanitizeName(scriptData.Name)
         clone["Visible"] = true
