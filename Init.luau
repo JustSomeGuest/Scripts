@@ -40,7 +40,7 @@ if not Shared.Click then
 
     local Click = Instance.new("Sound")
     Click.SoundId = "rbxassetid://6895079853"
-    Click.Volume = 0.3
+    Click.Volume = 0.25
     Click.Name = "Click"
     Click.Parent = Sounds
 
