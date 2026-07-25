@@ -48,6 +48,10 @@ pcall(function()
     Get(Repo .. "Click.luau")
 end)
 
+pcall(function()
+    Get(Repo .. "Tags.luau")
+end)
+
 local Scripts = {
     Lucid = "Universal/Lucid/Init.luau",
     PolariaRM = "Universal/PolariaRM/Init.luau",
