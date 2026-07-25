@@ -106,6 +106,7 @@ Shared.Lucid = {
         ["Lucid/Assets/lucid_scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/scripts.png",
         ["Lucid/Assets/lucid_settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/settings.png",
         ["Lucid/Assets/lucid_close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/close.png",
+        ["Lucid/Assets/lucid_click.mp3"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Assets/Click.mp3",
     },
     Settings = {
         Animations = true,
@@ -3458,9 +3459,32 @@ Funcs.ApplyTheme()
 
 Funcs.Dragify(UI["Show"])
 
+
+
 UI["InputBox"]:GetPropertyChangedSignal("Text"):Connect(function()
     UI["Highlight"]["Text"] = Funcs.Highlight(UI["InputBox"]["Text"])
 end)
+
+local ClickSound = Instance.new("Sound")
+ClickSound.SoundId = GetAsset("Lucid/Assets/lucid_click.mp3")
+ClickSound.Volume = 0.5
+ClickSound.Parent = UI["ScreenGui"]
+
+local function PlayClick()
+    local Click = ClickSound:Clone()
+    Click.Parent = UI["ScreenGui"]
+    Click:Play()
+
+    Click.Ended:Once(function()
+        Click:Destroy()
+    end)
+end
+
+for _, Object in ipairs(UI["ScreenGui"]:GetDescendants()) do
+    if Object:IsA("TextButton") or Object:IsA("ImageButton") then
+        Object.Activated:Connect(PlayClick)
+    end
+end
 
 UI["Show"].MouseButton1Click:Connect(function()
     Funcs.OpenUI()
