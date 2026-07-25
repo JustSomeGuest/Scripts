@@ -3458,32 +3458,9 @@ Funcs.ApplyTheme()
 
 Funcs.Dragify(UI["Show"])
 
-
-
 UI["InputBox"]:GetPropertyChangedSignal("Text"):Connect(function()
     UI["Highlight"]["Text"] = Funcs.Highlight(UI["InputBox"]["Text"])
 end)
-
-local ClickSound = Instance.new("Sound")
-ClickSound.SoundId = "rbxassetid://6895079853"
-ClickSound.Volume = 0.5
-ClickSound.Parent = UI["ScreenGui"]
-
-local function PlayClick()
-    local Click = ClickSound:Clone()
-    Click.Parent = UI["ScreenGui"]
-    Click:Play()
-
-    Click.Ended:Once(function()
-        Click:Destroy()
-    end)
-end
-
-for _, Object in ipairs(UI["ScreenGui"]:GetDescendants()) do
-    if Object:IsA("TextButton") or Object:IsA("ImageButton") then
-        Object.Activated:Connect(PlayClick)
-    end
-end
 
 UI["Show"].MouseButton1Click:Connect(function()
     Funcs.OpenUI()
