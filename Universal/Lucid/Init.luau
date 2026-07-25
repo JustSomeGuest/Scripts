@@ -498,6 +498,38 @@ function Funcs.DeleteScript(scriptName)
     end
 end
 
+local BuiltInScripts = {
+    {
+        Name = "Dex++ (Built-In)",
+        Description = "A simple but powerful tool for exploring game instances.",
+        Code = [[loadstring(game:HttpGet("https://github.com/AZYsGithub/DexPlusPlus/releases/latest/download/out.lua"))()]]
+    },
+    {
+        Name = "Cobalt (Built-In)",
+        Description = "A simple but powerful remote spy for monitoring remote calls.",
+        Code = [[loadstring(game:HttpGet("https://github.com/notpoiu/cobalt/releases/latest/download/Cobalt.luau"))()]]
+    },
+    {
+        Name = "Keyboard (Built-In)",
+        Description = "A virtual keyboard GUI made for mobile devices.",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau"))()
+Init.DeltaKD()]]
+    }
+}
+
+function Funcs.InitDefaultScripts()
+    if not IsFolder("Lucid/Scripts") then 
+        MakeFolder("Lucid/Scripts") 
+    end
+    
+    for _, scriptData in ipairs(BuiltInScripts) do
+        local fileName = "Lucid/Scripts/" .. scriptData.Name:gsub("[^%w]", "_") .. ".json"
+        if not IsFile(fileName) then
+            Funcs.SaveScript(scriptData)
+        end
+    end
+end
+
 function Funcs.ParseColor(input)
     if type(input) ~= "string" then return nil end
     local r, g, b = input:match("(%d+)%s*,%s*(%d+)%s*,%s*(%d+)")
@@ -3455,6 +3487,7 @@ UI["AnimsToggleLabel7"]["Parent"] = UI["ResetThemeBtn"]
 
 Funcs.LoadSettings()
 Funcs.ApplyTheme()
+Funcs.InitDefaultScripts()
 
 Funcs.Dragify(UI["Show"])
 
