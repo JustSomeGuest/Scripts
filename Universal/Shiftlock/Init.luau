@@ -56,8 +56,6 @@ local StarterGui = Services.StarterGui
 
 local WriteFile = expect("function", writefile, function() return end)
 local IsFile = expect("function", isfile, function() return end)
-local IsFolder = expect("function", isfolder, function() return end)
-local MakeFolder = expect("function", makefolder, function() return end)
 local LoadAsset = expect("function", getcustomasset, expect("function", getsynasset, nil))
 
 local Player = Players.LocalPlayer
@@ -65,10 +63,6 @@ local ScreenSize = Workspace.CurrentCamera.ViewportSize
 local ShiftlockEnabled = false
 local ShiftlockActive = false
 local RenderConnection = nil
-
-local Assets = {
-    ["Shiftlock/Assets/lock.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Shiftlock/Assets/lock.png",
-}
 
 local function HttpGet(url)
     local RequestFunc = expect("function", syn and syn.request, 
@@ -89,25 +83,15 @@ local function HttpGet(url)
     return success and result or nil
 end
 
-local function GetAsset(Path)
+local function GetAsset()
+    local Asset = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Shiftlock/Assets/lock.png"
+    local FilePath = "Shiftlock.png"
+    
     if not LoadAsset then
         return nil
     end
 
-    local Asset = Assets[Path]
-    if not Asset then
-        return nil
-    end
-
-    if not IsFolder("Shiftlock") then
-        MakeFolder("Shiftlock")
-    end
-
-    if not IsFolder("Shiftlock/Assets") then
-        MakeFolder("Shiftlock/Assets")
-    end
-
-    if not IsFile(Path) then
+    if not IsFile(FilePath) then
         local Success, Response = pcall(function()
             return HttpGet(Asset)
         end)
@@ -116,10 +100,10 @@ local function GetAsset(Path)
             return nil
         end
 
-        WriteFile(Path, Response.Body)
+        WriteFile(FilePath, Response.Body)
     end
 
-    return LoadAsset(Path)
+    return LoadAsset(FilePath)
 end
 
 Shared.Shiftlock = Shared.Shiftlock or {}
@@ -128,7 +112,7 @@ if Shared.Shiftlock.isLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "Shiftlock",
         Text = "Shiftlock is already running!",
-        Icon = GetAsset("Shiftlock/Assets/lock.png"),
+        Icon = GetAsset(),
         Duration = 4
     })
     return
@@ -149,7 +133,7 @@ Button.BorderSizePixel = 0
 Button.BackgroundTransparency = 1
 Button.Size = UDim2.new(0, 54, 0, 54)
 Button.Position = UDim2.new(0, 18, 0, 2)
-Button.Image = GetAsset("Shiftlock/Assets/lock.png")
+Button.Image = GetAsset()
 Button.ImageColor3 = Color3.fromRGB(255, 255, 255)
 Button.Parent = ShiftlockGui
 
