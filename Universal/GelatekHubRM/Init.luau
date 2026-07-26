@@ -251,8 +251,9 @@ UI["Shadow"]["BorderSizePixel"] = 0
 UI["Shadow"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 UI["Shadow"]["ImageTransparency"] = 0.2
 UI["Shadow"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
-UI["Shadow"]["Image"] = "rbxassetid://15298624572"
-UI["Shadow"]["Size"] = UDim2.new(1.059, 0, 1.088, 0)
+UI["Shadow"]["Image"] = "rbxassetid://129224956712931"
+UI["Shadow"]["ImageColor3"] = Color3.fromRGB(255, 88, 91)
+UI["Shadow"]["Size"] = UDim2.new(1.51, -18, 1.51, 0)
 UI["Shadow"]["BackgroundTransparency"] = 1
 UI["Shadow"]["Name"] = "Shadow"
 UI["Shadow"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
@@ -269,6 +270,10 @@ UI["Frame"]["Parent"] = UI["Main"]
 UI["FrameCorner"] = Instance.new("UICorner")
 UI["FrameCorner"]["CornerRadius"] = UDim.new(0, 4)
 UI["FrameCorner"]["Parent"] = UI["Frame"]
+
+UI["FrameStroke"] = Instance.new("UIStroke")
+UI["FrameStroke"]["Color"] = Color3.fromRGB(255, 88, 91)
+UI["FrameStroke"]["Parent"] = UI["Frame"]
 
 UI["FrameLayout"] = Instance.new("UIListLayout")
 UI["FrameLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
