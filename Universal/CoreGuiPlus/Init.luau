@@ -712,8 +712,12 @@ end
 )
 
 local LucidBtn = nil
-if Hui and Hui.Lucid and Hui.Lucid.Show then
-  LucidBtn = Hui.Lucid.Show
+
+if Hui then
+	local Lucid = Hui:FindFirstChild("Lucid")
+	if Lucid then
+		LucidBtn = Lucid:FindFirstChild("Show")
+	end
 end
 
 local ExperienceChat = CoreGui:FindFirstChild("ExperienceChat")
@@ -861,6 +865,7 @@ end
 
 Style(MenuBtn)
 Style(EscBtn)
+
 if LucidBtn then
-  Style(LucidBtn)
+	Style(LucidBtn)
 end
