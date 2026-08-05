@@ -123,14 +123,14 @@ UI.CloseCorner.Parent = UI.Close
 local function GetHum()
     local Char = Player.Character
     if not Char then return nil end
-    return Char:FindFirstChildOfClass("Hum")
+    return Char:FindFirstChildOfClass("Humanoid")
 end
 
 local function UpdChar()
     if not Active then return end
     local Char = Player.Character
     if not Char then return end
-    local RootPart = Char:FindFirstChild("HumRootPart")
+    local RootPart = Char:FindFirstChild("HumanoidRootPart")
     local HumChar = GetHum()
     if RootPart and HumChar then
         local CameraCFrame = Workspace.CurrentCamera.CFrame
