@@ -1,62 +1,27 @@
-if not game:IsLoaded() then 
-    game.Loaded:Wait() 
+if not game:IsLoaded() then
+    game.Loaded:Wait()
 end
 
 local Shared = (function()
-    local Success, Env = pcall(getgenv)
-    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+    local ok, env = pcall(getgenv)
+    return (ok and env) or _G or {}
 end)()
 
-local function expect(expected, value, fallback)
-    if type(value) == expected then
-        return value
-    end
-
-    if fallback ~= nil then
-        if type(fallback) == "function" then
-            return function(...)
-                warn("[Expect]: Missing executor functionality. Using fallback function.")
-                return fallback(...)
-            end
-        end
-
-        warn("[Expect]: Value has unexpected type. Using fallback value.")
-    end
-
-    return fallback
+local function GetService(Service)
+    return cloneref(game:GetService(Service))
 end
 
-local cloneref = expect("function", cloneref, function(...) return ... end)
+local Hui = gethui and gethui() or GetService("CoreGui")
 
-local Services = setmetatable({}, {
-    __index = function(self, name)
-        local success, cache = pcall(function()
-            return cloneref(game:GetService(name))
-        end)
-        if success then
-            rawset(self, name, cache)
-            return cache
-        else
-            error("Invalid Service: " .. tostring(name))
-        end
-    end
-})
+local Players = GetService("Players")
+local RunService = GetService("RunService")
+local UserInputService = GetService("UserInputService")
+local Workspace = GetService("Workspace")
+local StarterGui = GetService("StarterGui")
 
-local Success, Hui = pcall(function()
-    return gethui and gethui()
-end)
-
-local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
-
-local Players = Services.Players
-local RunService = Services.RunService
-local UserInputService = Services.UserInputService
-local Workspace = Services.Workspace
-local StarterGui = Services.StarterGui
-
-local WriteFile = expect("function", writefile, function() return end)
-local IsFile = expect("function", isfile, function() return end)
-local LoadAsset = expect("function", getcustomasset, expect("function", getsynasset, nil))
+local WriteFile = writefile or function() return end
+local IsFile = isfile or function() return end
+local GetAsset = getcustomasset or getsynasset or function() return end
 
 local Player = Players.LocalPlayer
 local ScreenSize = Workspace.CurrentCamera.ViewportSize
@@ -65,16 +30,14 @@ local ShiftlockActive = false
 local RenderConnection = nil
 
 local function HttpGet(url)
-    local RequestFunc = expect("function", syn and syn.request, 
-        expect("function", request, 
-            expect("function", http_request, nil)))
+    local Request = http_request or request or syn and syn.request
     
-    if not RequestFunc then
+    if not Request then
         return nil
     end
     
     local success, result = pcall(function()
-        return RequestFunc({
+        return Request({
             Url = url,
             Method = "GET"
         })
@@ -83,27 +46,12 @@ local function HttpGet(url)
     return success and result or nil
 end
 
-local function GetAsset()
-    local Asset = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Shiftlock/Assets/lock.png"
-    local FilePath = "Shiftlock.png"
-    
-    if not LoadAsset then
-        return nil
+if not IsFile("Shiftlock.png") then
+    local Response = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Shiftlock/Assets/lock.png")
+
+    if Response and Response.Success and Response.Body then
+        WriteFile("Shiftlock.png", Response.Body)
     end
-
-    if not IsFile(FilePath) then
-        local Success, Response = pcall(function()
-            return HttpGet(Asset)
-        end)
-
-        if not Success or not Response or not Response.Success or not Response.Body then
-            return nil
-        end
-
-        WriteFile(FilePath, Response.Body)
-    end
-
-    return LoadAsset(FilePath)
 end
 
 Shared.Shiftlock = Shared.Shiftlock or {}
@@ -120,55 +68,57 @@ end
 
 Shared.Shiftlock.isLoaded = true
 
-local ShiftlockGui = Instance.new("ScreenGui")
-ShiftlockGui.Name = "Shiftlock"
-ShiftlockGui.DisplayOrder = 50
-ShiftlockGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ShiftlockGui.ResetOnSpawn = false
-ShiftlockGui.Parent = CoreGui
+local UI = {}
 
-local Button = Instance.new("ImageButton")
-Button.Name = "Button"
-Button.BorderSizePixel = 0
-Button.BackgroundTransparency = 1
-Button.Size = UDim2.new(0, 54, 0, 54)
-Button.Position = UDim2.new(0, 18, 0, 2)
-Button.Image = GetAsset()
-Button.ImageColor3 = Color3.fromRGB(255, 255, 255)
-Button.Parent = ShiftlockGui
+UI["ScreenGui"] = Instance.new("ScreenGui")
+UI["ScreenGui"]["DisplayOrder"] = 50
+UI["ScreenGui"]["Name"] = "Shiftlock"
+UI["ScreenGui"]["ResetOnSpawn"] = false
+UI["ScreenGui"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
+UI["ScreenGui"]["Parent"] = Hui
 
-local ButtonRatio = Instance.new("UIAspectRatioConstraint")
-ButtonRatio.Name = "ButtonRatio"
-ButtonRatio.Parent = Button
+UI["Button"] = Instance.new("ImageButton")
+UI["Button"]["BackgroundTransparency"] = 1
+UI["Button"]["BorderSizePixel"] = 0
+UI["Button"]["Image"] = GetAsset("Shiftlock.png")
+UI["Button"]["ImageColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Button"]["Name"] = "Button"
+UI["Button"]["Position"] = UDim2.new(0, 18, 0, 2)
+UI["Button"]["Size"] = UDim2.new(0, 54, 0, 54)
+UI["Button"]["Parent"] = UI["ScreenGui"]
 
-local ButtonCorner = Instance.new("UICorner")
-ButtonCorner.Name = "ButtonCorner"
-ButtonCorner.CornerRadius = UDim.new(1, 0)
-ButtonCorner.Parent = Button
+UI["ButtonRatio"] = Instance.new("UIAspectRatioConstraint")
+UI["ButtonRatio"]["Name"] = "ButtonRatio"
+UI["ButtonRatio"]["Parent"] = UI["Button"]
 
-local Close = Instance.new("TextButton")
-Close.Name = "Close"
-Close.ZIndex = 10
-Close.TextWrapped = true
-Close.BorderSizePixel = 0
-Close.TextScaled = true
-Close.TextColor3 = Color3.fromRGB(255, 255, 255)
-Close.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-Close.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-Close.AnchorPoint = Vector2.new(0.5, 0.5)
-Close.Size = UDim2.new(0, 20, 0, 20)
-Close.Text = "×"
-Close.Position = UDim2.new(0.75, 4, 0.25, -4)
-Close.Parent = Button
+UI["ButtonCorner"] = Instance.new("UICorner")
+UI["ButtonCorner"]["CornerRadius"] = UDim.new(1, 0)
+UI["ButtonCorner"]["Name"] = "ButtonCorner"
+UI["ButtonCorner"]["Parent"] = UI["Button"]
 
-local CloseRatio = Instance.new("UIAspectRatioConstraint")
-CloseRatio.Name = "CloseRatio"
-CloseRatio.Parent = Close
+UI["Close"] = Instance.new("TextButton")
+UI["Close"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
+UI["Close"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0)
+UI["Close"]["BorderSizePixel"] = 0
+UI["Close"]["FontFace"] = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+UI["Close"]["Name"] = "Close"
+UI["Close"]["Position"] = UDim2.new(0.75, 4, 0.25, -4)
+UI["Close"]["Size"] = UDim2.new(0, 20, 0, 20)
+UI["Close"]["Text"] = "×"
+UI["Close"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+UI["Close"]["TextScaled"] = true
+UI["Close"]["TextWrapped"] = true
+UI["Close"]["ZIndex"] = 10
+UI["Close"]["Parent"] = UI["Button"]
 
-local CloseCorner = Instance.new("UICorner")
-CloseCorner.Name = "CloseCorner"
-CloseCorner.CornerRadius = UDim.new(1, 0)
-CloseCorner.Parent = Close
+UI["CloseRatio"] = Instance.new("UIAspectRatioConstraint")
+UI["CloseRatio"]["Name"] = "CloseRatio"
+UI["CloseRatio"]["Parent"] = UI["Close"]
+
+UI["CloseCorner"] = Instance.new("UICorner")
+UI["CloseCorner"]["CornerRadius"] = UDim.new(1, 0)
+UI["CloseCorner"]["Name"] = "CloseCorner"
+UI["CloseCorner"]["Parent"] = UI["Close"]
 
 local function GetHumanoid()
     local Char = Player.Character
@@ -202,7 +152,7 @@ local function EnableShiftlock()
         Humanoid.AutoRotate = false
     end
     
-    Button.ImageColor3 = Color3.fromRGB(0, 210, 255)
+    UI["Button"]["ImageColor3"] = Color3.fromRGB(0, 210, 255)
     
     if RenderConnection then RenderConnection:Disconnect() end
     RenderConnection = RunService.RenderStepped:Connect(UpdateCharacter)
@@ -221,7 +171,7 @@ local function DisableShiftlock()
         Humanoid.AutoRotate = true
     end
     
-    Button.ImageColor3 = Color3.fromRGB(255, 255, 255)
+    UI["Button"]["ImageColor3"] = Color3.fromRGB(255, 255, 255)
 end
 
 local function Dragify(Frame)
@@ -282,9 +232,9 @@ end
 
 Workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(UpdateScreenSize)
 
-Dragify(Button)
+Dragify(UI["Button"])
 
-Button.MouseButton1Click:Connect(function()
+UI["Button"].MouseButton1Click:Connect(function()
     ShiftlockEnabled = not ShiftlockEnabled
     if ShiftlockEnabled then
         EnableShiftlock()
@@ -293,9 +243,9 @@ Button.MouseButton1Click:Connect(function()
     end
 end)
 
-Close.MouseButton1Click:Connect(function()
+UI["Close"].MouseButton1Click:Connect(function()
     DisableShiftlock()
-    ShiftlockGui:Destroy()
+    UI["ScreenGui"]:Destroy()
     Shared.Shiftlock.isLoaded = false
 end)
 
@@ -309,3 +259,5 @@ Player.CharacterAdded:Connect(function(NewChar)
         EnableShiftlock()
     end
 end)
+
+return UI
