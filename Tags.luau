@@ -11,94 +11,44 @@ if Shared.Tags and Shared.Tags.IsLoaded then
     return
 end
 
-local function expect(ExpectedType, Value, Fallback)
-    if type(Value) == ExpectedType then
-        return Value
-    end
-
-    if Fallback ~= nil then
-        if type(Fallback) == "function" then
-            return function(...)
-                warn("[Expect]: Missing executor functionality. Using fallback function.")
-                return Fallback(...)
-            end
-        end
-
-        warn("[Expect]: Value has unexpected type. Using fallback value.")
-    end
-
-    return Fallback
+local function GetService(Service)
+    return cloneref(game:GetService(Service))
 end
 
-local cloneref = expect("function", cloneref, function(...) return ... end)
+local Hui = gethui and gethui() or GetService("CoreGui")
+local Players = GetService("Players")
+local RunService = GetService("RunService")
+local TweenService = GetService("TweenService")
 
-local Services = setmetatable({}, {
-    __index = function(Self, Name)
-        local Success, Cache = pcall(function()
-            return cloneref(game:GetService(Name))
-        end)
+Shared.Tags = { IsLoaded = true }
 
-        if Success then
-            rawset(Self, Name, Cache)
-            return Cache
-        else
-            error("Invalid Service: " .. tostring(Name))
-        end
-    end
-})
-
-local Hui = (gethui and gethui()) or Services.CoreGui
-local Players = Services.Players
-local RunService = Services.RunService
-local TweenService = Services.TweenService
-
-Shared.Tags = {
-    IsLoaded = true
-}
-
-local function Tween(Object, Speed, Properties, EasingStyle, EasingDirection)
-    if EasingStyle == nil then
-        EasingStyle = "Quad"
-    end
-
-    if EasingDirection == nil then
-        EasingDirection = "Out"
-    end
-
-    local TweenInformation = TweenInfo.new(
-        Speed,
-        Enum.EasingStyle[EasingStyle],
-        Enum.EasingDirection[EasingDirection]
+local function Tween(Object, Speed, Props, Style, Dir)
+    return TweenService:Create(
+        Object,
+        TweenInfo.new(
+            Speed,
+            Enum.EasingStyle[Style or "Quad"],
+            Enum.EasingDirection[Dir or "Out"]
+        ),
+        Props
     )
-
-    return TweenService:Create(Object, TweenInformation, Properties)
 end
 
-local function AnimateStroke(UIStroke)
-    local UIGradient = UIStroke:FindFirstChildOfClass("UIGradient")
-    if not UIGradient then
-        return
-    end
-
-    task.spawn(function()
-        while UIGradient and UIGradient.Parent do
-            local Sine = os.clock()
-
-            UIGradient.Rotation += 1
-            UIGradient.Offset = Vector2.new(
-                2.5 * math.sin(Sine),
-                math.cos((Sine + 0.5) * 0.1)
-            )
-
-            task.wait()
-        end
-    end)
-end
-
-local function AnimateBillboard(BillboardGui)
-    for _, Object in BillboardGui:GetDescendants() do
+local function AnimTag(Tag)
+    for _, Object in Tag:GetDescendants() do
         if Object:IsA("UIStroke") then
-            AnimateStroke(Object)
+            local UIGradient = Object:FindFirstChildOfClass("UIGradient")
+
+            if UIGradient then
+                task.spawn(function()
+                    while UIGradient.Parent do
+                        local Sine = os.clock()
+                        UIGradient.Rotation += 1
+                        UIGradient.Offset = Vector2.new(2.5 * math.sin(Sine), math.cos((Sine + 0.5) * 0.1))
+                        task.wait()
+                    end
+                end)
+            end
         end
     end
 end
@@ -111,7 +61,7 @@ local Users = {
     },
 
     ["JvneX1"] = {
-        Name = "Jvne",
+        Name = "Yuni",
         Tag = "Legend",
         TagColor = Color3.fromRGB(255, 0, 0)
     },
@@ -123,44 +73,46 @@ local Users = {
     },
 }
 
-local function Random(Length)
-    local Characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    local Result = ""
-    for Index = 1, Length do
-        local Pos = math.random(1, #Characters)
-        Result = Result .. Characters:sub(Pos, Pos)
+local function UID(Length)
+    Length = Length or 32
+
+    local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
+    local Id = {}
+
+    for i = 1, Length do
+        local Rand = math.random(#Chars)
+        Id[i] = Chars:sub(Rand, Rand)
     end
-    return Result
+
+    return table.concat(Id)
 end
 
 local UI = {}
-local ActiveBillboards = {}
+local ActiveTags = {}
 local InitialSpawn = true
 
-local function CreateBillboard(Player, Data)
+local function CreateTag(Player, Data)
     local Character = Player.Character or Player.CharacterAdded:Wait()
     local Head = Character:WaitForChild("Head")
 
     local TagColor = Data.TagColor or Color3.fromRGB(255, 255, 255)
     local DisplayName = Data.Name or Player.DisplayName
     local Tag = Data.Tag or "User"
+    local Suffix = UID(8)
+    local TagName = "Tag_" .. Suffix
 
-    local Suffix = Random(4)
-    local IsOwner = Data.Tag == "Owner"
-    local BillboardName = IsOwner and "OwnerTag" or ("Tag_" .. Suffix)
-
-    UI[BillboardName] = Instance.new("BillboardGui")
-    UI[BillboardName]["Active"] = true
-    UI[BillboardName]["Adornee"] = Head
-    UI[BillboardName]["AlwaysOnTop"] = false
-    UI[BillboardName]["LightInfluence"] = 0
-    UI[BillboardName]["MaxDistance"] = 100
-    UI[BillboardName]["Name"] = BillboardName
-    UI[BillboardName]["ResetOnSpawn"] = false
-    UI[BillboardName]["Size"] = UDim2.fromOffset(1000, 34)
-    UI[BillboardName]["StudsOffset"] = Vector3.new(0, 2.5, 0)
-    UI[BillboardName]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
-    UI[BillboardName]["Parent"] = Hui
+    UI[TagName] = Instance.new("BillboardGui")
+    UI[TagName]["Active"] = true
+    UI[TagName]["Adornee"] = Head
+    UI[TagName]["AlwaysOnTop"] = false
+    UI[TagName]["LightInfluence"] = 0
+    UI[TagName]["MaxDistance"] = 100
+    UI[TagName]["Name"] = UID(64)
+    UI[TagName]["ResetOnSpawn"] = false
+    UI[TagName]["Size"] = UDim2.fromOffset(1000, 34)
+    UI[TagName]["StudsOffset"] = Vector3.new(0, 2.5, 0)
+    UI[TagName]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
+    UI[TagName]["Parent"] = Hui
 
     UI["TagText_" .. Suffix] = Instance.new("TextLabel")
     UI["TagText_" .. Suffix]["AnchorPoint"] = Vector2.new(0.5, 0.5)
@@ -175,7 +127,7 @@ local function CreateBillboard(Player, Data)
     UI["TagText_" .. Suffix]["TextColor3"] = TagColor
     UI["TagText_" .. Suffix]["TextSize"] = 24
     UI["TagText_" .. Suffix]["TextTransparency"] = 1
-    UI["TagText_" .. Suffix]["Parent"] = UI[BillboardName]
+    UI["TagText_" .. Suffix]["Parent"] = UI[TagName]
 
     UI["TagPadding_" .. Suffix] = Instance.new("UIPadding")
     UI["TagPadding_" .. Suffix]["Name"] = "TagPadding"
@@ -210,14 +162,14 @@ local function CreateBillboard(Player, Data)
     UI["TagCorner_" .. Suffix]["Name"] = "TagCorner"
     UI["TagCorner_" .. Suffix]["Parent"] = UI["TagText_" .. Suffix]
 
-    ActiveBillboards[Player] = {
+    ActiveTags[Player] = {
         Suffix = Suffix,
-        BillboardName = BillboardName,
-        Billboard = UI[BillboardName],
+        TagName = TagName,
+        Billboard = UI[TagName],
         Tag = UI["TagText_" .. Suffix]
     }
 
-    AnimateBillboard(UI[BillboardName])
+    AnimTag(UI[TagName])
 
     if not InitialSpawn then
         local FadeInTag = Tween(UI["TagText_" .. Suffix], 0.5, {TextTransparency = 0})
@@ -227,26 +179,26 @@ local function CreateBillboard(Player, Data)
     end
 end
 
-local function RemoveBillboard(Player)
-    local BillboardData = ActiveBillboards[Player]
-    if not BillboardData then return end
+local function RemoveTag(Player)
+    local TagData = ActiveTags[Player]
+    if not TagData then return end
 
-    local Suffix = BillboardData.Suffix
-    local BillboardName = BillboardData.BillboardName
+    local Suffix = TagData.Suffix
+    local TagName = TagData.TagName
 
     local FadeOutTag = Tween(UI["TagText_" .. Suffix], 0.5, {TextTransparency = 1})
     FadeOutTag:Play()
     FadeOutTag.Completed:Wait()
 
-    if UI[BillboardName] then
-        UI[BillboardName]:Destroy()
-        UI[BillboardName] = nil
+    if UI[TagName] then
+        UI[TagName]:Destroy()
+        UI[TagName] = nil
     end
 
-    ActiveBillboards[Player] = nil
+    ActiveTags[Player] = nil
 end
 
-local function ConnectCharacterAdded(Player)
+local function ConnCharAdded(Player)
     Player.CharacterAdded:Connect(function(Character)
         local HasTag = false
         local UserData = nil
@@ -260,13 +212,13 @@ local function ConnectCharacterAdded(Player)
         end
 
         if HasTag and UserData then
-            if ActiveBillboards[Player] then
-                RemoveBillboard(Player)
+            if ActiveTags[Player] then
+                RemoveTag(Player)
             end
 
             local Head = Character:WaitForChild("Head", 5)
             if Head then
-                CreateBillboard(Player, UserData)
+                CreateTag(Player, UserData)
             end
         end
     end)
@@ -275,15 +227,15 @@ end
 local function OnPlayerAdded(Player)
     for UserId, Data in pairs(Users) do
         if Player.Name == UserId or Player.UserId == tonumber(UserId) then
-            CreateBillboard(Player, Data)
+            CreateTag(Player, Data)
         end
     end
 
-    ConnectCharacterAdded(Player)
+    ConnCharAdded(Player)
 end
 
 local function OnPlayerRemoving(Player)
-    RemoveBillboard(Player)
+    RemoveTag(Player)
 end
 
 for _, Player in pairs(Players:GetPlayers()) do
