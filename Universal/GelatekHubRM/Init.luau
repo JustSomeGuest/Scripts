@@ -119,7 +119,7 @@ SafeCall(CheckAudioPackage)
 load(Modules .. "/Functions.luau", "Functions.luau")
 
 local Games = {
-    ["Just A Baseplate"] = 123974602339071,
+    ["JaB"] = 123974602339071,
 }
 
 local function IsGame(gameName)
@@ -185,6 +185,90 @@ VoidUI:New("Label", {
     Parent = Tab
 })
 
+VoidUI:New("Section", {
+    Text = "How To Use Hat Scripts",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "1. Go to the Hats tab and click the hat(s) for your desired script",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "2. Go to Reanimation tab and enable:",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "   • Permanent Death (Required)",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "   • Torso Fling or Bullet Fling (Optional)",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "   • Keep Hats Attached (Required)",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "   • Disable Animations (Required)",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "3. Click Reanimate and wait until you have 0 health",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "4. Go to Scripts tab and click your desired hat script",
+    Parent = Tab
+})
+
+VoidUI:New("Divider", {
+    Parent = Tab
+})
+
+VoidUI:New("Section", {
+    Text = "How To Use Free Scripts",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "1. Go to Reanimation tab and enable:",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "   • Permanent Death (Required)",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "   • Torso Fling or Bullet Fling (Optional)",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "   • Disable Animations (Required)",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "2. Click Reanimate and wait until you have 0 health",
+    Parent = Tab
+})
+
+VoidUI:New("Label", {
+    Text = "3. Go to Scripts tab and click your desired free script",
+    Parent = Tab
+})
+
 local ReanimationTab = VoidUI:New("Tab", {
     Text = "Reanimation"
 })
@@ -193,7 +277,7 @@ VoidUI:New("Button", {
     Text = "Reanimate",
     Parent = ReanimationTab,
     Callback = function()
-        if IsGame("Just A Baseplate") then
+        if IsGame("JaB") then
             local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
             
             if Shared.GelatekHubConfig.PermanentDeath then
@@ -378,7 +462,7 @@ local function MakeHatButton(text, ids)
         Text = text:gsub("^Copy", "Get"):gsub("Hat Id%(s%)", "Hat(s)"),
         Parent = HatsTab,
         Callback = function()
-            if IsGame("Just A Baseplate") then
+            if IsGame("JaB") then
                 local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
                 CmdEvent:FireServer("cmd", "-gh " .. ids)
                 Wait(2)
