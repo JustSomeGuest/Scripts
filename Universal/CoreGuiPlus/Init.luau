@@ -22,14 +22,11 @@ local UserInputService = GetService("UserInputService")
 Shared.CoreGuiPlus = Shared.CoreGuiPlus or {}
 
 if Shared.CoreGuiPlus.IsLoaded then
-  StarterGui:SetCore(
-  "SendNotification",
-  {
-  Title = "CoreGui+",
-  Text = "CoreGui+ is already running!",
-  Duration = 4
-  }
-  )
+    StarterGui:SetCore("SendNotification", {
+      Title = "CoreGui+",
+      Text = "CoreGui+ is already running!",
+      Duration = 4
+    })
   return
 end
 
