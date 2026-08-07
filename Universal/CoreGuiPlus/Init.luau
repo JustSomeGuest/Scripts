@@ -1,10 +1,10 @@
 if not game:IsLoaded() then
-  game.Loaded:Wait()
+    game.Loaded:Wait()
 end
 
 local Shared = (function()
-local Success, Env = pcall(getgenv)
-return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
+    local ok, env = pcall(getgenv)
+    return (ok and env) or _G or {}
 end)()
 
 local function GetService(Service)
