@@ -89,7 +89,7 @@ local function GetAsset(Path)
     return Path
   end
 
-  local AssetPath = "CoreGuiPlus/Assets/" .. Path
+  local AssetPath = Path:match("^CoreGuiPlus/Assets/") and Path or ("CoreGuiPlus/Assets/" .. Path)
 
   if IsFile(AssetPath) then
     return LoadAsset(AssetPath)
@@ -779,16 +779,12 @@ if IsMobile then
         if not JumpBtnIcon then
           JumpBtnIcon = Instance.new("ImageLabel")
           JumpBtnIcon.Name = UID(64)
+          JumpBtnIcon.Image = GetAsset("CoreGuiPlus/Assets/cgp_jump.png")
           JumpBtnIcon.AnchorPoint = Vector2.new(0.5, 0.5)
           JumpBtnIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
           JumpBtnIcon.Size = UDim2.new(0.8, 0, 0.8, 0)
           JumpBtnIcon.BackgroundTransparency = 1
           JumpBtnIcon.Parent = JumpButton
-        end
-
-        local JumpAsset = GetAsset("CoreGuiPlus/Assets/cgp_jump.png")
-        if JumpAsset then
-          JumpBtnIcon.Image = JumpAsset
         end
 
         Style(JumpButton, "1,0")
