@@ -59,8 +59,8 @@ local Scripts = {
 }
 
 for Name, Path in pairs(Scripts) do
-    Init[Name] = function()
-        return Load(Repo .. Path)
+    Init[Name] = function(...)
+        return Load(Repo .. Path, ...)
     end
 end
 
