@@ -3,7 +3,9 @@ if not game:IsLoaded() then
 end
 
 local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
-local Init = Shared.Init or {}
+
+Shared.Init = Shared.Init or {}
+local Init = Shared.Init
 
 local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/"
 
