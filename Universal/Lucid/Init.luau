@@ -505,11 +505,6 @@ local BuiltInScripts = {
         Code = [[loadstring(game:HttpGet("https://github.com/AZYsGithub/DexPlusPlus/releases/latest/download/out.lua"))()]]
     },
     {
-        Name = "Cobalt (Built-In)",
-        Description = "A simple but powerful remote spy for monitoring remote calls.",
-        Code = [[loadstring(game:HttpGet("https://github.com/notpoiu/cobalt/releases/latest/download/Cobalt.luau"))()]]
-    },
-    {
         Name = "Keyboard (Built-In)",
         Description = "A virtual keyboard GUI made for mobile devices.",
         Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau"))()
