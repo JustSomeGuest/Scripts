@@ -37,9 +37,7 @@ end
 
 local Blacklist = Load(Repo .. "Blacklist/Init.luau")
 
-if Blacklist.IsBlacklisted() then
-    return
-end
+if Blacklist.IsBlacklisted() then return end
 
 pcall(Load, Repo .. "Tags.luau")
 
