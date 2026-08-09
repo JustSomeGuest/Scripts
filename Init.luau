@@ -45,10 +45,6 @@ if Blacklist.IsBlacklisted() then
 end
 
 pcall(function()
-    Get(Repo .. "Click.luau")
-end)
-
-pcall(function()
     Get(Repo .. "Tags.luau")
 end)
 
@@ -69,10 +65,6 @@ local Scripts = {
 
 for Name, Path in pairs(Scripts) do
     Init[Name] = function()
-        coroutine.wrap(function()
-            Get(Repo .. "Welcome.luau")
-        end)()
-
         return Get(Repo .. Path)
     end
 end
