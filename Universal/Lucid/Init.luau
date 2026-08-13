@@ -3863,8 +3863,7 @@ UI.ExeBtn.MouseButton1Click:Connect(function()
     if ExeActiveTab then
         local code = ExeActiveTab.inputBox.Text
         if code and code ~= "" then
-            local success, err = loadstring(code)()
-            if not success then warn("Execution error: ", err) end
+            loadstring(code)()
         end
     end
 end)
