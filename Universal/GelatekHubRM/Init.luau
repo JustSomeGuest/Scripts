@@ -30,8 +30,6 @@ Shared.GelatekHubRM.IsLoaded = true
 
 local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
 
-VoidUI:SetKey("GelatekHub_3FwaWsJ!kNHqu8KEhJQJqmH&#!5tM%W4DFz2yQ%!2XTLWfeELRqv$FF7Aq3!3cW&", "https://link-target.net/8366935/n9csKG3MhIHu")
-
 VoidUI:SetTitle("Gelatek Hub Remastered")
 
 VoidUI:SetTheme({
@@ -41,6 +39,8 @@ VoidUI:SetTheme({
     TextColor = "255, 255, 255",
     NonSelectedTextColor = "141, 141, 141"
 })
+
+VoidUI:SetKey("GelatekHub_3FwaWsJ!kNHqu8KEhJQJqmH&#!5tM%W4DFz2yQ%!2XTLWfeELRqv$FF7Aq3!3cW&", "https://link-target.net/8366935/n9csKG3MhIHu")
 
 local function SafeCall(func, ...)
     local ok, result = pcall(func, ...)
