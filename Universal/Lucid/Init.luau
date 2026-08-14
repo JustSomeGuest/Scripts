@@ -1820,8 +1820,8 @@ UI.WelcomeLabel.Size = UDim2.new(1, 0, 0, 0)
 UI.WelcomeLabel.AutomaticSize = Enum.AutomaticSize.Y
 UI.WelcomeLabel.Text = "Welcome to Lucid, DisplayName!"
 UI.WelcomeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.WelcomeLabel.TextScaled = true
-UI.WelcomeLabel.TextSize = 20
+UI.WelcomeLabel.TextScaled = false
+UI.WelcomeLabel.TextSize = 40
 UI.WelcomeLabel.TextWrapped = true
 UI.WelcomeLabel.Parent = UI.PlayerInfo
 
