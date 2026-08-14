@@ -268,7 +268,6 @@ end
 function Funcs.HttpGet(url)
     local RequestFunc = (syn and syn.request) or request or http_request
     if not RequestFunc then return nil end
-
     local Success, Result = pcall(function()
         return RequestFunc({
             Url = url,
@@ -279,7 +278,6 @@ function Funcs.HttpGet(url)
             }
         })
     end)
-
     return Success and Result or nil
 end
 
@@ -339,15 +337,25 @@ function Funcs.LoadSavedScripts()
     for _, file in ipairs(files) do
         local content = ReadFile(file)
         local success, data = pcall(function() return HttpService:JSONDecode(content) end)
-        if success and data then table.insert(scripts, data) end
+        if success and data then
+            if data.Script == nil and data.Code ~= nil then
+                data.Script = data.Code
+                data.Code = nil
+            end
+            table.insert(scripts, data)
+        end
     end
     return scripts
 end
 
 function Funcs.SaveScript(scriptData)
     if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") end
-    local fileName = "Lucid/Scripts/" .. scriptData.Name:gsub("[^%w]", "_") .. ".json"
-    WriteFile(fileName, HttpService:JSONEncode(scriptData))
+    local code = scriptData.Script or scriptData.Code or ""
+    local fileName = "Lucid/Scripts/" .. (scriptData.Name or "Unknown"):gsub("[^%w]", "_") .. ".json"
+    local encoded = '{\n  "Name": ' .. HttpService:JSONEncode(scriptData.Name or "") ..
+        ',\n  "Description": ' .. HttpService:JSONEncode(scriptData.Description or "") ..
+        ',\n  "Script": ' .. HttpService:JSONEncode(code) .. '\n}'
+    WriteFile(fileName, encoded)
 end
 
 function Funcs.DeleteScript(scriptName)
@@ -359,12 +367,12 @@ local BuiltInScripts = {
     {
         Name = "Dex++ (Built-In)",
         Description = "A simple but powerful tool for exploring game instances.",
-        Code = [[loadstring(game:HttpGet("https://github.com/AZYsGithub/DexPlusPlus/releases/latest/download/out.lua"))()]]
+        Script = [[loadstring(game:HttpGet("https://github.com/AZYsGithub/DexPlusPlus/releases/latest/download/out.lua"))()]]
     },
     {
         Name = "Keyboard (Built-In)",
         Description = "A virtual keyboard GUI made for mobile devices.",
-        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau"))()
+        Script = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau"))()
 Init.DeltaKD()]]
     }
 }
@@ -518,7 +526,9 @@ function Funcs.CreateResultCard(data, parent)
 
         if runBtn then
             runBtn.MouseButton1Click:Connect(function()
-                local fn, loadErr = loadstring(scriptData.Code or "")
+                local code = ResolveCode()
+                if not code then return end
+                local fn, loadErr = loadstring(code)
                 if not fn then error(loadErr) end
                 local success, runErr = pcall(fn)
                 if not success then error(runErr) end
@@ -538,8 +548,8 @@ function Funcs.CreateResultCard(data, parent)
             saveBtn.MouseButton1Click:Connect(function()
                 local code = ResolveCode()
                 if code then
-                    local scriptData = { Name = title, Description = data.description or "", Code = code }
-                    Funcs.SaveScript(scriptData)
+                    local sd = { Name = title, Description = data.description or "", Script = code }
+                    Funcs.SaveScript(sd)
                     saveBtn.Text = "Saved!"
                     task.delay(1, function() saveBtn.Text = "Save" end)
                     Funcs.RefreshSavedScripts(UI.SearchBox2.Text)
@@ -827,7 +837,8 @@ function Funcs.RefreshSavedScripts(searchQuery)
             end
             if runBtn then
                 runBtn.MouseButton1Click:Connect(function()
-                    local fn, loadErr = loadstring(scriptData.Code or "")
+                    local code = scriptData.Script or scriptData.Code or ""
+                    local fn, loadErr = loadstring(code)
                     if not fn then error(loadErr) end
                     local success, runErr = pcall(fn)
                     if not success then error(runErr) end
@@ -880,19 +891,24 @@ function Funcs.SwitchTab(tabButton)
 end
 
 function Funcs.UpdateUnderline(tabButton, active)
-    local underline = tabButton:FindFirstChild("TabUnderline") or tabButton:FindFirstChild("TabUnderline2") or tabButton:FindFirstChild("TabUnderline3") or tabButton:FindFirstChild("TabUnderline4") or tabButton:FindFirstChild("TabUnderline5") or tabButton:FindFirstChild("TabUnderline6Music")
+    local underline = tabButton:FindFirstChild("TabUnderline")
+        or tabButton:FindFirstChild("TabUnderline2")
+        or tabButton:FindFirstChild("TabUnderline3")
+        or tabButton:FindFirstChild("TabUnderline4")
+        or tabButton:FindFirstChild("TabUnderline5")
+        or tabButton:FindFirstChild("TabUnderline6Music")
     if not underline then return end
     if active then
         if Settings.Animations then
-            TweenService:Create(underline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(1, 0, 0, 1) }):Play()
+            TweenService:Create(underline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(1, 0, 0, 2) }):Play()
         else
-            underline.Size = UDim2.new(1, 0, 0, 1)
+            underline.Size = UDim2.new(1, 0, 0, 2)
         end
     else
         if Settings.Animations then
-            TweenService:Create(underline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 0, 0, 1) }):Play()
+            TweenService:Create(underline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 0, 0, 2) }):Play()
         else
-            underline.Size = UDim2.new(0, 0, 0, 1)
+            underline.Size = UDim2.new(0, 0, 0, 2)
         end
     end
 end
@@ -1003,41 +1019,40 @@ function Funcs.CreateTab(iconPath, labelText, content, layoutOrder, underlineKey
     tab.BorderSizePixel = 0
     tab.LayoutOrder = layoutOrder or 1
     tab.Name = labelText .. "Tab"
-    tab.Size = UDim2.new(0, 30, 0, 58)
+    tab.Size = UDim2.new(1, 0, 0, 48)
     tab.Text = ""
     tab.Parent = UI.Sidebar
 
     local tabLayout = Instance.new("UIListLayout")
-    tabLayout.Padding = UDim.new(0, 4)
+    tabLayout.Padding = UDim.new(0, 0)
     tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    tabLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+    tabLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
     tabLayout.Parent = tab
 
     local tabSizeCons = Instance.new("UISizeConstraint")
-    tabSizeCons.MaxSize = Vector2.new(2147483647, 34)
-    tabSizeCons.MinSize = Vector2.new(0, 28)
+    tabSizeCons.MaxSize = Vector2.new(2147483647, 48)
+    tabSizeCons.MinSize = Vector2.new(0, 36)
     tabSizeCons.Parent = tab
 
-    local tabPadding = Instance.new("UIPadding")
-    tabPadding.PaddingBottom = UDim.new(0, 3)
-    tabPadding.PaddingTop = UDim.new(0, 3)
-    tabPadding.Parent = tab
+    local inner = Instance.new("Frame")
+    inner.BackgroundTransparency = 1
+    inner.BorderSizePixel = 0
+    inner.LayoutOrder = 1
+    inner.Name = "TabInner"
+    inner.Size = UDim2.new(1, 0, 0, 40)
+    inner.Parent = tab
 
-    local container = Instance.new("Frame")
-    container.BackgroundTransparency = 1
-    container.BorderSizePixel = 0
-    container.LayoutOrder = 1
-    container.Name = "TabContainer"
-    container.Size = UDim2.new(1, 0, 0, 22)
-    container.Parent = tab
+    local innerLayout = Instance.new("UIListLayout")
+    innerLayout.FillDirection = Enum.FillDirection.Horizontal
+    innerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    innerLayout.Padding = UDim.new(0, 8)
+    innerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    innerLayout.Parent = inner
 
-    local containerLayout = Instance.new("UIListLayout")
-    containerLayout.FillDirection = Enum.FillDirection.Horizontal
-    containerLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-    containerLayout.Padding = UDim.new(0, 4)
-    containerLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    containerLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-    containerLayout.Parent = container
+    local innerPadding = Instance.new("UIPadding")
+    innerPadding.PaddingLeft = UDim.new(0, 6)
+    innerPadding.PaddingRight = UDim.new(0, 4)
+    innerPadding.Parent = inner
 
     local icon = Instance.new("ImageLabel")
     icon.BackgroundTransparency = 1
@@ -1045,8 +1060,8 @@ function Funcs.CreateTab(iconPath, labelText, content, layoutOrder, underlineKey
     icon.Image = Funcs.GetAsset(iconPath) or ""
     icon.LayoutOrder = 1
     icon.Name = "TabIcon"
-    icon.Size = UDim2.new(0, 30, 0, 30)
-    icon.Parent = container
+    icon.Size = UDim2.new(0, 22, 0, 22)
+    icon.Parent = inner
 
     local iconRatio = Instance.new("UIAspectRatioConstraint")
     iconRatio.Parent = icon
@@ -1057,24 +1072,24 @@ function Funcs.CreateTab(iconPath, labelText, content, layoutOrder, underlineKey
     label.FontFace = BuilderSans
     label.LayoutOrder = 2
     label.Name = "TabLabel"
-    label.Size = UDim2.new(0, 60, 0, 30)
+    label.Size = UDim2.new(1, -38, 0, 22)
     label.Text = labelText
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextColor3 = Color3.fromRGB(200, 200, 200)
     label.TextScaled = true
     label.TextWrapped = true
     label.TextXAlignment = Enum.TextXAlignment.Left
-    label.Parent = container
+    label.Parent = inner
 
     local underline = Instance.new("Frame")
     underline.BackgroundColor3 = Settings.AccentColor
     underline.BorderSizePixel = 0
     underline.LayoutOrder = 2
     underline.Name = underlineKey or "TabUnderline"
-    underline.Size = UDim2.new(0, 0, 0, 1)
+    underline.Size = UDim2.new(0, 0, 0, 2)
     underline.Parent = tab
 
     local underlineCorner = Instance.new("UICorner")
-    underlineCorner.CornerRadius = UDim.new(0, 6)
+    underlineCorner.CornerRadius = UDim.new(0, 2)
     underlineCorner.Parent = underline
 
     UI[labelText .. "Tab"] = tab
@@ -1223,7 +1238,7 @@ function Funcs.CreateExeTab(name)
     tabBtn.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
     tabBtn.BorderSizePixel = 0
     tabBtn.Name = "ExeTabBtn_" .. tabData.name
-    tabBtn.Size = UDim2.new(0, 90, 1, 0)
+    tabBtn.Size = UDim2.new(0, 110, 1, 0)
     tabBtn.Parent = UI.ExeTabBarScroll
 
     local tabBtnCorner = Instance.new("UICorner")
@@ -1235,33 +1250,45 @@ function Funcs.CreateExeTab(name)
     tabBtnStroke.Color = Color3.fromRGB(36, 36, 36)
     tabBtnStroke.Parent = tabBtn
 
+    local tabInnerLayout = Instance.new("UIListLayout")
+    tabInnerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabInnerLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    tabInnerLayout.Parent = tabBtn
+
+    local tabBody = Instance.new("Frame")
+    tabBody.BackgroundTransparency = 1
+    tabBody.BorderSizePixel = 0
+    tabBody.LayoutOrder = 1
+    tabBody.Name = "TabBody"
+    tabBody.Size = UDim2.new(1, 0, 1, -2)
+    tabBody.Parent = tabBtn
+
+    local tabBodyLayout = Instance.new("UIListLayout")
+    tabBodyLayout.FillDirection = Enum.FillDirection.Horizontal
+    tabBodyLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    tabBodyLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    tabBodyLayout.Padding = UDim.new(0, 4)
+    tabBodyLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabBodyLayout.Parent = tabBody
+
+    local tabBodyPadding = Instance.new("UIPadding")
+    tabBodyPadding.PaddingLeft = UDim.new(0, 8)
+    tabBodyPadding.PaddingRight = UDim.new(0, 4)
+    tabBodyPadding.PaddingTop = UDim.new(0, 2)
+    tabBodyPadding.PaddingBottom = UDim.new(0, 2)
+    tabBodyPadding.Parent = tabBody
+
     local activeLine = Instance.new("Frame")
     activeLine.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     activeLine.BorderSizePixel = 0
+    activeLine.LayoutOrder = 2
     activeLine.Name = "ActiveLine"
     activeLine.Size = UDim2.new(1, 0, 0, 2)
-    activeLine.AnchorPoint = Vector2.new(0, 1)
-    activeLine.Position = UDim2.new(0, 0, 1, 0)
     activeLine.Parent = tabBtn
 
     local activeLineCorner = Instance.new("UICorner")
     activeLineCorner.CornerRadius = UDim.new(0, 2)
     activeLineCorner.Parent = activeLine
-
-    local tabInnerLayout = Instance.new("UIListLayout")
-    tabInnerLayout.FillDirection = Enum.FillDirection.Horizontal
-    tabInnerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    tabInnerLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-    tabInnerLayout.Padding = UDim.new(0, 2)
-    tabInnerLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    tabInnerLayout.Parent = tabBtn
-
-    local tabInnerPadding = Instance.new("UIPadding")
-    tabInnerPadding.PaddingLeft = UDim.new(0, 6)
-    tabInnerPadding.PaddingRight = UDim.new(0, 4)
-    tabInnerPadding.PaddingTop = UDim.new(0, 2)
-    tabInnerPadding.PaddingBottom = UDim.new(0, 4)
-    tabInnerPadding.Parent = tabBtn
 
     local tabNameBtn = Instance.new("TextButton")
     tabNameBtn.BackgroundTransparency = 1
@@ -1269,13 +1296,13 @@ function Funcs.CreateExeTab(name)
     tabNameBtn.FontFace = GothamMedium
     tabNameBtn.LayoutOrder = 1
     tabNameBtn.Name = "TabNameBtn"
-    tabNameBtn.Size = UDim2.new(1, -20, 1, 0)
+    tabNameBtn.Size = UDim2.new(1, -22, 1, 0)
     tabNameBtn.Text = tabData.name
     tabNameBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
     tabNameBtn.TextScaled = true
     tabNameBtn.TextTruncate = Enum.TextTruncate.AtEnd
     tabNameBtn.TextXAlignment = Enum.TextXAlignment.Left
-    tabNameBtn.Parent = tabBtn
+    tabNameBtn.Parent = tabBody
 
     local tabNameBox = Instance.new("TextBox")
     tabNameBox.BackgroundTransparency = 1
@@ -1283,14 +1310,14 @@ function Funcs.CreateExeTab(name)
     tabNameBox.FontFace = GothamMedium
     tabNameBox.LayoutOrder = 1
     tabNameBox.Name = "TabNameBox"
-    tabNameBox.Size = UDim2.new(1, -20, 1, 0)
+    tabNameBox.Size = UDim2.new(1, -22, 1, 0)
     tabNameBox.Text = tabData.name
     tabNameBox.TextColor3 = Color3.fromRGB(200, 200, 200)
     tabNameBox.TextScaled = true
     tabNameBox.TextXAlignment = Enum.TextXAlignment.Left
     tabNameBox.Visible = false
     tabNameBox.ClearTextOnFocus = false
-    tabNameBox.Parent = tabBtn
+    tabNameBox.Parent = tabBody
 
     local closeBtn = Instance.new("TextButton")
     closeBtn.BackgroundTransparency = 1
@@ -1298,11 +1325,11 @@ function Funcs.CreateExeTab(name)
     closeBtn.FontFace = GothamBold
     closeBtn.LayoutOrder = 2
     closeBtn.Name = "CloseExeTab"
-    closeBtn.Size = UDim2.new(0, 16, 0, 16)
-    closeBtn.Text = "X"
+    closeBtn.Size = UDim2.new(0, 18, 0, 18)
+    closeBtn.Text = "✕"
     closeBtn.TextColor3 = Color3.fromRGB(160, 160, 160)
     closeBtn.TextScaled = true
-    closeBtn.Parent = tabBtn
+    closeBtn.Parent = tabBody
 
     local inputFrame = Instance.new("ScrollingFrame")
     inputFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
@@ -1664,14 +1691,14 @@ UI.Pages.BackgroundTransparency = 1
 UI.Pages.BorderSizePixel = 0
 UI.Pages.LayoutOrder = 1
 UI.Pages.Name = "Pages"
-UI.Pages.Size = UDim2.new(0, 576, 0, 116)
+UI.Pages.Size = UDim2.new(1, -168, 1, 0)
 UI.Pages.Parent = UI.MainFrame
 
 UI.PagesPadding = Instance.new("UIPadding")
 UI.PagesPadding.Name = "PagesPadding"
 UI.PagesPadding.PaddingBottom = UDim.new(0, 8)
 UI.PagesPadding.PaddingLeft = UDim.new(0, 8)
-UI.PagesPadding.PaddingTop = UDim.new(0, 60)
+UI.PagesPadding.PaddingTop = UDim.new(0, 8)
 UI.PagesPadding.Parent = UI.Pages
 
 UI.HomeContent = Instance.new("CanvasGroup")
@@ -1789,7 +1816,8 @@ UI.WelcomeLabel.BackgroundTransparency = 1
 UI.WelcomeLabel.BorderSizePixel = 0
 UI.WelcomeLabel.FontFace = GothamMedium
 UI.WelcomeLabel.Name = "WelcomeLabel"
-UI.WelcomeLabel.Size = UDim2.new(0, 432, 0, 0)
+UI.WelcomeLabel.Size = UDim2.new(1, 0, 0, 0)
+UI.WelcomeLabel.AutomaticSize = Enum.AutomaticSize.Y
 UI.WelcomeLabel.Text = "Welcome to Lucid, DisplayName!"
 UI.WelcomeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 UI.WelcomeLabel.TextScaled = true
@@ -1902,7 +1930,7 @@ UI.ExeTabBarWrapper.BackgroundTransparency = 1
 UI.ExeTabBarWrapper.BorderSizePixel = 0
 UI.ExeTabBarWrapper.LayoutOrder = 1
 UI.ExeTabBarWrapper.Name = "ExeTabBarWrapper"
-UI.ExeTabBarWrapper.Size = UDim2.new(1, 0, 0, 30)
+UI.ExeTabBarWrapper.Size = UDim2.new(1, 0, 0, 34)
 UI.ExeTabBarWrapper.Parent = UI.ExeContent
 
 UI.ExeTabBarWrapperLayout = Instance.new("UIListLayout")
@@ -1914,8 +1942,8 @@ UI.ExeTabBarWrapperLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 UI.ExeTabBarWrapperLayout.Parent = UI.ExeTabBarWrapper
 
 UI.ExeTabBarSizeCons = Instance.new("UISizeConstraint")
-UI.ExeTabBarSizeCons.MaxSize = Vector2.new(2147483647, 30)
-UI.ExeTabBarSizeCons.MinSize = Vector2.new(0, 30)
+UI.ExeTabBarSizeCons.MaxSize = Vector2.new(2147483647, 34)
+UI.ExeTabBarSizeCons.MinSize = Vector2.new(0, 34)
 UI.ExeTabBarSizeCons.Parent = UI.ExeTabBarWrapper
 
 UI.ExeTabBarScroll = Instance.new("ScrollingFrame")
@@ -1925,7 +1953,7 @@ UI.ExeTabBarScroll.BorderSizePixel = 0
 UI.ExeTabBarScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
 UI.ExeTabBarScroll.LayoutOrder = 1
 UI.ExeTabBarScroll.Name = "ExeTabBarScroll"
-UI.ExeTabBarScroll.ScrollBarThickness = 3
+UI.ExeTabBarScroll.ScrollBarThickness = 0
 UI.ExeTabBarScroll.ScrollingDirection = Enum.ScrollingDirection.X
 UI.ExeTabBarScroll.Size = UDim2.new(1, -38, 1, 0)
 UI.ExeTabBarScroll.Parent = UI.ExeTabBarWrapper
@@ -1965,7 +1993,7 @@ UI.AddExeTabBtnStroke.Parent = UI.AddExeTabBtn
 
 UI.AddExeTabBtnRatio = Instance.new("UIAspectRatioConstraint")
 UI.AddExeTabBtnRatio.Parent = UI.AddExeTabBtn
-  
+
 UI.ExeEditorArea = Instance.new("Frame")
 UI.ExeEditorArea.BackgroundTransparency = 1
 UI.ExeEditorArea.BorderSizePixel = 0
@@ -3344,7 +3372,7 @@ UI.SidebarContainer.BackgroundTransparency = 1
 UI.SidebarContainer.BorderSizePixel = 0
 UI.SidebarContainer.LayoutOrder = 2
 UI.SidebarContainer.Name = "SidebarContainer"
-UI.SidebarContainer.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.SidebarContainer.Size = UDim2.new(0, 160, 1, 0)
 UI.SidebarContainer.Parent = UI.MainFrame
 
 UI.Sidebar = Instance.new("Frame")
@@ -3368,13 +3396,13 @@ UI.SidebarStroke.Parent = UI.Sidebar
 UI.SidebarPadding = Instance.new("UIPadding")
 UI.SidebarPadding.PaddingBottom = UDim.new(0, 8)
 UI.SidebarPadding.PaddingLeft = UDim.new(0, 8)
-UI.SidebarPadding.PaddingRight = UDim.new(0, 18)
+UI.SidebarPadding.PaddingRight = UDim.new(0, 8)
 UI.SidebarPadding.PaddingTop = UDim.new(0, 8)
 UI.SidebarPadding.Parent = UI.Sidebar
 
 UI.SidebarLayout = Instance.new("UIListLayout")
 UI.SidebarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SidebarLayout.Padding = UDim.new(0, 3)
+UI.SidebarLayout.Padding = UDim.new(0, 2)
 UI.SidebarLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.SidebarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 UI.SidebarLayout.Parent = UI.Sidebar
@@ -3383,18 +3411,18 @@ UI.Topbar = Instance.new("Frame")
 UI.Topbar.BackgroundTransparency = 1
 UI.Topbar.BorderSizePixel = 0
 UI.Topbar.Name = "Topbar"
-UI.Topbar.Size = UDim2.new(1, 0, 0, 30)
+UI.Topbar.Size = UDim2.new(1, 0, 0, 36)
 UI.Topbar.Parent = UI.Sidebar
 
 UI.TopbarSizeCons = Instance.new("UISizeConstraint")
-UI.TopbarSizeCons.MaxSize = Vector2.new(2147483647, 30)
-UI.TopbarSizeCons.MinSize = Vector2.new(0, 28)
+UI.TopbarSizeCons.MaxSize = Vector2.new(2147483647, 36)
+UI.TopbarSizeCons.MinSize = Vector2.new(0, 30)
 UI.TopbarSizeCons.Parent = UI.Topbar
 
 UI.TopbarLayout = Instance.new("UIListLayout")
 UI.TopbarLayout.FillDirection = Enum.FillDirection.Horizontal
 UI.TopbarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.TopbarLayout.Padding = UDim.new(0, 4)
+UI.TopbarLayout.Padding = UDim.new(0, 6)
 UI.TopbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.TopbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 UI.TopbarLayout.Parent = UI.Topbar
@@ -3406,7 +3434,7 @@ UI.Logo.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
 UI.Logo.ImageColor3 = Color3.fromRGB(0, 64, 180)
 UI.Logo.LayoutOrder = 1
 UI.Logo.Name = "Logo"
-UI.Logo.Size = UDim2.new(0, 30, 0, 30)
+UI.Logo.Size = UDim2.new(0, 28, 0, 28)
 UI.Logo.Parent = UI.Topbar
 
 UI.LogoRatio = Instance.new("UIAspectRatioConstraint")
@@ -3430,7 +3458,7 @@ UI.Title.BorderSizePixel = 0
 UI.Title.FontFace = BuilderSans
 UI.Title.LayoutOrder = 2
 UI.Title.Name = "Title"
-UI.Title.Size = UDim2.new(0, 60, 0, 30)
+UI.Title.Size = UDim2.new(1, -40, 0, 28)
 UI.Title.Text = "Lucid"
 UI.Title.TextColor3 = Color3.fromRGB(0, 99, 255)
 UI.Title.TextScaled = true
@@ -3454,41 +3482,38 @@ UI.CloseTab.BackgroundTransparency = 1
 UI.CloseTab.BorderSizePixel = 0
 UI.CloseTab.LayoutOrder = 100
 UI.CloseTab.Name = "CloseTab"
-UI.CloseTab.Size = UDim2.new(0, 30, 0, 58)
+UI.CloseTab.Size = UDim2.new(1, 0, 0, 48)
 UI.CloseTab.Text = ""
 UI.CloseTab.Parent = UI.Sidebar
 
 UI.CloseTabLayout = Instance.new("UIListLayout")
-UI.CloseTabLayout.Padding = UDim.new(0, 4)
 UI.CloseTabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UI.CloseTabLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.CloseTabLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
 UI.CloseTabLayout.Parent = UI.CloseTab
 
 UI.CloseTabSizeCons = Instance.new("UISizeConstraint")
-UI.CloseTabSizeCons.MaxSize = Vector2.new(2147483647, 34)
-UI.CloseTabSizeCons.MinSize = Vector2.new(0, 28)
+UI.CloseTabSizeCons.MaxSize = Vector2.new(2147483647, 48)
+UI.CloseTabSizeCons.MinSize = Vector2.new(0, 36)
 UI.CloseTabSizeCons.Parent = UI.CloseTab
 
-UI.CloseTabPadding = Instance.new("UIPadding")
-UI.CloseTabPadding.PaddingBottom = UDim.new(0, 3)
-UI.CloseTabPadding.PaddingTop = UDim.new(0, 3)
-UI.CloseTabPadding.Parent = UI.CloseTab
+UI.CloseTabInner = Instance.new("Frame")
+UI.CloseTabInner.BackgroundTransparency = 1
+UI.CloseTabInner.BorderSizePixel = 0
+UI.CloseTabInner.LayoutOrder = 1
+UI.CloseTabInner.Name = "CloseTabInner"
+UI.CloseTabInner.Size = UDim2.new(1, 0, 0, 40)
+UI.CloseTabInner.Parent = UI.CloseTab
 
-UI.TabContainer6 = Instance.new("Frame")
-UI.TabContainer6.BackgroundTransparency = 1
-UI.TabContainer6.BorderSizePixel = 0
-UI.TabContainer6.LayoutOrder = 1
-UI.TabContainer6.Name = "TabContainer6"
-UI.TabContainer6.Size = UDim2.new(1, 0, 0, 22)
-UI.TabContainer6.Parent = UI.CloseTab
+UI.CloseTabInnerLayout = Instance.new("UIListLayout")
+UI.CloseTabInnerLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.CloseTabInnerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+UI.CloseTabInnerLayout.Padding = UDim.new(0, 8)
+UI.CloseTabInnerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.CloseTabInnerLayout.Parent = UI.CloseTabInner
 
-UI.TabContainer6Layout = Instance.new("UIListLayout")
-UI.TabContainer6Layout.FillDirection = Enum.FillDirection.Horizontal
-UI.TabContainer6Layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.TabContainer6Layout.Padding = UDim.new(0, 4)
-UI.TabContainer6Layout.SortOrder = Enum.SortOrder.LayoutOrder
-UI.TabContainer6Layout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.TabContainer6Layout.Parent = UI.TabContainer6
+UI.CloseTabInnerPadding = Instance.new("UIPadding")
+UI.CloseTabInnerPadding.PaddingLeft = UDim.new(0, 6)
+UI.CloseTabInnerPadding.Parent = UI.CloseTabInner
 
 UI.TabIcon6 = Instance.new("ImageLabel")
 UI.TabIcon6.BackgroundTransparency = 1
@@ -3496,8 +3521,8 @@ UI.TabIcon6.BorderSizePixel = 0
 UI.TabIcon6.Image = Funcs.GetAsset("Lucid/Assets/lucid_close.png")
 UI.TabIcon6.LayoutOrder = 1
 UI.TabIcon6.Name = "TabIcon6"
-UI.TabIcon6.Size = UDim2.new(0, 30, 0, 30)
-UI.TabIcon6.Parent = UI.TabContainer6
+UI.TabIcon6.Size = UDim2.new(0, 22, 0, 22)
+UI.TabIcon6.Parent = UI.CloseTabInner
 
 UI.TabIcon6Ratio = Instance.new("UIAspectRatioConstraint")
 UI.TabIcon6Ratio.Parent = UI.TabIcon6
@@ -3508,20 +3533,20 @@ UI.TabLabel6.BorderSizePixel = 0
 UI.TabLabel6.FontFace = BuilderSans
 UI.TabLabel6.LayoutOrder = 2
 UI.TabLabel6.Name = "TabLabel6"
-UI.TabLabel6.Size = UDim2.new(0, 60, 0, 30)
+UI.TabLabel6.Size = UDim2.new(1, -38, 0, 22)
 UI.TabLabel6.Text = "Close"
-UI.TabLabel6.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.TabLabel6.TextColor3 = Color3.fromRGB(200, 200, 200)
 UI.TabLabel6.TextScaled = true
 UI.TabLabel6.TextWrapped = true
 UI.TabLabel6.TextXAlignment = Enum.TextXAlignment.Left
-UI.TabLabel6.Parent = UI.TabContainer6
+UI.TabLabel6.Parent = UI.CloseTabInner
 
 UI.TabUnderline6Close = Instance.new("Frame")
 UI.TabUnderline6Close.BackgroundTransparency = 1
 UI.TabUnderline6Close.BorderSizePixel = 0
 UI.TabUnderline6Close.LayoutOrder = 2
 UI.TabUnderline6Close.Name = "TabUnderline6Close"
-UI.TabUnderline6Close.Size = UDim2.new(0, 0, 0, 1)
+UI.TabUnderline6Close.Size = UDim2.new(0, 0, 0, 2)
 UI.TabUnderline6Close.Parent = UI.CloseTab
 
 UI.NewScriptFrame = Instance.new("Frame")
@@ -3802,7 +3827,7 @@ UI.Save.MouseButton1Click:Connect(function()
     local scriptDesc = UI.DescBox.Text
     local scriptCode = UI.ScriptBox.Text
     if scriptName == "" then return end
-    Funcs.SaveScript({ Name = scriptName, Description = scriptDesc, Code = scriptCode })
+    Funcs.SaveScript({ Name = scriptName, Description = scriptDesc, Script = scriptCode })
     UI.NewScriptFrame.Visible = false
     UI.NameBox.Text = ""
     UI.DescBox.Text = ""
@@ -3880,15 +3905,9 @@ UI.AnimsToggle.MouseButton1Click:Connect(function()
     Settings.Animations = not Settings.Animations
     if UI.ToggleState then
         local col = Settings.Animations and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-        if Settings.Animations then
-            TweenService:Create(UI.ToggleState, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = col }):Play()
-            local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
-            if stroke then TweenService:Create(stroke, TweenInfo.new(0.3), { Color = col }):Play() end
-        else
-            TweenService:Create(UI.ToggleState, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = col }):Play()
-            local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
-            if stroke then TweenService:Create(stroke, TweenInfo.new(0.3), { Color = col }):Play() end
-        end
+        TweenService:Create(UI.ToggleState, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = col }):Play()
+        local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
+        if stroke then TweenService:Create(stroke, TweenInfo.new(0.3), { Color = col }):Play() end
     end
     Funcs.SaveSettings()
 end)
