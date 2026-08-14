@@ -2,13 +2,11 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (function()
-    local Success, Env = pcall(getgenv)
-    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
-end)()
+local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
 
 local function GetService(Service)
-    return cloneref(game:GetService(Service))
+    local Service = game:GetService(Service)
+    return cloneref and cloneref(Service) or Service
 end
 
 local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM/"
@@ -21,7 +19,7 @@ Shared.GelatekHubRM = Shared.GelatekHubRM or {}
 
 if Shared.GelatekHubRM.IsLoaded then
     GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "GelatekHubRM",
+        Title = "Gelatek Hub Remastered",
         Text = "Gelatek Hub Remastered is already running!",
         Duration = 4
     })
@@ -31,6 +29,8 @@ end
 Shared.GelatekHubRM.IsLoaded = true
 
 local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
+
+VoidUI:SetKey("GelatekHub_3FwaWsJ!kNHqu8KEhJQJqmH&#!5tM%W4DFz2yQ%!2XTLWfeELRqv$FF7Aq3!3cW&", "https://link-target.net/8366935/n9csKG3MhIHu")
 
 VoidUI:SetTitle("Gelatek Hub Remastered")
 
@@ -424,7 +424,7 @@ VoidUI:New("Section", {
 
 MakeScriptButton("Dual Ultima", HatScripts .. "/DualUltima.luau")
 MakeScriptButton("Carnage", HatScripts .. "/Carnage.luau")
-MakeScriptButton("Neptunian V (Disable Anims)", HatScripts .. "/Neptunian.luau")
+MakeScriptButton("Neptunian V", HatScripts .. "/Neptunian.luau")
 MakeScriptButton("Zenith Battle Rifle-70", HatScripts .. "/ZenithAttackRifle.luau")
 MakeScriptButton("Chips", HatScripts .. "/Chips.luau")
 MakeScriptButton("Void Scythe", HatScripts .. "/VoidScythe.luau")
@@ -436,7 +436,7 @@ local HatsTab = VoidUI:New("Tab", {
     Text = "Hats"
 })
 
-local function CopyToClipboard(text)
+local function Copy(text)
     if type(setclipboard) ~= "function" then
         warn("[Gelatek Hub Remastered]: Executor doesn't support setclipboard")
         GetService("StarterGui"):SetCore("SendNotification", {
@@ -468,7 +468,7 @@ local function MakeHatButton(text, ids)
                 Wait(2)
                 CmdEvent:FireServer("cmd", "-net")
             else
-                CopyToClipboard(ids)
+                Copy(ids)
             end
         end
     })
