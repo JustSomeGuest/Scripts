@@ -1326,7 +1326,7 @@ function Funcs.CreateExeTab(name)
     closeBtn.LayoutOrder = 2
     closeBtn.Name = "CloseExeTab"
     closeBtn.Size = UDim2.new(0, 18, 0, 18)
-    closeBtn.Text = "✕"
+    closeBtn.Text = "×"
     closeBtn.TextColor3 = Color3.fromRGB(160, 160, 160)
     closeBtn.TextScaled = true
     closeBtn.Parent = tabBody
