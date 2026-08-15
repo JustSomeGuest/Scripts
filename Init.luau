@@ -10,7 +10,8 @@ local Init = Shared.Init
 local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/"
 
 local function HttpGet(url)
-    return loadstring((game.HttpGetAsync or game.HttpGet)(game, url))()
+    local src = (game.HttpGetAsync or game.HttpGet)(game, url)
+    return loadstring(src)()
 end
 
 local Scripts = {
