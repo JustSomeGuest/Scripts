@@ -10,8 +10,27 @@ local Init = Shared.Init
 local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/"
 
 local function HttpGet(url)
-    local src = (game.HttpGetAsync or game.HttpGet)(game, url)
-    return loadstring(src)()
+    local success, source = pcall(function()
+        return (game.HttpGetAsync or game.HttpGet)(game, url)
+    end)
+
+    if not success then
+        return nil
+    end
+
+    local success, func = pcall(loadstring, source)
+
+    if not success then
+        return nil
+    end
+
+    local success, result = pcall(func)
+
+    if not success then
+        return nil
+    end
+
+    return result
 end
 
 local Scripts = {
