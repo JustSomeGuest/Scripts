@@ -1,639 +1,747 @@
 if not game:IsLoaded() then
-game.Loaded:Wait()
+    game.Loaded:Wait()
 end
-local _0x012A = (type(getgenv) ==string.char(102,117,110,99,116,105,111,110)and getgenv()) or shared or _G
-local function _0x4783(_0x3E08)
-local _0x3E08 = game:GetService(_0x3E08)
-return cloneref and cloneref(_0x3E08) or _0x3E08
+
+local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
+
+local function GetService(Service)
+    local Service = game:GetService(Service)
+    return cloneref and cloneref(Service) or Service
 end
-local _0x6A51 = gethui and gethui() or _0x4783(string.char(67,111,114,101,71,117,105))
-local _0x34CA = _0x4783(string.char(87,111,114,107,115,112,97,99,101))
-local _0x2D6D = _0x4783(string.char(72,116,116,112,83,101,114,118,105,99,101))
-local _0x436D = _0x4783(string.char(80,108,97,121,101,114,115))
-local _0x0F90 = _0x436D.LocalPlayer
-local _0x86B4 = _0x4783(string.char(85,115,101,114,73,110,112,117,116,83,101,114,118,105,99,101))
-local _0x44D7 = _0x4783(string.char(84,119,101,101,110,83,101,114,118,105,99,101))
-local _0xB65B = _0x4783(string.char(83,116,97,114,116,101,114,71,117,105))
-local _0x5D17 = _0x4783(string.char(82,117,110,83,101,114,118,105,99,101))
-local _0xC889 = writefile or function() end
-local _0x0B78 = readfile or function() end
-local _0x51AC = delfile or function() end
-local _0x0172 = isfile or function() end
-local _0x7C4A = isfolder or function() end
-local _0xC3F3 = makefolder or function() end
-local _0xE3A8 = listfiles or function() end
-local _0x5444 = getcustomasset or getsynasset or function() end
-local _0x8139 = setclipboard or function() end
-local _0x8239 = task.wait
-local _0x0EEB = Font.new(string.char(114,98,120,97,115,115,101,116,58,47,47,102,111,110,116,115,47,102,97,109,105,108,105,101,115,47,71,111,116,104,97,109,83,83,109,46,106,115,111,110), Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-local _0x1033 = Font.new(string.char(114,98,120,97,115,115,101,116,58,47,47,102,111,110,116,115,47,102,97,109,105,108,105,101,115,47,71,111,116,104,97,109,83,83,109,46,106,115,111,110), Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-local _0x340D = Font.new(string.char(114,98,120,97,115,115,101,116,58,47,47,102,111,110,116,115,47,102,97,109,105,108,105,101,115,47,66,117,105,108,100,101,114,83,97,110,115,46,106,115,111,110), Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-local _0x296B = Font.new(string.char(114,98,120,97,115,115,101,116,58,47,47,102,111,110,116,115,47,102,97,109,105,108,105,101,115,47,73,110,99,111,110,115,111,108,97,116,97,46,106,115,111,110), Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-local _0xEFDB = {
-Keyword =string.char(35,70,56,54,68,55,67),
-Number =string.char(35,70,70,67,54,54,68),
-String =string.char(35,65,53,69,48,55,53),
-Comment =string.char(35,55,70,56,67,57,56),
-Global =string.char(35,56,52,68,54,70,55),
-Function =string.char(35,70,56,68,54,54,68),
-Property =string.char(35,68,55,66,65,55,68),
-Class =string.char(35,52,69,67,57,66,48),
-Enum =string.char(35,67,53,56,54,67,48),
-EnumItem =string.char(35,66,56,68,55,70,70),
-Operator =string.char(35,68,52,68,52,68,52),
-Identifier =string.char(35,69,54,69,54,69,54),
-Nil =string.char(35,53,54,57,67,68,54),
-Boolean =string.char(35,53,54,57,67,68,54)}
-_0x012A.Lucid = {
-_0xE3E8 = {},
-_0x418A = {},
-_0x0C17 = {
-[string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,108,111,103,111,46,112,110,103)] =string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,74,117,115,116,83,111,109,101,71,117,101,115,116,47,83,99,114,105,112,116,115,47,109,97,105,110,47,85,110,105,118,101,114,115,97,108,47,76,117,99,105,100,47,65,115,115,101,116,115,47,108,111,103,111,46,112,110,103),
-[string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,104,111,109,101,46,112,110,103)] =string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,74,117,115,116,83,111,109,101,71,117,101,115,116,47,83,99,114,105,112,116,115,47,109,97,105,110,47,85,110,105,118,101,114,115,97,108,47,76,117,99,105,100,47,65,115,115,101,116,115,47,104,111,109,101,46,112,110,103),
-[string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,101,120,101,99,117,116,111,114,46,112,110,103)] =string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,74,117,115,116,83,111,109,101,71,117,101,115,116,47,83,99,114,105,112,116,115,47,109,97,105,110,47,85,110,105,118,101,114,115,97,108,47,76,117,99,105,100,47,65,115,115,101,116,115,47,101,120,101,99,117,116,111,114,46,112,110,103),
-[string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,115,101,97,114,99,104,46,112,110,103)] =string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,74,117,115,116,83,111,109,101,71,117,101,115,116,47,83,99,114,105,112,116,115,47,109,97,105,110,47,85,110,105,118,101,114,115,97,108,47,76,117,99,105,100,47,65,115,115,101,116,115,47,115,101,97,114,99,104,46,112,110,103),
-[string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,115,99,114,105,112,116,115,46,112,110,103)] =string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,74,117,115,116,83,111,109,101,71,117,101,115,116,47,83,99,114,105,112,116,115,47,109,97,105,110,47,85,110,105,118,101,114,115,97,108,47,76,117,99,105,100,47,65,115,115,101,116,115,47,115,99,114,105,112,116,115,46,112,110,103),
-[string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,109,117,115,105,99,46,112,110,103)] =string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,74,117,115,116,83,111,109,101,71,117,101,115,116,47,83,99,114,105,112,116,115,47,109,97,105,110,47,85,110,105,118,101,114,115,97,108,47,76,117,99,105,100,47,65,115,115,101,116,115,47,109,117,115,105,99,46,112,110,103),
-[string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,115,101,116,116,105,110,103,115,46,112,110,103)] =string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,74,117,115,116,83,111,109,101,71,117,101,115,116,47,83,99,114,105,112,116,115,47,109,97,105,110,47,85,110,105,118,101,114,115,97,108,47,76,117,99,105,100,47,65,115,115,101,116,115,47,115,101,116,116,105,110,103,115,46,112,110,103),
-[string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,99,108,111,115,101,46,112,110,103)] =string.char(104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,74,117,115,116,83,111,109,101,71,117,101,115,116,47,83,99,114,105,112,116,115,47,109,97,105,110,47,85,110,105,118,101,114,115,97,108,47,76,117,99,105,100,47,65,115,115,101,116,115,47,99,108,111,115,101,46,112,110,103),
-},
-_0x87A2 = {
-Animations = true,
-BackgroundColor = Color3.fromRGB(0, 0, 0),
-SecondaryBackgroundColor = Color3.fromRGB(10, 10, 10),
-AccentColor = Color3.fromRGB(0, 99, 255),
-SecondaryAccentColor = Color3.fromRGB(0, 64, 180)
-},
-IsLoaded = false
+
+local Hui = gethui and gethui() or GetService("CoreGui")
+local Workspace = GetService("Workspace")
+local HttpService = GetService("HttpService")
+local Players = GetService("Players")
+local Player = Players.LocalPlayer
+local UserInputService = GetService("UserInputService")
+local TweenService = GetService("TweenService")
+local StarterGui = GetService("StarterGui")
+local RunService = GetService("RunService")
+
+local WriteFile = writefile or function() end
+local ReadFile = readfile or function() end
+local DelFile = delfile or function() end
+local IsFile = isfile or function() end
+local IsFolder = isfolder or function() end
+local MakeFolder = makefolder or function() end
+local ListFiles = listfiles or function() end
+local LoadAsset = getcustomasset or getsynasset or function() end
+local SetClipboard = setclipboard or function() end
+local Wait = task.wait
+
+local GothamBold = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+local BuilderSans = Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+local Inconsolata = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+
+local HighlightColors = {
+    Keyword = "#F86D7C",
+    Number = "#FFC66D",
+    String = "#A5E075",
+    Comment = "#7F8C98",
+    Global = "#84D6F7",
+    Function = "#F8D66D",
+    Property = "#D7BA7D",
+    Class = "#4EC9B0",
+    Enum = "#C586C0",
+    EnumItem = "#B8D7FF",
+    Operator = "#D4D4D4",
+    Identifier = "#E6E6E6",
+    Nil = "#569CD6",
+    Boolean = "#569CD6"
 }
-local _0xE3E8 = _0x012A.Lucid.UI
-local _0x418A = _0x012A.Lucid.Funcs
-local _0x0C17 = _0x012A.Lucid.Assets
-local _0x87A2 = _0x012A.Lucid.Settings
-local _0xCC51 = 1
-local _0xB84E = 1
-local _0x1CC3 =""_0x418A.Sources = {string.char(82,83,99,114,105,112,116,115),string.char(83,99,114,105,112,116,66,108,111,120)}
-_0x418A.CurrentSource =string.char(82,83,99,114,105,112,116,115)_0x418A.Filters = {string.char(65,108,108),string.char(75,101,121),string.char(75,101,121,108,101,115,115)}
-_0x418A.CurrentFilter =string.char(65,108,108)_0x418A.CurrentScripts = {}
-local _0x2B10 = {}
-local _0xBFF5 = 0
-local _0x1CF4 = nil
-local _0x6B61 = nil
-local _0x3162 = {}
-local _0xD865 = 1
-local _0x140A = false
-local _0xEFB8 = false
-local _0x4D82 = {string.char(108,111,99,97,108),string.char(102,117,110,99,116,105,111,110),string.char(105,102),string.char(116,104,101,110),string.char(101,108,115,101),string.char(101,108,115,101,105,102),string.char(101,110,100),string.char(102,111,114),string.char(119,104,105,108,101),string.char(114,101,112,101,97,116),string.char(117,110,116,105,108),string.char(100,111),string.char(114,101,116,117,114,110),string.char(98,114,101,97,107),string.char(99,111,110,116,105,110,117,101),string.char(105,110),string.char(110,111,116),string.char(97,110,100),string.char(111,114),string.char(110,105,108),string.char(116,114,117,101),string.char(102,97,108,115,101),string.char(116,121,112,101),string.char(116,121,112,101,111,102),string.char(101,120,112,111,114,116)}
-local _0x1D7E = {string.char(103,97,109,101),string.char(119,111,114,107,115,112,97,99,101),string.char(115,99,114,105,112,116),string.char(73,110,115,116,97,110,99,101),string.char(69,110,117,109),string.char(67,111,108,111,114,51),string.char(86,101,99,116,111,114,50),string.char(86,101,99,116,111,114,51),string.char(85,68,105,109),string.char(85,68,105,109,50),string.char(67,70,114,97,109,101),string.char(109,97,116,104),string.char(115,116,114,105,110,103),string.char(116,97,98,108,101),string.char(116,97,115,107),string.char(99,111,114,111,117,116,105,110,101),string.char(111,115),string.char(117,116,102,56),string.char(105,112,97,105,114,115),string.char(112,97,105,114,115),string.char(110,101,120,116),string.char(112,99,97,108,108),string.char(120,112,99,97,108,108),string.char(116,111,110,117,109,98,101,114),string.char(116,111,115,116,114,105,110,103),string.char(119,97,114,110),string.char(112,114,105,110,116),string.char(114,101,113,117,105,114,101),string.char(115,101,108,101,99,116),string.char(114,97,119,101,113,117,97,108),string.char(114,97,119,103,101,116),string.char(114,97,119,115,101,116),string.char(116,121,112,101),string.char(117,110,112,97,99,107),string.char(97,115,115,101,114,116),string.char(101,114,114,111,114),string.char(103,101,116,102,101,110,118),string.char(115,101,116,102,101,110,118),string.char(103,101,116,109,101,116,97,116,97,98,108,101),string.char(115,101,116,109,101,116,97,116,97,98,108,101),string.char(108,111,97,100,115,116,114,105,110,103),string.char(108,111,97,100),string.char(99,111,108,108,101,99,116,103,97,114,98,97,103,101),string.char(103,99,105,110,102,111),string.char(110,101,119,112,114,111,120,121),string.char(100,101,108,97,121),string.char(115,112,97,119,110),string.char(116,105,99,107),string.char(116,105,109,101),string.char(100,97,116,101),string.char(99,108,111,99,107),string.char(66,114,105,99,107,67,111,108,111,114),string.char(78,117,109,98,101,114,83,101,113,117,101,110,99,101),string.char(67,111,108,111,114,83,101,113,117,101,110,99,101),string.char(78,117,109,98,101,114,82,97,110,103,101),string.char(82,97,110,100,111,109),string.char(82,101,99,116),string.char(82,101,103,105,111,110,51),string.char(84,119,101,101,110,83,101,114,118,105,99,101),string.char(82,117,110,83,101,114,118,105,99,101),string.char(80,108,97,121,101,114,115),string.char(82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101),string.char(83,101,114,118,101,114,83,99,114,105,112,116,83,101,114,118,105,99,101),string.char(83,101,114,118,101,114,83,116,111,114,97,103,101),string.char(76,105,103,104,116,105,110,103),string.char(83,111,117,110,100,83,101,114,118,105,99,101),string.char(83,116,97,114,116,101,114,71,117,105),string.char(83,116,97,114,116,101,114,80,97,99,107),string.char(83,116,97,114,116,101,114,80,108,97,121,101,114),string.char(84,101,108,101,112,111,114,116,83,101,114,118,105,99,101),string.char(68,97,116,97,83,116,111,114,101,83,101,114,118,105,99,101),string.char(72,116,116,112,83,101,114,118,105,99,101),string.char(77,97,114,107,101,116,112,108,97,99,101,83,101,114,118,105,99,101),string.char(85,115,101,114,73,110,112,117,116,83,101,114,118,105,99,101),string.char(67,111,110,116,101,120,116,65,99,116,105,111,110,83,101,114,118,105,99,101),string.char(67,111,108,108,101,99,116,105,111,110,83,101,114,118,105,99,101),string.char(68,101,98,114,105,115),string.char(80,104,121,115,105,99,115,83,101,114,118,105,99,101)}
-local _0x9F08 = {}
-for _, v in ipairs(_0x4D82) do _0x9F08[v] = true end
-local _0xF8BA = {}
-for _, v in ipairs(_0x1D7E) do _0xF8BA[v] = true end
-function _0x418A.Highlight(_0xBC87)
-if type(_0xBC87) ~=string.char(115,116,114,105,110,103)then return""end
-local _0xBFC0 = {}
-local _0x1DF8 = 1
-local _0x8D8B = #_0xBC87
-while _0x1DF8 <= _0x8D8B do
-local _0xF2E7 = _0xBC87:sub(_0x1DF8, _0x1DF8)
-if _0xF2E7 ==string.char(34)or _0xF2E7 ==string.char(39)then
-local _0x7FDF = _0x1DF8
-local _0x760B = _0xF2E7
-_0x1DF8 = _0x1DF8 + 1
-while _0x1DF8 <= _0x8D8B do
-if _0xBC87:sub(_0x1DF8, _0x1DF8) ==string.char(92)then
-_0x1DF8 = _0x1DF8 + 2
-elseif _0xBC87:sub(_0x1DF8, _0x1DF8) == _0x760B then
-_0x1DF8 = _0x1DF8 + 1
-break
-else
-_0x1DF8 = _0x1DF8 + 1
-end
-end
-local _0xB2EF = _0xBC87:sub(_0x7FDF, _0x1DF8 - 1):gsub(string.char(38),string.char(38,97,109,112,59)):gsub(string.char(60),string.char(38,108,116,59)):gsub(string.char(62),string.char(38,103,116,59))
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.String ..string.char(34,62).. _0xB2EF ..string.char(60,47,102,111,110,116,62))
-elseif _0xF2E7 ==string.char(91)and _0xBC87:sub(_0x1DF8, _0x1DF8 + 1) ==string.char(91,91)then
-local _0x7FDF = _0x1DF8
-local _0xCEDC = 0
-while _0x1DF8 <= _0x8D8B do
-if _0xBC87:sub(_0x1DF8, _0x1DF8 + 1) ==string.char(91,91)then _0xCEDC = _0xCEDC + 1; _0x1DF8 = _0x1DF8 + 2
-elseif _0xBC87:sub(_0x1DF8, _0x1DF8 + 1) ==string.char(93,93)then _0xCEDC = _0xCEDC - 1; _0x1DF8 = _0x1DF8 + 2; if _0xCEDC == 0 then break end
-else _0x1DF8 = _0x1DF8 + 1 end
-end
-local _0xB2EF = _0xBC87:sub(_0x7FDF, _0x1DF8 - 1):gsub(string.char(38),string.char(38,97,109,112,59)):gsub(string.char(60),string.char(38,108,116,59)):gsub(string.char(62),string.char(38,103,116,59))
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.String ..string.char(34,62).. _0xB2EF ..string.char(60,47,102,111,110,116,62))
-elseif _0xF2E7 ==string.char(45)and _0xBC87:sub(_0x1DF8, _0x1DF8 + 1) ==string.char(45,45)then
-if _0xBC87:sub(_0x1DF8, _0x1DF8 + 3) ==string.char(45,45,91,91)then
-local _0x7FDF = _0x1DF8
-_0x1DF8 = _0x1DF8 + 4
-local _0xCEDC = 0
-while _0x1DF8 <= _0x8D8B do
-if _0xBC87:sub(_0x1DF8, _0x1DF8 + 1) ==string.char(91,91)then _0xCEDC = _0xCEDC + 1; _0x1DF8 = _0x1DF8 + 2
-elseif _0xBC87:sub(_0x1DF8, _0x1DF8 + 1) ==string.char(93,93)then _0xCEDC = _0xCEDC - 1; _0x1DF8 = _0x1DF8 + 2; if _0xCEDC == 0 then break end
-else _0x1DF8 = _0x1DF8 + 1 end
-end
-local _0xB2EF = _0xBC87:sub(_0x7FDF, _0x1DF8 - 1):gsub(string.char(38),string.char(38,97,109,112,59)):gsub(string.char(60),string.char(38,108,116,59)):gsub(string.char(62),string.char(38,103,116,59))
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.Comment ..string.char(34,62).. _0xB2EF ..string.char(60,47,102,111,110,116,62))
-else
-local _0x7FDF = _0x1DF8
-while _0x1DF8 <= _0x8D8B do
-local _0x4030 = _0xBC87:sub(_0x1DF8, _0x1DF8)
-if _0x4030 ==string.char(10)or _0x4030 ==string.char(13)then break end
-_0x1DF8 = _0x1DF8 + 1
-end
-local _0xB2EF = _0xBC87:sub(_0x7FDF, _0x1DF8 - 1):gsub(string.char(38),string.char(38,97,109,112,59)):gsub(string.char(60),string.char(38,108,116,59)):gsub(string.char(62),string.char(38,103,116,59))
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.Comment ..string.char(34,62).. _0xB2EF ..string.char(60,47,102,111,110,116,62))
-end
-elseif _0xF2E7:match(string.char(37,100)) then
-local _0x7FDF = _0x1DF8
-while _0x1DF8 <= _0x8D8B do
-local _0x4030 = _0xBC87:sub(_0x1DF8, _0x1DF8)
-if not _0x4030:match(string.char(37,100)) and _0x4030 ~=string.char(46)then break end
-_0x1DF8 = _0x1DF8 + 1
-end
-local _0xB2EF = _0xBC87:sub(_0x7FDF, _0x1DF8 - 1):gsub(string.char(38),string.char(38,97,109,112,59)):gsub(string.char(60),string.char(38,108,116,59)):gsub(string.char(62),string.char(38,103,116,59))
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.Number ..string.char(34,62).. _0xB2EF ..string.char(60,47,102,111,110,116,62))
-elseif _0xF2E7:match(string.char(37,97)) or _0xF2E7 ==string.char(95)then
-local _0x7FDF = _0x1DF8
-while _0x1DF8 <= _0x8D8B do
-local _0x4030 = _0xBC87:sub(_0x1DF8, _0x1DF8)
-if not _0x4030:match(string.char(37,119)) and _0x4030 ~=string.char(95)then break end
-_0x1DF8 = _0x1DF8 + 1
-end
-local _0x2057 = _0xBC87:sub(_0x7FDF, _0x1DF8 - 1)
-local _0xA480 = _0x2057:gsub(string.char(38),string.char(38,97,109,112,59)):gsub(string.char(60),string.char(38,108,116,59)):gsub(string.char(62),string.char(38,103,116,59))
-if _0x2057 ==string.char(110,105,108)then
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.Nil ..string.char(34,62).. _0xA480 ..string.char(60,47,102,111,110,116,62))
-elseif _0x2057 ==string.char(116,114,117,101)or _0x2057 ==string.char(102,97,108,115,101)then
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.Boolean ..string.char(34,62).. _0xA480 ..string.char(60,47,102,111,110,116,62))
-elseif _0x9F08[_0x2057] then
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.Keyword ..string.char(34,62).. _0xA480 ..string.char(60,47,102,111,110,116,62))
-elseif _0xF8BA[_0x2057] then
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.Global ..string.char(34,62).. _0xA480 ..string.char(60,47,102,111,110,116,62))
-else
-local _0x1D73 = _0xBC87:sub(_0x1DF8, _0x1DF8)
-if _0x1D73 ==string.char(40)then
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.Function ..string.char(34,62).. _0xA480 ..string.char(60,47,102,111,110,116,62))
-else
-table.insert(_0xBFC0,string.char(60,102,111,110,116,32,99,111,108,111,114,61,34).. _0xEFDB.Identifier ..string.char(34,62).. _0xA480 ..string.char(60,47,102,111,110,116,62))
-end
-end
-else
-if _0xF2E7 ==string.char(38)then table.insert(_0xBFC0,string.char(38,97,109,112,59))
-elseif _0xF2E7 ==string.char(60)then table.insert(_0xBFC0,string.char(38,108,116,59))
-elseif _0xF2E7 ==string.char(62)then table.insert(_0xBFC0,string.char(38,103,116,59))
-else table.insert(_0xBFC0, _0xF2E7) end
-_0x1DF8 = _0x1DF8 + 1
-end
-end
-return table.concat(_0xBFC0)
-end
-local function _0x33BE()
-local _0x9B0E = {
-RobloxGui = true, PlayerList = true, ExperienceChat = true,
-BubbleChat = true, DevConsole = true, SocialService = true,
-PerformanceStats = true, ScreenShotTool = true, EmotesMenu = true,
-CallDialogScreen = true, CaptureManager = true, CaptureOverlay = true,
-Composer = true, ContactList = true, Chat = true,
-HeadsetDisconnectedDialog = true, InExperienceInterventionApp = true,
-PlayerMenuScreen = true, PurchasePromptApp = true, RobloxPromptGui = true,
-ScreenshotsCarousel = true, TeleportEffectGui = true, TopBarApp = true,
-ControlGui = true, VehicleGui = true, NotificationGui = true,
-DescendantProtector = true, AppUpdaterGui = true, FaceTrackingGui = true,
-ExperienceNotificationGui = true, VoiceChatGui = true, SafetyCheckGui = true,
-ToastGui = true, InGameMenuV2 = true, RightClickMenu = true,
-VoiceChatPromptGui = true, BottomBarGui = true, GuiService = true,
-FullscreenTitleBar = true, TextureView = true, ChromeGui = true,
-BlockingApp = true, HealthGui = true, StutterDetector = true,
-AvatarContextMenuItem = true
+
+Shared.Lucid = {
+    UI = {},
+    Funcs = {},
+    Assets = {
+        ["Lucid/Assets/lucid_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/logo.png",
+        ["Lucid/Assets/lucid_home.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/home.png",
+        ["Lucid/Assets/lucid_executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/executor.png",
+        ["Lucid/Assets/lucid_search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/search.png",
+        ["Lucid/Assets/lucid_scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/scripts.png",
+        ["Lucid/Assets/lucid_music.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/music.png",
+        ["Lucid/Assets/lucid_settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/settings.png",
+        ["Lucid/Assets/lucid_close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/close.png",
+    },
+    Settings = {
+        Animations = true,
+        BackgroundColor = Color3.fromRGB(0, 0, 0),
+        SecondaryBackgroundColor = Color3.fromRGB(10, 10, 10),
+        AccentColor = Color3.fromRGB(0, 99, 255),
+        SecondaryAccentColor = Color3.fromRGB(0, 64, 180)
+    },
+    IsLoaded = false
 }
-local function _0x099B(Name)
-if #Name > 30 then return true end
-if Name:match(string.char(91,94,37,119,37,115,37,45,37,46,93)) then return true end
-local _0x26D1 = select(2, Name:gsub(string.char(91,65,45,90,93),""))
-if _0x26D1 >= 5 then return true end
-return false
-end
-local function _0x5438(Parent)
-if not Parent then return end
-for _, Obj in ipairs(Parent:GetDescendants()) do
-if Obj:IsA(string.char(83,99,114,101,101,110,71,117,105)) and Obj.Name ~=string.char(95,95,73,110,118,101,110,116,111,114,121)and Obj.Name ~=string.char(83,105,109,112,108,101,67,77,68,83)and not _0x9B0E[Obj.Name] and _0x099B(Obj.Name) then
-pcall(function() Obj.Enabled = false end)
-end
-end
-end
-_0x5438(_0x4783(string.char(67,111,114,101,71,117,105)))
-if _0x6A51 and _0x6A51 ~= _0x4783(string.char(67,111,114,101,71,117,105)) then _0x5438(_0x6A51) end
-end
-function _0x418A.HttpGet(_0x009A)
-local _0x02FB = (syn and syn.request) or request or http_request
-if not _0x02FB then return nil end
-local _0xA271, _0x835B = pcall(function()
-return _0x02FB({
-Url = _0x009A,
-Method =string.char(71,69,84),
-Headers = {
-[string.char(85,115,101,114,45,65,103,101,110,116)] =string.char(76,117,99,105,100,45,69,120,101,99,117,116,111,114,47,49,46,48),
-[string.char(65,99,99,101,112,116)] =string.char(97,112,112,108,105,99,97,116,105,111,110,47,106,115,111,110)}
-})
-end)
-return _0xA271 and _0x835B or nil
-end
-function _0x418A.GetAsset(Path)
-if not _0x5444 then return nil end
-if not _0x7C4A(string.char(76,117,99,105,100)) then _0xC3F3(string.char(76,117,99,105,100)) end
-if not _0x7C4A(string.char(76,117,99,105,100,47,65,115,115,101,116,115)) then _0xC3F3(string.char(76,117,99,105,100,47,65,115,115,101,116,115)) end
-if Path:match(string.char(94,114,98,120,97,115,115,101,116,105,100,58,47,47)) then return Path end
-if _0x0172(Path) then return _0x5444(Path) end
-local _0x009A = _0x0C17[Path]
-if not _0x009A then return nil end
-local _0xC6DE = _0x418A.HttpGet(_0x009A)
-if not _0xC6DE or not _0xC6DE.Body then return nil end
-_0xC889(Path, _0xC6DE.Body)
-return _0x5444(Path)
-end
-function _0x418A.PreloadAssets()
-if not _0x7C4A(string.char(76,117,99,105,100)) then _0xC3F3(string.char(76,117,99,105,100)) end
-if not _0x7C4A(string.char(76,117,99,105,100,47,65,115,115,101,116,115)) then _0xC3F3(string.char(76,117,99,105,100,47,65,115,115,101,116,115)) end
-for path, _0x009A in pairs(_0x0C17) do
-if not _0x0172(path) then
-local _0xC6DE = _0x418A.HttpGet(_0x009A)
-if _0xC6DE and _0xC6DE.Body then
-_0xC889(path, _0xC6DE.Body)
-end
-end
-end
-end
-function _0x418A.SanitizeName(_0x1671)
-if not _0x1671 then returnstring.char(83,99,114,105,112,116,95).. _0x2D6D:GenerateGUID(false):sub(1, 8) end
-local _0x224D =""for _0xF2E7 in _0x1671:gmatch(string.char(46)) do
-local _0xD0E3 = string.byte(_0xF2E7)
-if (_0xD0E3 >= 65 and _0xD0E3 <= 90) or (_0xD0E3 >= 97 and _0xD0E3 <= 122) or (_0xD0E3 >= 48 and _0xD0E3 <= 57) then
-_0x224D = _0x224D .. _0xF2E7
-end
-end
-if _0x224D ==""then _0x224D =string.char(83,99,114,105,112,116,95).. _0x2D6D:GenerateGUID(false):sub(1, 8) end
-return _0x224D
-end
-function _0x418A.ClearCache()
-if _0x7C4A(string.char(76,117,99,105,100,47,67,97,99,104,101)) then
-local _0xA398 = _0xE3A8(string.char(76,117,99,105,100,47,67,97,99,104,101))
-for _, file in ipairs(_0xA398) do
-pcall(function() _0x51AC(file) end)
-end
-end
-end
-function _0x418A.LoadSavedScripts()
-if not _0x7C4A(string.char(76,117,99,105,100,47,83,99,114,105,112,116,115)) then _0xC3F3(string.char(76,117,99,105,100,47,83,99,114,105,112,116,115)); return {} end
-local _0xA398 = _0xE3A8(string.char(76,117,99,105,100,47,83,99,114,105,112,116,115))
-local _0x2EE6 = {}
-for _, file in ipairs(_0xA398) do
-local _0x3B49 = _0x0B78(file)
-local _0x9378, _0x957B = pcall(function() return _0x2D6D:JSONDecode(_0x3B49) end)
-if _0x9378 and _0x957B then table.insert(_0x2EE6, _0x957B) end
-end
-return _0x2EE6
-end
-function _0x418A.SaveScript(_0x8E3B)
-if not _0x7C4A(string.char(76,117,99,105,100,47,83,99,114,105,112,116,115)) then _0xC3F3(string.char(76,117,99,105,100,47,83,99,114,105,112,116,115)) end
-local _0xCA1B =string.char(76,117,99,105,100,47,83,99,114,105,112,116,115,47).. _0x8E3B.Name:gsub(string.char(91,94,37,119,93),string.char(95)) ..string.char(46,106,115,111,110)_0xC889(_0xCA1B, _0x2D6D:JSONEncode(_0x8E3B))
-end
-function _0x418A.DeleteScript(_0x3CE3)
-local _0xCA1B =string.char(76,117,99,105,100,47,83,99,114,105,112,116,115,47).. _0x3CE3:gsub(string.char(91,94,37,119,93),string.char(95)) ..string.char(46,106,115,111,110)if _0x0172(_0xCA1B) then _0x51AC(_0xCA1B) end
-end
-local _0x8F79 = {
-{
-Name =string.char(68,101,120,43,43,32,40,66,117,105,108,116,45,73,110,41),
-Description =string.char(65,32,115,105,109,112,108,101,32,98,117,116,32,112,111,119,101,114,102,117,108,32,116,111,111,108,32,102,111,114,32,101,120,112,108,111,114,105,110,103,32,103,97,109,101,32,105,110,115,116,97,110,99,101,115,46),
-Code =[[loadstring(game:HttpGet("https://github.com/AZYsGithub/DexPlusPlus/releases/latest/download/out.lua"))()]]},
-{
-Name =string.char(75,101,121,98,111,97,114,100,32,40,66,117,105,108,116,45,73,110,41),
-Description =string.char(65,32,118,105,114,116,117,97,108,32,107,101,121,98,111,97,114,100,32,71,85,73,32,109,97,100,101,32,102,111,114,32,109,111,98,105,108,101,32,100,101,118,105,99,101,115,46),
-Code =[[loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau"))()
-Init.DeltaKD()]]}
+
+local UI = Shared.Lucid.UI
+local Funcs = Shared.Lucid.Funcs
+local Assets = Shared.Lucid.Assets
+local Settings = Shared.Lucid.Settings
+local currentPage = 1
+local totalPages = 1
+local currentQuery = ""
+
+Funcs.Sources = {"RScripts", "ScriptBlox"}
+Funcs.CurrentSource = "RScripts"
+Funcs.Filters = {"All", "Key", "Keyless"}
+Funcs.CurrentFilter = "All"
+Funcs.CurrentScripts = {}
+
+local ExeTabs = {}
+local ExeTabCounter = 0
+local ExeActiveTab = nil
+
+local MusicSound = nil
+local MusicFiles = {}
+local MusicIndex = 1
+local MusicPlaying = false
+local MusicSliderDragging = false
+
+local Keywords = {
+    "local", "function", "if", "then", "else", "elseif", "end", "for", "while",
+    "repeat", "until", "do", "return", "break", "continue", "in", "not", "and",
+    "or", "nil", "true", "false", "type", "typeof", "export"
 }
-function _0x418A.InitDefaultScripts()
-if not _0x7C4A(string.char(76,117,99,105,100,47,83,99,114,105,112,116,115)) then _0xC3F3(string.char(76,117,99,105,100,47,83,99,114,105,112,116,115)) end
-for _, _0x8E3B in ipairs(_0x8F79) do
-local _0xCA1B =string.char(76,117,99,105,100,47,83,99,114,105,112,116,115,47).. _0x8E3B.Name:gsub(string.char(91,94,37,119,93),string.char(95)) ..string.char(46,106,115,111,110)if not _0x0172(_0xCA1B) then _0x418A.SaveScript(_0x8E3B) end
-end
-end
-function _0x418A.ParseColor(_0x71BF)
-if type(_0x71BF) ~=string.char(115,116,114,105,110,103)then return nil end
-local _0xF676, _0xC8AE, _0x6A50 = _0x71BF:match(string.char(40,37,100,43,41,37,115,42,44,37,115,42,40,37,100,43,41,37,115,42,44,37,115,42,40,37,100,43,41))
-if _0xF676 and _0xC8AE and _0x6A50 then return Color3.fromRGB(tonumber(_0xF676), tonumber(_0xC8AE), tonumber(_0x6A50)) end
-return nil
-end
-function _0x418A.SaveSettings()
-if not _0x7C4A(string.char(76,117,99,105,100)) then _0xC3F3(string.char(76,117,99,105,100)) end
-local _0x957B = {
-Animations = _0x87A2.Animations,
-BackgroundColor = {R = math.floor(_0x87A2.BackgroundColor.R * 255), G = math.floor(_0x87A2.BackgroundColor.G * 255), B = math.floor(_0x87A2.BackgroundColor.B * 255)},
-SecondaryBackgroundColor = {R = math.floor(_0x87A2.SecondaryBackgroundColor.R * 255), G = math.floor(_0x87A2.SecondaryBackgroundColor.G * 255), B = math.floor(_0x87A2.SecondaryBackgroundColor.B * 255)},
-AccentColor = {R = math.floor(_0x87A2.AccentColor.R * 255), G = math.floor(_0x87A2.AccentColor.G * 255), B = math.floor(_0x87A2.AccentColor.B * 255)},
-SecondaryAccentColor = {R = math.floor(_0x87A2.SecondaryAccentColor.R * 255), G = math.floor(_0x87A2.SecondaryAccentColor.G * 255), B = math.floor(_0x87A2.SecondaryAccentColor.B * 255)}
+
+local Globals = {
+    "game", "workspace", "script", "Instance", "Enum", "Color3", "Vector2",
+    "Vector3", "UDim", "UDim2", "CFrame", "math", "string", "table", "task",
+    "coroutine", "os", "utf8", "ipairs", "pairs", "next", "pcall", "xpcall",
+    "tonumber", "tostring", "warn", "print", "require", "select", "rawequal",
+    "rawget", "rawset", "type", "unpack", "assert", "error", "getfenv",
+    "setfenv", "getmetatable", "setmetatable", "loadstring", "load", "collectgarbage",
+    "gcinfo", "newproxy", "delay", "spawn", "tick", "time", "date", "clock",
+    "BrickColor", "NumberSequence", "ColorSequence", "NumberRange", "Random",
+    "Rect", "Region3", "TweenService", "RunService", "Players", "ReplicatedStorage",
+    "ServerScriptService", "ServerStorage", "Lighting", "SoundService", "StarterGui",
+    "StarterPack", "StarterPlayer", "TeleportService", "DataStoreService",
+    "HttpService", "MarketplaceService", "UserInputService", "ContextActionService",
+    "CollectionService", "Debris", "PhysicsService"
 }
-_0xC889(string.char(76,117,99,105,100,47,83,101,116,116,105,110,103,115,46,106,115,111,110), _0x2D6D:JSONEncode(_0x957B))
+
+local KeywordSet = {}
+for _, v in ipairs(Keywords) do KeywordSet[v] = true end
+local GlobalSet = {}
+for _, v in ipairs(Globals) do GlobalSet[v] = true end
+
+function Funcs.Highlight(code)
+    if type(code) ~= "string" then return "" end
+    local result = {}
+    local i = 1
+    local len = #code
+    while i <= len do
+        local char = code:sub(i, i)
+        if char == "\"" or char == "'" then
+            local start = i
+            local quote = char
+            i = i + 1
+            while i <= len do
+                if code:sub(i, i) == "\\" then
+                    i = i + 2
+                elseif code:sub(i, i) == quote then
+                    i = i + 1
+                    break
+                else
+                    i = i + 1
+                end
+            end
+            local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+            table.insert(result, "<font color=\"" .. HighlightColors.String .. "\">" .. str .. "</font>")
+        elseif char == "[" and code:sub(i, i + 1) == "[[" then
+            local start = i
+            local depth = 0
+            while i <= len do
+                if code:sub(i, i + 1) == "[[" then depth = depth + 1; i = i + 2
+                elseif code:sub(i, i + 1) == "]]" then depth = depth - 1; i = i + 2; if depth == 0 then break end
+                else i = i + 1 end
+            end
+            local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+            table.insert(result, "<font color=\"" .. HighlightColors.String .. "\">" .. str .. "</font>")
+        elseif char == "-" and code:sub(i, i + 1) == "--" then
+            if code:sub(i, i + 3) == "--[[" then
+                local start = i
+                i = i + 4
+                local depth = 0
+                while i <= len do
+                    if code:sub(i, i + 1) == "[[" then depth = depth + 1; i = i + 2
+                    elseif code:sub(i, i + 1) == "]]" then depth = depth - 1; i = i + 2; if depth == 0 then break end
+                    else i = i + 1 end
+                end
+                local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+                table.insert(result, "<font color=\"" .. HighlightColors.Comment .. "\">" .. str .. "</font>")
+            else
+                local start = i
+                while i <= len do
+                    local ch = code:sub(i, i)
+                    if ch == "\n" or ch == "\r" then break end
+                    i = i + 1
+                end
+                local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+                table.insert(result, "<font color=\"" .. HighlightColors.Comment .. "\">" .. str .. "</font>")
+            end
+        elseif char:match("%d") then
+            local start = i
+            while i <= len do
+                local ch = code:sub(i, i)
+                if not ch:match("%d") and ch ~= "." then break end
+                i = i + 1
+            end
+            local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+            table.insert(result, "<font color=\"" .. HighlightColors.Number .. "\">" .. str .. "</font>")
+        elseif char:match("%a") or char == "_" then
+            local start = i
+            while i <= len do
+                local ch = code:sub(i, i)
+                if not ch:match("%w") and ch ~= "_" then break end
+                i = i + 1
+            end
+            local word = code:sub(start, i - 1)
+            local safe = word:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+            if word == "nil" then
+                table.insert(result, "<font color=\"" .. HighlightColors.Nil .. "\">" .. safe .. "</font>")
+            elseif word == "true" or word == "false" then
+                table.insert(result, "<font color=\"" .. HighlightColors.Boolean .. "\">" .. safe .. "</font>")
+            elseif KeywordSet[word] then
+                table.insert(result, "<font color=\"" .. HighlightColors.Keyword .. "\">" .. safe .. "</font>")
+            elseif GlobalSet[word] then
+                table.insert(result, "<font color=\"" .. HighlightColors.Global .. "\">" .. safe .. "</font>")
+            else
+                local nextChar = code:sub(i, i)
+                if nextChar == "(" then
+                    table.insert(result, "<font color=\"" .. HighlightColors.Function .. "\">" .. safe .. "</font>")
+                else
+                    table.insert(result, "<font color=\"" .. HighlightColors.Identifier .. "\">" .. safe .. "</font>")
+                end
+            end
+        else
+            if char == "&" then table.insert(result, "&amp;")
+            elseif char == "<" then table.insert(result, "&lt;")
+            elseif char == ">" then table.insert(result, "&gt;")
+            else table.insert(result, char) end
+            i = i + 1
+        end
+    end
+    return table.concat(result)
 end
-function _0x418A.LoadSettings()
-if not _0x0172(string.char(76,117,99,105,100,47,83,101,116,116,105,110,103,115,46,106,115,111,110)) then return end
-local _0x3B49 = _0x0B78(string.char(76,117,99,105,100,47,83,101,116,116,105,110,103,115,46,106,115,111,110))
-if not _0x3B49 or _0x3B49 ==""then return end
-local _0x9378, _0x957B = pcall(function() return _0x2D6D:JSONDecode(_0x3B49) end)
-if _0x9378 and _0x957B then
-if _0x957B.Animations ~= nil then _0x87A2.Animations = _0x957B.Animations end
-if _0x957B.BackgroundColor then _0x87A2.BackgroundColor = Color3.fromRGB(_0x957B.BackgroundColor.R or 10, _0x957B.BackgroundColor.G or 10, _0x957B.BackgroundColor.B or 10) end
-if _0x957B.SecondaryBackgroundColor then _0x87A2.SecondaryBackgroundColor = Color3.fromRGB(_0x957B.SecondaryBackgroundColor.R or 18, _0x957B.SecondaryBackgroundColor.G or 18, _0x957B.SecondaryBackgroundColor.B or 18) end
-if _0x957B.AccentColor then _0x87A2.AccentColor = Color3.fromRGB(_0x957B.AccentColor.R or 0, _0x957B.AccentColor.G or 99, _0x957B.AccentColor.B or 255) end
-if _0x957B.SecondaryAccentColor then _0x87A2.SecondaryAccentColor = Color3.fromRGB(_0x957B.SecondaryAccentColor.R or 0, _0x957B.SecondaryAccentColor.G or 64, _0x957B.SecondaryAccentColor.B or 180) end
+
+local function HideExec()
+    local Safe = {
+        RobloxGui = true, PlayerList = true, ExperienceChat = true,
+        BubbleChat = true, DevConsole = true, SocialService = true,
+        PerformanceStats = true, ScreenShotTool = true, EmotesMenu = true,
+        CallDialogScreen = true, CaptureManager = true, CaptureOverlay = true,
+        Composer = true, ContactList = true, Chat = true,
+        HeadsetDisconnectedDialog = true, InExperienceInterventionApp = true,
+        PlayerMenuScreen = true, PurchasePromptApp = true, RobloxPromptGui = true,
+        ScreenshotsCarousel = true, TeleportEffectGui = true, TopBarApp = true,
+        ControlGui = true, VehicleGui = true, NotificationGui = true,
+        DescendantProtector = true, AppUpdaterGui = true, FaceTrackingGui = true,
+        ExperienceNotificationGui = true, VoiceChatGui = true, SafetyCheckGui = true,
+        ToastGui = true, InGameMenuV2 = true, RightClickMenu = true,
+        VoiceChatPromptGui = true, BottomBarGui = true, GuiService = true,
+        FullscreenTitleBar = true, TextureView = true, ChromeGui = true,
+        BlockingApp = true, HealthGui = true, StutterDetector = true,
+        AvatarContextMenuItem = true
+    }
+    local function IsSus(Name)
+        if #Name > 30 then return true end
+        if Name:match("[^%w%s%-%.]") then return true end
+        local Caps = select(2, Name:gsub("[A-Z]", ""))
+        if Caps >= 5 then return true end
+        return false
+    end
+    local function Scan(Parent)
+        if not Parent then return end
+        for _, Obj in ipairs(Parent:GetDescendants()) do
+            if Obj:IsA("ScreenGui") and Obj.Name ~= "__Inventory" and Obj.Name ~= "SimpleCMDS"
+                and not Safe[Obj.Name] and IsSus(Obj.Name) then
+                pcall(function() Obj.Enabled = false end)
+            end
+        end
+    end
+    Scan(GetService("CoreGui"))
+    if Hui and Hui ~= GetService("CoreGui") then Scan(Hui) end
 end
+
+function Funcs.HttpGet(url)
+    local RequestFunc = (syn and syn.request) or request or http_request
+    if not RequestFunc then return nil end
+
+    local Success, Result = pcall(function()
+        return RequestFunc({
+            Url = url,
+            Method = "GET",
+            Headers = {
+                ["User-Agent"] = "Lucid-Executor/1.0",
+                ["Accept"] = "application/json"
+            }
+        })
+    end)
+
+    return Success and Result or nil
 end
-function _0x418A.ScriptRequiresKey(_0x957B)
-local _0x2E7D = _0x418A.CurrentSource ==string.char(83,99,114,105,112,116,66,108,111,120)and _0x957B.key or _0x957B.keySystem
-if type(_0x2E7D) ==string.char(98,111,111,108,101,97,110)then return _0x2E7D end
-if type(_0x2E7D) ==string.char(110,117,109,98,101,114)then return _0x2E7D ~= 0 end
-if type(_0x2E7D) ==string.char(115,116,114,105,110,103)then
-local _0x16D6 = _0x2E7D:lower()
-if _0x16D6 ==""or _0x16D6 ==string.char(102,97,108,115,101)or _0x16D6 ==string.char(48)or _0x16D6 ==string.char(110,111,110,101)or _0x16D6 ==string.char(110,47,97)then return false end
-if _0x16D6:find(string.char(110,111,32,107,101,121), 1, true) or _0x16D6:find(string.char(107,101,121,108,101,115,115), 1, true) then return false end
-return true
+
+function Funcs.GetAsset(Path)
+    if not LoadAsset then return nil end
+    if not IsFolder("Lucid") then MakeFolder("Lucid") end
+    if not IsFolder("Lucid/Assets") then MakeFolder("Lucid/Assets") end
+    if Path:match("^rbxassetid://") then return Path end
+    if IsFile(Path) then return LoadAsset(Path) end
+    local url = Assets[Path]
+    if not url then return nil end
+    local Response = Funcs.HttpGet(url)
+    if not Response or not Response.Body then return nil end
+    WriteFile(Path, Response.Body)
+    return LoadAsset(Path)
 end
-return _0x2E7D ~= nil and _0x2E7D ~= false
+
+function Funcs.PreloadAssets()
+    if not IsFolder("Lucid") then MakeFolder("Lucid") end
+    if not IsFolder("Lucid/Assets") then MakeFolder("Lucid/Assets") end
+    for path, url in pairs(Assets) do
+        if not IsFile(path) then
+            local Response = Funcs.HttpGet(url)
+            if Response and Response.Body then
+                WriteFile(path, Response.Body)
+            end
+        end
+    end
 end
-function _0x418A.PassesFilter(_0x957B)
-local _0xCCBF = _0x418A.ScriptRequiresKey(_0x957B)
-if _0x418A.CurrentFilter ==string.char(75,101,121)then return _0xCCBF
-elseif _0x418A.CurrentFilter ==string.char(75,101,121,108,101,115,115)then return not _0xCCBF end
-return true
+
+function Funcs.SanitizeName(name)
+    if not name then return "Script_" .. HttpService:GenerateGUID(false):sub(1, 8) end
+    local cleaned = ""
+    for char in name:gmatch(".") do
+        local byte = string.byte(char)
+        if (byte >= 65 and byte <= 90) or (byte >= 97 and byte <= 122) or (byte >= 48 and byte <= 57) then
+            cleaned = cleaned .. char
+        end
+    end
+    if cleaned == "" then cleaned = "Script_" .. HttpService:GenerateGUID(false):sub(1, 8) end
+    return cleaned
 end
-function _0x418A.ResolveImage(_0x957B)
-local _0x3F13 = _0x957B.image or _0x957B.imageUrl or _0x957B.thumbnail or (_0x957B.game and (_0x957B.game.imageUrl or _0x957B.game.image)) or""if _0x3F13 ==""then return""end
-if _0x3F13:match(string.char(94,104,116,116,112,115,63,58,47,47)) then return _0x3F13 end
-if _0x3F13:sub(1, 2) ==string.char(47,47)then returnstring.char(104,116,116,112,115,58).. _0x3F13 end
-local _0x5EBE = _0x418A.CurrentSource ==string.char(83,99,114,105,112,116,66,108,111,120)andstring.char(104,116,116,112,115,58,47,47,115,99,114,105,112,116,98,108,111,120,46,99,111,109)orstring.char(104,116,116,112,115,58,47,47,114,115,99,114,105,112,116,115,46,110,101,116)if _0x3F13:sub(1, 1) ==string.char(47)then return _0x5EBE .. _0x3F13 end
-return _0x5EBE ..string.char(47).. _0x3F13
+
+function Funcs.ClearCache()
+    if IsFolder("Lucid/Cache") then
+        local files = ListFiles("Lucid/Cache")
+        for _, file in ipairs(files) do
+            pcall(function() DelFile(file) end)
+        end
+    end
 end
-function _0x418A.FetchScripts(_0xB4BB, page)
-page = page or 1
-local _0x009A
-if _0x418A.CurrentSource ==string.char(82,83,99,114,105,112,116,115)then
-_0x009A =string.char(104,116,116,112,115,58,47,47,114,115,99,114,105,112,116,115,46,110,101,116,47,97,112,105,47,118,50,47,115,99,114,105,112,116,115,63,112,97,103,101,61).. page ..string.char(38,111,114,100,101,114,66,121,61,100,97,116,101,38,115,111,114,116,61,100,101,115,99)if _0xB4BB ~=""then _0x009A = _0x009A ..string.char(38,113,61).. _0x2D6D:UrlEncode(_0xB4BB) end
-else
-if _0xB4BB ~=""then
-_0x009A =string.char(104,116,116,112,115,58,47,47,115,99,114,105,112,116,98,108,111,120,46,99,111,109,47,97,112,105,47,115,99,114,105,112,116,47,115,101,97,114,99,104,63,113,61).. _0x2D6D:UrlEncode(_0xB4BB) ..string.char(38,112,97,103,101,61).. page
-else
-_0x009A =string.char(104,116,116,112,115,58,47,47,115,99,114,105,112,116,98,108,111,120,46,99,111,109,47,97,112,105,47,115,99,114,105,112,116,47,102,101,116,99,104,63,112,97,103,101,61).. page
+
+function Funcs.LoadSavedScripts()
+    if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts"); return {} end
+    local files = ListFiles("Lucid/Scripts")
+    local scripts = {}
+    for _, file in ipairs(files) do
+        local content = ReadFile(file)
+        local success, data = pcall(function() return HttpService:JSONDecode(content) end)
+        if success and data then table.insert(scripts, data) end
+    end
+    return scripts
 end
+
+function Funcs.SaveScript(scriptData)
+    if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") end
+    local fileName = "Lucid/Scripts/" .. scriptData.Name:gsub("[^%w]", "_") .. ".json"
+    WriteFile(fileName, HttpService:JSONEncode(scriptData))
 end
-local _0xC6DE = _0x418A.HttpGet(_0x009A)
-if not _0xC6DE or not _0xC6DE.Body then return nil, nil end
-local _0x9378, _0xBD2D = pcall(function() return _0x2D6D:JSONDecode(_0xC6DE.Body) end)
-if not _0x9378 or not _0xBD2D then return nil, nil end
-local _0x2EE6, _0x8544
-if _0x418A.CurrentSource ==string.char(82,83,99,114,105,112,116,115)then
-_0x2EE6 = _0xBD2D.scripts or {}
-_0x8544 = _0xBD2D.info and _0xBD2D.info.maxPages or 1
-else
-local _0xBFC0 = _0xBD2D.result or {}
-_0x2EE6 = _0xBFC0.scripts or {}
-_0x8544 = _0xBFC0.totalPages or 1
+
+function Funcs.DeleteScript(scriptName)
+    local fileName = "Lucid/Scripts/" .. scriptName:gsub("[^%w]", "_") .. ".json"
+    if IsFile(fileName) then DelFile(fileName) end
 end
-return _0x2EE6, _0x8544
+
+local BuiltInScripts = {
+    {
+        Name = "Dex++ (Built-In)",
+        Description = "A simple but powerful tool for exploring game instances.",
+        Code = [[loadstring(game:HttpGet("https://github.com/AZYsGithub/DexPlusPlus/releases/latest/download/out.lua"))()]]
+    },
+    {
+        Name = "Keyboard (Built-In)",
+        Description = "A virtual keyboard GUI made for mobile devices.",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau"))()
+Init.DeltaKD()]]
+    }
+}
+
+function Funcs.InitDefaultScripts()
+    if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") end
+    for _, scriptData in ipairs(BuiltInScripts) do
+        local fileName = "Lucid/Scripts/" .. scriptData.Name:gsub("[^%w]", "_") .. ".json"
+        if not IsFile(fileName) then Funcs.SaveScript(scriptData) end
+    end
 end
-function _0x418A.CreateResultCard(_0x957B, parent)
-local _0xFE68 = _0x957B.title or _0x957B.name orstring.char(85,110,116,105,116,108,101,100,32,83,99,114,105,112,116)local _0x8926 = _0x418A.CurrentSource ==string.char(83,99,114,105,112,116,66,108,111,120)local _0x56C4 = _0x8926 and (_0x957B.script or"") or (_0x957B.rawScript or _0x957B.raw or"")
-local _0xF147 = _0xE3E8.SearchResultTemplate:Clone()
-_0xF147.Name = _0x418A.SanitizeName(_0xFE68)
-_0xF147.Visible = true
-_0xF147.Parent = parent
-local _0xB77D = _0xF147:FindFirstChildOfClass(string.char(85,73,83,116,114,111,107,101))
-if _0xB77D then _0xB77D.Color = _0x87A2.SecondaryAccentColor end
-local _0x327D = _0xF147:FindFirstChild(string.char(83,99,114,105,112,116,73,109,97,103,101))
-if _0x327D then _0x327D.Image = _0x418A.ResolveImage(_0x957B) end
-local _0x2AD6 = _0xF147:FindFirstChild(string.char(67,111,110,116,97,105,110,101,114))
-if _0x2AD6 then
-local _0x3CE3 = _0x2AD6:FindFirstChild(string.char(83,99,114,105,112,116,78,97,109,101))
-if _0x3CE3 then
-_0x3CE3.Text = _0xFE68
-local _0xBC85 = _0x3CE3:FindFirstChildOfClass(string.char(85,73,83,116,114,111,107,101))
-if _0xBC85 then _0xBC85.Color = _0x87A2.AccentColor end
+
+function Funcs.ParseColor(input)
+    if type(input) ~= "string" then return nil end
+    local r, g, b = input:match("(%d+)%s*,%s*(%d+)%s*,%s*(%d+)")
+    if r and g and b then return Color3.fromRGB(tonumber(r), tonumber(g), tonumber(b)) end
+    return nil
 end
+
+function Funcs.SaveSettings()
+    if not IsFolder("Lucid") then MakeFolder("Lucid") end
+    local data = {
+        Animations = Settings.Animations,
+        BackgroundColor = {R = math.floor(Settings.BackgroundColor.R * 255), G = math.floor(Settings.BackgroundColor.G * 255), B = math.floor(Settings.BackgroundColor.B * 255)},
+        SecondaryBackgroundColor = {R = math.floor(Settings.SecondaryBackgroundColor.R * 255), G = math.floor(Settings.SecondaryBackgroundColor.G * 255), B = math.floor(Settings.SecondaryBackgroundColor.B * 255)},
+        AccentColor = {R = math.floor(Settings.AccentColor.R * 255), G = math.floor(Settings.AccentColor.G * 255), B = math.floor(Settings.AccentColor.B * 255)},
+        SecondaryAccentColor = {R = math.floor(Settings.SecondaryAccentColor.R * 255), G = math.floor(Settings.SecondaryAccentColor.G * 255), B = math.floor(Settings.SecondaryAccentColor.B * 255)}
+    }
+    WriteFile("Lucid/Settings.json", HttpService:JSONEncode(data))
 end
-local _0xE7FA = _0x2AD6 and _0x2AD6:FindFirstChild(string.char(83,99,114,105,112,116,65,99,116,105,111,110,115))
-if _0xE7FA then
-local _0x38DA = _0xE7FA:FindFirstChild(string.char(82,117,110,83,99,114,105,112,116))
-local _0xE3FE = _0xE7FA:FindFirstChild(string.char(67,111,112,121,83,99,114,105,112,116,66,116,110))
-local _0x362E = _0xE7FA:FindFirstChild(string.char(83,97,118,101,83,99,114,105,112,116,66,116,110))
-for _, btn in ipairs({_0x38DA, _0xE3FE, _0x362E}) do
-if btn then
-btn.BackgroundColor3 = _0x87A2.AccentColor
-local _0xC349 = btn:FindFirstChildOfClass(string.char(85,73,83,116,114,111,107,101))
-if _0xC349 then _0xC349.Color = _0x87A2.SecondaryAccentColor end
+
+function Funcs.LoadSettings()
+    if not IsFile("Lucid/Settings.json") then return end
+    local content = ReadFile("Lucid/Settings.json")
+    if not content or content == "" then return end
+    local success, data = pcall(function() return HttpService:JSONDecode(content) end)
+    if success and data then
+        if data.Animations ~= nil then Settings.Animations = data.Animations end
+        if data.BackgroundColor then Settings.BackgroundColor = Color3.fromRGB(data.BackgroundColor.R or 10, data.BackgroundColor.G or 10, data.BackgroundColor.B or 10) end
+        if data.SecondaryBackgroundColor then Settings.SecondaryBackgroundColor = Color3.fromRGB(data.SecondaryBackgroundColor.R or 18, data.SecondaryBackgroundColor.G or 18, data.SecondaryBackgroundColor.B or 18) end
+        if data.AccentColor then Settings.AccentColor = Color3.fromRGB(data.AccentColor.R or 0, data.AccentColor.G or 99, data.AccentColor.B or 255) end
+        if data.SecondaryAccentColor then Settings.SecondaryAccentColor = Color3.fromRGB(data.SecondaryAccentColor.R or 0, data.SecondaryAccentColor.G or 64, data.SecondaryAccentColor.B or 180) end
+    end
 end
+
+function Funcs.ScriptRequiresKey(data)
+    local value = Funcs.CurrentSource == "ScriptBlox" and data.key or data.keySystem
+    if type(value) == "boolean" then return value end
+    if type(value) == "number" then return value ~= 0 end
+    if type(value) == "string" then
+        local normalized = value:lower()
+        if normalized == "" or normalized == "false" or normalized == "0" or normalized == "none" or normalized == "n/a" then return false end
+        if normalized:find("no key", 1, true) or normalized:find("keyless", 1, true) then return false end
+        return true
+    end
+    return value ~= nil and value ~= false
 end
-local function _0xEEFF()
-if _0x56C4 ==""then return nil end
-if _0x8926 then return _0x56C4 end
-local _0x9378, _0x3B49 = pcall(function() return game:HttpGet(_0x56C4) end)
-return _0x9378 and _0x3B49 or nil
+
+function Funcs.PassesFilter(data)
+    local requiresKey = Funcs.ScriptRequiresKey(data)
+    if Funcs.CurrentFilter == "Key" then return requiresKey
+    elseif Funcs.CurrentFilter == "Keyless" then return not requiresKey end
+    return true
 end
-if _0x38DA then
-_0x38DA.MouseButton1Click:Connect(function()
-local _0xF2FE, _0x072A = loadstring(_0x8E3B.Code or"")
-if not _0xF2FE then error(_0x072A) end
-local _0x9378, _0xFB0C = pcall(_0xF2FE)
-if not _0x9378 then error(_0xFB0C) end
-end)
+
+function Funcs.ResolveImage(data)
+    local raw = data.image or data.imageUrl or data.thumbnail or (data.game and (data.game.imageUrl or data.game.image)) or ""
+    if raw == "" then return "" end
+    if raw:match("^https?://") then return raw end
+    if raw:sub(1, 2) == "//" then return "https:" .. raw end
+    local base = Funcs.CurrentSource == "ScriptBlox" and "https://scriptblox.com" or "https://rscripts.net"
+    if raw:sub(1, 1) == "/" then return base .. raw end
+    return base .. "/" .. raw
 end
-if _0xE3FE then
-_0xE3FE.MouseButton1Click:Connect(function()
-local _0xBC87 = _0xEEFF()
-if _0xBC87 then
-_0x8139(_0xBC87)
-_0xE3FE.Text =string.char(67,111,112,105,101,100,33)task.delay(1, function() _0xE3FE.Text =string.char(67,111,112,121)end)
+
+function Funcs.FetchScripts(query, page)
+    page = page or 1
+    local url
+    if Funcs.CurrentSource == "RScripts" then
+        url = "https://rscripts.net/api/v2/scripts?page=" .. page .. "&orderBy=date&sort=desc"
+        if query ~= "" then url = url .. "&q=" .. HttpService:UrlEncode(query) end
+    else
+        if query ~= "" then
+            url = "https://scriptblox.com/api/script/search?q=" .. HttpService:UrlEncode(query) .. "&page=" .. page
+        else
+            url = "https://scriptblox.com/api/script/fetch?page=" .. page
+        end
+    end
+    local Response = Funcs.HttpGet(url)
+    if not Response or not Response.Body then return nil, nil end
+    local success, decoded = pcall(function() return HttpService:JSONDecode(Response.Body) end)
+    if not success or not decoded then return nil, nil end
+    local scripts, pages
+    if Funcs.CurrentSource == "RScripts" then
+        scripts = decoded.scripts or {}
+        pages = decoded.info and decoded.info.maxPages or 1
+    else
+        local result = decoded.result or {}
+        scripts = result.scripts or {}
+        pages = result.totalPages or 1
+    end
+    return scripts, pages
 end
-end)
+
+function Funcs.CreateResultCard(data, parent)
+    local title = data.title or data.name or "Untitled Script"
+    local isScriptBlox = Funcs.CurrentSource == "ScriptBlox"
+    local rawScript = isScriptBlox and (data.script or "") or (data.rawScript or data.raw or "")
+
+    local clone = UI.SearchResultTemplate:Clone()
+    clone.Name = Funcs.SanitizeName(title)
+    clone.Visible = true
+    clone.Parent = parent
+
+    local cloneStroke = clone:FindFirstChildOfClass("UIStroke")
+    if cloneStroke then cloneStroke.Color = Settings.SecondaryAccentColor end
+
+    local scriptImage = clone:FindFirstChild("ScriptImage")
+    if scriptImage then scriptImage.Image = Funcs.ResolveImage(data) end
+
+    local container = clone:FindFirstChild("Container")
+    if container then
+        local scriptName = container:FindFirstChild("ScriptName")
+        if scriptName then
+            scriptName.Text = title
+            local nameStroke = scriptName:FindFirstChildOfClass("UIStroke")
+            if nameStroke then nameStroke.Color = Settings.AccentColor end
+        end
+    end
+
+    local actionsFrame = container and container:FindFirstChild("ScriptActions")
+    if actionsFrame then
+        local runBtn = actionsFrame:FindFirstChild("RunScript")
+        local copyBtn = actionsFrame:FindFirstChild("CopyScriptBtn")
+        local saveBtn = actionsFrame:FindFirstChild("SaveScriptBtn")
+
+        for _, btn in ipairs({runBtn, copyBtn, saveBtn}) do
+            if btn then
+                btn.BackgroundColor3 = Settings.AccentColor
+                local btnStroke = btn:FindFirstChildOfClass("UIStroke")
+                if btnStroke then btnStroke.Color = Settings.SecondaryAccentColor end
+            end
+        end
+
+        local function ResolveCode()
+            if rawScript == "" then return nil end
+            if isScriptBlox then return rawScript end
+            local success, content = pcall(function() return game:HttpGet(rawScript) end)
+            return success and content or nil
+        end
+
+        if runBtn then
+            runBtn.MouseButton1Click:Connect(function()
+                local fn, loadErr = loadstring(scriptData.Code or "")
+                if not fn then error(loadErr) end
+                local success, runErr = pcall(fn)
+                if not success then error(runErr) end
+            end)
+        end
+        if copyBtn then
+            copyBtn.MouseButton1Click:Connect(function()
+                local code = ResolveCode()
+                if code then
+                    SetClipboard(code)
+                    copyBtn.Text = "Copied!"
+                    task.delay(1, function() copyBtn.Text = "Copy" end)
+                end
+            end)
+        end
+        if saveBtn then
+            saveBtn.MouseButton1Click:Connect(function()
+                local code = ResolveCode()
+                if code then
+                    local scriptData = { Name = title, Description = data.description or "", Code = code }
+                    Funcs.SaveScript(scriptData)
+                    saveBtn.Text = "Saved!"
+                    task.delay(1, function() saveBtn.Text = "Save" end)
+                    Funcs.RefreshSavedScripts(UI.SearchBox2.Text)
+                end
+            end)
+        end
+    end
 end
-if _0x362E then
-_0x362E.MouseButton1Click:Connect(function()
-local _0xBC87 = _0xEEFF()
-if _0xBC87 then
-local _0x8E3B = { Name = _0xFE68, Description = _0x957B.description or"", Code = _0xBC87 }
-_0x418A.SaveScript(_0x8E3B)
-_0x362E.Text =string.char(83,97,118,101,100,33)task.delay(1, function() _0x362E.Text =string.char(83,97,118,101)end)
-_0x418A.RefreshSavedScripts(_0xE3E8.SearchBox2.Text)
+
+function Funcs.RenderSearchResults()
+    local results = UI.SearchResults
+    if not results then return end
+    for _, child in ipairs(results:GetChildren()) do
+        if child ~= UI.NoResultsLabel and child ~= UI.SearchResultsPadding and child ~= UI.SearchResultsLayout and child ~= UI.SearchResultTemplate then
+            child:Destroy()
+        end
+    end
+    local shown = 0
+    for _, data in ipairs(Funcs.CurrentScripts) do
+        if Funcs.PassesFilter(data) then
+            shown = shown + 1
+            Funcs.CreateResultCard(data, results)
+        end
+    end
+    if shown == 0 then
+        if UI.NoResultsLabel then
+            UI.NoResultsLabel.Visible = true
+            if #Funcs.CurrentScripts == 0 then
+                UI.NoResultsLabel.Text = (currentQuery ~= "") and "No scripts found matching your query." or "No scripts found."
+            else
+                UI.NoResultsLabel.Text = "No scripts match the current filter."
+            end
+        end
+    elseif UI.NoResultsLabel then
+        UI.NoResultsLabel.Visible = false
+    end
 end
-end)
+
+function Funcs.PerformSearch(query, page)
+    page = page or 1
+    currentQuery = query
+    currentPage = page
+    if UI.NoResultsLabel then UI.NoResultsLabel.Visible = false end
+    UI.PrevBtn.Visible = false
+    UI.NextBtn.Visible = false
+    local scripts, pages = Funcs.FetchScripts(query, page)
+    if not scripts then
+        Funcs.CurrentScripts = {}
+        Funcs.RenderSearchResults()
+        if UI.NoResultsLabel then
+            UI.NoResultsLabel.Visible = true
+            UI.NoResultsLabel.Text = "Failed to fetch scripts. Check your connection and try again."
+        end
+        return
+    end
+    totalPages = pages or 1
+    Funcs.CurrentScripts = scripts
+    UI.PrevBtn.Visible = page > 1
+    UI.NextBtn.Visible = page < totalPages
+    Funcs.RenderSearchResults()
 end
+
+function Funcs.CycleSource()
+    local index = table.find(Funcs.Sources, Funcs.CurrentSource) or 1
+    Funcs.CurrentSource = Funcs.Sources[index % #Funcs.Sources + 1]
+    if Funcs.CurrentSource == "RScripts" then
+        UI.SourceBtn.Text = "🟢 Source: RScripts"
+    else
+        UI.SourceBtn.Text = "⚠️ Source: ScriptBlox"
+    end
+    Funcs.PerformSearch(currentQuery, 1)
 end
+
+function Funcs.CycleFilter()
+    local index = table.find(Funcs.Filters, Funcs.CurrentFilter) or 1
+    Funcs.CurrentFilter = Funcs.Filters[index % #Funcs.Filters + 1]
+    UI.FilterBtn.Text = "Filter: " .. Funcs.CurrentFilter
+    Funcs.RenderSearchResults()
 end
-function _0x418A.RenderSearchResults()
-local _0xF1DC = _0xE3E8.SearchResults
-if not _0xF1DC then return end
-for _, child in ipairs(_0xF1DC:GetChildren()) do
-if child ~= _0xE3E8.NoResultsLabel and child ~= _0xE3E8.SearchResultsPadding and child ~= _0xE3E8.SearchResultsLayout and child ~= _0xE3E8.SearchResultTemplate then
-child:Destroy()
+
+function Funcs.ApplyTheme()
+    UI.MainFrame.BackgroundColor3 = Settings.BackgroundColor
+    UI.HomeContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.ExeContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.SearchContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.ScriptsContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.SettingsContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.MusicContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.Sidebar.BackgroundColor3 = Settings.SecondaryBackgroundColor
+
+    UI.HomeContentStroke.Color = Settings.AccentColor
+    UI.ExeContentStroke.Color = Settings.AccentColor
+    UI.SearchContentStroke.Color = Settings.AccentColor
+    UI.ScriptsContentStroke.Color = Settings.AccentColor
+    UI.SettingsContentStroke.Color = Settings.AccentColor
+    UI.MusicContentStroke.Color = Settings.AccentColor
+    UI.SidebarStroke.Color = Settings.AccentColor
+    UI.NewScriptFrameStroke.Color = Settings.AccentColor
+
+    UI.Title.TextColor3 = Settings.AccentColor
+    UI.TitleStroke.Color = Settings.AccentColor
+    UI.Icon.ImageColor3 = Settings.AccentColor
+    UI.Logo.ImageColor3 = Settings.SecondaryAccentColor
+
+    UI.TabUnderline.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline2.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline3.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline4.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline5.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline6Music.BackgroundColor3 = Settings.AccentColor
+
+    UI.NoResultsLabelStroke.Color = Settings.AccentColor
+    UI.NoSavedScriptsLabelStroke.Color = Settings.AccentColor
+    UI.SearchResultTemplateStroke.Color = Settings.SecondaryAccentColor
+    UI.ScriptNameStroke.Color = Settings.AccentColor
+    UI.SavedScriptTemplateStroke.Color = Settings.SecondaryAccentColor
+
+    UI.ExeBtn.BackgroundColor3 = Settings.AccentColor
+    UI.ClrBtn.BackgroundColor3 = Settings.AccentColor
+    UI.CopyBtn.BackgroundColor3 = Settings.AccentColor
+    UI.RunScript.BackgroundColor3 = Settings.AccentColor
+    UI.CopyScriptBtn.BackgroundColor3 = Settings.AccentColor
+    UI.SaveScriptBtn.BackgroundColor3 = Settings.AccentColor
+    UI.PrevBtn.BackgroundColor3 = Settings.AccentColor
+    UI.NextBtn.BackgroundColor3 = Settings.AccentColor
+    UI.Cancel.BackgroundColor3 = Settings.AccentColor
+    UI.Save.BackgroundColor3 = Settings.AccentColor
+    UI.RunSavedScript.BackgroundColor3 = Settings.AccentColor
+    UI.DeleteSavedScript.BackgroundColor3 = Settings.AccentColor
+    UI.SourceBtn.BackgroundColor3 = Settings.AccentColor
+    UI.FilterBtn.BackgroundColor3 = Settings.AccentColor
+    UI.AddExeTabBtn.BackgroundColor3 = Settings.AccentColor
+
+    UI.ExeBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.ClrBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.CopyBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.RunScriptStroke.Color = Settings.SecondaryAccentColor
+    UI.CopyScriptBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.SaveScriptBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.PrevBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.NextBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.CancelStroke.Color = Settings.SecondaryAccentColor
+    UI.SaveStroke.Color = Settings.SecondaryAccentColor
+    UI.RunSavedScriptStroke.Color = Settings.SecondaryAccentColor
+    UI.DeleteSavedScriptStroke.Color = Settings.SecondaryAccentColor
+    UI.SourceBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.FilterBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.AddExeTabBtnStroke.Color = Settings.SecondaryAccentColor
+
+    UI.WelcomeLabelStroke.Color = Settings.AccentColor
+    UI.InfoLabelStroke.Color = Settings.SecondaryAccentColor
+    UI.InfoLabel2Stroke.Color = Settings.SecondaryAccentColor
+    UI.PlayerHeadshotStroke.Color = Settings.SecondaryAccentColor
+
+    UI.MusicPlayBtn.BackgroundColor3 = Settings.AccentColor
+    UI.MusicPrevBtn.BackgroundColor3 = Settings.AccentColor
+    UI.MusicNextBtn.BackgroundColor3 = Settings.AccentColor
+    UI.MusicPlayBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.MusicPrevBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.MusicNextBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.MusicSliderBar.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.MusicSliderFill.BackgroundColor3 = Settings.AccentColor
+    UI.MusicSliderKnob.BackgroundColor3 = Settings.AccentColor
+
+    if not Settings.Animations then
+        UI.ToggleState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
+        if stroke then stroke.Color = Color3.fromRGB(255, 0, 0) end
+    else
+        UI.ToggleState.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
+        if stroke then stroke.Color = Color3.fromRGB(0, 255, 0) end
+    end
+
+    for _, tabData in ipairs(ExeTabs) do
+        if tabData.tabBtn then
+            local activeStroke = tabData.tabBtn:FindFirstChild("ActiveLine")
+            if activeStroke then
+                activeStroke.BackgroundColor3 = Settings.AccentColor
+            end
+        end
+    end
+
+    if UI.SearchResults then Funcs.RenderSearchResults() end
+    if UI.SavedScriptsScroll then Funcs.RefreshSavedScripts(UI.SearchBox2 and UI.SearchBox2.Text or "") end
 end
-end
-local _0x4677 = 0
-for _, _0x957B in ipairs(_0x418A.CurrentScripts) do
-if _0x418A.PassesFilter(_0x957B) then
-_0x4677 = _0x4677 + 1
-_0x418A.CreateResultCard(_0x957B, _0xF1DC)
-end
-end
-if _0x4677 == 0 then
-if _0xE3E8.NoResultsLabel then
-_0xE3E8.NoResultsLabel.Visible = true
-if #_0x418A.CurrentScripts == 0 then
-_0xE3E8.NoResultsLabel.Text = (_0x1CC3 ~="") andstring.char(78,111,32,115,99,114,105,112,116,115,32,102,111,117,110,100,32,109,97,116,99,104,105,110,103,32,121,111,117,114,32,113,117,101,114,121,46)orstring.char(78,111,32,115,99,114,105,112,116,115,32,102,111,117,110,100,46)else
-_0xE3E8.NoResultsLabel.Text =string.char(78,111,32,115,99,114,105,112,116,115,32,109,97,116,99,104,32,116,104,101,32,99,117,114,114,101,110,116,32,102,105,108,116,101,114,46)end
-end
-elseif _0xE3E8.NoResultsLabel then
-_0xE3E8.NoResultsLabel.Visible = false
-end
-end
-function _0x418A.PerformSearch(_0xB4BB, page)
-page = page or 1
-_0x1CC3 = _0xB4BB
-_0xCC51 = page
-if _0xE3E8.NoResultsLabel then _0xE3E8.NoResultsLabel.Visible = false end
-_0xE3E8.PrevBtn.Visible = false
-_0xE3E8.NextBtn.Visible = false
-local _0x2EE6, _0x8544 = _0x418A.FetchScripts(_0xB4BB, page)
-if not _0x2EE6 then
-_0x418A.CurrentScripts = {}
-_0x418A.RenderSearchResults()
-if _0xE3E8.NoResultsLabel then
-_0xE3E8.NoResultsLabel.Visible = true
-_0xE3E8.NoResultsLabel.Text =string.char(70,97,105,108,101,100,32,116,111,32,102,101,116,99,104,32,115,99,114,105,112,116,115,46,32,67,104,101,99,107,32,121,111,117,114,32,99,111,110,110,101,99,116,105,111,110,32,97,110,100,32,116,114,121,32,97,103,97,105,110,46)end
-return
-end
-_0xB84E = _0x8544 or 1
-_0x418A.CurrentScripts = _0x2EE6
-_0xE3E8.PrevBtn.Visible = page > 1
-_0xE3E8.NextBtn.Visible = page < _0xB84E
-_0x418A.RenderSearchResults()
-end
-function _0x418A.CycleSource()
-local _0x3B0F = table.find(_0x418A.Sources, _0x418A.CurrentSource) or 1
-_0x418A.CurrentSource = _0x418A.Sources[_0x3B0F % #_0x418A.Sources + 1]
-if _0x418A.CurrentSource ==string.char(82,83,99,114,105,112,116,115)then
-_0xE3E8.SourceBtn.Text =string.char(239,191,189,239,191,189,32,83,111,117,114,99,101,58,32,82,83,99,114,105,112,116,115)else
-_0xE3E8.SourceBtn.Text =string.char(226,154,160,239,184,143,32,83,111,117,114,99,101,58,32,83,99,114,105,112,116,66,108,111,120)end
-_0x418A.PerformSearch(_0x1CC3, 1)
-end
-function _0x418A.CycleFilter()
-local _0x3B0F = table.find(_0x418A.Filters, _0x418A.CurrentFilter) or 1
-_0x418A.CurrentFilter = _0x418A.Filters[_0x3B0F % #_0x418A.Filters + 1]
-_0xE3E8.FilterBtn.Text =string.char(70,105,108,116,101,114,58,32).. _0x418A.CurrentFilter
-_0x418A.RenderSearchResults()
-end
-function _0x418A.ApplyTheme()
-_0xE3E8.MainFrame.BackgroundColor3 = _0x87A2.BackgroundColor
-_0xE3E8.HomeContent.BackgroundColor3 = _0x87A2.SecondaryBackgroundColor
-_0xE3E8.ExeContent.BackgroundColor3 = _0x87A2.SecondaryBackgroundColor
-_0xE3E8.SearchContent.BackgroundColor3 = _0x87A2.SecondaryBackgroundColor
-_0xE3E8.ScriptsContent.BackgroundColor3 = _0x87A2.SecondaryBackgroundColor
-_0xE3E8.SettingsContent.BackgroundColor3 = _0x87A2.SecondaryBackgroundColor
-_0xE3E8.MusicContent.BackgroundColor3 = _0x87A2.SecondaryBackgroundColor
-_0xE3E8.Sidebar.BackgroundColor3 = _0x87A2.SecondaryBackgroundColor
-_0xE3E8.HomeContentStroke.Color = _0x87A2.AccentColor
-_0xE3E8.ExeContentStroke.Color = _0x87A2.AccentColor
-_0xE3E8.SearchContentStroke.Color = _0x87A2.AccentColor
-_0xE3E8.ScriptsContentStroke.Color = _0x87A2.AccentColor
-_0xE3E8.SettingsContentStroke.Color = _0x87A2.AccentColor
-_0xE3E8.MusicContentStroke.Color = _0x87A2.AccentColor
-_0xE3E8.SidebarStroke.Color = _0x87A2.AccentColor
-_0xE3E8.NewScriptFrameStroke.Color = _0x87A2.AccentColor
-_0xE3E8.Title.TextColor3 = _0x87A2.AccentColor
-_0xE3E8.TitleStroke.Color = _0x87A2.AccentColor
-_0xE3E8.Icon.ImageColor3 = _0x87A2.AccentColor
-_0xE3E8.Logo.ImageColor3 = _0x87A2.SecondaryAccentColor
-_0xE3E8.TabUnderline.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.TabUnderline2.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.TabUnderline3.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.TabUnderline4.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.TabUnderline5.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.TabUnderline6Music.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.NoResultsLabelStroke.Color = _0x87A2.AccentColor
-_0xE3E8.NoSavedScriptsLabelStroke.Color = _0x87A2.AccentColor
-_0xE3E8.SearchResultTemplateStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.ScriptNameStroke.Color = _0x87A2.AccentColor
-_0xE3E8.SavedScriptTemplateStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.ExeBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.ClrBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.CopyBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.RunScript.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.CopyScriptBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.SaveScriptBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.PrevBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.NextBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.Cancel.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.Save.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.RunSavedScript.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.DeleteSavedScript.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.SourceBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.FilterBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.AddExeTabBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.ExeBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.ClrBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.CopyBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.RunScriptStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.CopyScriptBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.SaveScriptBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.PrevBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.NextBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.CancelStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.SaveStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.RunSavedScriptStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.DeleteSavedScriptStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.SourceBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.FilterBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.AddExeTabBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.WelcomeLabelStroke.Color = _0x87A2.AccentColor
-_0xE3E8.InfoLabelStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.InfoLabel2Stroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.PlayerHeadshotStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.MusicPlayBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.MusicPrevBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.MusicNextBtn.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.MusicPlayBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.MusicPrevBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.MusicNextBtnStroke.Color = _0x87A2.SecondaryAccentColor
-_0xE3E8.MusicSliderBar.BackgroundColor3 = _0x87A2.SecondaryBackgroundColor
-_0xE3E8.MusicSliderFill.BackgroundColor3 = _0x87A2.AccentColor
-_0xE3E8.MusicSliderKnob.BackgroundColor3 = _0x87A2.AccentColor
-if not _0x87A2.Animations then
-_0xE3E8.ToggleState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-local _0x4B72 = _0xE3E8.ToggleState:FindFirstChildOfClass(string.char(85,73,83,116,114,111,107,101))
-if _0x4B72 then _0x4B72.Color = Color3.fromRGB(255, 0, 0) end
-else
-_0xE3E8.ToggleState.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-local _0x4B72 = _0xE3E8.ToggleState:FindFirstChildOfClass(string.char(85,73,83,116,114,111,107,101))
-if _0x4B72 then _0x4B72.Color = Color3.fromRGB(0, 255, 0) end
-end
-for _, _0xF075 in ipairs(_0x2B10) do
-if _0xF075.tabBtn then
-local _0x7EA6 = _0xF075.tabBtn:FindFirstChild(string.char(65,99,116,105,118,101,76,105,110,101))
-if _0x7EA6 then
-_0x7EA6.BackgroundColor3 = _0x87A2.AccentColor
-end
-end
-end
-if _0xE3E8.SearchResults then _0x418A.RenderSearchResults() end
-if _0xE3E8.SavedScriptsScroll then _0x418A.RefreshSavedScripts(_0xE3E8.SearchBox2 and _0xE3E8.SearchBox2.Text or"") end
-end
-function _0x418A.UpdateStats()
-local _0x3CF4 = _0x0F90.Name orstring.char(85,110,107,110,111,119,110)local _0xDA9E = _0x0F90.DisplayName orstring.char(85,110,107,110,111,119,110)local _0x910D = _0x0F90.UserId or 0
-local _0x028C = math.floor(workspace:GetRealPhysicsFPS() or 0)
-local _0xA0AF = _0x0F90:GetNetworkPing() and math.floor(_0x0F90:GetNetworkPing() * 1000) or 0
-local _0xA3C4 = math.floor(collectgarbage(string.char(99,111,117,110,116)) / 1024) or 0
-local _0xE34A = #_0x436D:GetPlayers() or 0
-local _0x4443 = _0x436D.MaxPlayers or 0
-local _0x6122 = math.floor((os.time() - workspace.DistributedGameTime) / 60) or 0
-local _0xE155 = game.PlaceId or 0
-local _0x8E6D = game.GameId orstring.char(85,110,107,110,111,119,110)local _0xCA57 = game.JobId orstring.char(85,110,107,110,111,119,110)local _0xEEE7 = string.format([[Username: %s
+
+function Funcs.UpdateStats()
+    local username = Player.Name or "Unknown"
+    local displayName = Player.DisplayName or "Unknown"
+    local userId = Player.UserId or 0
+    local fps = math.floor(workspace:GetRealPhysicsFPS() or 0)
+    local ping = Player:GetNetworkPing() and math.floor(Player:GetNetworkPing() * 1000) or 0
+    local memory = math.floor(collectgarbage("count") / 1024) or 0
+    local playerCount = #Players:GetPlayers() or 0
+    local maxPlayers = Players.MaxPlayers or 0
+    local serverAge = math.floor((os.time() - workspace.DistributedGameTime) / 60) or 0
+    local placeId = game.PlaceId or 0
+    local gameId = game.GameId or "Unknown"
+    local jobId = game.JobId or "Unknown"
+
+    local infoText = string.format([[Username: %s
 Display Name: %s
 User ID: %s
 
@@ -646,917 +754,1083 @@ Server Age: %s mins
 Job ID: %s
 
 Place ID: %s
-Game ID: %s]], _0x3CF4, _0xDA9E, _0x910D, _0x028C, _0xA0AF, _0xA3C4, _0xE34A, _0x4443, _0x6122, _0xCA57, _0xE155, _0x8E6D)
-if _0xE3E8.InfoLabel then _0xE3E8.InfoLabel.Text = _0xEEE7 end
-if _0xE3E8.WelcomeLabel then _0xE3E8.WelcomeLabel.Text =string.char(87,101,108,99,111,109,101,32,116,111,32,76,117,99,105,100,44,32).. _0xDA9E ..string.char(33)end
-local _0x33C1 =string.char(104,116,116,112,115,58,47,47,119,119,119,46,114,111,98,108,111,120,46,99,111,109,47,104,101,97,100,115,104,111,116,45,116,104,117,109,98,110,97,105,108,47,105,109,97,103,101,63,117,115,101,114,73,100,61).. _0x910D ..string.char(38,119,105,100,116,104,61,52,50,48,38,104,101,105,103,104,116,61,52,50,48,38,102,111,114,109,97,116,61,112,110,103)if _0xE3E8.PlayerHeadshot then _0xE3E8.PlayerHeadshot.Image = _0x33C1 end
-end
-function _0x418A.RefreshSavedScripts(searchQuery)
-local _0xB3E7 = _0xE3E8.SavedScriptsScroll
-if not _0xB3E7 then return end
-for _, child in ipairs(_0xB3E7:GetChildren()) do
-if child ~= _0xE3E8.NoSavedScriptsLabel and child ~= _0xE3E8.SavedScriptsScrollPadding and child ~= _0xE3E8.SavedScriptsScrollLayout and child ~= _0xE3E8.SavedScriptTemplate then
-child:Destroy()
-end
-end
-local _0x2EE6 = _0x418A.LoadSavedScripts()
-if searchQuery and searchQuery ~=""then
-local _0x93A3 = {}
-local _0xB4BB = searchQuery:lower()
-for _, _0x8E3B in ipairs(_0x2EE6) do
-local _0x1671 = (_0x8E3B.Name or""):lower()
-local _0x667C = (_0x8E3B.Description or""):lower()
-if _0x1671:find(_0xB4BB) or _0x667C:find(_0xB4BB) then table.insert(_0x93A3, _0x8E3B) end
-end
-_0x2EE6 = _0x93A3
-end
-if #_0x2EE6 == 0 then
-if _0xE3E8.NoSavedScriptsLabel then
-_0xE3E8.NoSavedScriptsLabel.Visible = true
-_0xE3E8.NoSavedScriptsLabel.Text = (searchQuery and searchQuery ~="") andstring.char(78,111,32,115,97,118,101,100,32,115,99,114,105,112,116,115,32,109,97,116,99,104,32,121,111,117,114,32,115,101,97,114,99,104,46)orstring.char(78,111,32,83,97,118,101,100,32,83,99,114,105,112,116,115,10,10,83,97,118,101,32,115,111,109,101,32,115,99,114,105,112,116,115,32,116,111,32,115,101,101,32,116,104,101,109,32,104,101,114,101,46)end
-return
-end
-if _0xE3E8.NoSavedScriptsLabel then _0xE3E8.NoSavedScriptsLabel.Visible = false end
-local _0x2463 = {}
-local _0x906D = {}
-for _, _0x8E3B in ipairs(_0x2EE6) do
-if _0x8E3B.Name:find(string.char(37,40,66,117,105,108,116,37,45,73,110,37,41)) then
-table.insert(_0x2463, _0x8E3B)
-else
-table.insert(_0x906D, _0x8E3B)
-end
-end
-table.sort(_0x2463, function(a, _0x6A50) return (a.Name or""):lower() < (_0x6A50.Name or""):lower() end)
-table.sort(_0x906D, function(a, _0x6A50) return (a.Name or""):lower() < (_0x6A50.Name or""):lower() end)
-local function _0x753D(_0x8E3B)
-local _0xF147 = _0xE3E8.SavedScriptTemplate:Clone()
-_0xF147.Name = _0x418A.SanitizeName(_0x8E3B.Name)
-_0xF147.Visible = true
-_0xF147.Parent = _0xB3E7
-local _0xB77D = _0xF147:FindFirstChildOfClass(string.char(85,73,83,116,114,111,107,101))
-if _0xB77D then _0xB77D.Color = _0x87A2.SecondaryAccentColor end
-local _0x4B25 = _0xF147:FindFirstChild(string.char(83,97,118,101,100,83,99,114,105,112,116,73,110,102,111))
-if _0x4B25 then
-local _0x02F1 = _0x4B25:FindFirstChild(string.char(83,97,118,101,100,83,99,114,105,112,116,84,105,116,108,101))
-local _0x2426 = _0x4B25:FindFirstChild(string.char(83,97,118,101,100,83,99,114,105,112,116,68,101,115,99))
-if _0x02F1 then _0x02F1.Text = _0x8E3B.Name orstring.char(85,110,107,110,111,119,110)end
-if _0x2426 then _0x2426.Text = _0x8E3B.Description orstring.char(78,111,32,100,101,115,99,114,105,112,116,105,111,110)end
-end
-local _0xE7FA = _0xF147:FindFirstChild(string.char(83,97,118,101,100,83,99,114,105,112,116,65,99,116,105,111,110,115))
-if _0xE7FA then
-local _0x38DA = _0xE7FA:FindFirstChild(string.char(82,117,110,83,97,118,101,100,83,99,114,105,112,116))
-local _0x9E3F = _0xE7FA:FindFirstChild(string.char(68,101,108,101,116,101,83,97,118,101,100,83,99,114,105,112,116))
-for _, btn in ipairs({_0x38DA, _0x9E3F}) do
-if btn then
-btn.BackgroundColor3 = _0x87A2.AccentColor
-local _0xC349 = btn:FindFirstChildOfClass(string.char(85,73,83,116,114,111,107,101))
-if _0xC349 then _0xC349.Color = _0x87A2.SecondaryAccentColor end
-end
-end
-if _0x38DA then
-_0x38DA.MouseButton1Click:Connect(function()
-local _0xF2FE, _0x072A = loadstring(_0x8E3B.Code or"")
-if not _0xF2FE then error(_0x072A) end
-local _0x9378, _0xFB0C = pcall(_0xF2FE)
-if not _0x9378 then error(_0xFB0C) end
-end)
-end
-if _0x9E3F then
-_0x9E3F.MouseButton1Click:Connect(function()
-_0x418A.DeleteScript(_0x8E3B.Name)
-_0x418A.RefreshSavedScripts(_0xE3E8.SearchBox2.Text)
-end)
-end
-end
-end
-for _, _0x8E3B in ipairs(_0x2463) do _0x753D(_0x8E3B) end
-for _, _0x8E3B in ipairs(_0x906D) do _0x753D(_0x8E3B) end
-end
-function _0x418A.SwitchTab(tabButton)
-local _0x64D6 = {
-[_0xE3E8.HomeTab] = _0xE3E8.HomeContent,
-[_0xE3E8.ExeTab] = _0xE3E8.ExeContent,
-[_0xE3E8.SearchTab] = _0xE3E8.SearchContent,
-[_0xE3E8.ScriptsTab] = _0xE3E8.ScriptsContent,
-[_0xE3E8.SettingsTab] = _0xE3E8.SettingsContent,
-[_0xE3E8.MusicTab] = _0xE3E8.MusicContent,
-}
-local _0xECC5 = _0x64D6[tabButton]
-if not _0xECC5 then return end
-local _0x759D = nil
-for _0x4149, _0x3B49 in pairs(_0x64D6) do
-if _0x3B49 and _0x3B49 ~= _0xECC5 and _0x3B49.Visible then
-_0x759D = _0x3B49
-break
-end
-end
-if _0x759D == _0xECC5 then return end
-if _0x759D then _0x759D.Visible = false end
-_0xECC5.Visible = true
-if _0x87A2.Animations then
-_0xECC5.Position = UDim2.new(-1, 0, 0, 0)
-_0x44D7:Create(_0xECC5, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-Position = UDim2.new(0, 0, 0, 0)
-}):Play()
-else
-_0xECC5.Position = UDim2.new(0, 0, 0, 0)
-end
-if _0xECC5 == _0xE3E8.HomeContent then _0x418A.UpdateStats() end
-if _0xECC5 == _0xE3E8.ScriptsContent then _0x418A.RefreshSavedScripts(_0xE3E8.SearchBox2.Text) end
-if _0xECC5 == _0xE3E8.MusicContent then _0x418A.RefreshMusicList() end
-end
-function _0x418A.UpdateUnderline(tabButton, active)
-local _0xB15B = tabButton:FindFirstChild(string.char(84,97,98,85,110,100,101,114,108,105,110,101)) or tabButton:FindFirstChild(string.char(84,97,98,85,110,100,101,114,108,105,110,101,50)) or tabButton:FindFirstChild(string.char(84,97,98,85,110,100,101,114,108,105,110,101,51)) or tabButton:FindFirstChild(string.char(84,97,98,85,110,100,101,114,108,105,110,101,52)) or tabButton:FindFirstChild(string.char(84,97,98,85,110,100,101,114,108,105,110,101,53)) or tabButton:FindFirstChild(string.char(84,97,98,85,110,100,101,114,108,105,110,101,54,77,117,115,105,99))
-if not _0xB15B then return end
-if active then
-if _0x87A2.Animations then
-_0x44D7:Create(_0xB15B, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(1, 0, 0, 1) }):Play()
-else
-_0xB15B.Size = UDim2.new(1, 0, 0, 1)
-end
-else
-if _0x87A2.Animations then
-_0x44D7:Create(_0xB15B, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 0, 0, 1) }):Play()
-else
-_0xB15B.Size = UDim2.new(0, 0, 0, 1)
-end
-end
-end
-function _0x418A.SetAllUnderlines(activeTab)
-local _0xB465 = {_0xE3E8.HomeTab, _0xE3E8.ExeTab, _0xE3E8.SearchTab, _0xE3E8.ScriptsTab, _0xE3E8.SettingsTab, _0xE3E8.MusicTab}
-for _, _0x4149 in ipairs(_0xB465) do
-_0x418A.UpdateUnderline(_0x4149, _0x4149 == activeTab)
-end
-end
-function _0x418A.Dragify(Object)
-local _0xAF79 = false
-local _0xD7BB
-local _0x9959
-local _0xF85C
-local function _0xD10C(_0x8D87, _0x4821)
-local _0x56D8 = workspace.CurrentCamera.ViewportSize
-local _0xF23F = Object.AbsoluteSize
-local _0xD298 = 16
-local _0x72A5 = 12
-_0x8D87 = math.clamp(_0x8D87, _0xD298, _0x56D8.X - _0xF23F.X - _0xD298)
-_0x4821 = math.clamp(_0x4821, _0x72A5, _0x56D8.Y - _0xF23F.Y - _0x72A5)
-return _0x8D87, _0x4821
-end
-Object.InputBegan:Connect(function(_0x71BF)
-if _0x71BF.UserInputType == Enum.UserInputType.MouseButton1 or _0x71BF.UserInputType == Enum.UserInputType.Touch then
-_0xAF79 = true
-_0x9959 = _0x71BF.Position
-_0xF85C = Object.Position
-_0x71BF.Changed:Connect(function()
-if _0x71BF.UserInputState == Enum.UserInputState.End then _0xAF79 = false end
-end)
-end
-end)
-Object.InputChanged:Connect(function(_0x71BF)
-if _0x71BF.UserInputType == Enum.UserInputType.MouseMovement or _0x71BF.UserInputType == Enum.UserInputType.Touch then
-_0xD7BB = _0x71BF
-end
-end)
-_0x86B4.InputChanged:Connect(function(_0x71BF)
-if _0x71BF == _0xD7BB and _0xAF79 then
-local _0x625B = _0x71BF.Position - _0x9959
-local _0x8D87 = _0xF85C.X.Offset + _0x625B.X
-local _0x4821 = _0xF85C.Y.Offset + _0x625B.Y
-_0x8D87, _0x4821 = _0xD10C(_0x8D87, _0x4821)
-Object.Position = UDim2.new(_0xF85C.X.Scale, _0x8D87, _0xF85C.Y.Scale, _0x4821)
-end
-end)
-end
-function _0x418A.GetActiveContent()
-local _0xF201 = {_0xE3E8.HomeContent, _0xE3E8.ExeContent, _0xE3E8.SearchContent, _0xE3E8.ScriptsContent, _0xE3E8.SettingsContent, _0xE3E8.MusicContent}
-for _, _0x3B49 in ipairs(_0xF201) do
-if _0x3B49 and _0x3B49.Visible then return _0x3B49 end
-end
-return _0xE3E8.HomeContent
-end
-function _0x418A.OpenUI()
-_0xE3E8.MainFrame.Visible = true
-_0xE3E8.MainFrame.BackgroundTransparency = 1
-local _0xF366 = _0x418A.GetActiveContent()
-_0xF366.Position = UDim2.new(-1, 0, 0, 0)
-_0xE3E8.Sidebar.Position = UDim2.new(1.2, 8, 0.5, 0)
-if _0x87A2.Animations then
-_0x44D7:Create(_0xE3E8.MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0.35 }):Play()
-_0x44D7:Create(_0xF366, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 0, 0) }):Play()
-_0x44D7:Create(_0xE3E8.Sidebar, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.new(1, 8, 0.5, 0) }):Play()
-_0x44D7:Create(_0xE3E8.Show, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { ImageTransparency = 1, BackgroundTransparency = 1 }):Play()
-else
-_0xE3E8.MainFrame.BackgroundTransparency = 0.35
-_0xF366.Position = UDim2.new(0, 0, 0, 0)
-_0xE3E8.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
-_0xE3E8.Show.ImageTransparency = 1
-_0xE3E8.Show.BackgroundTransparency = 1
-end
-_0xE3E8.Show.Visible = false
-_0x418A.UpdateStats()
-end
-function _0x418A.CloseUI()
-local _0xF366 = _0x418A.GetActiveContent()
-if _0x87A2.Animations then
-local _0x6116 = _0x44D7:Create(_0xE3E8.MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { BackgroundTransparency = 1 })
-local _0x2CD1 = _0x44D7:Create(_0xF366, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(-1, 0, 0, 0) })
-local _0x6D02 = _0x44D7:Create(_0xE3E8.Sidebar, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.In), { Position = UDim2.new(1.2, 8, 0.5, 0) })
-local _0x9375 = _0x44D7:Create(_0xE3E8.Show, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { ImageTransparency = 0, BackgroundTransparency = 0.08 })
-_0x6116:Play(); _0x2CD1:Play(); _0x6D02:Play(); _0x9375:Play()
-_0x2CD1.Completed:Wait()
-_0xE3E8.MainFrame.Visible = false
-_0xE3E8.Show.Visible = true
-else
-_0xE3E8.MainFrame.BackgroundTransparency = 1
-_0xE3E8.MainFrame.Visible = false
-_0xE3E8.Show.Visible = true
-_0xE3E8.Show.ImageTransparency = 0
-_0xE3E8.Show.BackgroundTransparency = 0.08
-_0xF366.Position = UDim2.new(0, 0, 0, 0)
-_0xE3E8.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
-end
-end
-function _0x418A.CreateTab(iconPath, labelText, _0x3B49, layoutOrder, underlineKey)
-local _0x4149 = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0x4149.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-_0x4149.BackgroundTransparency = 1
-_0x4149.BorderSizePixel = 0
-_0x4149.LayoutOrder = layoutOrder or 1
-_0x4149.Name = labelText ..string.char(84,97,98)_0x4149.Size = UDim2.new(0, 30, 0, 58)
-_0x4149.Text =""_0x4149.Parent = _0xE3E8.Sidebar
-local _0xFF1B = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xFF1B.Padding = UDim.new(0, 4)
-_0xFF1B.SortOrder = Enum.SortOrder.LayoutOrder
-_0xFF1B.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xFF1B.Parent = _0x4149
-local _0x7D4E = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0x7D4E.MaxSize = Vector2.new(2147483647, 34)
-_0x7D4E.MinSize = Vector2.new(0, 28)
-_0x7D4E.Parent = _0x4149
-local _0x0BF0 = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0x0BF0.PaddingBottom = UDim.new(0, 3)
-_0x0BF0.PaddingTop = UDim.new(0, 3)
-_0x0BF0.Parent = _0x4149
-local _0x2AD6 = Instance.new(string.char(70,114,97,109,101))
-_0x2AD6.BackgroundTransparency = 1
-_0x2AD6.BorderSizePixel = 0
-_0x2AD6.LayoutOrder = 1
-_0x2AD6.Name =string.char(84,97,98,67,111,110,116,97,105,110,101,114)_0x2AD6.Size = UDim2.new(1, 0, 0, 22)
-_0x2AD6.Parent = _0x4149
-local _0xAEAC = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xAEAC.FillDirection = Enum.FillDirection.Horizontal
-_0xAEAC.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xAEAC.Padding = UDim.new(0, 4)
-_0xAEAC.SortOrder = Enum.SortOrder.LayoutOrder
-_0xAEAC.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xAEAC.Parent = _0x2AD6
-local _0xEF28 = Instance.new(string.char(73,109,97,103,101,76,97,98,101,108))
-_0xEF28.BackgroundTransparency = 1
-_0xEF28.BorderSizePixel = 0
-_0xEF28.Image = _0x418A.GetAsset(iconPath) or""_0xEF28.LayoutOrder = 1
-_0xEF28.Name =string.char(84,97,98,73,99,111,110)_0xEF28.Size = UDim2.new(0, 30, 0, 30)
-_0xEF28.Parent = _0x2AD6
-local _0x9AF3 = Instance.new(string.char(85,73,65,115,112,101,99,116,82,97,116,105,111,67,111,110,115,116,114,97,105,110,116))
-_0x9AF3.Parent = _0xEF28
-local _0x13F9 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x13F9.BackgroundTransparency = 1
-_0x13F9.BorderSizePixel = 0
-_0x13F9.FontFace = _0x340D
-_0x13F9.LayoutOrder = 2
-_0x13F9.Name =string.char(84,97,98,76,97,98,101,108)_0x13F9.Size = UDim2.new(0, 60, 0, 30)
-_0x13F9.Text = labelText
-_0x13F9.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0x13F9.TextScaled = true
-_0x13F9.TextWrapped = true
-_0x13F9.TextXAlignment = Enum.TextXAlignment.Left
-_0x13F9.Parent = _0x2AD6
-local _0xB15B = Instance.new(string.char(70,114,97,109,101))
-_0xB15B.BackgroundColor3 = _0x87A2.AccentColor
-_0xB15B.BorderSizePixel = 0
-_0xB15B.LayoutOrder = 2
-_0xB15B.Name = underlineKey orstring.char(84,97,98,85,110,100,101,114,108,105,110,101)_0xB15B.Size = UDim2.new(0, 0, 0, 1)
-_0xB15B.Parent = _0x4149
-local _0xCD4A = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xCD4A.CornerRadius = UDim.new(0, 6)
-_0xCD4A.Parent = _0xB15B
-_0xE3E8[labelText ..string.char(84,97,98)] = _0x4149
-_0xE3E8[underlineKey orstring.char(84,97,98,85,110,100,101,114,108,105,110,101)] = _0xB15B
-if _0x3B49 then _0x3B49.Parent = _0xE3E8.Pages end
-_0x4149.MouseButton1Click:Connect(function()
-if _0x3B49 then
-_0x418A.SwitchTab(_0x4149)
-_0x418A.SetAllUnderlines(_0x4149)
-end
-end)
-return _0x4149
-end
-function _0x418A.CreateSettingsInputbox(labelText, placeholderText, settingKey, layoutOrder)
-local _0xD05E = Instance.new(string.char(70,114,97,109,101))
-_0xD05E.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xD05E.BorderSizePixel = 0
-_0xD05E.LayoutOrder = layoutOrder or 2
-_0xD05E.Name = labelText:gsub(string.char(32),"")
-_0xD05E.Size = UDim2.new(1, 0, 0, 38)
-_0xD05E.Parent = _0xE3E8.SettingsFrame
-local _0x840E = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0x840E.CornerRadius = UDim.new(0, 6)
-_0x840E.Parent = _0xD05E
-local _0x4B72 = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0x4B72.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0x4B72.Color = Color3.fromRGB(36, 36, 36)
-_0x4B72.Parent = _0xD05E
-local _0xE9CE = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE9CE.FillDirection = Enum.FillDirection.Horizontal
-_0xE9CE.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE9CE.Padding = UDim.new(0, 6)
-_0xE9CE.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE9CE.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE9CE.Parent = _0xD05E
-local _0x3E3A = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0x3E3A.PaddingBottom = UDim.new(0, 8)
-_0x3E3A.PaddingLeft = UDim.new(0, 8)
-_0x3E3A.PaddingRight = UDim.new(0, 8)
-_0x3E3A.PaddingTop = UDim.new(0, 8)
-_0x3E3A.Parent = _0xD05E
-local _0x4D5B = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x4D5B.BackgroundTransparency = 1
-_0x4D5B.BorderSizePixel = 0
-_0x4D5B.FontFace = _0x1033
-_0x4D5B.LayoutOrder = 1
-_0x4D5B.Size = UDim2.new(0.8, 0, 1, 0)
-_0x4D5B.Text = labelText
-_0x4D5B.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0x4D5B.TextScaled = true
-_0x4D5B.TextWrapped = true
-_0x4D5B.TextXAlignment = Enum.TextXAlignment.Left
-_0x4D5B.Parent = _0xD05E
-local _0x71BF = Instance.new(string.char(84,101,120,116,66,111,120))
-_0x71BF.BackgroundTransparency = 1
-_0x71BF.BorderSizePixel = 0
-_0x71BF.FontFace = _0x1033
-_0x71BF.LayoutOrder = 2
-_0x71BF.PlaceholderColor3 = Color3.fromRGB(221, 221, 221)
-_0x71BF.PlaceholderText = placeholderText
-_0x71BF.Size = UDim2.new(0.2, 0, 1, 0)
-_0x71BF.Text =""_0x71BF.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0x71BF.TextScaled = true
-_0x71BF.TextWrapped = true
-_0x71BF.Parent = _0xD05E
-local _0x8244 = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0x8244.CornerRadius = UDim.new(0, 6)
-_0x8244.Parent = _0x71BF
-local _0xDA87 = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xDA87.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xDA87.Color = Color3.fromRGB(36, 36, 36)
-_0xDA87.Parent = _0x71BF
-local _0x1CAE = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0x1CAE.PaddingBottom = UDim.new(0, 4)
-_0x1CAE.PaddingLeft = UDim.new(0, 4)
-_0x1CAE.PaddingRight = UDim.new(0, 4)
-_0x1CAE.PaddingTop = UDim.new(0, 4)
-_0x1CAE.Parent = _0x71BF
-if settingKey then
-_0x71BF.FocusLost:Connect(function(enterPressed)
-if enterPressed then
-local _0xA0ED = _0x418A.ParseColor(_0x71BF.Text)
-if _0xA0ED then
-_0x87A2[settingKey] = _0xA0ED
-_0x418A.ApplyTheme()
-_0x418A.SaveSettings()
-end
-end
-end)
-end
-return _0x71BF
-end
-function _0x418A.GetNextTabName()
-local _0x58CC = {}
-for _, t in ipairs(_0x2B10) do
-local _0xFBA6 = tonumber(t.name:match(string.char(94,84,97,98,32,40,37,100,43,41,36)))
-if _0xFBA6 then _0x58CC[_0xFBA6] = true end
-end
-local _0x7E97 = 1
-while _0x58CC[_0x7E97] do _0x7E97 = _0x7E97 + 1 end
-returnstring.char(84,97,98,32).. _0x7E97
-end
-function _0x418A.SwitchExeTab(_0xF075)
-if _0x1CF4 and _0x1CF4 ~= _0xF075 then
-_0x1CF4.inputFrame.Visible = false
-local _0x8D62 = _0x1CF4.tabBtn
-if _0x8D62 then
-local _0xAF13 = _0x8D62:FindFirstChild(string.char(65,99,116,105,118,101,76,105,110,101))
-if _0xAF13 then _0xAF13.BackgroundColor3 = Color3.fromRGB(40, 40, 40) end
-end
-end
-_0x1CF4 = _0xF075
-_0xF075.inputFrame.Visible = true
-local _0xD5D6 = _0xF075.tabBtn
-if _0xD5D6 then
-local _0xAF13 = _0xD5D6:FindFirstChild(string.char(65,99,116,105,118,101,76,105,110,101))
-if _0xAF13 then _0xAF13.BackgroundColor3 = _0x87A2.AccentColor end
-end
-_0xE3E8.ExeBottomButtons.Visible = true
-end
-function _0x418A.CreateExeTab(_0x1671)
-local _0xF075 = {}
-_0xF075.name = _0x1671 or _0x418A.GetNextTabName()
-_0xF075.code =""local _0xD5D6 = Instance.new(string.char(70,114,97,109,101))
-_0xD5D6.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-_0xD5D6.BorderSizePixel = 0
-_0xD5D6.Name =string.char(69,120,101,84,97,98,66,116,110,95).. _0xF075.name
-_0xD5D6.Size = UDim2.new(0, 90, 1, 0)
-_0xD5D6.Parent = _0xE3E8.ExeTabBarScroll
-local _0xF7B0 = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xF7B0.CornerRadius = UDim.new(0, 5)
-_0xF7B0.Parent = _0xD5D6
-local _0x2C41 = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0x2C41.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0x2C41.Color = Color3.fromRGB(36, 36, 36)
-_0x2C41.Parent = _0xD5D6
-local _0xAF13 = Instance.new(string.char(70,114,97,109,101))
-_0xAF13.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-_0xAF13.BorderSizePixel = 0
-_0xAF13.Name =string.char(65,99,116,105,118,101,76,105,110,101)_0xAF13.Size = UDim2.new(1, 0, 0, 2)
-_0xAF13.AnchorPoint = Vector2.new(0, 1)
-_0xAF13.Position = UDim2.new(0, 0, 1, 0)
-_0xAF13.Parent = _0xD5D6
-local _0xC0EF = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xC0EF.CornerRadius = UDim.new(0, 2)
-_0xC0EF.Parent = _0xAF13
-local _0xB257 = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xB257.FillDirection = Enum.FillDirection.Horizontal
-_0xB257.VerticalAlignment = Enum.VerticalAlignment.Center
-_0xB257.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xB257.Padding = UDim.new(0, 2)
-_0xB257.SortOrder = Enum.SortOrder.LayoutOrder
-_0xB257.Parent = _0xD5D6
-local _0x9BBC = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0x9BBC.PaddingLeft = UDim.new(0, 6)
-_0x9BBC.PaddingRight = UDim.new(0, 4)
-_0x9BBC.PaddingTop = UDim.new(0, 2)
-_0x9BBC.PaddingBottom = UDim.new(0, 4)
-_0x9BBC.Parent = _0xD5D6
-local _0xE149 = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE149.BackgroundTransparency = 1
-_0xE149.BorderSizePixel = 0
-_0xE149.FontFace = _0x1033
-_0xE149.LayoutOrder = 1
-_0xE149.Name =string.char(84,97,98,78,97,109,101,66,116,110)_0xE149.Size = UDim2.new(1, -20, 1, 0)
-_0xE149.Text = _0xF075.name
-_0xE149.TextColor3 = Color3.fromRGB(200, 200, 200)
-_0xE149.TextScaled = true
-_0xE149.TextTruncate = Enum.TextTruncate.AtEnd
-_0xE149.TextXAlignment = Enum.TextXAlignment.Left
-_0xE149.Parent = _0xD5D6
-local _0x39DA = Instance.new(string.char(84,101,120,116,66,111,120))
-_0x39DA.BackgroundTransparency = 1
-_0x39DA.BorderSizePixel = 0
-_0x39DA.FontFace = _0x1033
-_0x39DA.LayoutOrder = 1
-_0x39DA.Name =string.char(84,97,98,78,97,109,101,66,111,120)_0x39DA.Size = UDim2.new(1, -20, 1, 0)
-_0x39DA.Text = _0xF075.name
-_0x39DA.TextColor3 = Color3.fromRGB(200, 200, 200)
-_0x39DA.TextScaled = true
-_0x39DA.TextXAlignment = Enum.TextXAlignment.Left
-_0x39DA.Visible = false
-_0x39DA.ClearTextOnFocus = false
-_0x39DA.Parent = _0xD5D6
-local _0xFD8F = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xFD8F.BackgroundTransparency = 1
-_0xFD8F.BorderSizePixel = 0
-_0xFD8F.FontFace = _0x0EEB
-_0xFD8F.LayoutOrder = 2
-_0xFD8F.Name =string.char(67,108,111,115,101,69,120,101,84,97,98)_0xFD8F.Size = UDim2.new(0, 16, 0, 16)
-_0xFD8F.Text =string.char(88)_0xFD8F.TextColor3 = Color3.fromRGB(160, 160, 160)
-_0xFD8F.TextScaled = true
-_0xFD8F.Parent = _0xD5D6
-local _0xEEA7 = Instance.new(string.char(83,99,114,111,108,108,105,110,103,70,114,97,109,101))
-_0xEEA7.AutomaticCanvasSize = Enum.AutomaticSize.Y
-_0xEEA7.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xEEA7.BorderSizePixel = 0
-_0xEEA7.CanvasSize = UDim2.new(0, 0, 0, 0)
-_0xEEA7.Name =string.char(69,120,101,73,110,112,117,116,70,114,97,109,101,95).. _0xF075.name
-_0xEEA7.ScrollingDirection = Enum.ScrollingDirection.Y
-_0xEEA7.ScrollBarThickness = 6
-_0xEEA7.Size = UDim2.new(1, 0, 1, 0)
-_0xEEA7.Visible = false
-_0xEEA7.Parent = _0xE3E8.ExeEditorArea
-local _0x9750 = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0x9750.PaddingBottom = UDim.new(0, 6)
-_0x9750.PaddingLeft = UDim.new(0, 6)
-_0x9750.PaddingRight = UDim.new(0, 6)
-_0x9750.PaddingTop = UDim.new(0, 6)
-_0x9750.Parent = _0xEEA7
-local _0xFDC2 = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xFDC2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xFDC2.Color = Color3.fromRGB(36, 36, 36)
-_0xFDC2.Parent = _0xEEA7
-local _0x13FA = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0x13FA.CornerRadius = UDim.new(0, 6)
-_0x13FA.Parent = _0xEEA7
-local _0x4E6A = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x4E6A.AutomaticSize = Enum.AutomaticSize.Y
-_0x4E6A.BackgroundTransparency = 1
-_0x4E6A.FontFace = _0x296B
-_0x4E6A.Name =string.char(72,105,103,104,108,105,103,104,116)_0x4E6A.RichText = true
-_0x4E6A.Size = UDim2.new(1, 0, 0, 0)
-_0x4E6A.Text =""_0x4E6A.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0x4E6A.TextSize = 18
-_0x4E6A.TextWrapped = true
-_0x4E6A.TextXAlignment = Enum.TextXAlignment.Left
-_0x4E6A.TextYAlignment = Enum.TextYAlignment.Top
-_0x4E6A.Active = false
-_0x4E6A.Selectable = false
-_0x4E6A.Parent = _0xEEA7
-local _0x54E7 = Instance.new(string.char(84,101,120,116,66,111,120))
-_0x54E7.AutomaticSize = Enum.AutomaticSize.Y
-_0x54E7.BackgroundTransparency = 1
-_0x54E7.BorderSizePixel = 0
-_0x54E7.ClearTextOnFocus = false
-_0x54E7.FontFace = _0x296B
-_0x54E7.MultiLine = true
-_0x54E7.Name =string.char(73,110,112,117,116,66,111,120)_0x54E7.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
-_0x54E7.PlaceholderText =string.char(69,110,116,101,114,32,99,111,100,101,32,104,101,114,101,46,46,46)_0x54E7.Size = UDim2.new(1, 0, 0, 0)
-_0x54E7.Text =""_0x54E7.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0x54E7.TextSize = 18
-_0x54E7.TextTransparency = 1
-_0x54E7.TextWrapped = true
-_0x54E7.TextXAlignment = Enum.TextXAlignment.Left
-_0x54E7.TextYAlignment = Enum.TextYAlignment.Top
-_0x54E7.Parent = _0xEEA7
-local _0x6C4B = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0x6C4B.MaxSize = Vector2.new(2147483647, 2147483647)
-_0x6C4B.MinSize = Vector2.new(0, 200)
-_0x6C4B.Parent = _0x54E7
-_0x54E7:GetPropertyChangedSignal(string.char(84,101,120,116)):Connect(function()
-_0xF075.code = _0x54E7.Text
-_0x4E6A.Text = _0x418A.Highlight(_0x54E7.Text)
-end)
-_0xF075.tabBtn = _0xD5D6
-_0xF075.inputFrame = _0xEEA7
-_0xF075.inputBox = _0x54E7
-_0xF075.highlight = _0x4E6A
-_0xE149.MouseButton1Click:Connect(function()
-_0x418A.SwitchExeTab(_0xF075)
-end)
-_0xE149.MouseButton2Click:Connect(function()
-_0xE149.Visible = false
-_0x39DA.Visible = true
-_0x39DA:CaptureFocus()
-end)
-_0x39DA.FocusLost:Connect(function()
-local _0x8713 = _0x39DA.Text
-if _0x8713 and _0x8713 ~=""then
-_0xF075.name = _0x8713
-_0xE149.Text = _0x8713
-end
-_0x39DA.Visible = false
-_0xE149.Visible = true
-end)
-_0xFD8F.MouseButton1Click:Connect(function()
-if #_0x2B10 <= 1 then return end
-local _0x0A4C = table.find(_0x2B10, _0xF075)
-table.remove(_0x2B10, _0x0A4C)
-_0xD5D6:Destroy()
-_0xEEA7:Destroy()
-if _0x1CF4 == _0xF075 then
-local _0xF21E = math.min(_0x0A4C, #_0x2B10)
-if _0x2B10[_0xF21E] then
-_0x1CF4 = nil
-_0x418A.SwitchExeTab(_0x2B10[_0xF21E])
-end
-end
-end)
-table.insert(_0x2B10, _0xF075)
-_0x418A.SwitchExeTab(_0xF075)
-return _0xF075
-end
-function _0x418A.GetMusicFiles()
-if not _0x7C4A(string.char(76,117,99,105,100,47,77,117,115,105,99)) then _0xC3F3(string.char(76,117,99,105,100,47,77,117,115,105,99)) end
-local _0xA398 = _0xE3A8(string.char(76,117,99,105,100,47,77,117,115,105,99)) or {}
-local _0x49EA = {}
-local _0xB696 = {mp3 = true, m4a = true, ogg = true, wav = true, flac = true, aiff = true}
-for _, file in ipairs(_0xA398) do
-local _0x0C13 = file:match(string.char(37,46,40,91,94,37,46,93,43,41,36))
-if _0x0C13 and _0xB696[_0x0C13:lower()] then
-table.insert(_0x49EA, file)
-end
-end
-return _0x49EA
-end
-function _0x418A.GetMusicDisplayName(path)
-local _0x1671 = path:match(string.char(40,91,94,47,92,93,43,41,36)) or path
-_0x1671 = _0x1671:gsub(string.char(37,46,91,94,37,46,93,43,36),"")
-return _0x1671
-end
-function _0x418A.FormatTime(seconds)
-if not seconds or seconds ~= seconds then returnstring.char(48,58,48,48)end
-seconds = math.floor(seconds)
-local _0x6D2C = math.floor(seconds / 60)
-local _0xCBBD = seconds % 60
-return string.format(string.char(37,100,58,37,48,50,100), _0x6D2C, _0xCBBD)
-end
-function _0x418A.UpdateMusicSlider()
-if not _0x6B61 or not _0x6B61.Parent then return end
-local _0xBE35 = _0x6B61.TimeLength
-local _0x201B = _0x6B61.TimePosition
-if _0xBE35 and _0xBE35 > 0 and not _0xEFB8 then
-local _0x5186 = math.clamp(_0x201B / _0xBE35, 0, 1)
-_0xE3E8.MusicSliderFill.Size = UDim2.new(_0x5186, 0, 1, 0)
-_0xE3E8.MusicSliderKnob.Position = UDim2.new(_0x5186, -6, 0.5, -6)
-_0xE3E8.MusicTimeLabel.Text = _0x418A.FormatTime(_0x201B) ..string.char(32,47,32).. _0x418A.FormatTime(_0xBE35)
-end
-end
-function _0x418A.LoadAndPlayMusic(_0x3B0F)
-if not _0x3162 or #_0x3162 == 0 then return end
-_0x3B0F = ((_0x3B0F - 1) % #_0x3162) + 1
-_0xD865 = _0x3B0F
-local _0x4C08 = _0x3162[_0x3B0F]
-if _0x6B61 then
-_0x6B61:Stop()
-_0x6B61:Destroy()
-_0x6B61 = nil
-end
-local _0xB03F = pcall(_0x5444, _0x4C08) and _0x5444(_0x4C08)
-if not _0xB03F then
-_0xE3E8.MusicNowPlaying.Text =string.char(70,97,105,108,101,100,32,116,111,32,108,111,97,100,58,32).. _0x418A.GetMusicDisplayName(_0x4C08)
-return
-end
-_0x6B61 = Instance.new(string.char(83,111,117,110,100))
-_0x6B61.SoundId = _0xB03F
-_0x6B61.Volume = tonumber(_0xE3E8.MusicVolumeBox.Text) or 1
-_0x6B61.PlaybackSpeed = tonumber(_0xE3E8.MusicSpeedBox.Text) or 1
-_0x6B61.Looped = _0xE3E8.MusicLoopToggle:FindFirstChild(string.char(76,111,111,112,83,116,97,116,101)) and _0xE3E8.MusicLoopToggle.LoopState.BackgroundColor3 == Color3.fromRGB(0, 255, 0) or false
-_0x6B61.Parent = _0x34CA
-_0x6B61:Play()
-_0x140A = true
-_0xE3E8.MusicPlayBtn.Text =string.char(226,143,184)_0xE3E8.MusicNowPlaying.Text = _0x418A.GetMusicDisplayName(_0x4C08)
-_0x6B61.Ended:Connect(function()
-if not _0x6B61.Looped then
-_0x418A.LoadAndPlayMusic(_0xD865 + 1)
-end
-end)
-_0x418A.RefreshMusicList()
-end
-function _0x418A.RefreshMusicList()
-_0x3162 = _0x418A.GetMusicFiles()
-local _0xB3E7 = _0xE3E8.MusicListScroll
-if not _0xB3E7 then return end
-for _, child in ipairs(_0xB3E7:GetChildren()) do
-if child.Name ~=string.char(77,117,115,105,99,76,105,115,116,76,97,121,111,117,116)and child.Name ~=string.char(77,117,115,105,99,76,105,115,116,80,97,100,100,105,110,103)and child.Name ~=string.char(78,111,77,117,115,105,99,76,97,98,101,108)then
-child:Destroy()
-end
-end
-if #_0x3162 == 0 then
-if _0xE3E8.NoMusicLabel then
-_0xE3E8.NoMusicLabel.Visible = true
-end
-return
-end
-if _0xE3E8.NoMusicLabel then _0xE3E8.NoMusicLabel.Visible = false end
-for _0x1DF8, _0x4C08 in ipairs(_0x3162) do
-local _0xDA9E = _0x418A.GetMusicDisplayName(_0x4C08)
-local _0x7676 = (_0x1DF8 == _0xD865 and _0x140A)
-local _0xD71C = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xD71C.BackgroundColor3 = _0x7676 and _0x87A2.AccentColor or Color3.fromRGB(22, 22, 22)
-_0xD71C.BackgroundTransparency = _0x7676 and 0.5 or 0
-_0xD71C.BorderSizePixel = 0
-_0xD71C.Name =string.char(77,117,115,105,99,82,111,119,95).. _0x1DF8
-_0xD71C.Size = UDim2.new(1, 0, 0, 32)
-_0xD71C.Text =""_0xD71C.Parent = _0xB3E7
-local _0xDA94 = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xDA94.CornerRadius = UDim.new(0, 5)
-_0xDA94.Parent = _0xD71C
-local _0x5E33 = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0x5E33.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0x5E33.Color = _0x7676 and _0x87A2.AccentColor or Color3.fromRGB(36, 36, 36)
-_0x5E33.Parent = _0xD71C
-local _0x0878 = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0x0878.FillDirection = Enum.FillDirection.Horizontal
-_0x0878.VerticalAlignment = Enum.VerticalAlignment.Center
-_0x0878.Padding = UDim.new(0, 6)
-_0x0878.SortOrder = Enum.SortOrder.LayoutOrder
-_0x0878.Parent = _0xD71C
-local _0xC0E9 = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xC0E9.PaddingLeft = UDim.new(0, 10)
-_0xC0E9.PaddingRight = UDim.new(0, 10)
-_0xC0E9.Parent = _0xD71C
-local _0xD755 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xD755.BackgroundTransparency = 1
-_0xD755.BorderSizePixel = 0
-_0xD755.FontFace = _0x1033
-_0xD755.LayoutOrder = 1
-_0xD755.Size = UDim2.new(0, 20, 1, 0)
-_0xD755.Text = tostring(_0x1DF8)
-_0xD755.TextColor3 = _0x7676 and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(120, 120, 120)
-_0xD755.TextScaled = true
-_0xD755.Parent = _0xD71C
-local _0x0282 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x0282.BackgroundTransparency = 1
-_0x0282.BorderSizePixel = 0
-_0x0282.FontFace = _0x1033
-_0x0282.LayoutOrder = 2
-_0x0282.Size = UDim2.new(1, -30, 1, 0)
-_0x0282.Text = _0xDA9E
-_0x0282.TextColor3 = _0x7676 and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(200, 200, 200)
-_0x0282.TextScaled = true
-_0x0282.TextTruncate = Enum.TextTruncate.AtEnd
-_0x0282.TextXAlignment = Enum.TextXAlignment.Left
-_0x0282.Parent = _0xD71C
-local _0xC44A = _0x1DF8
-_0xD71C.MouseButton1Click:Connect(function()
-_0x418A.LoadAndPlayMusic(_0xC44A)
-end)
-end
-end
-_0x418A.PreloadAssets()
-_0x33BE()
-if _0x012A.Lucid.IsLoaded then
-_0xB65B:SetCore(string.char(83,101,110,100,78,111,116,105,102,105,99,97,116,105,111,110), {
-Title =string.char(76,117,99,105,100,32,69,120,101,99,117,116,111,114),
-Text =string.char(76,117,99,105,100,32,105,115,32,97,108,114,101,97,100,121,32,114,117,110,110,105,110,103,33),
-Icon = _0x418A.GetAsset(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,108,111,103,111,46,112,110,103)),
-Duration = 4
-})
-return
-end
-_0x012A.Lucid.IsLoaded = true
-_0xE3E8.ScreenGui = Instance.new(string.char(83,99,114,101,101,110,71,117,105))
-_0xE3E8.ScreenGui.DisplayOrder = 2147483647
-_0xE3E8.ScreenGui.IgnoreGuiInset = true
-_0xE3E8.ScreenGui.Name =string.char(76,117,99,105,100)_0xE3E8.ScreenGui.ResetOnSpawn = false
-_0xE3E8.ScreenGui.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
-_0xE3E8.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-_0xE3E8.ScreenGui.Parent = _0x6A51
-_0xE3E8.Show = Instance.new(string.char(73,109,97,103,101,66,117,116,116,111,110))
-_0xE3E8.Show.BackgroundColor3 = Color3.fromRGB(19, 19, 22)
-_0xE3E8.Show.BackgroundTransparency = 0.08
-_0xE3E8.Show.BorderSizePixel = 0
-_0xE3E8.Show.Name =string.char(83,104,111,119)_0xE3E8.Show.Position = UDim2.new(0, 16, 0, 60)
-_0xE3E8.Show.Size = UDim2.new(0, 44, 0, 44)
-_0xE3E8.Show.Visible = true
-_0xE3E8.Show.ZIndex = 3
-_0xE3E8.Show.Parent = _0xE3E8.ScreenGui
-_0xE3E8.ShowRatio = Instance.new(string.char(85,73,65,115,112,101,99,116,82,97,116,105,111,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.ShowRatio.Name =string.char(83,104,111,119,82,97,116,105,111)_0xE3E8.ShowRatio.Parent = _0xE3E8.Show
-_0xE3E8.ShowCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.ShowCorner.CornerRadius = UDim.new(1, 0)
-_0xE3E8.ShowCorner.Parent = _0xE3E8.Show
-_0xE3E8.ShowIcon = Instance.new(string.char(73,109,97,103,101,76,97,98,101,108))
-_0xE3E8.ShowIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-_0xE3E8.ShowIcon.BackgroundTransparency = 1
-_0xE3E8.ShowIcon.BorderSizePixel = 0
-_0xE3E8.ShowIcon.Image = _0x418A.GetAsset(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,108,111,103,111,46,112,110,103))
-_0xE3E8.ShowIcon.Name =string.char(83,104,111,119,73,99,111,110)_0xE3E8.ShowIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-_0xE3E8.ShowIcon.Size = UDim2.new(0, 28, 0, 28)
-_0xE3E8.ShowIcon.Parent = _0xE3E8.Show
-_0xE3E8.MainFrame = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.MainFrame.AutoLocalize = false
-_0xE3E8.MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-_0xE3E8.MainFrame.BackgroundTransparency = 0.35
-_0xE3E8.MainFrame.BorderSizePixel = 0
-_0xE3E8.MainFrame.Name =string.char(77,97,105,110,70,114,97,109,101)_0xE3E8.MainFrame.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.MainFrame.Visible = false
-_0xE3E8.MainFrame.Parent = _0xE3E8.ScreenGui
-_0xE3E8.MainFrameLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.MainFrameLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.MainFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.MainFrameLayout.Name =string.char(77,97,105,110,70,114,97,109,101,76,97,121,111,117,116)_0xE3E8.MainFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.MainFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.MainFrameLayout.Parent = _0xE3E8.MainFrame
-_0xE3E8.Pages = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.Pages.BackgroundTransparency = 1
-_0xE3E8.Pages.BorderSizePixel = 0
-_0xE3E8.Pages.LayoutOrder = 1
-_0xE3E8.Pages.Name =string.char(80,97,103,101,115)_0xE3E8.Pages.Size = UDim2.new(0, 576, 0, 116)
-_0xE3E8.Pages.Parent = _0xE3E8.MainFrame
-_0xE3E8.PagesPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.PagesPadding.Name =string.char(80,97,103,101,115,80,97,100,100,105,110,103)_0xE3E8.PagesPadding.PaddingBottom = UDim.new(0, 8)
-_0xE3E8.PagesPadding.PaddingLeft = UDim.new(0, 8)
-_0xE3E8.PagesPadding.PaddingTop = UDim.new(0, 60)
-_0xE3E8.PagesPadding.Parent = _0xE3E8.Pages
-_0xE3E8.HomeContent = Instance.new(string.char(67,97,110,118,97,115,71,114,111,117,112))
-_0xE3E8.HomeContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-_0xE3E8.HomeContent.BorderSizePixel = 0
-_0xE3E8.HomeContent.LayoutOrder = 1
-_0xE3E8.HomeContent.Name =string.char(72,111,109,101,67,111,110,116,101,110,116)_0xE3E8.HomeContent.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.HomeContent.Visible = false
-_0xE3E8.HomeContent.Parent = _0xE3E8.Pages
-_0xE3E8.HomeContentCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.HomeContentCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.HomeContentCorner.Parent = _0xE3E8.HomeContent
-_0xE3E8.HomeContentStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.HomeContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.HomeContentStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.HomeContentStroke.Name =string.char(72,111,109,101,67,111,110,116,101,110,116,83,116,114,111,107,101)_0xE3E8.HomeContentStroke.Parent = _0xE3E8.HomeContent
-_0xE3E8.HomeContentLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.HomeContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.HomeContentLayout.Padding = UDim.new(0, 6)
-_0xE3E8.HomeContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.HomeContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.HomeContentLayout.Parent = _0xE3E8.HomeContent
-_0xE3E8.HomeInfo = Instance.new(string.char(83,99,114,111,108,108,105,110,103,70,114,97,109,101))
-_0xE3E8.HomeInfo.AutomaticCanvasSize = Enum.AutomaticSize.Y
-_0xE3E8.HomeInfo.BackgroundTransparency = 1
-_0xE3E8.HomeInfo.BorderSizePixel = 0
-_0xE3E8.HomeInfo.CanvasSize = UDim2.new(0, 0, 0, 0)
-_0xE3E8.HomeInfo.Name =string.char(72,111,109,101,73,110,102,111)_0xE3E8.HomeInfo.ScrollBarThickness = 0
-_0xE3E8.HomeInfo.ScrollingDirection = Enum.ScrollingDirection.Y
-_0xE3E8.HomeInfo.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.HomeInfo.Parent = _0xE3E8.HomeContent
-_0xE3E8.HomeInfoPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.HomeInfoPadding.PaddingBottom = UDim.new(0, 5)
-_0xE3E8.HomeInfoPadding.PaddingLeft = UDim.new(0, 5)
-_0xE3E8.HomeInfoPadding.PaddingRight = UDim.new(0, 5)
-_0xE3E8.HomeInfoPadding.PaddingTop = UDim.new(0, 5)
-_0xE3E8.HomeInfoPadding.Parent = _0xE3E8.HomeInfo
-_0xE3E8.HomeInfoLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.HomeInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.HomeInfoLayout.Padding = UDim.new(0, 6)
-_0xE3E8.HomeInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.HomeInfoLayout.Parent = _0xE3E8.HomeInfo
-_0xE3E8.PlayerStats = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.PlayerStats.BackgroundTransparency = 1
-_0xE3E8.PlayerStats.BorderSizePixel = 0
-_0xE3E8.PlayerStats.LayoutOrder = 1
-_0xE3E8.PlayerStats.Name =string.char(80,108,97,121,101,114,83,116,97,116,115)_0xE3E8.PlayerStats.Size = UDim2.new(1, 0, 0, 400)
-_0xE3E8.PlayerStats.Parent = _0xE3E8.HomeInfo
-_0xE3E8.PlayerStatsLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.PlayerStatsLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.PlayerStatsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.PlayerStatsLayout.Padding = UDim.new(0, 6)
-_0xE3E8.PlayerStatsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.PlayerStatsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.PlayerStatsLayout.Parent = _0xE3E8.PlayerStats
-_0xE3E8.Avatar = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.Avatar.BackgroundTransparency = 1
-_0xE3E8.Avatar.BorderSizePixel = 0
-_0xE3E8.Avatar.LayoutOrder = 1
-_0xE3E8.Avatar.Name =string.char(65,118,97,116,97,114)_0xE3E8.Avatar.Size = UDim2.new(0, 0, 1, 0)
-_0xE3E8.Avatar.Parent = _0xE3E8.PlayerStats
-_0xE3E8.PlayerHeadshot = Instance.new(string.char(73,109,97,103,101,76,97,98,101,108))
-_0xE3E8.PlayerHeadshot.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.PlayerHeadshot.BorderSizePixel = 0
-_0xE3E8.PlayerHeadshot.Interactable = false
-_0xE3E8.PlayerHeadshot.Name =string.char(80,108,97,121,101,114,72,101,97,100,115,104,111,116)_0xE3E8.PlayerHeadshot.ScaleType = Enum.ScaleType.Fit
-_0xE3E8.PlayerHeadshot.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.PlayerHeadshot.Parent = _0xE3E8.Avatar
-_0xE3E8.PlayerHeadshotRatio = Instance.new(string.char(85,73,65,115,112,101,99,116,82,97,116,105,111,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.PlayerHeadshotRatio.Parent = _0xE3E8.PlayerHeadshot
-_0xE3E8.PlayerHeadshotCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.PlayerHeadshotCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.PlayerHeadshotCorner.Parent = _0xE3E8.PlayerHeadshot
-_0xE3E8.PlayerHeadshotStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.PlayerHeadshotStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.PlayerHeadshotStroke.Name =string.char(80,108,97,121,101,114,72,101,97,100,115,104,111,116,83,116,114,111,107,101)_0xE3E8.PlayerHeadshotStroke.Parent = _0xE3E8.PlayerHeadshot
-_0xE3E8.PlayerInfo = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.PlayerInfo.BackgroundTransparency = 1
-_0xE3E8.PlayerInfo.BorderSizePixel = 0
-_0xE3E8.PlayerInfo.LayoutOrder = 2
-_0xE3E8.PlayerInfo.Name =string.char(80,108,97,121,101,114,73,110,102,111)_0xE3E8.PlayerInfo.Size = UDim2.new(0.75, 0, 1, 0)
-_0xE3E8.PlayerInfo.Parent = _0xE3E8.PlayerStats
-_0xE3E8.PlayerInfoLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.PlayerInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.PlayerInfoLayout.Padding = UDim.new(0, 6)
-_0xE3E8.PlayerInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.PlayerInfoLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.PlayerInfoLayout.Parent = _0xE3E8.PlayerInfo
-_0xE3E8.WelcomeLabel = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.WelcomeLabel.BackgroundTransparency = 1
-_0xE3E8.WelcomeLabel.BorderSizePixel = 0
-_0xE3E8.WelcomeLabel.FontFace = _0x1033
-_0xE3E8.WelcomeLabel.Name =string.char(87,101,108,99,111,109,101,76,97,98,101,108)_0xE3E8.WelcomeLabel.Size = UDim2.new(0, 432, 0, 0)
-_0xE3E8.WelcomeLabel.Text =string.char(87,101,108,99,111,109,101,32,116,111,32,76,117,99,105,100,44,32,68,105,115,112,108,97,121,78,97,109,101,33)_0xE3E8.WelcomeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.WelcomeLabel.TextScaled = true
-_0xE3E8.WelcomeLabel.TextSize = 20
-_0xE3E8.WelcomeLabel.TextWrapped = true
-_0xE3E8.WelcomeLabel.Parent = _0xE3E8.PlayerInfo
-_0xE3E8.WelcomeLabelStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.WelcomeLabelStroke.Color = Color3.fromRGB(0, 94, 255)
-_0xE3E8.WelcomeLabelStroke.Name =string.char(87,101,108,99,111,109,101,76,97,98,101,108,83,116,114,111,107,101)_0xE3E8.WelcomeLabelStroke.Parent = _0xE3E8.WelcomeLabel
-_0xE3E8.InfoLabel = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.InfoLabel.BackgroundTransparency = 1
-_0xE3E8.InfoLabel.BorderSizePixel = 0
-_0xE3E8.InfoLabel.FontFace = _0x1033
-_0xE3E8.InfoLabel.Name =string.char(73,110,102,111,76,97,98,101,108)_0xE3E8.InfoLabel.RichText = true
-_0xE3E8.InfoLabel.Size = UDim2.new(1, 0, 0.75, 0)
-_0xE3E8.InfoLabel.Text =string.char(76,111,97,100,105,110,103,46,46,46)_0xE3E8.InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.InfoLabel.TextScaled = true
-_0xE3E8.InfoLabel.TextWrapped = true
-_0xE3E8.InfoLabel.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.InfoLabel.TextYAlignment = Enum.TextYAlignment.Top
-_0xE3E8.InfoLabel.Parent = _0xE3E8.PlayerInfo
-_0xE3E8.InfoLabelStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.InfoLabelStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.InfoLabelStroke.Name =string.char(73,110,102,111,76,97,98,101,108,83,116,114,111,107,101)_0xE3E8.InfoLabelStroke.Parent = _0xE3E8.InfoLabel
-_0xE3E8.InfoLabel2 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.InfoLabel2.AutomaticSize = Enum.AutomaticSize.Y
-_0xE3E8.InfoLabel2.BackgroundTransparency = 1
-_0xE3E8.InfoLabel2.BorderSizePixel = 0
-_0xE3E8.InfoLabel2.LayoutOrder = 2
-_0xE3E8.InfoLabel2.Name =string.char(73,110,102,111,76,97,98,101,108,50)_0xE3E8.InfoLabel2.RichText = true
-_0xE3E8.InfoLabel2.Size = UDim2.new(1, 0, 0, 0)
-_0xE3E8.InfoLabel2.Text =[[<p align="center"><font size="22"><b>About Lucid</b></font></p>
+Game ID: %s]], username, displayName, userId, fps, ping, memory, playerCount, maxPlayers, serverAge, jobId, placeId, gameId)
+
+    if UI.InfoLabel then UI.InfoLabel.Text = infoText end
+    if UI.WelcomeLabel then UI.WelcomeLabel.Text = "Welcome to Lucid, " .. displayName .. "!" end
+    local avatarUrl = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=420&height=420&format=png"
+    if UI.PlayerHeadshot then UI.PlayerHeadshot.Image = avatarUrl end
+end
+
+function Funcs.RefreshSavedScripts(searchQuery)
+    local scroll = UI.SavedScriptsScroll
+    if not scroll then return end
+    for _, child in ipairs(scroll:GetChildren()) do
+        if child ~= UI.NoSavedScriptsLabel and child ~= UI.SavedScriptsScrollPadding and child ~= UI.SavedScriptsScrollLayout and child ~= UI.SavedScriptTemplate then
+            child:Destroy()
+        end
+    end
+    local scripts = Funcs.LoadSavedScripts()
+    if searchQuery and searchQuery ~= "" then
+        local filtered = {}
+        local query = searchQuery:lower()
+        for _, scriptData in ipairs(scripts) do
+            local name = (scriptData.Name or ""):lower()
+            local desc = (scriptData.Description or ""):lower()
+            if name:find(query) or desc:find(query) then table.insert(filtered, scriptData) end
+        end
+        scripts = filtered
+    end
+    if #scripts == 0 then
+        if UI.NoSavedScriptsLabel then
+            UI.NoSavedScriptsLabel.Visible = true
+            UI.NoSavedScriptsLabel.Text = (searchQuery and searchQuery ~= "") and "No saved scripts match your search." or "No Saved Scripts\n\nSave some scripts to see them here."
+        end
+        return
+    end
+    if UI.NoSavedScriptsLabel then UI.NoSavedScriptsLabel.Visible = false end
+    local builtInScripts = {}
+    local normalScripts = {}
+    for _, scriptData in ipairs(scripts) do
+        if scriptData.Name:find("%(Built%-In%)") then
+            table.insert(builtInScripts, scriptData)
+        else
+            table.insert(normalScripts, scriptData)
+        end
+    end
+    table.sort(builtInScripts, function(a, b) return (a.Name or ""):lower() < (b.Name or ""):lower() end)
+    table.sort(normalScripts, function(a, b) return (a.Name or ""):lower() < (b.Name or ""):lower() end)
+    local function MakeCard(scriptData)
+        local clone = UI.SavedScriptTemplate:Clone()
+        clone.Name = Funcs.SanitizeName(scriptData.Name)
+        clone.Visible = true
+        clone.Parent = scroll
+        local cloneStroke = clone:FindFirstChildOfClass("UIStroke")
+        if cloneStroke then cloneStroke.Color = Settings.SecondaryAccentColor end
+        local infoFrame = clone:FindFirstChild("SavedScriptInfo")
+        if infoFrame then
+            local titleLabel = infoFrame:FindFirstChild("SavedScriptTitle")
+            local descLabel = infoFrame:FindFirstChild("SavedScriptDesc")
+            if titleLabel then titleLabel.Text = scriptData.Name or "Unknown" end
+            if descLabel then descLabel.Text = scriptData.Description or "No description" end
+        end
+        local actionsFrame = clone:FindFirstChild("SavedScriptActions")
+        if actionsFrame then
+            local runBtn = actionsFrame:FindFirstChild("RunSavedScript")
+            local deleteBtn = actionsFrame:FindFirstChild("DeleteSavedScript")
+            for _, btn in ipairs({runBtn, deleteBtn}) do
+                if btn then
+                    btn.BackgroundColor3 = Settings.AccentColor
+                    local btnStroke = btn:FindFirstChildOfClass("UIStroke")
+                    if btnStroke then btnStroke.Color = Settings.SecondaryAccentColor end
+                end
+            end
+            if runBtn then
+                runBtn.MouseButton1Click:Connect(function()
+                    local fn, loadErr = loadstring(scriptData.Code or "")
+                    if not fn then error(loadErr) end
+                    local success, runErr = pcall(fn)
+                    if not success then error(runErr) end
+                end)
+            end
+            if deleteBtn then
+                deleteBtn.MouseButton1Click:Connect(function()
+                    Funcs.DeleteScript(scriptData.Name)
+                    Funcs.RefreshSavedScripts(UI.SearchBox2.Text)
+                end)
+            end
+        end
+    end
+    for _, scriptData in ipairs(builtInScripts) do MakeCard(scriptData) end
+    for _, scriptData in ipairs(normalScripts) do MakeCard(scriptData) end
+end
+
+function Funcs.SwitchTab(tabButton)
+    local contentMap = {
+        [UI.HomeTab] = UI.HomeContent,
+        [UI.ExeTab] = UI.ExeContent,
+        [UI.SearchTab] = UI.SearchContent,
+        [UI.ScriptsTab] = UI.ScriptsContent,
+        [UI.SettingsTab] = UI.SettingsContent,
+        [UI.MusicTab] = UI.MusicContent,
+    }
+    local newContent = contentMap[tabButton]
+    if not newContent then return end
+    local oldContent = nil
+    for tab, content in pairs(contentMap) do
+        if content and content ~= newContent and content.Visible then
+            oldContent = content
+            break
+        end
+    end
+    if oldContent == newContent then return end
+    if oldContent then oldContent.Visible = false end
+    newContent.Visible = true
+    if Settings.Animations then
+        newContent.Position = UDim2.new(-1, 0, 0, 0)
+        TweenService:Create(newContent, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+            Position = UDim2.new(0, 0, 0, 0)
+        }):Play()
+    else
+        newContent.Position = UDim2.new(0, 0, 0, 0)
+    end
+    if newContent == UI.HomeContent then Funcs.UpdateStats() end
+    if newContent == UI.ScriptsContent then Funcs.RefreshSavedScripts(UI.SearchBox2.Text) end
+    if newContent == UI.MusicContent then Funcs.RefreshMusicList() end
+end
+
+function Funcs.UpdateUnderline(tabButton, active)
+    local underline = tabButton:FindFirstChild("TabUnderline") or tabButton:FindFirstChild("TabUnderline2") or tabButton:FindFirstChild("TabUnderline3") or tabButton:FindFirstChild("TabUnderline4") or tabButton:FindFirstChild("TabUnderline5") or tabButton:FindFirstChild("TabUnderline6Music")
+    if not underline then return end
+    if active then
+        if Settings.Animations then
+            TweenService:Create(underline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(1, 0, 0, 1) }):Play()
+        else
+            underline.Size = UDim2.new(1, 0, 0, 1)
+        end
+    else
+        if Settings.Animations then
+            TweenService:Create(underline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 0, 0, 1) }):Play()
+        else
+            underline.Size = UDim2.new(0, 0, 0, 1)
+        end
+    end
+end
+
+function Funcs.SetAllUnderlines(activeTab)
+    local tabs = {UI.HomeTab, UI.ExeTab, UI.SearchTab, UI.ScriptsTab, UI.SettingsTab, UI.MusicTab}
+    for _, tab in ipairs(tabs) do
+        Funcs.UpdateUnderline(tab, tab == activeTab)
+    end
+end
+
+function Funcs.Dragify(Object)
+    local dragging = false
+    local dragInput
+    local dragStart
+    local startPos
+    local function ClampPosition(newX, newY)
+        local viewport = workspace.CurrentCamera.ViewportSize
+        local size = Object.AbsoluteSize
+        local paddingX = 16
+        local paddingY = 12
+        newX = math.clamp(newX, paddingX, viewport.X - size.X - paddingX)
+        newY = math.clamp(newY, paddingY, viewport.Y - size.Y - paddingY)
+        return newX, newY
+    end
+    Object.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = Object.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then dragging = false end
+            end)
+        end
+    end)
+    Object.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            local newX = startPos.X.Offset + delta.X
+            local newY = startPos.Y.Offset + delta.Y
+            newX, newY = ClampPosition(newX, newY)
+            Object.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
+        end
+    end)
+end
+
+function Funcs.GetActiveContent()
+    local contents = {UI.HomeContent, UI.ExeContent, UI.SearchContent, UI.ScriptsContent, UI.SettingsContent, UI.MusicContent}
+    for _, content in ipairs(contents) do
+        if content and content.Visible then return content end
+    end
+    return UI.HomeContent
+end
+
+function Funcs.OpenUI()
+    UI.MainFrame.Visible = true
+    UI.MainFrame.BackgroundTransparency = 1
+    local activeContent = Funcs.GetActiveContent()
+    activeContent.Position = UDim2.new(-1, 0, 0, 0)
+    UI.Sidebar.Position = UDim2.new(1.2, 8, 0.5, 0)
+    if Settings.Animations then
+        TweenService:Create(UI.MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0.35 }):Play()
+        TweenService:Create(activeContent, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 0, 0) }):Play()
+        TweenService:Create(UI.Sidebar, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.new(1, 8, 0.5, 0) }):Play()
+        TweenService:Create(UI.Show, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { ImageTransparency = 1, BackgroundTransparency = 1 }):Play()
+    else
+        UI.MainFrame.BackgroundTransparency = 0.35
+        activeContent.Position = UDim2.new(0, 0, 0, 0)
+        UI.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
+        UI.Show.ImageTransparency = 1
+        UI.Show.BackgroundTransparency = 1
+    end
+    UI.Show.Visible = false
+    Funcs.UpdateStats()
+end
+
+function Funcs.CloseUI()
+    local activeContent = Funcs.GetActiveContent()
+    if Settings.Animations then
+        local bgTween = TweenService:Create(UI.MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { BackgroundTransparency = 1 })
+        local contentTween = TweenService:Create(activeContent, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(-1, 0, 0, 0) })
+        local sidebarTween = TweenService:Create(UI.Sidebar, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.In), { Position = UDim2.new(1.2, 8, 0.5, 0) })
+        local showTween = TweenService:Create(UI.Show, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { ImageTransparency = 0, BackgroundTransparency = 0.08 })
+        bgTween:Play(); contentTween:Play(); sidebarTween:Play(); showTween:Play()
+        contentTween.Completed:Wait()
+        UI.MainFrame.Visible = false
+        UI.Show.Visible = true
+    else
+        UI.MainFrame.BackgroundTransparency = 1
+        UI.MainFrame.Visible = false
+        UI.Show.Visible = true
+        UI.Show.ImageTransparency = 0
+        UI.Show.BackgroundTransparency = 0.08
+        activeContent.Position = UDim2.new(0, 0, 0, 0)
+        UI.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
+    end
+end
+
+function Funcs.CreateTab(iconPath, labelText, content, layoutOrder, underlineKey)
+    local tab = Instance.new("TextButton")
+    tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    tab.BackgroundTransparency = 1
+    tab.BorderSizePixel = 0
+    tab.LayoutOrder = layoutOrder or 1
+    tab.Name = labelText .. "Tab"
+    tab.Size = UDim2.new(0, 30, 0, 58)
+    tab.Text = ""
+    tab.Parent = UI.Sidebar
+
+    local tabLayout = Instance.new("UIListLayout")
+    tabLayout.Padding = UDim.new(0, 4)
+    tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+    tabLayout.Parent = tab
+
+    local tabSizeCons = Instance.new("UISizeConstraint")
+    tabSizeCons.MaxSize = Vector2.new(2147483647, 34)
+    tabSizeCons.MinSize = Vector2.new(0, 28)
+    tabSizeCons.Parent = tab
+
+    local tabPadding = Instance.new("UIPadding")
+    tabPadding.PaddingBottom = UDim.new(0, 3)
+    tabPadding.PaddingTop = UDim.new(0, 3)
+    tabPadding.Parent = tab
+
+    local container = Instance.new("Frame")
+    container.BackgroundTransparency = 1
+    container.BorderSizePixel = 0
+    container.LayoutOrder = 1
+    container.Name = "TabContainer"
+    container.Size = UDim2.new(1, 0, 0, 22)
+    container.Parent = tab
+
+    local containerLayout = Instance.new("UIListLayout")
+    containerLayout.FillDirection = Enum.FillDirection.Horizontal
+    containerLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    containerLayout.Padding = UDim.new(0, 4)
+    containerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    containerLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+    containerLayout.Parent = container
+
+    local icon = Instance.new("ImageLabel")
+    icon.BackgroundTransparency = 1
+    icon.BorderSizePixel = 0
+    icon.Image = Funcs.GetAsset(iconPath) or ""
+    icon.LayoutOrder = 1
+    icon.Name = "TabIcon"
+    icon.Size = UDim2.new(0, 30, 0, 30)
+    icon.Parent = container
+
+    local iconRatio = Instance.new("UIAspectRatioConstraint")
+    iconRatio.Parent = icon
+
+    local label = Instance.new("TextLabel")
+    label.BackgroundTransparency = 1
+    label.BorderSizePixel = 0
+    label.FontFace = BuilderSans
+    label.LayoutOrder = 2
+    label.Name = "TabLabel"
+    label.Size = UDim2.new(0, 60, 0, 30)
+    label.Text = labelText
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextScaled = true
+    label.TextWrapped = true
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = container
+
+    local underline = Instance.new("Frame")
+    underline.BackgroundColor3 = Settings.AccentColor
+    underline.BorderSizePixel = 0
+    underline.LayoutOrder = 2
+    underline.Name = underlineKey or "TabUnderline"
+    underline.Size = UDim2.new(0, 0, 0, 1)
+    underline.Parent = tab
+
+    local underlineCorner = Instance.new("UICorner")
+    underlineCorner.CornerRadius = UDim.new(0, 6)
+    underlineCorner.Parent = underline
+
+    UI[labelText .. "Tab"] = tab
+    UI[underlineKey or "TabUnderline"] = underline
+
+    if content then content.Parent = UI.Pages end
+
+    tab.MouseButton1Click:Connect(function()
+        if content then
+            Funcs.SwitchTab(tab)
+            Funcs.SetAllUnderlines(tab)
+        end
+    end)
+
+    return tab
+end
+
+function Funcs.CreateSettingsInputbox(labelText, placeholderText, settingKey, layoutOrder)
+    local frame = Instance.new("Frame")
+    frame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+    frame.BorderSizePixel = 0
+    frame.LayoutOrder = layoutOrder or 2
+    frame.Name = labelText:gsub(" ", "")
+    frame.Size = UDim2.new(1, 0, 0, 38)
+    frame.Parent = UI.SettingsFrame
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = frame
+
+    local stroke = Instance.new("UIStroke")
+    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    stroke.Color = Color3.fromRGB(36, 36, 36)
+    stroke.Parent = frame
+
+    local layout = Instance.new("UIListLayout")
+    layout.FillDirection = Enum.FillDirection.Horizontal
+    layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    layout.Padding = UDim.new(0, 6)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.VerticalFlex = Enum.UIFlexAlignment.Fill
+    layout.Parent = frame
+
+    local padding = Instance.new("UIPadding")
+    padding.PaddingBottom = UDim.new(0, 8)
+    padding.PaddingLeft = UDim.new(0, 8)
+    padding.PaddingRight = UDim.new(0, 8)
+    padding.PaddingTop = UDim.new(0, 8)
+    padding.Parent = frame
+
+    local lbl = Instance.new("TextLabel")
+    lbl.BackgroundTransparency = 1
+    lbl.BorderSizePixel = 0
+    lbl.FontFace = GothamMedium
+    lbl.LayoutOrder = 1
+    lbl.Size = UDim2.new(0.8, 0, 1, 0)
+    lbl.Text = labelText
+    lbl.TextColor3 = Color3.fromRGB(255, 255, 255)
+    lbl.TextScaled = true
+    lbl.TextWrapped = true
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+    lbl.Parent = frame
+
+    local input = Instance.new("TextBox")
+    input.BackgroundTransparency = 1
+    input.BorderSizePixel = 0
+    input.FontFace = GothamMedium
+    input.LayoutOrder = 2
+    input.PlaceholderColor3 = Color3.fromRGB(221, 221, 221)
+    input.PlaceholderText = placeholderText
+    input.Size = UDim2.new(0.2, 0, 1, 0)
+    input.Text = ""
+    input.TextColor3 = Color3.fromRGB(255, 255, 255)
+    input.TextScaled = true
+    input.TextWrapped = true
+    input.Parent = frame
+
+    local inputCorner = Instance.new("UICorner")
+    inputCorner.CornerRadius = UDim.new(0, 6)
+    inputCorner.Parent = input
+
+    local inputStroke = Instance.new("UIStroke")
+    inputStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    inputStroke.Color = Color3.fromRGB(36, 36, 36)
+    inputStroke.Parent = input
+
+    local inputPadding = Instance.new("UIPadding")
+    inputPadding.PaddingBottom = UDim.new(0, 4)
+    inputPadding.PaddingLeft = UDim.new(0, 4)
+    inputPadding.PaddingRight = UDim.new(0, 4)
+    inputPadding.PaddingTop = UDim.new(0, 4)
+    inputPadding.Parent = input
+
+    if settingKey then
+        input.FocusLost:Connect(function(enterPressed)
+            if enterPressed then
+                local color = Funcs.ParseColor(input.Text)
+                if color then
+                    Settings[settingKey] = color
+                    Funcs.ApplyTheme()
+                    Funcs.SaveSettings()
+                end
+            end
+        end)
+    end
+
+    return input
+end
+
+function Funcs.GetNextTabName()
+    local existing = {}
+    for _, t in ipairs(ExeTabs) do
+        local num = tonumber(t.name:match("^Tab (%d+)$"))
+        if num then existing[num] = true end
+    end
+    local n = 1
+    while existing[n] do n = n + 1 end
+    return "Tab " .. n
+end
+
+function Funcs.SwitchExeTab(tabData)
+    if ExeActiveTab and ExeActiveTab ~= tabData then
+        ExeActiveTab.inputFrame.Visible = false
+        local activeBtn = ExeActiveTab.tabBtn
+        if activeBtn then
+            local activeLine = activeBtn:FindFirstChild("ActiveLine")
+            if activeLine then activeLine.BackgroundColor3 = Color3.fromRGB(40, 40, 40) end
+        end
+    end
+    ExeActiveTab = tabData
+    tabData.inputFrame.Visible = true
+    local tabBtn = tabData.tabBtn
+    if tabBtn then
+        local activeLine = tabBtn:FindFirstChild("ActiveLine")
+        if activeLine then activeLine.BackgroundColor3 = Settings.AccentColor end
+    end
+    UI.ExeBottomButtons.Visible = true
+end
+
+function Funcs.CreateExeTab(name)
+    local tabData = {}
+    tabData.name = name or Funcs.GetNextTabName()
+    tabData.code = ""
+
+    local tabBtn = Instance.new("Frame")
+    tabBtn.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+    tabBtn.BorderSizePixel = 0
+    tabBtn.Name = "ExeTabBtn_" .. tabData.name
+    tabBtn.Size = UDim2.new(0, 90, 1, 0)
+    tabBtn.Parent = UI.ExeTabBarScroll
+
+    local tabBtnCorner = Instance.new("UICorner")
+    tabBtnCorner.CornerRadius = UDim.new(0, 5)
+    tabBtnCorner.Parent = tabBtn
+
+    local tabBtnStroke = Instance.new("UIStroke")
+    tabBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    tabBtnStroke.Color = Color3.fromRGB(36, 36, 36)
+    tabBtnStroke.Parent = tabBtn
+
+    local activeLine = Instance.new("Frame")
+    activeLine.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    activeLine.BorderSizePixel = 0
+    activeLine.Name = "ActiveLine"
+    activeLine.Size = UDim2.new(1, 0, 0, 2)
+    activeLine.AnchorPoint = Vector2.new(0, 1)
+    activeLine.Position = UDim2.new(0, 0, 1, 0)
+    activeLine.Parent = tabBtn
+
+    local activeLineCorner = Instance.new("UICorner")
+    activeLineCorner.CornerRadius = UDim.new(0, 2)
+    activeLineCorner.Parent = activeLine
+
+    local tabInnerLayout = Instance.new("UIListLayout")
+    tabInnerLayout.FillDirection = Enum.FillDirection.Horizontal
+    tabInnerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    tabInnerLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    tabInnerLayout.Padding = UDim.new(0, 2)
+    tabInnerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabInnerLayout.Parent = tabBtn
+
+    local tabInnerPadding = Instance.new("UIPadding")
+    tabInnerPadding.PaddingLeft = UDim.new(0, 6)
+    tabInnerPadding.PaddingRight = UDim.new(0, 4)
+    tabInnerPadding.PaddingTop = UDim.new(0, 2)
+    tabInnerPadding.PaddingBottom = UDim.new(0, 4)
+    tabInnerPadding.Parent = tabBtn
+
+    local tabNameBtn = Instance.new("TextButton")
+    tabNameBtn.BackgroundTransparency = 1
+    tabNameBtn.BorderSizePixel = 0
+    tabNameBtn.FontFace = GothamMedium
+    tabNameBtn.LayoutOrder = 1
+    tabNameBtn.Name = "TabNameBtn"
+    tabNameBtn.Size = UDim2.new(1, -20, 1, 0)
+    tabNameBtn.Text = tabData.name
+    tabNameBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+    tabNameBtn.TextScaled = true
+    tabNameBtn.TextTruncate = Enum.TextTruncate.AtEnd
+    tabNameBtn.TextXAlignment = Enum.TextXAlignment.Left
+    tabNameBtn.Parent = tabBtn
+
+    local tabNameBox = Instance.new("TextBox")
+    tabNameBox.BackgroundTransparency = 1
+    tabNameBox.BorderSizePixel = 0
+    tabNameBox.FontFace = GothamMedium
+    tabNameBox.LayoutOrder = 1
+    tabNameBox.Name = "TabNameBox"
+    tabNameBox.Size = UDim2.new(1, -20, 1, 0)
+    tabNameBox.Text = tabData.name
+    tabNameBox.TextColor3 = Color3.fromRGB(200, 200, 200)
+    tabNameBox.TextScaled = true
+    tabNameBox.TextXAlignment = Enum.TextXAlignment.Left
+    tabNameBox.Visible = false
+    tabNameBox.ClearTextOnFocus = false
+    tabNameBox.Parent = tabBtn
+
+    local closeBtn = Instance.new("TextButton")
+    closeBtn.BackgroundTransparency = 1
+    closeBtn.BorderSizePixel = 0
+    closeBtn.FontFace = GothamBold
+    closeBtn.LayoutOrder = 2
+    closeBtn.Name = "CloseExeTab"
+    closeBtn.Size = UDim2.new(0, 16, 0, 16)
+    closeBtn.Text = "X"
+    closeBtn.TextColor3 = Color3.fromRGB(160, 160, 160)
+    closeBtn.TextScaled = true
+    closeBtn.Parent = tabBtn
+
+    local inputFrame = Instance.new("ScrollingFrame")
+    inputFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    inputFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+    inputFrame.BorderSizePixel = 0
+    inputFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+    inputFrame.Name = "ExeInputFrame_" .. tabData.name
+    inputFrame.ScrollingDirection = Enum.ScrollingDirection.Y
+    inputFrame.ScrollBarThickness = 6
+    inputFrame.Size = UDim2.new(1, 0, 1, 0)
+    inputFrame.Visible = false
+    inputFrame.Parent = UI.ExeEditorArea
+
+    local inputFramePadding = Instance.new("UIPadding")
+    inputFramePadding.PaddingBottom = UDim.new(0, 6)
+    inputFramePadding.PaddingLeft = UDim.new(0, 6)
+    inputFramePadding.PaddingRight = UDim.new(0, 6)
+    inputFramePadding.PaddingTop = UDim.new(0, 6)
+    inputFramePadding.Parent = inputFrame
+
+    local inputFrameStroke = Instance.new("UIStroke")
+    inputFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    inputFrameStroke.Color = Color3.fromRGB(36, 36, 36)
+    inputFrameStroke.Parent = inputFrame
+
+    local inputFrameCorner = Instance.new("UICorner")
+    inputFrameCorner.CornerRadius = UDim.new(0, 6)
+    inputFrameCorner.Parent = inputFrame
+
+    local highlight = Instance.new("TextLabel")
+    highlight.AutomaticSize = Enum.AutomaticSize.Y
+    highlight.BackgroundTransparency = 1
+    highlight.FontFace = Inconsolata
+    highlight.Name = "Highlight"
+    highlight.RichText = true
+    highlight.Size = UDim2.new(1, 0, 0, 0)
+    highlight.Text = ""
+    highlight.TextColor3 = Color3.fromRGB(255, 255, 255)
+    highlight.TextSize = 18
+    highlight.TextWrapped = true
+    highlight.TextXAlignment = Enum.TextXAlignment.Left
+    highlight.TextYAlignment = Enum.TextYAlignment.Top
+    highlight.Active = false
+    highlight.Selectable = false
+    highlight.Parent = inputFrame
+
+    local inputBox = Instance.new("TextBox")
+    inputBox.AutomaticSize = Enum.AutomaticSize.Y
+    inputBox.BackgroundTransparency = 1
+    inputBox.BorderSizePixel = 0
+    inputBox.ClearTextOnFocus = false
+    inputBox.FontFace = Inconsolata
+    inputBox.MultiLine = true
+    inputBox.Name = "InputBox"
+    inputBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+    inputBox.PlaceholderText = "Enter code here..."
+    inputBox.Size = UDim2.new(1, 0, 0, 0)
+    inputBox.Text = ""
+    inputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    inputBox.TextSize = 18
+    inputBox.TextTransparency = 1
+    inputBox.TextWrapped = true
+    inputBox.TextXAlignment = Enum.TextXAlignment.Left
+    inputBox.TextYAlignment = Enum.TextYAlignment.Top
+    inputBox.Parent = inputFrame
+
+    local inputBoxSizeCons = Instance.new("UISizeConstraint")
+    inputBoxSizeCons.MaxSize = Vector2.new(2147483647, 2147483647)
+    inputBoxSizeCons.MinSize = Vector2.new(0, 200)
+    inputBoxSizeCons.Parent = inputBox
+
+    inputBox:GetPropertyChangedSignal("Text"):Connect(function()
+        tabData.code = inputBox.Text
+        highlight.Text = Funcs.Highlight(inputBox.Text)
+    end)
+
+    tabData.tabBtn = tabBtn
+    tabData.inputFrame = inputFrame
+    tabData.inputBox = inputBox
+    tabData.highlight = highlight
+
+    tabNameBtn.MouseButton1Click:Connect(function()
+        Funcs.SwitchExeTab(tabData)
+    end)
+
+    tabNameBtn.MouseButton2Click:Connect(function()
+        tabNameBtn.Visible = false
+        tabNameBox.Visible = true
+        tabNameBox:CaptureFocus()
+    end)
+
+    tabNameBox.FocusLost:Connect(function()
+        local newName = tabNameBox.Text
+        if newName and newName ~= "" then
+            tabData.name = newName
+            tabNameBtn.Text = newName
+        end
+        tabNameBox.Visible = false
+        tabNameBtn.Visible = true
+    end)
+
+    closeBtn.MouseButton1Click:Connect(function()
+        if #ExeTabs <= 1 then return end
+        local idx = table.find(ExeTabs, tabData)
+        table.remove(ExeTabs, idx)
+        tabBtn:Destroy()
+        inputFrame:Destroy()
+        if ExeActiveTab == tabData then
+            local newIdx = math.min(idx, #ExeTabs)
+            if ExeTabs[newIdx] then
+                ExeActiveTab = nil
+                Funcs.SwitchExeTab(ExeTabs[newIdx])
+            end
+        end
+    end)
+
+    table.insert(ExeTabs, tabData)
+    Funcs.SwitchExeTab(tabData)
+    return tabData
+end
+
+function Funcs.GetMusicFiles()
+    if not IsFolder("Lucid/Music") then MakeFolder("Lucid/Music") end
+    local files = ListFiles("Lucid/Music") or {}
+    local musicFiles = {}
+    local supported = {mp3 = true, m4a = true, ogg = true, wav = true, flac = true, aiff = true}
+    for _, file in ipairs(files) do
+        local ext = file:match("%.([^%.]+)$")
+        if ext and supported[ext:lower()] then
+            table.insert(musicFiles, file)
+        end
+    end
+    return musicFiles
+end
+
+function Funcs.GetMusicDisplayName(path)
+    local name = path:match("([^/\\]+)$") or path
+    name = name:gsub("%.[^%.]+$", "")
+    return name
+end
+
+function Funcs.FormatTime(seconds)
+    if not seconds or seconds ~= seconds then return "0:00" end
+    seconds = math.floor(seconds)
+    local m = math.floor(seconds / 60)
+    local s = seconds % 60
+    return string.format("%d:%02d", m, s)
+end
+
+function Funcs.UpdateMusicSlider()
+    if not MusicSound or not MusicSound.Parent then return end
+    local duration = MusicSound.TimeLength
+    local position = MusicSound.TimePosition
+    if duration and duration > 0 and not MusicSliderDragging then
+        local frac = math.clamp(position / duration, 0, 1)
+        UI.MusicSliderFill.Size = UDim2.new(frac, 0, 1, 0)
+        UI.MusicSliderKnob.Position = UDim2.new(frac, -6, 0.5, -6)
+        UI.MusicTimeLabel.Text = Funcs.FormatTime(position) .. " / " .. Funcs.FormatTime(duration)
+    end
+end
+
+function Funcs.LoadAndPlayMusic(index)
+    if not MusicFiles or #MusicFiles == 0 then return end
+    index = ((index - 1) % #MusicFiles) + 1
+    MusicIndex = index
+    local filePath = MusicFiles[index]
+
+    if MusicSound then
+        MusicSound:Stop()
+        MusicSound:Destroy()
+        MusicSound = nil
+    end
+
+    local assetId = pcall(LoadAsset, filePath) and LoadAsset(filePath)
+    if not assetId then
+        UI.MusicNowPlaying.Text = "Failed to load: " .. Funcs.GetMusicDisplayName(filePath)
+        return
+    end
+
+    MusicSound = Instance.new("Sound")
+    MusicSound.SoundId = assetId
+    MusicSound.Volume = tonumber(UI.MusicVolumeBox.Text) or 1
+    MusicSound.PlaybackSpeed = tonumber(UI.MusicSpeedBox.Text) or 1
+    MusicSound.Looped = UI.MusicLoopToggle:FindFirstChild("LoopState") and UI.MusicLoopToggle.LoopState.BackgroundColor3 == Color3.fromRGB(0, 255, 0) or false
+    MusicSound.Parent = Workspace
+
+    MusicSound:Play()
+    MusicPlaying = true
+    UI.MusicPlayBtn.Text = "⏸"
+    UI.MusicNowPlaying.Text = Funcs.GetMusicDisplayName(filePath)
+
+    MusicSound.Ended:Connect(function()
+        if not MusicSound.Looped then
+            Funcs.LoadAndPlayMusic(MusicIndex + 1)
+        end
+    end)
+
+    Funcs.RefreshMusicList()
+end
+
+function Funcs.RefreshMusicList()
+    MusicFiles = Funcs.GetMusicFiles()
+    local scroll = UI.MusicListScroll
+    if not scroll then return end
+
+    for _, child in ipairs(scroll:GetChildren()) do
+        if child.Name ~= "MusicListLayout" and child.Name ~= "MusicListPadding" and child.Name ~= "NoMusicLabel" then
+            child:Destroy()
+        end
+    end
+
+    if #MusicFiles == 0 then
+        if UI.NoMusicLabel then
+            UI.NoMusicLabel.Visible = true
+        end
+        return
+    end
+
+    if UI.NoMusicLabel then UI.NoMusicLabel.Visible = false end
+
+    for i, filePath in ipairs(MusicFiles) do
+        local displayName = Funcs.GetMusicDisplayName(filePath)
+        local isActive = (i == MusicIndex and MusicPlaying)
+
+        local row = Instance.new("TextButton")
+        row.BackgroundColor3 = isActive and Settings.AccentColor or Color3.fromRGB(22, 22, 22)
+        row.BackgroundTransparency = isActive and 0.5 or 0
+        row.BorderSizePixel = 0
+        row.Name = "MusicRow_" .. i
+        row.Size = UDim2.new(1, 0, 0, 32)
+        row.Text = ""
+        row.Parent = scroll
+
+        local rowCorner = Instance.new("UICorner")
+        rowCorner.CornerRadius = UDim.new(0, 5)
+        rowCorner.Parent = row
+
+        local rowStroke = Instance.new("UIStroke")
+        rowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        rowStroke.Color = isActive and Settings.AccentColor or Color3.fromRGB(36, 36, 36)
+        rowStroke.Parent = row
+
+        local rowLayout = Instance.new("UIListLayout")
+        rowLayout.FillDirection = Enum.FillDirection.Horizontal
+        rowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+        rowLayout.Padding = UDim.new(0, 6)
+        rowLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        rowLayout.Parent = row
+
+        local rowPadding = Instance.new("UIPadding")
+        rowPadding.PaddingLeft = UDim.new(0, 10)
+        rowPadding.PaddingRight = UDim.new(0, 10)
+        rowPadding.Parent = row
+
+        local indexLabel = Instance.new("TextLabel")
+        indexLabel.BackgroundTransparency = 1
+        indexLabel.BorderSizePixel = 0
+        indexLabel.FontFace = GothamMedium
+        indexLabel.LayoutOrder = 1
+        indexLabel.Size = UDim2.new(0, 20, 1, 0)
+        indexLabel.Text = tostring(i)
+        indexLabel.TextColor3 = isActive and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(120, 120, 120)
+        indexLabel.TextScaled = true
+        indexLabel.Parent = row
+
+        local nameLabel = Instance.new("TextLabel")
+        nameLabel.BackgroundTransparency = 1
+        nameLabel.BorderSizePixel = 0
+        nameLabel.FontFace = GothamMedium
+        nameLabel.LayoutOrder = 2
+        nameLabel.Size = UDim2.new(1, -30, 1, 0)
+        nameLabel.Text = displayName
+        nameLabel.TextColor3 = isActive and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(200, 200, 200)
+        nameLabel.TextScaled = true
+        nameLabel.TextTruncate = Enum.TextTruncate.AtEnd
+        nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+        nameLabel.Parent = row
+
+        local capturedIndex = i
+        row.MouseButton1Click:Connect(function()
+            Funcs.LoadAndPlayMusic(capturedIndex)
+        end)
+    end
+end
+
+Funcs.PreloadAssets()
+HideExec()
+
+if Shared.Lucid.IsLoaded then
+    StarterGui:SetCore("SendNotification", {
+        Title = "Lucid Executor",
+        Text = "Lucid is already running!",
+        Icon = Funcs.GetAsset("Lucid/Assets/lucid_logo.png"),
+        Duration = 4
+    })
+    return
+end
+
+Shared.Lucid.IsLoaded = true
+
+UI.ScreenGui = Instance.new("ScreenGui")
+UI.ScreenGui.DisplayOrder = 2147483647
+UI.ScreenGui.IgnoreGuiInset = true
+UI.ScreenGui.Name = "Lucid"
+UI.ScreenGui.ResetOnSpawn = false
+UI.ScreenGui.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+UI.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+UI.ScreenGui.Parent = Hui
+
+UI.Show = Instance.new("ImageButton")
+UI.Show.BackgroundColor3 = Color3.fromRGB(19, 19, 22)
+UI.Show.BackgroundTransparency = 0.08
+UI.Show.BorderSizePixel = 0
+UI.Show.Name = "Show"
+UI.Show.Position = UDim2.new(0, 16, 0, 60)
+UI.Show.Size = UDim2.new(0, 44, 0, 44)
+UI.Show.Visible = true
+UI.Show.ZIndex = 3
+UI.Show.Parent = UI.ScreenGui
+
+UI.ShowRatio = Instance.new("UIAspectRatioConstraint")
+UI.ShowRatio.Name = "ShowRatio"
+UI.ShowRatio.Parent = UI.Show
+
+UI.ShowCorner = Instance.new("UICorner")
+UI.ShowCorner.CornerRadius = UDim.new(1, 0)
+UI.ShowCorner.Parent = UI.Show
+
+UI.ShowIcon = Instance.new("ImageLabel")
+UI.ShowIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+UI.ShowIcon.BackgroundTransparency = 1
+UI.ShowIcon.BorderSizePixel = 0
+UI.ShowIcon.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
+UI.ShowIcon.Name = "ShowIcon"
+UI.ShowIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+UI.ShowIcon.Size = UDim2.new(0, 28, 0, 28)
+UI.ShowIcon.Parent = UI.Show
+
+UI.MainFrame = Instance.new("Frame")
+UI.MainFrame.AutoLocalize = false
+UI.MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+UI.MainFrame.BackgroundTransparency = 0.35
+UI.MainFrame.BorderSizePixel = 0
+UI.MainFrame.Name = "MainFrame"
+UI.MainFrame.Size = UDim2.new(1, 0, 1, 0)
+UI.MainFrame.Visible = false
+UI.MainFrame.Parent = UI.ScreenGui
+
+UI.MainFrameLayout = Instance.new("UIListLayout")
+UI.MainFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.MainFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MainFrameLayout.Name = "MainFrameLayout"
+UI.MainFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MainFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.MainFrameLayout.Parent = UI.MainFrame
+
+UI.Pages = Instance.new("Frame")
+UI.Pages.BackgroundTransparency = 1
+UI.Pages.BorderSizePixel = 0
+UI.Pages.LayoutOrder = 1
+UI.Pages.Name = "Pages"
+UI.Pages.Size = UDim2.new(0, 576, 0, 116)
+UI.Pages.Parent = UI.MainFrame
+
+UI.PagesPadding = Instance.new("UIPadding")
+UI.PagesPadding.Name = "PagesPadding"
+UI.PagesPadding.PaddingBottom = UDim.new(0, 8)
+UI.PagesPadding.PaddingLeft = UDim.new(0, 8)
+UI.PagesPadding.PaddingTop = UDim.new(0, 60)
+UI.PagesPadding.Parent = UI.Pages
+
+UI.HomeContent = Instance.new("CanvasGroup")
+UI.HomeContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.HomeContent.BorderSizePixel = 0
+UI.HomeContent.LayoutOrder = 1
+UI.HomeContent.Name = "HomeContent"
+UI.HomeContent.Size = UDim2.new(1, 0, 1, 0)
+UI.HomeContent.Visible = false
+UI.HomeContent.Parent = UI.Pages
+
+UI.HomeContentCorner = Instance.new("UICorner")
+UI.HomeContentCorner.CornerRadius = UDim.new(0, 6)
+UI.HomeContentCorner.Parent = UI.HomeContent
+
+UI.HomeContentStroke = Instance.new("UIStroke")
+UI.HomeContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.HomeContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.HomeContentStroke.Name = "HomeContentStroke"
+UI.HomeContentStroke.Parent = UI.HomeContent
+
+UI.HomeContentLayout = Instance.new("UIListLayout")
+UI.HomeContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.HomeContentLayout.Padding = UDim.new(0, 6)
+UI.HomeContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.HomeContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.HomeContentLayout.Parent = UI.HomeContent
+
+UI.HomeInfo = Instance.new("ScrollingFrame")
+UI.HomeInfo.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.HomeInfo.BackgroundTransparency = 1
+UI.HomeInfo.BorderSizePixel = 0
+UI.HomeInfo.CanvasSize = UDim2.new(0, 0, 0, 0)
+UI.HomeInfo.Name = "HomeInfo"
+UI.HomeInfo.ScrollBarThickness = 0
+UI.HomeInfo.ScrollingDirection = Enum.ScrollingDirection.Y
+UI.HomeInfo.Size = UDim2.new(1, 0, 1, 0)
+UI.HomeInfo.Parent = UI.HomeContent
+
+UI.HomeInfoPadding = Instance.new("UIPadding")
+UI.HomeInfoPadding.PaddingBottom = UDim.new(0, 5)
+UI.HomeInfoPadding.PaddingLeft = UDim.new(0, 5)
+UI.HomeInfoPadding.PaddingRight = UDim.new(0, 5)
+UI.HomeInfoPadding.PaddingTop = UDim.new(0, 5)
+UI.HomeInfoPadding.Parent = UI.HomeInfo
+
+UI.HomeInfoLayout = Instance.new("UIListLayout")
+UI.HomeInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.HomeInfoLayout.Padding = UDim.new(0, 6)
+UI.HomeInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.HomeInfoLayout.Parent = UI.HomeInfo
+
+UI.PlayerStats = Instance.new("Frame")
+UI.PlayerStats.BackgroundTransparency = 1
+UI.PlayerStats.BorderSizePixel = 0
+UI.PlayerStats.LayoutOrder = 1
+UI.PlayerStats.Name = "PlayerStats"
+UI.PlayerStats.Size = UDim2.new(1, 0, 0, 400)
+UI.PlayerStats.Parent = UI.HomeInfo
+
+UI.PlayerStatsLayout = Instance.new("UIListLayout")
+UI.PlayerStatsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.PlayerStatsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.PlayerStatsLayout.Padding = UDim.new(0, 6)
+UI.PlayerStatsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.PlayerStatsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.PlayerStatsLayout.Parent = UI.PlayerStats
+
+UI.Avatar = Instance.new("Frame")
+UI.Avatar.BackgroundTransparency = 1
+UI.Avatar.BorderSizePixel = 0
+UI.Avatar.LayoutOrder = 1
+UI.Avatar.Name = "Avatar"
+UI.Avatar.Size = UDim2.new(0, 0, 1, 0)
+UI.Avatar.Parent = UI.PlayerStats
+
+UI.PlayerHeadshot = Instance.new("ImageLabel")
+UI.PlayerHeadshot.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.PlayerHeadshot.BorderSizePixel = 0
+UI.PlayerHeadshot.Interactable = false
+UI.PlayerHeadshot.Name = "PlayerHeadshot"
+UI.PlayerHeadshot.ScaleType = Enum.ScaleType.Fit
+UI.PlayerHeadshot.Size = UDim2.new(1, 0, 1, 0)
+UI.PlayerHeadshot.Parent = UI.Avatar
+
+UI.PlayerHeadshotRatio = Instance.new("UIAspectRatioConstraint")
+UI.PlayerHeadshotRatio.Parent = UI.PlayerHeadshot
+
+UI.PlayerHeadshotCorner = Instance.new("UICorner")
+UI.PlayerHeadshotCorner.CornerRadius = UDim.new(0, 6)
+UI.PlayerHeadshotCorner.Parent = UI.PlayerHeadshot
+
+UI.PlayerHeadshotStroke = Instance.new("UIStroke")
+UI.PlayerHeadshotStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.PlayerHeadshotStroke.Name = "PlayerHeadshotStroke"
+UI.PlayerHeadshotStroke.Parent = UI.PlayerHeadshot
+
+UI.PlayerInfo = Instance.new("Frame")
+UI.PlayerInfo.BackgroundTransparency = 1
+UI.PlayerInfo.BorderSizePixel = 0
+UI.PlayerInfo.LayoutOrder = 2
+UI.PlayerInfo.Name = "PlayerInfo"
+UI.PlayerInfo.Size = UDim2.new(0.75, 0, 1, 0)
+UI.PlayerInfo.Parent = UI.PlayerStats
+
+UI.PlayerInfoLayout = Instance.new("UIListLayout")
+UI.PlayerInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.PlayerInfoLayout.Padding = UDim.new(0, 6)
+UI.PlayerInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.PlayerInfoLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.PlayerInfoLayout.Parent = UI.PlayerInfo
+
+UI.WelcomeLabel = Instance.new("TextLabel")
+UI.WelcomeLabel.BackgroundTransparency = 1
+UI.WelcomeLabel.BorderSizePixel = 0
+UI.WelcomeLabel.FontFace = GothamMedium
+UI.WelcomeLabel.Name = "WelcomeLabel"
+UI.WelcomeLabel.Size = UDim2.new(0, 432, 0, 0)
+UI.WelcomeLabel.Text = "Welcome to Lucid, DisplayName!"
+UI.WelcomeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.WelcomeLabel.TextScaled = true
+UI.WelcomeLabel.TextSize = 20
+UI.WelcomeLabel.TextWrapped = true
+UI.WelcomeLabel.Parent = UI.PlayerInfo
+
+UI.WelcomeLabelStroke = Instance.new("UIStroke")
+UI.WelcomeLabelStroke.Color = Color3.fromRGB(0, 94, 255)
+UI.WelcomeLabelStroke.Name = "WelcomeLabelStroke"
+UI.WelcomeLabelStroke.Parent = UI.WelcomeLabel
+
+UI.InfoLabel = Instance.new("TextLabel")
+UI.InfoLabel.BackgroundTransparency = 1
+UI.InfoLabel.BorderSizePixel = 0
+UI.InfoLabel.FontFace = GothamMedium
+UI.InfoLabel.Name = "InfoLabel"
+UI.InfoLabel.RichText = true
+UI.InfoLabel.Size = UDim2.new(1, 0, 0.75, 0)
+UI.InfoLabel.Text = "Loading..."
+UI.InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.InfoLabel.TextScaled = true
+UI.InfoLabel.TextWrapped = true
+UI.InfoLabel.TextXAlignment = Enum.TextXAlignment.Left
+UI.InfoLabel.TextYAlignment = Enum.TextYAlignment.Top
+UI.InfoLabel.Parent = UI.PlayerInfo
+
+UI.InfoLabelStroke = Instance.new("UIStroke")
+UI.InfoLabelStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.InfoLabelStroke.Name = "InfoLabelStroke"
+UI.InfoLabelStroke.Parent = UI.InfoLabel
+
+UI.InfoLabel2 = Instance.new("TextLabel")
+UI.InfoLabel2.AutomaticSize = Enum.AutomaticSize.Y
+UI.InfoLabel2.BackgroundTransparency = 1
+UI.InfoLabel2.BorderSizePixel = 0
+UI.InfoLabel2.LayoutOrder = 2
+UI.InfoLabel2.Name = "InfoLabel2"
+UI.InfoLabel2.RichText = true
+UI.InfoLabel2.Size = UDim2.new(1, 0, 0, 0)
+UI.InfoLabel2.Text = [[<p align="center"><font size="22"><b>About Lucid</b></font></p>
 
 <p align="left">
 Lucid is a modern interface that replaces your executor's UI while keeping its original functionality. It provides a cleaner design, smoother animations, and a more consistent experience.
@@ -1579,1691 +1853,2161 @@ Lucid is a modern interface that replaces your executor's UI while keeping its o
 Created and maintained by <b>JustAGuest</b>.
 </p>
 
-<p align="center"><i>Thank you for using Lucid!</i></p>]]_0xE3E8.InfoLabel2.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.InfoLabel2.TextSize = 14
-_0xE3E8.InfoLabel2.TextWrapped = true
-_0xE3E8.InfoLabel2.Parent = _0xE3E8.HomeInfo
-_0xE3E8.InfoLabel2Stroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.InfoLabel2Stroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.InfoLabel2Stroke.Name =string.char(73,110,102,111,76,97,98,101,108,50,83,116,114,111,107,101)_0xE3E8.InfoLabel2Stroke.Parent = _0xE3E8.InfoLabel2
-_0xE3E8.ExeContent = Instance.new(string.char(67,97,110,118,97,115,71,114,111,117,112))
-_0xE3E8.ExeContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-_0xE3E8.ExeContent.BorderSizePixel = 0
-_0xE3E8.ExeContent.LayoutOrder = 1
-_0xE3E8.ExeContent.Name =string.char(69,120,101,67,111,110,116,101,110,116)_0xE3E8.ExeContent.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.ExeContent.Visible = false
-_0xE3E8.ExeContent.Parent = _0xE3E8.Pages
-_0xE3E8.ExeContentCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.ExeContentCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.ExeContentCorner.Parent = _0xE3E8.ExeContent
-_0xE3E8.ExeContentStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.ExeContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.ExeContentStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.ExeContentStroke.Name =string.char(69,120,101,67,111,110,116,101,110,116,83,116,114,111,107,101)_0xE3E8.ExeContentStroke.Parent = _0xE3E8.ExeContent
-_0xE3E8.ExeContentLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.ExeContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ExeContentLayout.Padding = UDim.new(0, 4)
-_0xE3E8.ExeContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.ExeContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ExeContentLayout.Parent = _0xE3E8.ExeContent
-_0xE3E8.ExeContentPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.ExeContentPadding.PaddingBottom = UDim.new(0, 5)
-_0xE3E8.ExeContentPadding.PaddingLeft = UDim.new(0, 5)
-_0xE3E8.ExeContentPadding.PaddingRight = UDim.new(0, 5)
-_0xE3E8.ExeContentPadding.PaddingTop = UDim.new(0, 5)
-_0xE3E8.ExeContentPadding.Parent = _0xE3E8.ExeContent
-_0xE3E8.ExeTabBarWrapper = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.ExeTabBarWrapper.BackgroundTransparency = 1
-_0xE3E8.ExeTabBarWrapper.BorderSizePixel = 0
-_0xE3E8.ExeTabBarWrapper.LayoutOrder = 1
-_0xE3E8.ExeTabBarWrapper.Name =string.char(69,120,101,84,97,98,66,97,114,87,114,97,112,112,101,114)_0xE3E8.ExeTabBarWrapper.Size = UDim2.new(1, 0, 0, 30)
-_0xE3E8.ExeTabBarWrapper.Parent = _0xE3E8.ExeContent
-_0xE3E8.ExeTabBarWrapperLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.ExeTabBarWrapperLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.ExeTabBarWrapperLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ExeTabBarWrapperLayout.Padding = UDim.new(0, 4)
-_0xE3E8.ExeTabBarWrapperLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.ExeTabBarWrapperLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ExeTabBarWrapperLayout.Parent = _0xE3E8.ExeTabBarWrapper
-_0xE3E8.ExeTabBarSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.ExeTabBarSizeCons.MaxSize = Vector2.new(2147483647, 30)
-_0xE3E8.ExeTabBarSizeCons.MinSize = Vector2.new(0, 30)
-_0xE3E8.ExeTabBarSizeCons.Parent = _0xE3E8.ExeTabBarWrapper
-_0xE3E8.ExeTabBarScroll = Instance.new(string.char(83,99,114,111,108,108,105,110,103,70,114,97,109,101))
-_0xE3E8.ExeTabBarScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
-_0xE3E8.ExeTabBarScroll.BackgroundTransparency = 1
-_0xE3E8.ExeTabBarScroll.BorderSizePixel = 0
-_0xE3E8.ExeTabBarScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-_0xE3E8.ExeTabBarScroll.LayoutOrder = 1
-_0xE3E8.ExeTabBarScroll.Name =string.char(69,120,101,84,97,98,66,97,114,83,99,114,111,108,108)_0xE3E8.ExeTabBarScroll.ScrollBarThickness = 3
-_0xE3E8.ExeTabBarScroll.ScrollingDirection = Enum.ScrollingDirection.X
-_0xE3E8.ExeTabBarScroll.Size = UDim2.new(1, -38, 1, 0)
-_0xE3E8.ExeTabBarScroll.Parent = _0xE3E8.ExeTabBarWrapper
-_0xE3E8.ExeTabBarScrollLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.ExeTabBarScrollLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.ExeTabBarScrollLayout.Padding = UDim.new(0, 4)
-_0xE3E8.ExeTabBarScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.ExeTabBarScrollLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-_0xE3E8.ExeTabBarScrollLayout.Parent = _0xE3E8.ExeTabBarScroll
-_0xE3E8.ExeTabBarScrollPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.ExeTabBarScrollPadding.PaddingLeft = UDim.new(0, 2)
-_0xE3E8.ExeTabBarScrollPadding.Parent = _0xE3E8.ExeTabBarScroll
-_0xE3E8.AddExeTabBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.AddExeTabBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.AddExeTabBtn.BorderSizePixel = 0
-_0xE3E8.AddExeTabBtn.FontFace = _0x0EEB
-_0xE3E8.AddExeTabBtn.LayoutOrder = 2
-_0xE3E8.AddExeTabBtn.Name =string.char(65,100,100,69,120,101,84,97,98,66,116,110)_0xE3E8.AddExeTabBtn.Size = UDim2.new(0, 30, 1, 0)
-_0xE3E8.AddExeTabBtn.Text =string.char(43)_0xE3E8.AddExeTabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.AddExeTabBtn.TextScaled = true
-_0xE3E8.AddExeTabBtn.Parent = _0xE3E8.ExeTabBarWrapper
-_0xE3E8.AddExeTabBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.AddExeTabBtnCorner.CornerRadius = UDim.new(0, 5)
-_0xE3E8.AddExeTabBtnCorner.Parent = _0xE3E8.AddExeTabBtn
-_0xE3E8.AddExeTabBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.AddExeTabBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.AddExeTabBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.AddExeTabBtnStroke.Name =string.char(65,100,100,69,120,101,84,97,98,66,116,110,83,116,114,111,107,101)_0xE3E8.AddExeTabBtnStroke.Parent = _0xE3E8.AddExeTabBtn
-_0xE3E8.AddExeTabBtnRatio = Instance.new(string.char(85,73,65,115,112,101,99,116,82,97,116,105,111,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.AddExeTabBtnRatio.Parent = _0xE3E8.AddExeTabBtn
-_0xE3E8.ExeEditorArea = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.ExeEditorArea.BackgroundTransparency = 1
-_0xE3E8.ExeEditorArea.BorderSizePixel = 0
-_0xE3E8.ExeEditorArea.LayoutOrder = 2
-_0xE3E8.ExeEditorArea.Name =string.char(69,120,101,69,100,105,116,111,114,65,114,101,97)_0xE3E8.ExeEditorArea.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.ExeEditorArea.Parent = _0xE3E8.ExeContent
-_0xE3E8.ExeBottomButtons = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.ExeBottomButtons.BackgroundTransparency = 1
-_0xE3E8.ExeBottomButtons.BorderSizePixel = 0
-_0xE3E8.ExeBottomButtons.LayoutOrder = 3
-_0xE3E8.ExeBottomButtons.Name =string.char(69,120,101,66,111,116,116,111,109,66,117,116,116,111,110,115)_0xE3E8.ExeBottomButtons.Size = UDim2.new(1, 0, 0, 38)
-_0xE3E8.ExeBottomButtons.Visible = false
-_0xE3E8.ExeBottomButtons.Parent = _0xE3E8.ExeContent
-_0xE3E8.ExeBottomButtonsSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.ExeBottomButtonsSizeCons.MaxSize = Vector2.new(2147483647, 38)
-_0xE3E8.ExeBottomButtonsSizeCons.Parent = _0xE3E8.ExeBottomButtons
-_0xE3E8.ExeBottomButtonsLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.ExeBottomButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.ExeBottomButtonsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ExeBottomButtonsLayout.Padding = UDim.new(0, 6)
-_0xE3E8.ExeBottomButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.ExeBottomButtonsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ExeBottomButtonsLayout.Parent = _0xE3E8.ExeBottomButtons
-_0xE3E8.ExeBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.ExeBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.ExeBtn.BorderSizePixel = 0
-_0xE3E8.ExeBtn.FontFace = _0x340D
-_0xE3E8.ExeBtn.LayoutOrder = 1
-_0xE3E8.ExeBtn.Name =string.char(69,120,101,66,116,110)_0xE3E8.ExeBtn.Size = UDim2.new(0.2, 0, 1, 0)
-_0xE3E8.ExeBtn.Text =string.char(69,120,101,99,117,116,101)_0xE3E8.ExeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.ExeBtn.TextScaled = true
-_0xE3E8.ExeBtn.TextWrapped = true
-_0xE3E8.ExeBtn.Parent = _0xE3E8.ExeBottomButtons
-_0xE3E8.ExeBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.ExeBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.ExeBtnCorner.Parent = _0xE3E8.ExeBtn
-_0xE3E8.ExeBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.ExeBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.ExeBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.ExeBtnStroke.Name =string.char(69,120,101,66,116,110,83,116,114,111,107,101)_0xE3E8.ExeBtnStroke.Parent = _0xE3E8.ExeBtn
-_0xE3E8.ExeBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.ExeBtnPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.ExeBtnPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.ExeBtnPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.ExeBtnPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.ExeBtnPadding.Parent = _0xE3E8.ExeBtn
-_0xE3E8.ClrBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.ClrBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.ClrBtn.BorderSizePixel = 0
-_0xE3E8.ClrBtn.FontFace = _0x340D
-_0xE3E8.ClrBtn.LayoutOrder = 2
-_0xE3E8.ClrBtn.Name =string.char(67,108,114,66,116,110)_0xE3E8.ClrBtn.Size = UDim2.new(0.2, 0, 1, 0)
-_0xE3E8.ClrBtn.Text =string.char(67,108,101,97,114)_0xE3E8.ClrBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.ClrBtn.TextScaled = true
-_0xE3E8.ClrBtn.TextWrapped = true
-_0xE3E8.ClrBtn.Parent = _0xE3E8.ExeBottomButtons
-_0xE3E8.ClrBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.ClrBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.ClrBtnCorner.Parent = _0xE3E8.ClrBtn
-_0xE3E8.ClrBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.ClrBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.ClrBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.ClrBtnStroke.Name =string.char(67,108,114,66,116,110,83,116,114,111,107,101)_0xE3E8.ClrBtnStroke.Parent = _0xE3E8.ClrBtn
-_0xE3E8.ClrBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.ClrBtnPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.ClrBtnPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.ClrBtnPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.ClrBtnPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.ClrBtnPadding.Parent = _0xE3E8.ClrBtn
-_0xE3E8.CopyBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.CopyBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.CopyBtn.BorderSizePixel = 0
-_0xE3E8.CopyBtn.FontFace = _0x340D
-_0xE3E8.CopyBtn.LayoutOrder = 3
-_0xE3E8.CopyBtn.Name =string.char(67,111,112,121,66,116,110)_0xE3E8.CopyBtn.Size = UDim2.new(0.2, 0, 1, 0)
-_0xE3E8.CopyBtn.Text =string.char(67,111,112,121)_0xE3E8.CopyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.CopyBtn.TextScaled = true
-_0xE3E8.CopyBtn.TextWrapped = true
-_0xE3E8.CopyBtn.Parent = _0xE3E8.ExeBottomButtons
-_0xE3E8.CopyBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.CopyBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.CopyBtnCorner.Parent = _0xE3E8.CopyBtn
-_0xE3E8.CopyBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.CopyBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.CopyBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.CopyBtnStroke.Name =string.char(67,111,112,121,66,116,110,83,116,114,111,107,101)_0xE3E8.CopyBtnStroke.Parent = _0xE3E8.CopyBtn
-_0xE3E8.CopyBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.CopyBtnPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.CopyBtnPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.CopyBtnPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.CopyBtnPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.CopyBtnPadding.Parent = _0xE3E8.CopyBtn
-_0xE3E8.SearchContent = Instance.new(string.char(67,97,110,118,97,115,71,114,111,117,112))
-_0xE3E8.SearchContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-_0xE3E8.SearchContent.BorderSizePixel = 0
-_0xE3E8.SearchContent.LayoutOrder = 2
-_0xE3E8.SearchContent.Name =string.char(83,101,97,114,99,104,67,111,110,116,101,110,116)_0xE3E8.SearchContent.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.SearchContent.Visible = false
-_0xE3E8.SearchContent.Parent = _0xE3E8.Pages
-_0xE3E8.SearchContentPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SearchContentPadding.PaddingBottom = UDim.new(0, 6)
-_0xE3E8.SearchContentPadding.PaddingLeft = UDim.new(0, 6)
-_0xE3E8.SearchContentPadding.PaddingRight = UDim.new(0, 6)
-_0xE3E8.SearchContentPadding.PaddingTop = UDim.new(0, 6)
-_0xE3E8.SearchContentPadding.Parent = _0xE3E8.SearchContent
-_0xE3E8.SearchContentLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SearchContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SearchContentLayout.Padding = UDim.new(0, 6)
-_0xE3E8.SearchContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SearchContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SearchContentLayout.Parent = _0xE3E8.SearchContent
-_0xE3E8.SearchContentCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SearchContentCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SearchContentCorner.Parent = _0xE3E8.SearchContent
-_0xE3E8.SearchContentStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SearchContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.SearchContentStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.SearchContentStroke.Name =string.char(83,101,97,114,99,104,67,111,110,116,101,110,116,83,116,114,111,107,101)_0xE3E8.SearchContentStroke.Parent = _0xE3E8.SearchContent
-_0xE3E8.SearchFrame = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.SearchFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.SearchFrame.BorderSizePixel = 0
-_0xE3E8.SearchFrame.LayoutOrder = 1
-_0xE3E8.SearchFrame.Name =string.char(83,101,97,114,99,104,70,114,97,109,101)_0xE3E8.SearchFrame.Size = UDim2.new(1, 0, 0, 30)
-_0xE3E8.SearchFrame.Parent = _0xE3E8.SearchContent
-_0xE3E8.SearchFrameLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SearchFrameLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.SearchFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SearchFrameLayout.Padding = UDim.new(0, 2)
-_0xE3E8.SearchFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SearchFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SearchFrameLayout.Parent = _0xE3E8.SearchFrame
-_0xE3E8.SearchFrameSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.SearchFrameSizeCons.MaxSize = Vector2.new(2147483647, 30)
-_0xE3E8.SearchFrameSizeCons.MinSize = Vector2.new(0, 30)
-_0xE3E8.SearchFrameSizeCons.Parent = _0xE3E8.SearchFrame
-_0xE3E8.SearchFrameCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SearchFrameCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SearchFrameCorner.Parent = _0xE3E8.SearchFrame
-_0xE3E8.SearchFrameStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SearchFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.SearchFrameStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.SearchFrameStroke.Parent = _0xE3E8.SearchFrame
-_0xE3E8.SourceBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.SourceBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.SourceBtn.BorderSizePixel = 0
-_0xE3E8.SourceBtn.FontFace = _0x340D
-_0xE3E8.SourceBtn.LayoutOrder = 1
-_0xE3E8.SourceBtn.Name =string.char(83,111,117,114,99,101,66,116,110)_0xE3E8.SourceBtn.Size = UDim2.new(0.24, 0, 1, 0)
-_0xE3E8.SourceBtn.Text =string.char(239,191,189,239,191,189,32,83,111,117,114,99,101,58,32,82,83,99,114,105,112,116,115)_0xE3E8.SourceBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.SourceBtn.TextScaled = true
-_0xE3E8.SourceBtn.TextWrapped = true
-_0xE3E8.SourceBtn.Parent = _0xE3E8.SearchFrame
-_0xE3E8.SourceBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SourceBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SourceBtnCorner.Parent = _0xE3E8.SourceBtn
-_0xE3E8.SourceBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SourceBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.SourceBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.SourceBtnStroke.Name =string.char(83,111,117,114,99,101,66,116,110,83,116,114,111,107,101)_0xE3E8.SourceBtnStroke.Parent = _0xE3E8.SourceBtn
-_0xE3E8.SourceBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SourceBtnPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.SourceBtnPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.SourceBtnPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.SourceBtnPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.SourceBtnPadding.Parent = _0xE3E8.SourceBtn
-_0xE3E8.SearchBox = Instance.new(string.char(84,101,120,116,66,111,120))
-_0xE3E8.SearchBox.BackgroundTransparency = 1
-_0xE3E8.SearchBox.BorderSizePixel = 0
-_0xE3E8.SearchBox.FontFace = _0x1033
-_0xE3E8.SearchBox.LayoutOrder = 2
-_0xE3E8.SearchBox.Name =string.char(83,101,97,114,99,104,66,111,120)_0xE3E8.SearchBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.SearchBox.PlaceholderText =string.char(83,101,97,114,99,104,32,102,111,114,32,115,99,114,105,112,116,115,46,46,46)_0xE3E8.SearchBox.Size = UDim2.new(0.52, 0, 1, 0)
-_0xE3E8.SearchBox.Text =""_0xE3E8.SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.SearchBox.TextScaled = true
-_0xE3E8.SearchBox.TextWrapped = true
-_0xE3E8.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.SearchBox.Parent = _0xE3E8.SearchFrame
-_0xE3E8.SearchBoxPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SearchBoxPadding.PaddingBottom = UDim.new(0, 6)
-_0xE3E8.SearchBoxPadding.PaddingLeft = UDim.new(0, 6)
-_0xE3E8.SearchBoxPadding.PaddingRight = UDim.new(0, 6)
-_0xE3E8.SearchBoxPadding.PaddingTop = UDim.new(0, 6)
-_0xE3E8.SearchBoxPadding.Parent = _0xE3E8.SearchBox
-_0xE3E8.FilterBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.FilterBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.FilterBtn.BorderSizePixel = 0
-_0xE3E8.FilterBtn.FontFace = _0x340D
-_0xE3E8.FilterBtn.LayoutOrder = 3
-_0xE3E8.FilterBtn.Name =string.char(70,105,108,116,101,114,66,116,110)_0xE3E8.FilterBtn.Size = UDim2.new(0.24, 0, 1, 0)
-_0xE3E8.FilterBtn.Text =string.char(70,105,108,116,101,114,58,32,65,108,108)_0xE3E8.FilterBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.FilterBtn.TextScaled = true
-_0xE3E8.FilterBtn.TextWrapped = true
-_0xE3E8.FilterBtn.Parent = _0xE3E8.SearchFrame
-_0xE3E8.FilterBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.FilterBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.FilterBtnCorner.Parent = _0xE3E8.FilterBtn
-_0xE3E8.FilterBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.FilterBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.FilterBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.FilterBtnStroke.Name =string.char(70,105,108,116,101,114,66,116,110,83,116,114,111,107,101)_0xE3E8.FilterBtnStroke.Parent = _0xE3E8.FilterBtn
-_0xE3E8.FilterBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.FilterBtnPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.FilterBtnPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.FilterBtnPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.FilterBtnPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.FilterBtnPadding.Parent = _0xE3E8.FilterBtn
-_0xE3E8.SearchResults = Instance.new(string.char(83,99,114,111,108,108,105,110,103,70,114,97,109,101))
-_0xE3E8.SearchResults.AutomaticCanvasSize = Enum.AutomaticSize.Y
-_0xE3E8.SearchResults.BackgroundTransparency = 1
-_0xE3E8.SearchResults.BorderSizePixel = 0
-_0xE3E8.SearchResults.LayoutOrder = 2
-_0xE3E8.SearchResults.Name =string.char(83,101,97,114,99,104,82,101,115,117,108,116,115)_0xE3E8.SearchResults.ScrollBarThickness = 0
-_0xE3E8.SearchResults.ScrollingDirection = Enum.ScrollingDirection.Y
-_0xE3E8.SearchResults.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.SearchResults.Parent = _0xE3E8.SearchContent
-_0xE3E8.SearchResultsPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SearchResultsPadding.PaddingBottom = UDim.new(0, 2)
-_0xE3E8.SearchResultsPadding.PaddingLeft = UDim.new(0, 2)
-_0xE3E8.SearchResultsPadding.PaddingRight = UDim.new(0, 2)
-_0xE3E8.SearchResultsPadding.PaddingTop = UDim.new(0, 2)
-_0xE3E8.SearchResultsPadding.Parent = _0xE3E8.SearchResults
-_0xE3E8.SearchResultsLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SearchResultsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SearchResultsLayout.Padding = UDim.new(0, 8)
-_0xE3E8.SearchResultsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SearchResultsLayout.Parent = _0xE3E8.SearchResults
-_0xE3E8.NoResultsLabel = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.NoResultsLabel.BackgroundTransparency = 1
-_0xE3E8.NoResultsLabel.BorderSizePixel = 0
-_0xE3E8.NoResultsLabel.FontFace = _0x1033
-_0xE3E8.NoResultsLabel.Name =string.char(78,111,82,101,115,117,108,116,115,76,97,98,101,108)_0xE3E8.NoResultsLabel.Size = UDim2.new(1, 0, 0, 30)
-_0xE3E8.NoResultsLabel.Text =string.char(78,111,32,115,99,114,105,112,116,115,32,102,111,117,110,100,32,109,97,116,99,104,105,110,103,32,121,111,117,114,32,113,117,101,114,121,46)_0xE3E8.NoResultsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.NoResultsLabel.TextScaled = true
-_0xE3E8.NoResultsLabel.TextWrapped = true
-_0xE3E8.NoResultsLabel.Visible = false
-_0xE3E8.NoResultsLabel.Parent = _0xE3E8.SearchResults
-_0xE3E8.NoResultsLabelStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.NoResultsLabelStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.NoResultsLabelStroke.Name =string.char(78,111,82,101,115,117,108,116,115,76,97,98,101,108,83,116,114,111,107,101)_0xE3E8.NoResultsLabelStroke.Parent = _0xE3E8.NoResultsLabel
-_0xE3E8.SearchResultTemplate = Instance.new(string.char(67,97,110,118,97,115,71,114,111,117,112))
-_0xE3E8.SearchResultTemplate.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.SearchResultTemplate.BorderSizePixel = 0
-_0xE3E8.SearchResultTemplate.Name =string.char(83,101,97,114,99,104,82,101,115,117,108,116,84,101,109,112,108,97,116,101)_0xE3E8.SearchResultTemplate.Size = UDim2.new(0, 358, 0, 132)
-_0xE3E8.SearchResultTemplate.Visible = false
-_0xE3E8.SearchResultTemplate.Parent = _0xE3E8.SearchResults
-_0xE3E8.SearchResultTemplateCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SearchResultTemplateCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SearchResultTemplateCorner.Parent = _0xE3E8.SearchResultTemplate
-_0xE3E8.SearchResultTemplateStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SearchResultTemplateStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.SearchResultTemplateStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.SearchResultTemplateStroke.Name =string.char(83,101,97,114,99,104,82,101,115,117,108,116,84,101,109,112,108,97,116,101,83,116,114,111,107,101)_0xE3E8.SearchResultTemplateStroke.Parent = _0xE3E8.SearchResultTemplate
-_0xE3E8.ScriptImage = Instance.new(string.char(73,109,97,103,101,76,97,98,101,108))
-_0xE3E8.ScriptImage.BackgroundTransparency = 1
-_0xE3E8.ScriptImage.BorderSizePixel = 0
-_0xE3E8.ScriptImage.LayoutOrder = 1
-_0xE3E8.ScriptImage.Name =string.char(83,99,114,105,112,116,73,109,97,103,101)_0xE3E8.ScriptImage.ScaleType = Enum.ScaleType.Crop
-_0xE3E8.ScriptImage.Size = UDim2.new(1, 0, 0.7, -2)
-_0xE3E8.ScriptImage.Parent = _0xE3E8.SearchResultTemplate
-_0xE3E8.Container = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.Container.BackgroundTransparency = 1
-_0xE3E8.Container.BorderSizePixel = 0
-_0xE3E8.Container.LayoutOrder = 2
-_0xE3E8.Container.Name =string.char(67,111,110,116,97,105,110,101,114)_0xE3E8.Container.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.Container.Parent = _0xE3E8.SearchResultTemplate
-_0xE3E8.ScriptName = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.ScriptName.BackgroundTransparency = 1
-_0xE3E8.ScriptName.BorderSizePixel = 0
-_0xE3E8.ScriptName.FontFace = _0x1033
-_0xE3E8.ScriptName.Name =string.char(83,99,114,105,112,116,78,97,109,101)_0xE3E8.ScriptName.Position = UDim2.new(0, 4, 0, 0)
-_0xE3E8.ScriptName.Size = UDim2.new(0, 350, 0, 30)
-_0xE3E8.ScriptName.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.ScriptName.TextScaled = true
-_0xE3E8.ScriptName.TextWrapped = true
-_0xE3E8.ScriptName.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.ScriptName.Parent = _0xE3E8.Container
-_0xE3E8.ScriptNameStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.ScriptNameStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.ScriptNameStroke.Name =string.char(83,99,114,105,112,116,78,97,109,101,83,116,114,111,107,101)_0xE3E8.ScriptNameStroke.Parent = _0xE3E8.ScriptName
-_0xE3E8.ScriptNameCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.ScriptNameCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.ScriptNameCorner.Parent = _0xE3E8.ScriptName
-_0xE3E8.ScriptActions = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.ScriptActions.BackgroundTransparency = 1
-_0xE3E8.ScriptActions.BorderSizePixel = 0
-_0xE3E8.ScriptActions.Name =string.char(83,99,114,105,112,116,65,99,116,105,111,110,115)_0xE3E8.ScriptActions.Position = UDim2.new(0, 0, 0, 92)
-_0xE3E8.ScriptActions.Size = UDim2.new(1, 0, 0.3, 0)
-_0xE3E8.ScriptActions.Parent = _0xE3E8.Container
-_0xE3E8.ScriptActionsPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.ScriptActionsPadding.PaddingBottom = UDim.new(0, 6)
-_0xE3E8.ScriptActionsPadding.PaddingLeft = UDim.new(0, 6)
-_0xE3E8.ScriptActionsPadding.PaddingRight = UDim.new(0, 6)
-_0xE3E8.ScriptActionsPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.ScriptActionsPadding.Parent = _0xE3E8.ScriptActions
-_0xE3E8.ScriptActionsLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.ScriptActionsLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.ScriptActionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ScriptActionsLayout.Padding = UDim.new(0, 6)
-_0xE3E8.ScriptActionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.ScriptActionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ScriptActionsLayout.Parent = _0xE3E8.ScriptActions
-_0xE3E8.RunScript = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.RunScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.RunScript.BorderSizePixel = 0
-_0xE3E8.RunScript.FontFace = _0x1033
-_0xE3E8.RunScript.LayoutOrder = 1
-_0xE3E8.RunScript.Name =string.char(82,117,110,83,99,114,105,112,116)_0xE3E8.RunScript.Size = UDim2.new(0.2, 0, 0.3, 0)
-_0xE3E8.RunScript.Text =string.char(82,117,110)_0xE3E8.RunScript.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.RunScript.TextScaled = true
-_0xE3E8.RunScript.TextWrapped = true
-_0xE3E8.RunScript.Parent = _0xE3E8.ScriptActions
-_0xE3E8.RunScriptStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.RunScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.RunScriptStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.RunScriptStroke.Name =string.char(82,117,110,83,99,114,105,112,116,83,116,114,111,107,101)_0xE3E8.RunScriptStroke.Parent = _0xE3E8.RunScript
-_0xE3E8.RunScriptCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.RunScriptCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.RunScriptCorner.Parent = _0xE3E8.RunScript
-_0xE3E8.RunScriptPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.RunScriptPadding.PaddingBottom = UDim.new(0, 2)
-_0xE3E8.RunScriptPadding.PaddingLeft = UDim.new(0, 2)
-_0xE3E8.RunScriptPadding.PaddingRight = UDim.new(0, 2)
-_0xE3E8.RunScriptPadding.PaddingTop = UDim.new(0, 2)
-_0xE3E8.RunScriptPadding.Parent = _0xE3E8.RunScript
-_0xE3E8.CopyScriptBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.CopyScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.CopyScriptBtn.BorderSizePixel = 0
-_0xE3E8.CopyScriptBtn.FontFace = _0x1033
-_0xE3E8.CopyScriptBtn.LayoutOrder = 2
-_0xE3E8.CopyScriptBtn.Name =string.char(67,111,112,121,83,99,114,105,112,116,66,116,110)_0xE3E8.CopyScriptBtn.Size = UDim2.new(0.2, 0, 0.3, 0)
-_0xE3E8.CopyScriptBtn.Text =string.char(67,111,112,121)_0xE3E8.CopyScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.CopyScriptBtn.TextScaled = true
-_0xE3E8.CopyScriptBtn.TextWrapped = true
-_0xE3E8.CopyScriptBtn.Parent = _0xE3E8.ScriptActions
-_0xE3E8.CopyScriptBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.CopyScriptBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.CopyScriptBtnCorner.Parent = _0xE3E8.CopyScriptBtn
-_0xE3E8.CopyScriptBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.CopyScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.CopyScriptBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.CopyScriptBtnStroke.Name =string.char(67,111,112,121,83,99,114,105,112,116,66,116,110,83,116,114,111,107,101)_0xE3E8.CopyScriptBtnStroke.Parent = _0xE3E8.CopyScriptBtn
-_0xE3E8.CopyScriptBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.CopyScriptBtnPadding.PaddingBottom = UDim.new(0, 2)
-_0xE3E8.CopyScriptBtnPadding.PaddingLeft = UDim.new(0, 2)
-_0xE3E8.CopyScriptBtnPadding.PaddingRight = UDim.new(0, 2)
-_0xE3E8.CopyScriptBtnPadding.PaddingTop = UDim.new(0, 2)
-_0xE3E8.CopyScriptBtnPadding.Parent = _0xE3E8.CopyScriptBtn
-_0xE3E8.SaveScriptBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.SaveScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.SaveScriptBtn.BorderSizePixel = 0
-_0xE3E8.SaveScriptBtn.FontFace = _0x1033
-_0xE3E8.SaveScriptBtn.LayoutOrder = 3
-_0xE3E8.SaveScriptBtn.Name =string.char(83,97,118,101,83,99,114,105,112,116,66,116,110)_0xE3E8.SaveScriptBtn.Size = UDim2.new(0.2, 0, 0.3, 0)
-_0xE3E8.SaveScriptBtn.Text =string.char(83,97,118,101)_0xE3E8.SaveScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.SaveScriptBtn.TextScaled = true
-_0xE3E8.SaveScriptBtn.TextWrapped = true
-_0xE3E8.SaveScriptBtn.Parent = _0xE3E8.ScriptActions
-_0xE3E8.SaveScriptBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SaveScriptBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SaveScriptBtnCorner.Parent = _0xE3E8.SaveScriptBtn
-_0xE3E8.SaveScriptBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SaveScriptBtnPadding.PaddingBottom = UDim.new(0, 2)
-_0xE3E8.SaveScriptBtnPadding.PaddingLeft = UDim.new(0, 2)
-_0xE3E8.SaveScriptBtnPadding.PaddingRight = UDim.new(0, 2)
-_0xE3E8.SaveScriptBtnPadding.PaddingTop = UDim.new(0, 2)
-_0xE3E8.SaveScriptBtnPadding.Parent = _0xE3E8.SaveScriptBtn
-_0xE3E8.SaveScriptBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SaveScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.SaveScriptBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.SaveScriptBtnStroke.Name =string.char(83,97,118,101,83,99,114,105,112,116,66,116,110,83,116,114,111,107,101)_0xE3E8.SaveScriptBtnStroke.Parent = _0xE3E8.SaveScriptBtn
-_0xE3E8.PageButtons = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.PageButtons.BackgroundTransparency = 1
-_0xE3E8.PageButtons.BorderSizePixel = 0
-_0xE3E8.PageButtons.LayoutOrder = 3
-_0xE3E8.PageButtons.Name =string.char(80,97,103,101,66,117,116,116,111,110,115)_0xE3E8.PageButtons.Size = UDim2.new(1, 0, 0, 38)
-_0xE3E8.PageButtons.Parent = _0xE3E8.SearchContent
-_0xE3E8.PageButtonsLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.PageButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.PageButtonsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.PageButtonsLayout.Padding = UDim.new(0, 6)
-_0xE3E8.PageButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.PageButtonsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.PageButtonsLayout.Parent = _0xE3E8.PageButtons
-_0xE3E8.PageButtonsSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.PageButtonsSizeCons.MaxSize = Vector2.new(2147483647, 38)
-_0xE3E8.PageButtonsSizeCons.Parent = _0xE3E8.PageButtons
-_0xE3E8.PrevBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.PrevBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.PrevBtn.BorderSizePixel = 0
-_0xE3E8.PrevBtn.FontFace = _0x340D
-_0xE3E8.PrevBtn.LayoutOrder = 1
-_0xE3E8.PrevBtn.Name =string.char(80,114,101,118,66,116,110)_0xE3E8.PrevBtn.Size = UDim2.new(0.25, 0, 1, 0)
-_0xE3E8.PrevBtn.Text =string.char(80,114,101,118,105,111,117,115)_0xE3E8.PrevBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.PrevBtn.TextScaled = true
-_0xE3E8.PrevBtn.TextWrapped = true
-_0xE3E8.PrevBtn.Parent = _0xE3E8.PageButtons
-_0xE3E8.PrevBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.PrevBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.PrevBtnCorner.Parent = _0xE3E8.PrevBtn
-_0xE3E8.PrevBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.PrevBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.PrevBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.PrevBtnStroke.Name =string.char(80,114,101,118,66,116,110,83,116,114,111,107,101)_0xE3E8.PrevBtnStroke.Parent = _0xE3E8.PrevBtn
-_0xE3E8.PrevBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.PrevBtnPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.PrevBtnPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.PrevBtnPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.PrevBtnPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.PrevBtnPadding.Parent = _0xE3E8.PrevBtn
-_0xE3E8.PageFiller = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.PageFiller.BackgroundTransparency = 1
-_0xE3E8.PageFiller.BorderSizePixel = 0
-_0xE3E8.PageFiller.LayoutOrder = 2
-_0xE3E8.PageFiller.Name =string.char(80,97,103,101,70,105,108,108,101,114)_0xE3E8.PageFiller.Size = UDim2.new(0.5, 0, 1, 0)
-_0xE3E8.PageFiller.Parent = _0xE3E8.PageButtons
-_0xE3E8.NextBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.NextBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.NextBtn.BorderSizePixel = 0
-_0xE3E8.NextBtn.FontFace = _0x340D
-_0xE3E8.NextBtn.LayoutOrder = 3
-_0xE3E8.NextBtn.Name =string.char(78,101,120,116,66,116,110)_0xE3E8.NextBtn.Size = UDim2.new(0.25, 0, 1, 0)
-_0xE3E8.NextBtn.Text =string.char(78,101,120,116)_0xE3E8.NextBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.NextBtn.TextScaled = true
-_0xE3E8.NextBtn.TextWrapped = true
-_0xE3E8.NextBtn.Parent = _0xE3E8.PageButtons
-_0xE3E8.NextBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.NextBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.NextBtnCorner.Parent = _0xE3E8.NextBtn
-_0xE3E8.NextBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.NextBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.NextBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.NextBtnStroke.Name =string.char(78,101,120,116,66,116,110,83,116,114,111,107,101)_0xE3E8.NextBtnStroke.Parent = _0xE3E8.NextBtn
-_0xE3E8.NextBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.NextBtnPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.NextBtnPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.NextBtnPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.NextBtnPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.NextBtnPadding.Parent = _0xE3E8.NextBtn
-_0xE3E8.ScriptsContent = Instance.new(string.char(67,97,110,118,97,115,71,114,111,117,112))
-_0xE3E8.ScriptsContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-_0xE3E8.ScriptsContent.BorderSizePixel = 0
-_0xE3E8.ScriptsContent.LayoutOrder = 3
-_0xE3E8.ScriptsContent.Name =string.char(83,99,114,105,112,116,115,67,111,110,116,101,110,116)_0xE3E8.ScriptsContent.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.ScriptsContent.Visible = false
-_0xE3E8.ScriptsContent.Parent = _0xE3E8.Pages
-_0xE3E8.ScriptsContentCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.ScriptsContentCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.ScriptsContentCorner.Parent = _0xE3E8.ScriptsContent
-_0xE3E8.ScriptsContentStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.ScriptsContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.ScriptsContentStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.ScriptsContentStroke.Name =string.char(83,99,114,105,112,116,115,67,111,110,116,101,110,116,83,116,114,111,107,101)_0xE3E8.ScriptsContentStroke.Parent = _0xE3E8.ScriptsContent
-_0xE3E8.ScriptsContentLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.ScriptsContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ScriptsContentLayout.Padding = UDim.new(0, 6)
-_0xE3E8.ScriptsContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.ScriptsContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ScriptsContentLayout.Parent = _0xE3E8.ScriptsContent
-_0xE3E8.ScriptsContentPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.ScriptsContentPadding.PaddingBottom = UDim.new(0, 6)
-_0xE3E8.ScriptsContentPadding.PaddingLeft = UDim.new(0, 6)
-_0xE3E8.ScriptsContentPadding.PaddingRight = UDim.new(0, 6)
-_0xE3E8.ScriptsContentPadding.PaddingTop = UDim.new(0, 6)
-_0xE3E8.ScriptsContentPadding.Parent = _0xE3E8.ScriptsContent
-_0xE3E8.SavedScriptsSearchFrame = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.SavedScriptsSearchFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.SavedScriptsSearchFrame.BorderSizePixel = 0
-_0xE3E8.SavedScriptsSearchFrame.LayoutOrder = 1
-_0xE3E8.SavedScriptsSearchFrame.Name =string.char(83,97,118,101,100,83,99,114,105,112,116,115,83,101,97,114,99,104,70,114,97,109,101)_0xE3E8.SavedScriptsSearchFrame.Size = UDim2.new(1, 0, 0, 30)
-_0xE3E8.SavedScriptsSearchFrame.Parent = _0xE3E8.ScriptsContent
-_0xE3E8.SavedScriptsSearchFrameLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SavedScriptsSearchFrameLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.SavedScriptsSearchFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SavedScriptsSearchFrameLayout.Padding = UDim.new(0, 2)
-_0xE3E8.SavedScriptsSearchFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SavedScriptsSearchFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SavedScriptsSearchFrameLayout.Parent = _0xE3E8.SavedScriptsSearchFrame
-_0xE3E8.SavedScriptsSearchFrameSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.SavedScriptsSearchFrameSizeCons.MaxSize = Vector2.new(2147483647, 30)
-_0xE3E8.SavedScriptsSearchFrameSizeCons.MinSize = Vector2.new(0, 30)
-_0xE3E8.SavedScriptsSearchFrameSizeCons.Parent = _0xE3E8.SavedScriptsSearchFrame
-_0xE3E8.SavedScriptsSearchFrameCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SavedScriptsSearchFrameCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SavedScriptsSearchFrameCorner.Parent = _0xE3E8.SavedScriptsSearchFrame
-_0xE3E8.SavedScriptsSearchFrameStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SavedScriptsSearchFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.SavedScriptsSearchFrameStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.SavedScriptsSearchFrameStroke.Parent = _0xE3E8.SavedScriptsSearchFrame
-_0xE3E8.SearchBox2 = Instance.new(string.char(84,101,120,116,66,111,120))
-_0xE3E8.SearchBox2.BackgroundTransparency = 1
-_0xE3E8.SearchBox2.BorderSizePixel = 0
-_0xE3E8.SearchBox2.FontFace = _0x1033
-_0xE3E8.SearchBox2.LayoutOrder = 1
-_0xE3E8.SearchBox2.Name =string.char(83,101,97,114,99,104,66,111,120,50)_0xE3E8.SearchBox2.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.SearchBox2.PlaceholderText =string.char(83,101,97,114,99,104,32,115,97,118,101,100,32,115,99,114,105,112,116,115,46,46,46)_0xE3E8.SearchBox2.Size = UDim2.new(0.95, 0, 1, 0)
-_0xE3E8.SearchBox2.Text =""_0xE3E8.SearchBox2.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.SearchBox2.TextScaled = true
-_0xE3E8.SearchBox2.TextWrapped = true
-_0xE3E8.SearchBox2.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.SearchBox2.Parent = _0xE3E8.SavedScriptsSearchFrame
-_0xE3E8.SearchBox2Padding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SearchBox2Padding.PaddingBottom = UDim.new(0, 6)
-_0xE3E8.SearchBox2Padding.PaddingLeft = UDim.new(0, 6)
-_0xE3E8.SearchBox2Padding.PaddingRight = UDim.new(0, 6)
-_0xE3E8.SearchBox2Padding.PaddingTop = UDim.new(0, 6)
-_0xE3E8.SearchBox2Padding.Parent = _0xE3E8.SearchBox2
-_0xE3E8.NewScriptBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.NewScriptBtn.BackgroundTransparency = 1
-_0xE3E8.NewScriptBtn.BorderSizePixel = 0
-_0xE3E8.NewScriptBtn.FontFace = _0x1033
-_0xE3E8.NewScriptBtn.LayoutOrder = 2
-_0xE3E8.NewScriptBtn.Name =string.char(78,101,119,83,99,114,105,112,116,66,116,110)_0xE3E8.NewScriptBtn.Size = UDim2.new(0.05, 0, 1, 0)
-_0xE3E8.NewScriptBtn.Text =string.char(43)_0xE3E8.NewScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.NewScriptBtn.TextScaled = true
-_0xE3E8.NewScriptBtn.TextWrapped = true
-_0xE3E8.NewScriptBtn.Parent = _0xE3E8.SavedScriptsSearchFrame
-_0xE3E8.NewScriptBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.NewScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.NewScriptBtnStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.NewScriptBtnStroke.Parent = _0xE3E8.NewScriptBtn
-_0xE3E8.NewScriptBtnRatio = Instance.new(string.char(85,73,65,115,112,101,99,116,82,97,116,105,111,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.NewScriptBtnRatio.Parent = _0xE3E8.NewScriptBtn
-_0xE3E8.NewScriptBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.NewScriptBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.NewScriptBtnCorner.Parent = _0xE3E8.NewScriptBtn
-_0xE3E8.SavedScriptsScroll = Instance.new(string.char(83,99,114,111,108,108,105,110,103,70,114,97,109,101))
-_0xE3E8.SavedScriptsScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-_0xE3E8.SavedScriptsScroll.BackgroundTransparency = 1
-_0xE3E8.SavedScriptsScroll.BorderSizePixel = 0
-_0xE3E8.SavedScriptsScroll.LayoutOrder = 2
-_0xE3E8.SavedScriptsScroll.Name =string.char(83,97,118,101,100,83,99,114,105,112,116,115,83,99,114,111,108,108)_0xE3E8.SavedScriptsScroll.ScrollBarThickness = 0
-_0xE3E8.SavedScriptsScroll.ScrollingDirection = Enum.ScrollingDirection.Y
-_0xE3E8.SavedScriptsScroll.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.SavedScriptsScroll.Parent = _0xE3E8.ScriptsContent
-_0xE3E8.SavedScriptsScrollPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SavedScriptsScrollPadding.PaddingBottom = UDim.new(0, 2)
-_0xE3E8.SavedScriptsScrollPadding.PaddingLeft = UDim.new(0, 2)
-_0xE3E8.SavedScriptsScrollPadding.PaddingRight = UDim.new(0, 2)
-_0xE3E8.SavedScriptsScrollPadding.PaddingTop = UDim.new(0, 2)
-_0xE3E8.SavedScriptsScrollPadding.Parent = _0xE3E8.SavedScriptsScroll
-_0xE3E8.SavedScriptsScrollLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SavedScriptsScrollLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SavedScriptsScrollLayout.Padding = UDim.new(0, 8)
-_0xE3E8.SavedScriptsScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SavedScriptsScrollLayout.Parent = _0xE3E8.SavedScriptsScroll
-_0xE3E8.NoSavedScriptsLabel = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.NoSavedScriptsLabel.BackgroundTransparency = 1
-_0xE3E8.NoSavedScriptsLabel.BorderSizePixel = 0
-_0xE3E8.NoSavedScriptsLabel.FontFace = _0x1033
-_0xE3E8.NoSavedScriptsLabel.Name =string.char(78,111,83,97,118,101,100,83,99,114,105,112,116,115,76,97,98,101,108)_0xE3E8.NoSavedScriptsLabel.Size = UDim2.new(1, 0, 0, 60)
-_0xE3E8.NoSavedScriptsLabel.Text =string.char(78,111,32,83,97,118,101,100,32,83,99,114,105,112,116,115,10,10,83,97,118,101,32,115,111,109,101,32,115,99,114,105,112,116,115,32,116,111,32,115,101,101,32,116,104,101,109,32,104,101,114,101,46)_0xE3E8.NoSavedScriptsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.NoSavedScriptsLabel.TextScaled = true
-_0xE3E8.NoSavedScriptsLabel.TextWrapped = true
-_0xE3E8.NoSavedScriptsLabel.Visible = false
-_0xE3E8.NoSavedScriptsLabel.Parent = _0xE3E8.SavedScriptsScroll
-_0xE3E8.NoSavedScriptsLabelStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.NoSavedScriptsLabelStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.NoSavedScriptsLabelStroke.Name =string.char(78,111,83,97,118,101,100,83,99,114,105,112,116,115,76,97,98,101,108,83,116,114,111,107,101)_0xE3E8.NoSavedScriptsLabelStroke.Parent = _0xE3E8.NoSavedScriptsLabel
-_0xE3E8.SavedScriptTemplate = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.SavedScriptTemplate.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.SavedScriptTemplate.BorderSizePixel = 0
-_0xE3E8.SavedScriptTemplate.Name =string.char(83,97,118,101,100,83,99,114,105,112,116,84,101,109,112,108,97,116,101)_0xE3E8.SavedScriptTemplate.Size = UDim2.new(0, 166, 0, 64)
-_0xE3E8.SavedScriptTemplate.Visible = false
-_0xE3E8.SavedScriptTemplate.Parent = _0xE3E8.SavedScriptsScroll
-_0xE3E8.SavedScriptTemplateCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SavedScriptTemplateCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SavedScriptTemplateCorner.Parent = _0xE3E8.SavedScriptTemplate
-_0xE3E8.SavedScriptTemplateStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SavedScriptTemplateStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.SavedScriptTemplateStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.SavedScriptTemplateStroke.Name =string.char(83,97,118,101,100,83,99,114,105,112,116,84,101,109,112,108,97,116,101,83,116,114,111,107,101)_0xE3E8.SavedScriptTemplateStroke.Parent = _0xE3E8.SavedScriptTemplate
-_0xE3E8.SavedScriptTemplateLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SavedScriptTemplateLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.SavedScriptTemplateLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SavedScriptTemplateLayout.Padding = UDim.new(0, 2)
-_0xE3E8.SavedScriptTemplateLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SavedScriptTemplateLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SavedScriptTemplateLayout.Parent = _0xE3E8.SavedScriptTemplate
-_0xE3E8.SavedScriptInfo = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.SavedScriptInfo.BackgroundTransparency = 1
-_0xE3E8.SavedScriptInfo.BorderSizePixel = 0
-_0xE3E8.SavedScriptInfo.LayoutOrder = 1
-_0xE3E8.SavedScriptInfo.Name =string.char(83,97,118,101,100,83,99,114,105,112,116,73,110,102,111)_0xE3E8.SavedScriptInfo.Size = UDim2.new(0, 380, 0, 12)
-_0xE3E8.SavedScriptInfo.Parent = _0xE3E8.SavedScriptTemplate
-_0xE3E8.SavedScriptInfoPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SavedScriptInfoPadding.PaddingBottom = UDim.new(0, 6)
-_0xE3E8.SavedScriptInfoPadding.PaddingLeft = UDim.new(0, 6)
-_0xE3E8.SavedScriptInfoPadding.PaddingRight = UDim.new(0, 6)
-_0xE3E8.SavedScriptInfoPadding.PaddingTop = UDim.new(0, 6)
-_0xE3E8.SavedScriptInfoPadding.Parent = _0xE3E8.SavedScriptInfo
-_0xE3E8.SavedScriptInfoLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SavedScriptInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SavedScriptInfoLayout.Padding = UDim.new(0, 2)
-_0xE3E8.SavedScriptInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SavedScriptInfoLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SavedScriptInfoLayout.Parent = _0xE3E8.SavedScriptInfo
-_0xE3E8.SavedScriptTitle = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.SavedScriptTitle.BackgroundTransparency = 1
-_0xE3E8.SavedScriptTitle.BorderSizePixel = 0
-_0xE3E8.SavedScriptTitle.FontFace = _0x0EEB
-_0xE3E8.SavedScriptTitle.LayoutOrder = 1
-_0xE3E8.SavedScriptTitle.Name =string.char(83,97,118,101,100,83,99,114,105,112,116,84,105,116,108,101)_0xE3E8.SavedScriptTitle.Size = UDim2.new(1, 0, 0.6, 0)
-_0xE3E8.SavedScriptTitle.Text =string.char(83,99,114,105,112,116,32,110,97,109,101)_0xE3E8.SavedScriptTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.SavedScriptTitle.TextScaled = true
-_0xE3E8.SavedScriptTitle.TextWrapped = true
-_0xE3E8.SavedScriptTitle.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.SavedScriptTitle.Parent = _0xE3E8.SavedScriptInfo
-_0xE3E8.SavedScriptDesc = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.SavedScriptDesc.BackgroundTransparency = 1
-_0xE3E8.SavedScriptDesc.BorderSizePixel = 0
-_0xE3E8.SavedScriptDesc.FontFace = _0x1033
-_0xE3E8.SavedScriptDesc.LayoutOrder = 2
-_0xE3E8.SavedScriptDesc.Name =string.char(83,97,118,101,100,83,99,114,105,112,116,68,101,115,99)_0xE3E8.SavedScriptDesc.Size = UDim2.new(1, 0, 0.4, 0)
-_0xE3E8.SavedScriptDesc.Text =string.char(83,99,114,105,112,116,32,100,101,115,99,114,105,112,116,105,111,110)_0xE3E8.SavedScriptDesc.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.SavedScriptDesc.TextScaled = true
-_0xE3E8.SavedScriptDesc.TextWrapped = true
-_0xE3E8.SavedScriptDesc.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.SavedScriptDesc.Parent = _0xE3E8.SavedScriptInfo
-_0xE3E8.SavedScriptActions = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.SavedScriptActions.BackgroundTransparency = 1
-_0xE3E8.SavedScriptActions.BorderSizePixel = 0
-_0xE3E8.SavedScriptActions.LayoutOrder = 2
-_0xE3E8.SavedScriptActions.Name =string.char(83,97,118,101,100,83,99,114,105,112,116,65,99,116,105,111,110,115)_0xE3E8.SavedScriptActions.Size = UDim2.new(0, 0, 0, 12)
-_0xE3E8.SavedScriptActions.Parent = _0xE3E8.SavedScriptTemplate
-_0xE3E8.SavedScriptActionsPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SavedScriptActionsPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.SavedScriptActionsPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.SavedScriptActionsPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.SavedScriptActionsPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.SavedScriptActionsPadding.Parent = _0xE3E8.SavedScriptActions
-_0xE3E8.SavedScriptActionsLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SavedScriptActionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SavedScriptActionsLayout.Padding = UDim.new(0, 6)
-_0xE3E8.SavedScriptActionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SavedScriptActionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SavedScriptActionsLayout.Parent = _0xE3E8.SavedScriptActions
-_0xE3E8.RunSavedScript = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.RunSavedScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.RunSavedScript.BorderSizePixel = 0
-_0xE3E8.RunSavedScript.FontFace = _0x1033
-_0xE3E8.RunSavedScript.LayoutOrder = 1
-_0xE3E8.RunSavedScript.Name =string.char(82,117,110,83,97,118,101,100,83,99,114,105,112,116)_0xE3E8.RunSavedScript.Size = UDim2.new(0.2, 0, 0.3, 0)
-_0xE3E8.RunSavedScript.Text =string.char(82,117,110)_0xE3E8.RunSavedScript.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.RunSavedScript.TextScaled = true
-_0xE3E8.RunSavedScript.TextWrapped = true
-_0xE3E8.RunSavedScript.Parent = _0xE3E8.SavedScriptActions
-_0xE3E8.RunSavedScriptStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.RunSavedScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.RunSavedScriptStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.RunSavedScriptStroke.Name =string.char(82,117,110,83,97,118,101,100,83,99,114,105,112,116,83,116,114,111,107,101)_0xE3E8.RunSavedScriptStroke.Parent = _0xE3E8.RunSavedScript
-_0xE3E8.RunSavedScriptCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.RunSavedScriptCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.RunSavedScriptCorner.Parent = _0xE3E8.RunSavedScript
-_0xE3E8.RunSavedScriptPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.RunSavedScriptPadding.PaddingBottom = UDim.new(0, 2)
-_0xE3E8.RunSavedScriptPadding.PaddingLeft = UDim.new(0, 2)
-_0xE3E8.RunSavedScriptPadding.PaddingRight = UDim.new(0, 2)
-_0xE3E8.RunSavedScriptPadding.PaddingTop = UDim.new(0, 2)
-_0xE3E8.RunSavedScriptPadding.Parent = _0xE3E8.RunSavedScript
-_0xE3E8.DeleteSavedScript = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.DeleteSavedScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.DeleteSavedScript.BorderSizePixel = 0
-_0xE3E8.DeleteSavedScript.FontFace = _0x1033
-_0xE3E8.DeleteSavedScript.LayoutOrder = 2
-_0xE3E8.DeleteSavedScript.Name =string.char(68,101,108,101,116,101,83,97,118,101,100,83,99,114,105,112,116)_0xE3E8.DeleteSavedScript.Size = UDim2.new(0.2, 0, 0.3, 0)
-_0xE3E8.DeleteSavedScript.Text =string.char(68,101,108,101,116,101)_0xE3E8.DeleteSavedScript.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.DeleteSavedScript.TextScaled = true
-_0xE3E8.DeleteSavedScript.TextWrapped = true
-_0xE3E8.DeleteSavedScript.Parent = _0xE3E8.SavedScriptActions
-_0xE3E8.DeleteSavedScriptCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.DeleteSavedScriptCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.DeleteSavedScriptCorner.Parent = _0xE3E8.DeleteSavedScript
-_0xE3E8.DeleteSavedScriptStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.DeleteSavedScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.DeleteSavedScriptStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.DeleteSavedScriptStroke.Name =string.char(68,101,108,101,116,101,83,97,118,101,100,83,99,114,105,112,116,83,116,114,111,107,101)_0xE3E8.DeleteSavedScriptStroke.Parent = _0xE3E8.DeleteSavedScript
-_0xE3E8.DeleteSavedScriptPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.DeleteSavedScriptPadding.PaddingBottom = UDim.new(0, 2)
-_0xE3E8.DeleteSavedScriptPadding.PaddingLeft = UDim.new(0, 2)
-_0xE3E8.DeleteSavedScriptPadding.PaddingRight = UDim.new(0, 2)
-_0xE3E8.DeleteSavedScriptPadding.PaddingTop = UDim.new(0, 2)
-_0xE3E8.DeleteSavedScriptPadding.Parent = _0xE3E8.DeleteSavedScript
-_0xE3E8.MusicContent = Instance.new(string.char(67,97,110,118,97,115,71,114,111,117,112))
-_0xE3E8.MusicContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-_0xE3E8.MusicContent.BorderSizePixel = 0
-_0xE3E8.MusicContent.LayoutOrder = 5
-_0xE3E8.MusicContent.Name =string.char(77,117,115,105,99,67,111,110,116,101,110,116)_0xE3E8.MusicContent.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.MusicContent.Visible = false
-_0xE3E8.MusicContent.Parent = _0xE3E8.Pages
-_0xE3E8.MusicContentCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicContentCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.MusicContentCorner.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicContentStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.MusicContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.MusicContentStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.MusicContentStroke.Name =string.char(77,117,115,105,99,67,111,110,116,101,110,116,83,116,114,111,107,101)_0xE3E8.MusicContentStroke.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicContentLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.MusicContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.MusicContentLayout.Padding = UDim.new(0, 6)
-_0xE3E8.MusicContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.MusicContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.MusicContentLayout.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicContentPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.MusicContentPadding.PaddingBottom = UDim.new(0, 8)
-_0xE3E8.MusicContentPadding.PaddingLeft = UDim.new(0, 8)
-_0xE3E8.MusicContentPadding.PaddingRight = UDim.new(0, 8)
-_0xE3E8.MusicContentPadding.PaddingTop = UDim.new(0, 8)
-_0xE3E8.MusicContentPadding.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicNowPlaying = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.MusicNowPlaying.AutomaticSize = Enum.AutomaticSize.Y
-_0xE3E8.MusicNowPlaying.BackgroundTransparency = 1
-_0xE3E8.MusicNowPlaying.BorderSizePixel = 0
-_0xE3E8.MusicNowPlaying.FontFace = _0x0EEB
-_0xE3E8.MusicNowPlaying.LayoutOrder = 1
-_0xE3E8.MusicNowPlaying.Name =string.char(77,117,115,105,99,78,111,119,80,108,97,121,105,110,103)_0xE3E8.MusicNowPlaying.Size = UDim2.new(1, 0, 0, 24)
-_0xE3E8.MusicNowPlaying.Text =string.char(78,111,32,115,111,110,103,32,112,108,97,121,105,110,103)_0xE3E8.MusicNowPlaying.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.MusicNowPlaying.TextScaled = false
-_0xE3E8.MusicNowPlaying.TextSize = 24
-_0xE3E8.MusicNowPlaying.TextWrapped = true
-_0xE3E8.MusicNowPlaying.TextXAlignment = Enum.TextXAlignment.Center
-_0xE3E8.MusicNowPlaying.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicNowPlayingStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.MusicNowPlayingStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.MusicNowPlayingStroke.Parent = _0xE3E8.MusicNowPlaying
-_0xE3E8.MusicSliderArea = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.MusicSliderArea.BackgroundTransparency = 1
-_0xE3E8.MusicSliderArea.BorderSizePixel = 0
-_0xE3E8.MusicSliderArea.LayoutOrder = 2
-_0xE3E8.MusicSliderArea.Name =string.char(77,117,115,105,99,83,108,105,100,101,114,65,114,101,97)_0xE3E8.MusicSliderArea.Size = UDim2.new(1, 0, 0, 20)
-_0xE3E8.MusicSliderArea.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicSliderAreaSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.MusicSliderAreaSizeCons.MaxSize = Vector2.new(2147483647, 20)
-_0xE3E8.MusicSliderAreaSizeCons.Parent = _0xE3E8.MusicSliderArea
-_0xE3E8.MusicSliderBar = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.MusicSliderBar.AnchorPoint = Vector2.new(0, 0.5)
-_0xE3E8.MusicSliderBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-_0xE3E8.MusicSliderBar.BorderSizePixel = 0
-_0xE3E8.MusicSliderBar.Name =string.char(77,117,115,105,99,83,108,105,100,101,114,66,97,114)_0xE3E8.MusicSliderBar.Position = UDim2.new(0, 0, 0.5, 0)
-_0xE3E8.MusicSliderBar.Size = UDim2.new(1, 0, 0, 6)
-_0xE3E8.MusicSliderBar.Parent = _0xE3E8.MusicSliderArea
-_0xE3E8.MusicSliderBarCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicSliderBarCorner.CornerRadius = UDim.new(0, 3)
-_0xE3E8.MusicSliderBarCorner.Parent = _0xE3E8.MusicSliderBar
-_0xE3E8.MusicSliderFill = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.MusicSliderFill.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.MusicSliderFill.BorderSizePixel = 0
-_0xE3E8.MusicSliderFill.Name =string.char(77,117,115,105,99,83,108,105,100,101,114,70,105,108,108)_0xE3E8.MusicSliderFill.Size = UDim2.new(0, 0, 1, 0)
-_0xE3E8.MusicSliderFill.Parent = _0xE3E8.MusicSliderBar
-_0xE3E8.MusicSliderFillCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicSliderFillCorner.CornerRadius = UDim.new(0, 3)
-_0xE3E8.MusicSliderFillCorner.Parent = _0xE3E8.MusicSliderFill
-_0xE3E8.MusicSliderKnob = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.MusicSliderKnob.AnchorPoint = Vector2.new(0, 0)
-_0xE3E8.MusicSliderKnob.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.MusicSliderKnob.BorderSizePixel = 0
-_0xE3E8.MusicSliderKnob.Name =string.char(77,117,115,105,99,83,108,105,100,101,114,75,110,111,98)_0xE3E8.MusicSliderKnob.Position = UDim2.new(0, -6, 0.5, -6)
-_0xE3E8.MusicSliderKnob.Size = UDim2.new(0, 12, 0, 12)
-_0xE3E8.MusicSliderKnob.Parent = _0xE3E8.MusicSliderBar
-_0xE3E8.MusicSliderKnobCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicSliderKnobCorner.CornerRadius = UDim.new(1, 0)
-_0xE3E8.MusicSliderKnobCorner.Parent = _0xE3E8.MusicSliderKnob
-_0xE3E8.MusicTimeLabel = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.MusicTimeLabel.BackgroundTransparency = 1
-_0xE3E8.MusicTimeLabel.BorderSizePixel = 0
-_0xE3E8.MusicTimeLabel.FontFace = _0x1033
-_0xE3E8.MusicTimeLabel.LayoutOrder = 3
-_0xE3E8.MusicTimeLabel.Name =string.char(77,117,115,105,99,84,105,109,101,76,97,98,101,108)_0xE3E8.MusicTimeLabel.Size = UDim2.new(1, 0, 0, 16)
-_0xE3E8.MusicTimeLabel.Text =string.char(48,58,48,48,32,47,32,48,58,48,48)_0xE3E8.MusicTimeLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
-_0xE3E8.MusicTimeLabel.TextScaled = true
-_0xE3E8.MusicTimeLabel.TextXAlignment = Enum.TextXAlignment.Center
-_0xE3E8.MusicTimeLabel.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicTimeLabelSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.MusicTimeLabelSizeCons.MaxSize = Vector2.new(2147483647, 16)
-_0xE3E8.MusicTimeLabelSizeCons.Parent = _0xE3E8.MusicTimeLabel
-_0xE3E8.MusicControls = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.MusicControls.BackgroundTransparency = 1
-_0xE3E8.MusicControls.BorderSizePixel = 0
-_0xE3E8.MusicControls.LayoutOrder = 4
-_0xE3E8.MusicControls.Name =string.char(77,117,115,105,99,67,111,110,116,114,111,108,115)_0xE3E8.MusicControls.Size = UDim2.new(1, 0, 0, 36)
-_0xE3E8.MusicControls.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicControlsSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.MusicControlsSizeCons.MaxSize = Vector2.new(2147483647, 36)
-_0xE3E8.MusicControlsSizeCons.Parent = _0xE3E8.MusicControls
-_0xE3E8.MusicControlsLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.MusicControlsLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.MusicControlsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-_0xE3E8.MusicControlsLayout.Padding = UDim.new(0, 8)
-_0xE3E8.MusicControlsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.MusicControlsLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-_0xE3E8.MusicControlsLayout.Parent = _0xE3E8.MusicControls
-_0xE3E8.MusicPrevBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.MusicPrevBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.MusicPrevBtn.BorderSizePixel = 0
-_0xE3E8.MusicPrevBtn.FontFace = _0x0EEB
-_0xE3E8.MusicPrevBtn.LayoutOrder = 1
-_0xE3E8.MusicPrevBtn.Name =string.char(77,117,115,105,99,80,114,101,118,66,116,110)_0xE3E8.MusicPrevBtn.Size = UDim2.new(0, 60, 1, 0)
-_0xE3E8.MusicPrevBtn.Text =string.char(226,143,174)_0xE3E8.MusicPrevBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.MusicPrevBtn.TextScaled = true
-_0xE3E8.MusicPrevBtn.Parent = _0xE3E8.MusicControls
-_0xE3E8.MusicPrevBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicPrevBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.MusicPrevBtnCorner.Parent = _0xE3E8.MusicPrevBtn
-_0xE3E8.MusicPrevBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.MusicPrevBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.MusicPrevBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.MusicPrevBtnStroke.Name =string.char(77,117,115,105,99,80,114,101,118,66,116,110,83,116,114,111,107,101)_0xE3E8.MusicPrevBtnStroke.Parent = _0xE3E8.MusicPrevBtn
-_0xE3E8.MusicPlayBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.MusicPlayBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.MusicPlayBtn.BorderSizePixel = 0
-_0xE3E8.MusicPlayBtn.FontFace = _0x0EEB
-_0xE3E8.MusicPlayBtn.LayoutOrder = 2
-_0xE3E8.MusicPlayBtn.Name =string.char(77,117,115,105,99,80,108,97,121,66,116,110)_0xE3E8.MusicPlayBtn.Size = UDim2.new(0, 80, 1, 0)
-_0xE3E8.MusicPlayBtn.Text =string.char(226,150,182)_0xE3E8.MusicPlayBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.MusicPlayBtn.TextScaled = true
-_0xE3E8.MusicPlayBtn.Parent = _0xE3E8.MusicControls
-_0xE3E8.MusicPlayBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicPlayBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.MusicPlayBtnCorner.Parent = _0xE3E8.MusicPlayBtn
-_0xE3E8.MusicPlayBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.MusicPlayBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.MusicPlayBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.MusicPlayBtnStroke.Name =string.char(77,117,115,105,99,80,108,97,121,66,116,110,83,116,114,111,107,101)_0xE3E8.MusicPlayBtnStroke.Parent = _0xE3E8.MusicPlayBtn
-_0xE3E8.MusicNextBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.MusicNextBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.MusicNextBtn.BorderSizePixel = 0
-_0xE3E8.MusicNextBtn.FontFace = _0x0EEB
-_0xE3E8.MusicNextBtn.LayoutOrder = 3
-_0xE3E8.MusicNextBtn.Name =string.char(77,117,115,105,99,78,101,120,116,66,116,110)_0xE3E8.MusicNextBtn.Size = UDim2.new(0, 60, 1, 0)
-_0xE3E8.MusicNextBtn.Text =string.char(226,143,173)_0xE3E8.MusicNextBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.MusicNextBtn.TextScaled = true
-_0xE3E8.MusicNextBtn.Parent = _0xE3E8.MusicControls
-_0xE3E8.MusicNextBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicNextBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.MusicNextBtnCorner.Parent = _0xE3E8.MusicNextBtn
-_0xE3E8.MusicNextBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.MusicNextBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.MusicNextBtnStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.MusicNextBtnStroke.Name =string.char(77,117,115,105,99,78,101,120,116,66,116,110,83,116,114,111,107,101)_0xE3E8.MusicNextBtnStroke.Parent = _0xE3E8.MusicNextBtn
-_0xE3E8.MusicSettingsFrame = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.MusicSettingsFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.MusicSettingsFrame.BorderSizePixel = 0
-_0xE3E8.MusicSettingsFrame.LayoutOrder = 5
-_0xE3E8.MusicSettingsFrame.Name =string.char(77,117,115,105,99,83,101,116,116,105,110,103,115,70,114,97,109,101)_0xE3E8.MusicSettingsFrame.Size = UDim2.new(1, 0, 0, 70)
-_0xE3E8.MusicSettingsFrame.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicSettingsFrameSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.MusicSettingsFrameSizeCons.MaxSize = Vector2.new(2147483647, 70)
-_0xE3E8.MusicSettingsFrameSizeCons.Parent = _0xE3E8.MusicSettingsFrame
-_0xE3E8.MusicSettingsFrameCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicSettingsFrameCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.MusicSettingsFrameCorner.Parent = _0xE3E8.MusicSettingsFrame
-_0xE3E8.MusicSettingsFrameStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.MusicSettingsFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.MusicSettingsFrameStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.MusicSettingsFrameStroke.Parent = _0xE3E8.MusicSettingsFrame
-_0xE3E8.MusicSettingsFrameLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.MusicSettingsFrameLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.MusicSettingsFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.MusicSettingsFrameLayout.Padding = UDim.new(0, 8)
-_0xE3E8.MusicSettingsFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.MusicSettingsFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.MusicSettingsFrameLayout.Parent = _0xE3E8.MusicSettingsFrame
-_0xE3E8.MusicSettingsFramePadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.MusicSettingsFramePadding.PaddingBottom = UDim.new(0, 6)
-_0xE3E8.MusicSettingsFramePadding.PaddingLeft = UDim.new(0, 10)
-_0xE3E8.MusicSettingsFramePadding.PaddingRight = UDim.new(0, 10)
-_0xE3E8.MusicSettingsFramePadding.PaddingTop = UDim.new(0, 6)
-_0xE3E8.MusicSettingsFramePadding.Parent = _0xE3E8.MusicSettingsFrame
-local function _0x844C(labelText, defaultVal, layoutOrder, _0x1671)
-local _0xE617 = Instance.new(string.char(70,114,97,109,101))
-_0xE617.BackgroundTransparency = 1
-_0xE617.BorderSizePixel = 0
-_0xE617.LayoutOrder = layoutOrder
-_0xE617.Name = _0x1671 ..string.char(67,111,108)_0xE617.Size = UDim2.new(0.28, 0, 1, 0)
-_0xE617.Parent = _0xE3E8.MusicSettingsFrame
-local _0x5D01 = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0x5D01.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0x5D01.Padding = UDim.new(0, 2)
-_0x5D01.SortOrder = Enum.SortOrder.LayoutOrder
-_0x5D01.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0x5D01.Parent = _0xE617
-local _0x4D5B = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x4D5B.BackgroundTransparency = 1
-_0x4D5B.BorderSizePixel = 0
-_0x4D5B.FontFace = _0x1033
-_0x4D5B.LayoutOrder = 1
-_0x4D5B.Size = UDim2.new(1, 0, 0.5, 0)
-_0x4D5B.Text = labelText
-_0x4D5B.TextColor3 = Color3.fromRGB(180, 180, 180)
-_0x4D5B.TextScaled = true
-_0x4D5B.Parent = _0xE617
-local _0x46F9 = Instance.new(string.char(84,101,120,116,66,111,120))
-_0x46F9.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-_0x46F9.BorderSizePixel = 0
-_0x46F9.FontFace = _0x1033
-_0x46F9.LayoutOrder = 2
-_0x46F9.Name = _0x1671 ..string.char(66,111,120)_0x46F9.Size = UDim2.new(1, 0, 0.5, 0)
-_0x46F9.Text = defaultVal
-_0x46F9.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0x46F9.TextScaled = true
-_0x46F9.Parent = _0xE617
-local _0xE1AF = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE1AF.CornerRadius = UDim.new(0, 4)
-_0xE1AF.Parent = _0x46F9
-local _0xAF31 = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xAF31.Color = Color3.fromRGB(36, 36, 36)
-_0xAF31.Parent = _0x46F9
-_0xE3E8[_0x1671 ..string.char(66,111,120)] = _0x46F9
-return _0x46F9
+<p align="center"><i>Thank you for using Lucid!</i></p>]]
+UI.InfoLabel2.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.InfoLabel2.TextSize = 14
+UI.InfoLabel2.TextWrapped = true
+UI.InfoLabel2.Parent = UI.HomeInfo
+
+UI.InfoLabel2Stroke = Instance.new("UIStroke")
+UI.InfoLabel2Stroke.Color = Color3.fromRGB(0, 64, 180)
+UI.InfoLabel2Stroke.Name = "InfoLabel2Stroke"
+UI.InfoLabel2Stroke.Parent = UI.InfoLabel2
+
+UI.ExeContent = Instance.new("CanvasGroup")
+UI.ExeContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.ExeContent.BorderSizePixel = 0
+UI.ExeContent.LayoutOrder = 1
+UI.ExeContent.Name = "ExeContent"
+UI.ExeContent.Size = UDim2.new(1, 0, 1, 0)
+UI.ExeContent.Visible = false
+UI.ExeContent.Parent = UI.Pages
+
+UI.ExeContentCorner = Instance.new("UICorner")
+UI.ExeContentCorner.CornerRadius = UDim.new(0, 6)
+UI.ExeContentCorner.Parent = UI.ExeContent
+
+UI.ExeContentStroke = Instance.new("UIStroke")
+UI.ExeContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ExeContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.ExeContentStroke.Name = "ExeContentStroke"
+UI.ExeContentStroke.Parent = UI.ExeContent
+
+UI.ExeContentLayout = Instance.new("UIListLayout")
+UI.ExeContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeContentLayout.Padding = UDim.new(0, 4)
+UI.ExeContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ExeContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeContentLayout.Parent = UI.ExeContent
+
+UI.ExeContentPadding = Instance.new("UIPadding")
+UI.ExeContentPadding.PaddingBottom = UDim.new(0, 5)
+UI.ExeContentPadding.PaddingLeft = UDim.new(0, 5)
+UI.ExeContentPadding.PaddingRight = UDim.new(0, 5)
+UI.ExeContentPadding.PaddingTop = UDim.new(0, 5)
+UI.ExeContentPadding.Parent = UI.ExeContent
+
+UI.ExeTabBarWrapper = Instance.new("Frame")
+UI.ExeTabBarWrapper.BackgroundTransparency = 1
+UI.ExeTabBarWrapper.BorderSizePixel = 0
+UI.ExeTabBarWrapper.LayoutOrder = 1
+UI.ExeTabBarWrapper.Name = "ExeTabBarWrapper"
+UI.ExeTabBarWrapper.Size = UDim2.new(1, 0, 0, 30)
+UI.ExeTabBarWrapper.Parent = UI.ExeContent
+
+UI.ExeTabBarWrapperLayout = Instance.new("UIListLayout")
+UI.ExeTabBarWrapperLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ExeTabBarWrapperLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeTabBarWrapperLayout.Padding = UDim.new(0, 4)
+UI.ExeTabBarWrapperLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ExeTabBarWrapperLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeTabBarWrapperLayout.Parent = UI.ExeTabBarWrapper
+
+UI.ExeTabBarSizeCons = Instance.new("UISizeConstraint")
+UI.ExeTabBarSizeCons.MaxSize = Vector2.new(2147483647, 30)
+UI.ExeTabBarSizeCons.MinSize = Vector2.new(0, 30)
+UI.ExeTabBarSizeCons.Parent = UI.ExeTabBarWrapper
+
+UI.ExeTabBarScroll = Instance.new("ScrollingFrame")
+UI.ExeTabBarScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
+UI.ExeTabBarScroll.BackgroundTransparency = 1
+UI.ExeTabBarScroll.BorderSizePixel = 0
+UI.ExeTabBarScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+UI.ExeTabBarScroll.LayoutOrder = 1
+UI.ExeTabBarScroll.Name = "ExeTabBarScroll"
+UI.ExeTabBarScroll.ScrollBarThickness = 3
+UI.ExeTabBarScroll.ScrollingDirection = Enum.ScrollingDirection.X
+UI.ExeTabBarScroll.Size = UDim2.new(1, -38, 1, 0)
+UI.ExeTabBarScroll.Parent = UI.ExeTabBarWrapper
+
+UI.ExeTabBarScrollLayout = Instance.new("UIListLayout")
+UI.ExeTabBarScrollLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ExeTabBarScrollLayout.Padding = UDim.new(0, 4)
+UI.ExeTabBarScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ExeTabBarScrollLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+UI.ExeTabBarScrollLayout.Parent = UI.ExeTabBarScroll
+
+UI.ExeTabBarScrollPadding = Instance.new("UIPadding")
+UI.ExeTabBarScrollPadding.PaddingLeft = UDim.new(0, 2)
+UI.ExeTabBarScrollPadding.Parent = UI.ExeTabBarScroll
+
+UI.AddExeTabBtn = Instance.new("TextButton")
+UI.AddExeTabBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.AddExeTabBtn.BorderSizePixel = 0
+UI.AddExeTabBtn.FontFace = GothamBold
+UI.AddExeTabBtn.LayoutOrder = 2
+UI.AddExeTabBtn.Name = "AddExeTabBtn"
+UI.AddExeTabBtn.Size = UDim2.new(0, 30, 1, 0)
+UI.AddExeTabBtn.Text = "+"
+UI.AddExeTabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.AddExeTabBtn.TextScaled = true
+UI.AddExeTabBtn.Parent = UI.ExeTabBarWrapper
+
+UI.AddExeTabBtnCorner = Instance.new("UICorner")
+UI.AddExeTabBtnCorner.CornerRadius = UDim.new(0, 5)
+UI.AddExeTabBtnCorner.Parent = UI.AddExeTabBtn
+
+UI.AddExeTabBtnStroke = Instance.new("UIStroke")
+UI.AddExeTabBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.AddExeTabBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.AddExeTabBtnStroke.Name = "AddExeTabBtnStroke"
+UI.AddExeTabBtnStroke.Parent = UI.AddExeTabBtn
+
+UI.AddExeTabBtnRatio = Instance.new("UIAspectRatioConstraint")
+UI.AddExeTabBtnRatio.Parent = UI.AddExeTabBtn
+  
+UI.ExeEditorArea = Instance.new("Frame")
+UI.ExeEditorArea.BackgroundTransparency = 1
+UI.ExeEditorArea.BorderSizePixel = 0
+UI.ExeEditorArea.LayoutOrder = 2
+UI.ExeEditorArea.Name = "ExeEditorArea"
+UI.ExeEditorArea.Size = UDim2.new(1, 0, 1, 0)
+UI.ExeEditorArea.Parent = UI.ExeContent
+
+UI.ExeBottomButtons = Instance.new("Frame")
+UI.ExeBottomButtons.BackgroundTransparency = 1
+UI.ExeBottomButtons.BorderSizePixel = 0
+UI.ExeBottomButtons.LayoutOrder = 3
+UI.ExeBottomButtons.Name = "ExeBottomButtons"
+UI.ExeBottomButtons.Size = UDim2.new(1, 0, 0, 38)
+UI.ExeBottomButtons.Visible = false
+UI.ExeBottomButtons.Parent = UI.ExeContent
+
+UI.ExeBottomButtonsSizeCons = Instance.new("UISizeConstraint")
+UI.ExeBottomButtonsSizeCons.MaxSize = Vector2.new(2147483647, 38)
+UI.ExeBottomButtonsSizeCons.Parent = UI.ExeBottomButtons
+
+UI.ExeBottomButtonsLayout = Instance.new("UIListLayout")
+UI.ExeBottomButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ExeBottomButtonsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeBottomButtonsLayout.Padding = UDim.new(0, 6)
+UI.ExeBottomButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ExeBottomButtonsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeBottomButtonsLayout.Parent = UI.ExeBottomButtons
+
+UI.ExeBtn = Instance.new("TextButton")
+UI.ExeBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.ExeBtn.BorderSizePixel = 0
+UI.ExeBtn.FontFace = BuilderSans
+UI.ExeBtn.LayoutOrder = 1
+UI.ExeBtn.Name = "ExeBtn"
+UI.ExeBtn.Size = UDim2.new(0.2, 0, 1, 0)
+UI.ExeBtn.Text = "Execute"
+UI.ExeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ExeBtn.TextScaled = true
+UI.ExeBtn.TextWrapped = true
+UI.ExeBtn.Parent = UI.ExeBottomButtons
+
+UI.ExeBtnCorner = Instance.new("UICorner")
+UI.ExeBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.ExeBtnCorner.Parent = UI.ExeBtn
+
+UI.ExeBtnStroke = Instance.new("UIStroke")
+UI.ExeBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ExeBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.ExeBtnStroke.Name = "ExeBtnStroke"
+UI.ExeBtnStroke.Parent = UI.ExeBtn
+
+UI.ExeBtnPadding = Instance.new("UIPadding")
+UI.ExeBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.ExeBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.ExeBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.ExeBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.ExeBtnPadding.Parent = UI.ExeBtn
+
+UI.ClrBtn = Instance.new("TextButton")
+UI.ClrBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.ClrBtn.BorderSizePixel = 0
+UI.ClrBtn.FontFace = BuilderSans
+UI.ClrBtn.LayoutOrder = 2
+UI.ClrBtn.Name = "ClrBtn"
+UI.ClrBtn.Size = UDim2.new(0.2, 0, 1, 0)
+UI.ClrBtn.Text = "Clear"
+UI.ClrBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ClrBtn.TextScaled = true
+UI.ClrBtn.TextWrapped = true
+UI.ClrBtn.Parent = UI.ExeBottomButtons
+
+UI.ClrBtnCorner = Instance.new("UICorner")
+UI.ClrBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.ClrBtnCorner.Parent = UI.ClrBtn
+
+UI.ClrBtnStroke = Instance.new("UIStroke")
+UI.ClrBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ClrBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.ClrBtnStroke.Name = "ClrBtnStroke"
+UI.ClrBtnStroke.Parent = UI.ClrBtn
+
+UI.ClrBtnPadding = Instance.new("UIPadding")
+UI.ClrBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.ClrBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.ClrBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.ClrBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.ClrBtnPadding.Parent = UI.ClrBtn
+
+UI.CopyBtn = Instance.new("TextButton")
+UI.CopyBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.CopyBtn.BorderSizePixel = 0
+UI.CopyBtn.FontFace = BuilderSans
+UI.CopyBtn.LayoutOrder = 3
+UI.CopyBtn.Name = "CopyBtn"
+UI.CopyBtn.Size = UDim2.new(0.2, 0, 1, 0)
+UI.CopyBtn.Text = "Copy"
+UI.CopyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.CopyBtn.TextScaled = true
+UI.CopyBtn.TextWrapped = true
+UI.CopyBtn.Parent = UI.ExeBottomButtons
+
+UI.CopyBtnCorner = Instance.new("UICorner")
+UI.CopyBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.CopyBtnCorner.Parent = UI.CopyBtn
+
+UI.CopyBtnStroke = Instance.new("UIStroke")
+UI.CopyBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.CopyBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.CopyBtnStroke.Name = "CopyBtnStroke"
+UI.CopyBtnStroke.Parent = UI.CopyBtn
+
+UI.CopyBtnPadding = Instance.new("UIPadding")
+UI.CopyBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.CopyBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.CopyBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.CopyBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.CopyBtnPadding.Parent = UI.CopyBtn
+
+UI.SearchContent = Instance.new("CanvasGroup")
+UI.SearchContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.SearchContent.BorderSizePixel = 0
+UI.SearchContent.LayoutOrder = 2
+UI.SearchContent.Name = "SearchContent"
+UI.SearchContent.Size = UDim2.new(1, 0, 1, 0)
+UI.SearchContent.Visible = false
+UI.SearchContent.Parent = UI.Pages
+
+UI.SearchContentPadding = Instance.new("UIPadding")
+UI.SearchContentPadding.PaddingBottom = UDim.new(0, 6)
+UI.SearchContentPadding.PaddingLeft = UDim.new(0, 6)
+UI.SearchContentPadding.PaddingRight = UDim.new(0, 6)
+UI.SearchContentPadding.PaddingTop = UDim.new(0, 6)
+UI.SearchContentPadding.Parent = UI.SearchContent
+
+UI.SearchContentLayout = Instance.new("UIListLayout")
+UI.SearchContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchContentLayout.Padding = UDim.new(0, 6)
+UI.SearchContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SearchContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchContentLayout.Parent = UI.SearchContent
+
+UI.SearchContentCorner = Instance.new("UICorner")
+UI.SearchContentCorner.CornerRadius = UDim.new(0, 6)
+UI.SearchContentCorner.Parent = UI.SearchContent
+
+UI.SearchContentStroke = Instance.new("UIStroke")
+UI.SearchContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SearchContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.SearchContentStroke.Name = "SearchContentStroke"
+UI.SearchContentStroke.Parent = UI.SearchContent
+
+UI.SearchFrame = Instance.new("Frame")
+UI.SearchFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.SearchFrame.BorderSizePixel = 0
+UI.SearchFrame.LayoutOrder = 1
+UI.SearchFrame.Name = "SearchFrame"
+UI.SearchFrame.Size = UDim2.new(1, 0, 0, 30)
+UI.SearchFrame.Parent = UI.SearchContent
+
+UI.SearchFrameLayout = Instance.new("UIListLayout")
+UI.SearchFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.SearchFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchFrameLayout.Padding = UDim.new(0, 2)
+UI.SearchFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SearchFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchFrameLayout.Parent = UI.SearchFrame
+
+UI.SearchFrameSizeCons = Instance.new("UISizeConstraint")
+UI.SearchFrameSizeCons.MaxSize = Vector2.new(2147483647, 30)
+UI.SearchFrameSizeCons.MinSize = Vector2.new(0, 30)
+UI.SearchFrameSizeCons.Parent = UI.SearchFrame
+
+UI.SearchFrameCorner = Instance.new("UICorner")
+UI.SearchFrameCorner.CornerRadius = UDim.new(0, 6)
+UI.SearchFrameCorner.Parent = UI.SearchFrame
+
+UI.SearchFrameStroke = Instance.new("UIStroke")
+UI.SearchFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SearchFrameStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.SearchFrameStroke.Parent = UI.SearchFrame
+
+UI.SourceBtn = Instance.new("TextButton")
+UI.SourceBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.SourceBtn.BorderSizePixel = 0
+UI.SourceBtn.FontFace = BuilderSans
+UI.SourceBtn.LayoutOrder = 1
+UI.SourceBtn.Name = "SourceBtn"
+UI.SourceBtn.Size = UDim2.new(0.24, 0, 1, 0)
+UI.SourceBtn.Text = "🟢 Source: RScripts"
+UI.SourceBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SourceBtn.TextScaled = true
+UI.SourceBtn.TextWrapped = true
+UI.SourceBtn.Parent = UI.SearchFrame
+
+UI.SourceBtnCorner = Instance.new("UICorner")
+UI.SourceBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.SourceBtnCorner.Parent = UI.SourceBtn
+
+UI.SourceBtnStroke = Instance.new("UIStroke")
+UI.SourceBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SourceBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SourceBtnStroke.Name = "SourceBtnStroke"
+UI.SourceBtnStroke.Parent = UI.SourceBtn
+
+UI.SourceBtnPadding = Instance.new("UIPadding")
+UI.SourceBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.SourceBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.SourceBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.SourceBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.SourceBtnPadding.Parent = UI.SourceBtn
+
+UI.SearchBox = Instance.new("TextBox")
+UI.SearchBox.BackgroundTransparency = 1
+UI.SearchBox.BorderSizePixel = 0
+UI.SearchBox.FontFace = GothamMedium
+UI.SearchBox.LayoutOrder = 2
+UI.SearchBox.Name = "SearchBox"
+UI.SearchBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+UI.SearchBox.PlaceholderText = "Search for scripts..."
+UI.SearchBox.Size = UDim2.new(0.52, 0, 1, 0)
+UI.SearchBox.Text = ""
+UI.SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SearchBox.TextScaled = true
+UI.SearchBox.TextWrapped = true
+UI.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
+UI.SearchBox.Parent = UI.SearchFrame
+
+UI.SearchBoxPadding = Instance.new("UIPadding")
+UI.SearchBoxPadding.PaddingBottom = UDim.new(0, 6)
+UI.SearchBoxPadding.PaddingLeft = UDim.new(0, 6)
+UI.SearchBoxPadding.PaddingRight = UDim.new(0, 6)
+UI.SearchBoxPadding.PaddingTop = UDim.new(0, 6)
+UI.SearchBoxPadding.Parent = UI.SearchBox
+
+UI.FilterBtn = Instance.new("TextButton")
+UI.FilterBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.FilterBtn.BorderSizePixel = 0
+UI.FilterBtn.FontFace = BuilderSans
+UI.FilterBtn.LayoutOrder = 3
+UI.FilterBtn.Name = "FilterBtn"
+UI.FilterBtn.Size = UDim2.new(0.24, 0, 1, 0)
+UI.FilterBtn.Text = "Filter: All"
+UI.FilterBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.FilterBtn.TextScaled = true
+UI.FilterBtn.TextWrapped = true
+UI.FilterBtn.Parent = UI.SearchFrame
+
+UI.FilterBtnCorner = Instance.new("UICorner")
+UI.FilterBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.FilterBtnCorner.Parent = UI.FilterBtn
+
+UI.FilterBtnStroke = Instance.new("UIStroke")
+UI.FilterBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.FilterBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.FilterBtnStroke.Name = "FilterBtnStroke"
+UI.FilterBtnStroke.Parent = UI.FilterBtn
+
+UI.FilterBtnPadding = Instance.new("UIPadding")
+UI.FilterBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.FilterBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.FilterBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.FilterBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.FilterBtnPadding.Parent = UI.FilterBtn
+
+UI.SearchResults = Instance.new("ScrollingFrame")
+UI.SearchResults.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.SearchResults.BackgroundTransparency = 1
+UI.SearchResults.BorderSizePixel = 0
+UI.SearchResults.LayoutOrder = 2
+UI.SearchResults.Name = "SearchResults"
+UI.SearchResults.ScrollBarThickness = 0
+UI.SearchResults.ScrollingDirection = Enum.ScrollingDirection.Y
+UI.SearchResults.Size = UDim2.new(1, 0, 1, 0)
+UI.SearchResults.Parent = UI.SearchContent
+
+UI.SearchResultsPadding = Instance.new("UIPadding")
+UI.SearchResultsPadding.PaddingBottom = UDim.new(0, 2)
+UI.SearchResultsPadding.PaddingLeft = UDim.new(0, 2)
+UI.SearchResultsPadding.PaddingRight = UDim.new(0, 2)
+UI.SearchResultsPadding.PaddingTop = UDim.new(0, 2)
+UI.SearchResultsPadding.Parent = UI.SearchResults
+
+UI.SearchResultsLayout = Instance.new("UIListLayout")
+UI.SearchResultsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchResultsLayout.Padding = UDim.new(0, 8)
+UI.SearchResultsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SearchResultsLayout.Parent = UI.SearchResults
+
+UI.NoResultsLabel = Instance.new("TextLabel")
+UI.NoResultsLabel.BackgroundTransparency = 1
+UI.NoResultsLabel.BorderSizePixel = 0
+UI.NoResultsLabel.FontFace = GothamMedium
+UI.NoResultsLabel.Name = "NoResultsLabel"
+UI.NoResultsLabel.Size = UDim2.new(1, 0, 0, 30)
+UI.NoResultsLabel.Text = "No scripts found matching your query."
+UI.NoResultsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NoResultsLabel.TextScaled = true
+UI.NoResultsLabel.TextWrapped = true
+UI.NoResultsLabel.Visible = false
+UI.NoResultsLabel.Parent = UI.SearchResults
+
+UI.NoResultsLabelStroke = Instance.new("UIStroke")
+UI.NoResultsLabelStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.NoResultsLabelStroke.Name = "NoResultsLabelStroke"
+UI.NoResultsLabelStroke.Parent = UI.NoResultsLabel
+
+UI.SearchResultTemplate = Instance.new("CanvasGroup")
+UI.SearchResultTemplate.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.SearchResultTemplate.BorderSizePixel = 0
+UI.SearchResultTemplate.Name = "SearchResultTemplate"
+UI.SearchResultTemplate.Size = UDim2.new(0, 358, 0, 132)
+UI.SearchResultTemplate.Visible = false
+UI.SearchResultTemplate.Parent = UI.SearchResults
+
+UI.SearchResultTemplateCorner = Instance.new("UICorner")
+UI.SearchResultTemplateCorner.CornerRadius = UDim.new(0, 6)
+UI.SearchResultTemplateCorner.Parent = UI.SearchResultTemplate
+
+UI.SearchResultTemplateStroke = Instance.new("UIStroke")
+UI.SearchResultTemplateStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SearchResultTemplateStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SearchResultTemplateStroke.Name = "SearchResultTemplateStroke"
+UI.SearchResultTemplateStroke.Parent = UI.SearchResultTemplate
+
+UI.ScriptImage = Instance.new("ImageLabel")
+UI.ScriptImage.BackgroundTransparency = 1
+UI.ScriptImage.BorderSizePixel = 0
+UI.ScriptImage.LayoutOrder = 1
+UI.ScriptImage.Name = "ScriptImage"
+UI.ScriptImage.ScaleType = Enum.ScaleType.Crop
+UI.ScriptImage.Size = UDim2.new(1, 0, 0.7, -2)
+UI.ScriptImage.Parent = UI.SearchResultTemplate
+
+UI.Container = Instance.new("Frame")
+UI.Container.BackgroundTransparency = 1
+UI.Container.BorderSizePixel = 0
+UI.Container.LayoutOrder = 2
+UI.Container.Name = "Container"
+UI.Container.Size = UDim2.new(1, 0, 1, 0)
+UI.Container.Parent = UI.SearchResultTemplate
+
+UI.ScriptName = Instance.new("TextLabel")
+UI.ScriptName.BackgroundTransparency = 1
+UI.ScriptName.BorderSizePixel = 0
+UI.ScriptName.FontFace = GothamMedium
+UI.ScriptName.Name = "ScriptName"
+UI.ScriptName.Position = UDim2.new(0, 4, 0, 0)
+UI.ScriptName.Size = UDim2.new(0, 350, 0, 30)
+UI.ScriptName.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ScriptName.TextScaled = true
+UI.ScriptName.TextWrapped = true
+UI.ScriptName.TextXAlignment = Enum.TextXAlignment.Left
+UI.ScriptName.Parent = UI.Container
+
+UI.ScriptNameStroke = Instance.new("UIStroke")
+UI.ScriptNameStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.ScriptNameStroke.Name = "ScriptNameStroke"
+UI.ScriptNameStroke.Parent = UI.ScriptName
+
+UI.ScriptNameCorner = Instance.new("UICorner")
+UI.ScriptNameCorner.CornerRadius = UDim.new(0, 6)
+UI.ScriptNameCorner.Parent = UI.ScriptName
+
+UI.ScriptActions = Instance.new("Frame")
+UI.ScriptActions.BackgroundTransparency = 1
+UI.ScriptActions.BorderSizePixel = 0
+UI.ScriptActions.Name = "ScriptActions"
+UI.ScriptActions.Position = UDim2.new(0, 0, 0, 92)
+UI.ScriptActions.Size = UDim2.new(1, 0, 0.3, 0)
+UI.ScriptActions.Parent = UI.Container
+
+UI.ScriptActionsPadding = Instance.new("UIPadding")
+UI.ScriptActionsPadding.PaddingBottom = UDim.new(0, 6)
+UI.ScriptActionsPadding.PaddingLeft = UDim.new(0, 6)
+UI.ScriptActionsPadding.PaddingRight = UDim.new(0, 6)
+UI.ScriptActionsPadding.PaddingTop = UDim.new(0, 4)
+UI.ScriptActionsPadding.Parent = UI.ScriptActions
+
+UI.ScriptActionsLayout = Instance.new("UIListLayout")
+UI.ScriptActionsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ScriptActionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ScriptActionsLayout.Padding = UDim.new(0, 6)
+UI.ScriptActionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ScriptActionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ScriptActionsLayout.Parent = UI.ScriptActions
+
+UI.RunScript = Instance.new("TextButton")
+UI.RunScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.RunScript.BorderSizePixel = 0
+UI.RunScript.FontFace = GothamMedium
+UI.RunScript.LayoutOrder = 1
+UI.RunScript.Name = "RunScript"
+UI.RunScript.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.RunScript.Text = "Run"
+UI.RunScript.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.RunScript.TextScaled = true
+UI.RunScript.TextWrapped = true
+UI.RunScript.Parent = UI.ScriptActions
+
+UI.RunScriptStroke = Instance.new("UIStroke")
+UI.RunScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.RunScriptStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.RunScriptStroke.Name = "RunScriptStroke"
+UI.RunScriptStroke.Parent = UI.RunScript
+
+UI.RunScriptCorner = Instance.new("UICorner")
+UI.RunScriptCorner.CornerRadius = UDim.new(0, 6)
+UI.RunScriptCorner.Parent = UI.RunScript
+
+UI.RunScriptPadding = Instance.new("UIPadding")
+UI.RunScriptPadding.PaddingBottom = UDim.new(0, 2)
+UI.RunScriptPadding.PaddingLeft = UDim.new(0, 2)
+UI.RunScriptPadding.PaddingRight = UDim.new(0, 2)
+UI.RunScriptPadding.PaddingTop = UDim.new(0, 2)
+UI.RunScriptPadding.Parent = UI.RunScript
+
+UI.CopyScriptBtn = Instance.new("TextButton")
+UI.CopyScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.CopyScriptBtn.BorderSizePixel = 0
+UI.CopyScriptBtn.FontFace = GothamMedium
+UI.CopyScriptBtn.LayoutOrder = 2
+UI.CopyScriptBtn.Name = "CopyScriptBtn"
+UI.CopyScriptBtn.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.CopyScriptBtn.Text = "Copy"
+UI.CopyScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.CopyScriptBtn.TextScaled = true
+UI.CopyScriptBtn.TextWrapped = true
+UI.CopyScriptBtn.Parent = UI.ScriptActions
+
+UI.CopyScriptBtnCorner = Instance.new("UICorner")
+UI.CopyScriptBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.CopyScriptBtnCorner.Parent = UI.CopyScriptBtn
+
+UI.CopyScriptBtnStroke = Instance.new("UIStroke")
+UI.CopyScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.CopyScriptBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.CopyScriptBtnStroke.Name = "CopyScriptBtnStroke"
+UI.CopyScriptBtnStroke.Parent = UI.CopyScriptBtn
+
+UI.CopyScriptBtnPadding = Instance.new("UIPadding")
+UI.CopyScriptBtnPadding.PaddingBottom = UDim.new(0, 2)
+UI.CopyScriptBtnPadding.PaddingLeft = UDim.new(0, 2)
+UI.CopyScriptBtnPadding.PaddingRight = UDim.new(0, 2)
+UI.CopyScriptBtnPadding.PaddingTop = UDim.new(0, 2)
+UI.CopyScriptBtnPadding.Parent = UI.CopyScriptBtn
+
+UI.SaveScriptBtn = Instance.new("TextButton")
+UI.SaveScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.SaveScriptBtn.BorderSizePixel = 0
+UI.SaveScriptBtn.FontFace = GothamMedium
+UI.SaveScriptBtn.LayoutOrder = 3
+UI.SaveScriptBtn.Name = "SaveScriptBtn"
+UI.SaveScriptBtn.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.SaveScriptBtn.Text = "Save"
+UI.SaveScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SaveScriptBtn.TextScaled = true
+UI.SaveScriptBtn.TextWrapped = true
+UI.SaveScriptBtn.Parent = UI.ScriptActions
+
+UI.SaveScriptBtnCorner = Instance.new("UICorner")
+UI.SaveScriptBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.SaveScriptBtnCorner.Parent = UI.SaveScriptBtn
+
+UI.SaveScriptBtnPadding = Instance.new("UIPadding")
+UI.SaveScriptBtnPadding.PaddingBottom = UDim.new(0, 2)
+UI.SaveScriptBtnPadding.PaddingLeft = UDim.new(0, 2)
+UI.SaveScriptBtnPadding.PaddingRight = UDim.new(0, 2)
+UI.SaveScriptBtnPadding.PaddingTop = UDim.new(0, 2)
+UI.SaveScriptBtnPadding.Parent = UI.SaveScriptBtn
+
+UI.SaveScriptBtnStroke = Instance.new("UIStroke")
+UI.SaveScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SaveScriptBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SaveScriptBtnStroke.Name = "SaveScriptBtnStroke"
+UI.SaveScriptBtnStroke.Parent = UI.SaveScriptBtn
+
+UI.PageButtons = Instance.new("Frame")
+UI.PageButtons.BackgroundTransparency = 1
+UI.PageButtons.BorderSizePixel = 0
+UI.PageButtons.LayoutOrder = 3
+UI.PageButtons.Name = "PageButtons"
+UI.PageButtons.Size = UDim2.new(1, 0, 0, 38)
+UI.PageButtons.Parent = UI.SearchContent
+
+UI.PageButtonsLayout = Instance.new("UIListLayout")
+UI.PageButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.PageButtonsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.PageButtonsLayout.Padding = UDim.new(0, 6)
+UI.PageButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.PageButtonsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.PageButtonsLayout.Parent = UI.PageButtons
+
+UI.PageButtonsSizeCons = Instance.new("UISizeConstraint")
+UI.PageButtonsSizeCons.MaxSize = Vector2.new(2147483647, 38)
+UI.PageButtonsSizeCons.Parent = UI.PageButtons
+
+UI.PrevBtn = Instance.new("TextButton")
+UI.PrevBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.PrevBtn.BorderSizePixel = 0
+UI.PrevBtn.FontFace = BuilderSans
+UI.PrevBtn.LayoutOrder = 1
+UI.PrevBtn.Name = "PrevBtn"
+UI.PrevBtn.Size = UDim2.new(0.25, 0, 1, 0)
+UI.PrevBtn.Text = "Previous"
+UI.PrevBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.PrevBtn.TextScaled = true
+UI.PrevBtn.TextWrapped = true
+UI.PrevBtn.Parent = UI.PageButtons
+
+UI.PrevBtnCorner = Instance.new("UICorner")
+UI.PrevBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.PrevBtnCorner.Parent = UI.PrevBtn
+
+UI.PrevBtnStroke = Instance.new("UIStroke")
+UI.PrevBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.PrevBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.PrevBtnStroke.Name = "PrevBtnStroke"
+UI.PrevBtnStroke.Parent = UI.PrevBtn
+
+UI.PrevBtnPadding = Instance.new("UIPadding")
+UI.PrevBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.PrevBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.PrevBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.PrevBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.PrevBtnPadding.Parent = UI.PrevBtn
+
+UI.PageFiller = Instance.new("Frame")
+UI.PageFiller.BackgroundTransparency = 1
+UI.PageFiller.BorderSizePixel = 0
+UI.PageFiller.LayoutOrder = 2
+UI.PageFiller.Name = "PageFiller"
+UI.PageFiller.Size = UDim2.new(0.5, 0, 1, 0)
+UI.PageFiller.Parent = UI.PageButtons
+
+UI.NextBtn = Instance.new("TextButton")
+UI.NextBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.NextBtn.BorderSizePixel = 0
+UI.NextBtn.FontFace = BuilderSans
+UI.NextBtn.LayoutOrder = 3
+UI.NextBtn.Name = "NextBtn"
+UI.NextBtn.Size = UDim2.new(0.25, 0, 1, 0)
+UI.NextBtn.Text = "Next"
+UI.NextBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NextBtn.TextScaled = true
+UI.NextBtn.TextWrapped = true
+UI.NextBtn.Parent = UI.PageButtons
+
+UI.NextBtnCorner = Instance.new("UICorner")
+UI.NextBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.NextBtnCorner.Parent = UI.NextBtn
+
+UI.NextBtnStroke = Instance.new("UIStroke")
+UI.NextBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.NextBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.NextBtnStroke.Name = "NextBtnStroke"
+UI.NextBtnStroke.Parent = UI.NextBtn
+
+UI.NextBtnPadding = Instance.new("UIPadding")
+UI.NextBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.NextBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.NextBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.NextBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.NextBtnPadding.Parent = UI.NextBtn
+
+UI.ScriptsContent = Instance.new("CanvasGroup")
+UI.ScriptsContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.ScriptsContent.BorderSizePixel = 0
+UI.ScriptsContent.LayoutOrder = 3
+UI.ScriptsContent.Name = "ScriptsContent"
+UI.ScriptsContent.Size = UDim2.new(1, 0, 1, 0)
+UI.ScriptsContent.Visible = false
+UI.ScriptsContent.Parent = UI.Pages
+
+UI.ScriptsContentCorner = Instance.new("UICorner")
+UI.ScriptsContentCorner.CornerRadius = UDim.new(0, 6)
+UI.ScriptsContentCorner.Parent = UI.ScriptsContent
+
+UI.ScriptsContentStroke = Instance.new("UIStroke")
+UI.ScriptsContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ScriptsContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.ScriptsContentStroke.Name = "ScriptsContentStroke"
+UI.ScriptsContentStroke.Parent = UI.ScriptsContent
+
+UI.ScriptsContentLayout = Instance.new("UIListLayout")
+UI.ScriptsContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ScriptsContentLayout.Padding = UDim.new(0, 6)
+UI.ScriptsContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ScriptsContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ScriptsContentLayout.Parent = UI.ScriptsContent
+
+UI.ScriptsContentPadding = Instance.new("UIPadding")
+UI.ScriptsContentPadding.PaddingBottom = UDim.new(0, 6)
+UI.ScriptsContentPadding.PaddingLeft = UDim.new(0, 6)
+UI.ScriptsContentPadding.PaddingRight = UDim.new(0, 6)
+UI.ScriptsContentPadding.PaddingTop = UDim.new(0, 6)
+UI.ScriptsContentPadding.Parent = UI.ScriptsContent
+
+UI.SavedScriptsSearchFrame = Instance.new("Frame")
+UI.SavedScriptsSearchFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.SavedScriptsSearchFrame.BorderSizePixel = 0
+UI.SavedScriptsSearchFrame.LayoutOrder = 1
+UI.SavedScriptsSearchFrame.Name = "SavedScriptsSearchFrame"
+UI.SavedScriptsSearchFrame.Size = UDim2.new(1, 0, 0, 30)
+UI.SavedScriptsSearchFrame.Parent = UI.ScriptsContent
+
+UI.SavedScriptsSearchFrameLayout = Instance.new("UIListLayout")
+UI.SavedScriptsSearchFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.SavedScriptsSearchFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptsSearchFrameLayout.Padding = UDim.new(0, 2)
+UI.SavedScriptsSearchFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptsSearchFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptsSearchFrameLayout.Parent = UI.SavedScriptsSearchFrame
+
+UI.SavedScriptsSearchFrameSizeCons = Instance.new("UISizeConstraint")
+UI.SavedScriptsSearchFrameSizeCons.MaxSize = Vector2.new(2147483647, 30)
+UI.SavedScriptsSearchFrameSizeCons.MinSize = Vector2.new(0, 30)
+UI.SavedScriptsSearchFrameSizeCons.Parent = UI.SavedScriptsSearchFrame
+
+UI.SavedScriptsSearchFrameCorner = Instance.new("UICorner")
+UI.SavedScriptsSearchFrameCorner.CornerRadius = UDim.new(0, 6)
+UI.SavedScriptsSearchFrameCorner.Parent = UI.SavedScriptsSearchFrame
+
+UI.SavedScriptsSearchFrameStroke = Instance.new("UIStroke")
+UI.SavedScriptsSearchFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SavedScriptsSearchFrameStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.SavedScriptsSearchFrameStroke.Parent = UI.SavedScriptsSearchFrame
+
+UI.SearchBox2 = Instance.new("TextBox")
+UI.SearchBox2.BackgroundTransparency = 1
+UI.SearchBox2.BorderSizePixel = 0
+UI.SearchBox2.FontFace = GothamMedium
+UI.SearchBox2.LayoutOrder = 1
+UI.SearchBox2.Name = "SearchBox2"
+UI.SearchBox2.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+UI.SearchBox2.PlaceholderText = "Search saved scripts..."
+UI.SearchBox2.Size = UDim2.new(0.95, 0, 1, 0)
+UI.SearchBox2.Text = ""
+UI.SearchBox2.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SearchBox2.TextScaled = true
+UI.SearchBox2.TextWrapped = true
+UI.SearchBox2.TextXAlignment = Enum.TextXAlignment.Left
+UI.SearchBox2.Parent = UI.SavedScriptsSearchFrame
+
+UI.SearchBox2Padding = Instance.new("UIPadding")
+UI.SearchBox2Padding.PaddingBottom = UDim.new(0, 6)
+UI.SearchBox2Padding.PaddingLeft = UDim.new(0, 6)
+UI.SearchBox2Padding.PaddingRight = UDim.new(0, 6)
+UI.SearchBox2Padding.PaddingTop = UDim.new(0, 6)
+UI.SearchBox2Padding.Parent = UI.SearchBox2
+
+UI.NewScriptBtn = Instance.new("TextButton")
+UI.NewScriptBtn.BackgroundTransparency = 1
+UI.NewScriptBtn.BorderSizePixel = 0
+UI.NewScriptBtn.FontFace = GothamMedium
+UI.NewScriptBtn.LayoutOrder = 2
+UI.NewScriptBtn.Name = "NewScriptBtn"
+UI.NewScriptBtn.Size = UDim2.new(0.05, 0, 1, 0)
+UI.NewScriptBtn.Text = "+"
+UI.NewScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NewScriptBtn.TextScaled = true
+UI.NewScriptBtn.TextWrapped = true
+UI.NewScriptBtn.Parent = UI.SavedScriptsSearchFrame
+
+UI.NewScriptBtnStroke = Instance.new("UIStroke")
+UI.NewScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.NewScriptBtnStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.NewScriptBtnStroke.Parent = UI.NewScriptBtn
+
+UI.NewScriptBtnRatio = Instance.new("UIAspectRatioConstraint")
+UI.NewScriptBtnRatio.Parent = UI.NewScriptBtn
+
+UI.NewScriptBtnCorner = Instance.new("UICorner")
+UI.NewScriptBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.NewScriptBtnCorner.Parent = UI.NewScriptBtn
+
+UI.SavedScriptsScroll = Instance.new("ScrollingFrame")
+UI.SavedScriptsScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.SavedScriptsScroll.BackgroundTransparency = 1
+UI.SavedScriptsScroll.BorderSizePixel = 0
+UI.SavedScriptsScroll.LayoutOrder = 2
+UI.SavedScriptsScroll.Name = "SavedScriptsScroll"
+UI.SavedScriptsScroll.ScrollBarThickness = 0
+UI.SavedScriptsScroll.ScrollingDirection = Enum.ScrollingDirection.Y
+UI.SavedScriptsScroll.Size = UDim2.new(1, 0, 1, 0)
+UI.SavedScriptsScroll.Parent = UI.ScriptsContent
+
+UI.SavedScriptsScrollPadding = Instance.new("UIPadding")
+UI.SavedScriptsScrollPadding.PaddingBottom = UDim.new(0, 2)
+UI.SavedScriptsScrollPadding.PaddingLeft = UDim.new(0, 2)
+UI.SavedScriptsScrollPadding.PaddingRight = UDim.new(0, 2)
+UI.SavedScriptsScrollPadding.PaddingTop = UDim.new(0, 2)
+UI.SavedScriptsScrollPadding.Parent = UI.SavedScriptsScroll
+
+UI.SavedScriptsScrollLayout = Instance.new("UIListLayout")
+UI.SavedScriptsScrollLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptsScrollLayout.Padding = UDim.new(0, 8)
+UI.SavedScriptsScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptsScrollLayout.Parent = UI.SavedScriptsScroll
+
+UI.NoSavedScriptsLabel = Instance.new("TextLabel")
+UI.NoSavedScriptsLabel.BackgroundTransparency = 1
+UI.NoSavedScriptsLabel.BorderSizePixel = 0
+UI.NoSavedScriptsLabel.FontFace = GothamMedium
+UI.NoSavedScriptsLabel.Name = "NoSavedScriptsLabel"
+UI.NoSavedScriptsLabel.Size = UDim2.new(1, 0, 0, 60)
+UI.NoSavedScriptsLabel.Text = "No Saved Scripts\n\nSave some scripts to see them here."
+UI.NoSavedScriptsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NoSavedScriptsLabel.TextScaled = true
+UI.NoSavedScriptsLabel.TextWrapped = true
+UI.NoSavedScriptsLabel.Visible = false
+UI.NoSavedScriptsLabel.Parent = UI.SavedScriptsScroll
+
+UI.NoSavedScriptsLabelStroke = Instance.new("UIStroke")
+UI.NoSavedScriptsLabelStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.NoSavedScriptsLabelStroke.Name = "NoSavedScriptsLabelStroke"
+UI.NoSavedScriptsLabelStroke.Parent = UI.NoSavedScriptsLabel
+
+UI.SavedScriptTemplate = Instance.new("Frame")
+UI.SavedScriptTemplate.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.SavedScriptTemplate.BorderSizePixel = 0
+UI.SavedScriptTemplate.Name = "SavedScriptTemplate"
+UI.SavedScriptTemplate.Size = UDim2.new(0, 166, 0, 64)
+UI.SavedScriptTemplate.Visible = false
+UI.SavedScriptTemplate.Parent = UI.SavedScriptsScroll
+
+UI.SavedScriptTemplateCorner = Instance.new("UICorner")
+UI.SavedScriptTemplateCorner.CornerRadius = UDim.new(0, 6)
+UI.SavedScriptTemplateCorner.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptTemplateStroke = Instance.new("UIStroke")
+UI.SavedScriptTemplateStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SavedScriptTemplateStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SavedScriptTemplateStroke.Name = "SavedScriptTemplateStroke"
+UI.SavedScriptTemplateStroke.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptTemplateLayout = Instance.new("UIListLayout")
+UI.SavedScriptTemplateLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.SavedScriptTemplateLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptTemplateLayout.Padding = UDim.new(0, 2)
+UI.SavedScriptTemplateLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptTemplateLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptTemplateLayout.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptInfo = Instance.new("Frame")
+UI.SavedScriptInfo.BackgroundTransparency = 1
+UI.SavedScriptInfo.BorderSizePixel = 0
+UI.SavedScriptInfo.LayoutOrder = 1
+UI.SavedScriptInfo.Name = "SavedScriptInfo"
+UI.SavedScriptInfo.Size = UDim2.new(0, 380, 0, 12)
+UI.SavedScriptInfo.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptInfoPadding = Instance.new("UIPadding")
+UI.SavedScriptInfoPadding.PaddingBottom = UDim.new(0, 6)
+UI.SavedScriptInfoPadding.PaddingLeft = UDim.new(0, 6)
+UI.SavedScriptInfoPadding.PaddingRight = UDim.new(0, 6)
+UI.SavedScriptInfoPadding.PaddingTop = UDim.new(0, 6)
+UI.SavedScriptInfoPadding.Parent = UI.SavedScriptInfo
+
+UI.SavedScriptInfoLayout = Instance.new("UIListLayout")
+UI.SavedScriptInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptInfoLayout.Padding = UDim.new(0, 2)
+UI.SavedScriptInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptInfoLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptInfoLayout.Parent = UI.SavedScriptInfo
+
+UI.SavedScriptTitle = Instance.new("TextLabel")
+UI.SavedScriptTitle.BackgroundTransparency = 1
+UI.SavedScriptTitle.BorderSizePixel = 0
+UI.SavedScriptTitle.FontFace = GothamBold
+UI.SavedScriptTitle.LayoutOrder = 1
+UI.SavedScriptTitle.Name = "SavedScriptTitle"
+UI.SavedScriptTitle.Size = UDim2.new(1, 0, 0.6, 0)
+UI.SavedScriptTitle.Text = "Script name"
+UI.SavedScriptTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SavedScriptTitle.TextScaled = true
+UI.SavedScriptTitle.TextWrapped = true
+UI.SavedScriptTitle.TextXAlignment = Enum.TextXAlignment.Left
+UI.SavedScriptTitle.Parent = UI.SavedScriptInfo
+
+UI.SavedScriptDesc = Instance.new("TextLabel")
+UI.SavedScriptDesc.BackgroundTransparency = 1
+UI.SavedScriptDesc.BorderSizePixel = 0
+UI.SavedScriptDesc.FontFace = GothamMedium
+UI.SavedScriptDesc.LayoutOrder = 2
+UI.SavedScriptDesc.Name = "SavedScriptDesc"
+UI.SavedScriptDesc.Size = UDim2.new(1, 0, 0.4, 0)
+UI.SavedScriptDesc.Text = "Script description"
+UI.SavedScriptDesc.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SavedScriptDesc.TextScaled = true
+UI.SavedScriptDesc.TextWrapped = true
+UI.SavedScriptDesc.TextXAlignment = Enum.TextXAlignment.Left
+UI.SavedScriptDesc.Parent = UI.SavedScriptInfo
+
+UI.SavedScriptActions = Instance.new("Frame")
+UI.SavedScriptActions.BackgroundTransparency = 1
+UI.SavedScriptActions.BorderSizePixel = 0
+UI.SavedScriptActions.LayoutOrder = 2
+UI.SavedScriptActions.Name = "SavedScriptActions"
+UI.SavedScriptActions.Size = UDim2.new(0, 0, 0, 12)
+UI.SavedScriptActions.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptActionsPadding = Instance.new("UIPadding")
+UI.SavedScriptActionsPadding.PaddingBottom = UDim.new(0, 4)
+UI.SavedScriptActionsPadding.PaddingLeft = UDim.new(0, 4)
+UI.SavedScriptActionsPadding.PaddingRight = UDim.new(0, 4)
+UI.SavedScriptActionsPadding.PaddingTop = UDim.new(0, 4)
+UI.SavedScriptActionsPadding.Parent = UI.SavedScriptActions
+
+UI.SavedScriptActionsLayout = Instance.new("UIListLayout")
+UI.SavedScriptActionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptActionsLayout.Padding = UDim.new(0, 6)
+UI.SavedScriptActionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptActionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptActionsLayout.Parent = UI.SavedScriptActions
+
+UI.RunSavedScript = Instance.new("TextButton")
+UI.RunSavedScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.RunSavedScript.BorderSizePixel = 0
+UI.RunSavedScript.FontFace = GothamMedium
+UI.RunSavedScript.LayoutOrder = 1
+UI.RunSavedScript.Name = "RunSavedScript"
+UI.RunSavedScript.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.RunSavedScript.Text = "Run"
+UI.RunSavedScript.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.RunSavedScript.TextScaled = true
+UI.RunSavedScript.TextWrapped = true
+UI.RunSavedScript.Parent = UI.SavedScriptActions
+
+UI.RunSavedScriptStroke = Instance.new("UIStroke")
+UI.RunSavedScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.RunSavedScriptStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.RunSavedScriptStroke.Name = "RunSavedScriptStroke"
+UI.RunSavedScriptStroke.Parent = UI.RunSavedScript
+
+UI.RunSavedScriptCorner = Instance.new("UICorner")
+UI.RunSavedScriptCorner.CornerRadius = UDim.new(0, 6)
+UI.RunSavedScriptCorner.Parent = UI.RunSavedScript
+
+UI.RunSavedScriptPadding = Instance.new("UIPadding")
+UI.RunSavedScriptPadding.PaddingBottom = UDim.new(0, 2)
+UI.RunSavedScriptPadding.PaddingLeft = UDim.new(0, 2)
+UI.RunSavedScriptPadding.PaddingRight = UDim.new(0, 2)
+UI.RunSavedScriptPadding.PaddingTop = UDim.new(0, 2)
+UI.RunSavedScriptPadding.Parent = UI.RunSavedScript
+
+UI.DeleteSavedScript = Instance.new("TextButton")
+UI.DeleteSavedScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.DeleteSavedScript.BorderSizePixel = 0
+UI.DeleteSavedScript.FontFace = GothamMedium
+UI.DeleteSavedScript.LayoutOrder = 2
+UI.DeleteSavedScript.Name = "DeleteSavedScript"
+UI.DeleteSavedScript.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.DeleteSavedScript.Text = "Delete"
+UI.DeleteSavedScript.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.DeleteSavedScript.TextScaled = true
+UI.DeleteSavedScript.TextWrapped = true
+UI.DeleteSavedScript.Parent = UI.SavedScriptActions
+
+UI.DeleteSavedScriptCorner = Instance.new("UICorner")
+UI.DeleteSavedScriptCorner.CornerRadius = UDim.new(0, 6)
+UI.DeleteSavedScriptCorner.Parent = UI.DeleteSavedScript
+
+UI.DeleteSavedScriptStroke = Instance.new("UIStroke")
+UI.DeleteSavedScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.DeleteSavedScriptStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.DeleteSavedScriptStroke.Name = "DeleteSavedScriptStroke"
+UI.DeleteSavedScriptStroke.Parent = UI.DeleteSavedScript
+
+UI.DeleteSavedScriptPadding = Instance.new("UIPadding")
+UI.DeleteSavedScriptPadding.PaddingBottom = UDim.new(0, 2)
+UI.DeleteSavedScriptPadding.PaddingLeft = UDim.new(0, 2)
+UI.DeleteSavedScriptPadding.PaddingRight = UDim.new(0, 2)
+UI.DeleteSavedScriptPadding.PaddingTop = UDim.new(0, 2)
+UI.DeleteSavedScriptPadding.Parent = UI.DeleteSavedScript
+
+UI.MusicContent = Instance.new("CanvasGroup")
+UI.MusicContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.MusicContent.BorderSizePixel = 0
+UI.MusicContent.LayoutOrder = 5
+UI.MusicContent.Name = "MusicContent"
+UI.MusicContent.Size = UDim2.new(1, 0, 1, 0)
+UI.MusicContent.Visible = false
+UI.MusicContent.Parent = UI.Pages
+
+UI.MusicContentCorner = Instance.new("UICorner")
+UI.MusicContentCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicContentCorner.Parent = UI.MusicContent
+
+UI.MusicContentStroke = Instance.new("UIStroke")
+UI.MusicContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.MusicContentStroke.Name = "MusicContentStroke"
+UI.MusicContentStroke.Parent = UI.MusicContent
+
+UI.MusicContentLayout = Instance.new("UIListLayout")
+UI.MusicContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicContentLayout.Padding = UDim.new(0, 6)
+UI.MusicContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicContentLayout.Parent = UI.MusicContent
+
+UI.MusicContentPadding = Instance.new("UIPadding")
+UI.MusicContentPadding.PaddingBottom = UDim.new(0, 8)
+UI.MusicContentPadding.PaddingLeft = UDim.new(0, 8)
+UI.MusicContentPadding.PaddingRight = UDim.new(0, 8)
+UI.MusicContentPadding.PaddingTop = UDim.new(0, 8)
+UI.MusicContentPadding.Parent = UI.MusicContent
+
+UI.MusicNowPlaying = Instance.new("TextLabel")
+UI.MusicNowPlaying.AutomaticSize = Enum.AutomaticSize.Y
+UI.MusicNowPlaying.BackgroundTransparency = 1
+UI.MusicNowPlaying.BorderSizePixel = 0
+UI.MusicNowPlaying.FontFace = GothamBold
+UI.MusicNowPlaying.LayoutOrder = 1
+UI.MusicNowPlaying.Name = "MusicNowPlaying"
+UI.MusicNowPlaying.Size = UDim2.new(1, 0, 0, 24)
+UI.MusicNowPlaying.Text = "No song playing"
+UI.MusicNowPlaying.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.MusicNowPlaying.TextScaled = false
+UI.MusicNowPlaying.TextSize = 24
+UI.MusicNowPlaying.TextWrapped = true
+UI.MusicNowPlaying.TextXAlignment = Enum.TextXAlignment.Center
+UI.MusicNowPlaying.Parent = UI.MusicContent
+
+UI.MusicNowPlayingStroke = Instance.new("UIStroke")
+UI.MusicNowPlayingStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.MusicNowPlayingStroke.Parent = UI.MusicNowPlaying
+
+UI.MusicSliderArea = Instance.new("Frame")
+UI.MusicSliderArea.BackgroundTransparency = 1
+UI.MusicSliderArea.BorderSizePixel = 0
+UI.MusicSliderArea.LayoutOrder = 2
+UI.MusicSliderArea.Name = "MusicSliderArea"
+UI.MusicSliderArea.Size = UDim2.new(1, 0, 0, 20)
+UI.MusicSliderArea.Parent = UI.MusicContent
+
+UI.MusicSliderAreaSizeCons = Instance.new("UISizeConstraint")
+UI.MusicSliderAreaSizeCons.MaxSize = Vector2.new(2147483647, 20)
+UI.MusicSliderAreaSizeCons.Parent = UI.MusicSliderArea
+
+UI.MusicSliderBar = Instance.new("Frame")
+UI.MusicSliderBar.AnchorPoint = Vector2.new(0, 0.5)
+UI.MusicSliderBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+UI.MusicSliderBar.BorderSizePixel = 0
+UI.MusicSliderBar.Name = "MusicSliderBar"
+UI.MusicSliderBar.Position = UDim2.new(0, 0, 0.5, 0)
+UI.MusicSliderBar.Size = UDim2.new(1, 0, 0, 6)
+UI.MusicSliderBar.Parent = UI.MusicSliderArea
+
+UI.MusicSliderBarCorner = Instance.new("UICorner")
+UI.MusicSliderBarCorner.CornerRadius = UDim.new(0, 3)
+UI.MusicSliderBarCorner.Parent = UI.MusicSliderBar
+
+UI.MusicSliderFill = Instance.new("Frame")
+UI.MusicSliderFill.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicSliderFill.BorderSizePixel = 0
+UI.MusicSliderFill.Name = "MusicSliderFill"
+UI.MusicSliderFill.Size = UDim2.new(0, 0, 1, 0)
+UI.MusicSliderFill.Parent = UI.MusicSliderBar
+
+UI.MusicSliderFillCorner = Instance.new("UICorner")
+UI.MusicSliderFillCorner.CornerRadius = UDim.new(0, 3)
+UI.MusicSliderFillCorner.Parent = UI.MusicSliderFill
+
+UI.MusicSliderKnob = Instance.new("Frame")
+UI.MusicSliderKnob.AnchorPoint = Vector2.new(0, 0)
+UI.MusicSliderKnob.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicSliderKnob.BorderSizePixel = 0
+UI.MusicSliderKnob.Name = "MusicSliderKnob"
+UI.MusicSliderKnob.Position = UDim2.new(0, -6, 0.5, -6)
+UI.MusicSliderKnob.Size = UDim2.new(0, 12, 0, 12)
+UI.MusicSliderKnob.Parent = UI.MusicSliderBar
+
+UI.MusicSliderKnobCorner = Instance.new("UICorner")
+UI.MusicSliderKnobCorner.CornerRadius = UDim.new(1, 0)
+UI.MusicSliderKnobCorner.Parent = UI.MusicSliderKnob
+
+UI.MusicTimeLabel = Instance.new("TextLabel")
+UI.MusicTimeLabel.BackgroundTransparency = 1
+UI.MusicTimeLabel.BorderSizePixel = 0
+UI.MusicTimeLabel.FontFace = GothamMedium
+UI.MusicTimeLabel.LayoutOrder = 3
+UI.MusicTimeLabel.Name = "MusicTimeLabel"
+UI.MusicTimeLabel.Size = UDim2.new(1, 0, 0, 16)
+UI.MusicTimeLabel.Text = "0:00 / 0:00"
+UI.MusicTimeLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
+UI.MusicTimeLabel.TextScaled = true
+UI.MusicTimeLabel.TextXAlignment = Enum.TextXAlignment.Center
+UI.MusicTimeLabel.Parent = UI.MusicContent
+
+UI.MusicTimeLabelSizeCons = Instance.new("UISizeConstraint")
+UI.MusicTimeLabelSizeCons.MaxSize = Vector2.new(2147483647, 16)
+UI.MusicTimeLabelSizeCons.Parent = UI.MusicTimeLabel
+
+UI.MusicControls = Instance.new("Frame")
+UI.MusicControls.BackgroundTransparency = 1
+UI.MusicControls.BorderSizePixel = 0
+UI.MusicControls.LayoutOrder = 4
+UI.MusicControls.Name = "MusicControls"
+UI.MusicControls.Size = UDim2.new(1, 0, 0, 36)
+UI.MusicControls.Parent = UI.MusicContent
+
+UI.MusicControlsSizeCons = Instance.new("UISizeConstraint")
+UI.MusicControlsSizeCons.MaxSize = Vector2.new(2147483647, 36)
+UI.MusicControlsSizeCons.Parent = UI.MusicControls
+
+UI.MusicControlsLayout = Instance.new("UIListLayout")
+UI.MusicControlsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.MusicControlsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UI.MusicControlsLayout.Padding = UDim.new(0, 8)
+UI.MusicControlsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicControlsLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+UI.MusicControlsLayout.Parent = UI.MusicControls
+
+UI.MusicPrevBtn = Instance.new("TextButton")
+UI.MusicPrevBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicPrevBtn.BorderSizePixel = 0
+UI.MusicPrevBtn.FontFace = GothamBold
+UI.MusicPrevBtn.LayoutOrder = 1
+UI.MusicPrevBtn.Name = "MusicPrevBtn"
+UI.MusicPrevBtn.Size = UDim2.new(0, 60, 1, 0)
+UI.MusicPrevBtn.Text = "⏮"
+UI.MusicPrevBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.MusicPrevBtn.TextScaled = true
+UI.MusicPrevBtn.Parent = UI.MusicControls
+
+UI.MusicPrevBtnCorner = Instance.new("UICorner")
+UI.MusicPrevBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicPrevBtnCorner.Parent = UI.MusicPrevBtn
+
+UI.MusicPrevBtnStroke = Instance.new("UIStroke")
+UI.MusicPrevBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicPrevBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.MusicPrevBtnStroke.Name = "MusicPrevBtnStroke"
+UI.MusicPrevBtnStroke.Parent = UI.MusicPrevBtn
+
+UI.MusicPlayBtn = Instance.new("TextButton")
+UI.MusicPlayBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicPlayBtn.BorderSizePixel = 0
+UI.MusicPlayBtn.FontFace = GothamBold
+UI.MusicPlayBtn.LayoutOrder = 2
+UI.MusicPlayBtn.Name = "MusicPlayBtn"
+UI.MusicPlayBtn.Size = UDim2.new(0, 80, 1, 0)
+UI.MusicPlayBtn.Text = "▶"
+UI.MusicPlayBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.MusicPlayBtn.TextScaled = true
+UI.MusicPlayBtn.Parent = UI.MusicControls
+
+UI.MusicPlayBtnCorner = Instance.new("UICorner")
+UI.MusicPlayBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicPlayBtnCorner.Parent = UI.MusicPlayBtn
+
+UI.MusicPlayBtnStroke = Instance.new("UIStroke")
+UI.MusicPlayBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicPlayBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.MusicPlayBtnStroke.Name = "MusicPlayBtnStroke"
+UI.MusicPlayBtnStroke.Parent = UI.MusicPlayBtn
+
+UI.MusicNextBtn = Instance.new("TextButton")
+UI.MusicNextBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicNextBtn.BorderSizePixel = 0
+UI.MusicNextBtn.FontFace = GothamBold
+UI.MusicNextBtn.LayoutOrder = 3
+UI.MusicNextBtn.Name = "MusicNextBtn"
+UI.MusicNextBtn.Size = UDim2.new(0, 60, 1, 0)
+UI.MusicNextBtn.Text = "⏭"
+UI.MusicNextBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.MusicNextBtn.TextScaled = true
+UI.MusicNextBtn.Parent = UI.MusicControls
+
+UI.MusicNextBtnCorner = Instance.new("UICorner")
+UI.MusicNextBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicNextBtnCorner.Parent = UI.MusicNextBtn
+
+UI.MusicNextBtnStroke = Instance.new("UIStroke")
+UI.MusicNextBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicNextBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.MusicNextBtnStroke.Name = "MusicNextBtnStroke"
+UI.MusicNextBtnStroke.Parent = UI.MusicNextBtn
+
+UI.MusicSettingsFrame = Instance.new("Frame")
+UI.MusicSettingsFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.MusicSettingsFrame.BorderSizePixel = 0
+UI.MusicSettingsFrame.LayoutOrder = 5
+UI.MusicSettingsFrame.Name = "MusicSettingsFrame"
+UI.MusicSettingsFrame.Size = UDim2.new(1, 0, 0, 70)
+UI.MusicSettingsFrame.Parent = UI.MusicContent
+
+UI.MusicSettingsFrameSizeCons = Instance.new("UISizeConstraint")
+UI.MusicSettingsFrameSizeCons.MaxSize = Vector2.new(2147483647, 70)
+UI.MusicSettingsFrameSizeCons.Parent = UI.MusicSettingsFrame
+
+UI.MusicSettingsFrameCorner = Instance.new("UICorner")
+UI.MusicSettingsFrameCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicSettingsFrameCorner.Parent = UI.MusicSettingsFrame
+
+UI.MusicSettingsFrameStroke = Instance.new("UIStroke")
+UI.MusicSettingsFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicSettingsFrameStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.MusicSettingsFrameStroke.Parent = UI.MusicSettingsFrame
+
+UI.MusicSettingsFrameLayout = Instance.new("UIListLayout")
+UI.MusicSettingsFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.MusicSettingsFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicSettingsFrameLayout.Padding = UDim.new(0, 8)
+UI.MusicSettingsFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicSettingsFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicSettingsFrameLayout.Parent = UI.MusicSettingsFrame
+
+UI.MusicSettingsFramePadding = Instance.new("UIPadding")
+UI.MusicSettingsFramePadding.PaddingBottom = UDim.new(0, 6)
+UI.MusicSettingsFramePadding.PaddingLeft = UDim.new(0, 10)
+UI.MusicSettingsFramePadding.PaddingRight = UDim.new(0, 10)
+UI.MusicSettingsFramePadding.PaddingTop = UDim.new(0, 6)
+UI.MusicSettingsFramePadding.Parent = UI.MusicSettingsFrame
+
+local function MakeMusicSetting(labelText, defaultVal, layoutOrder, name)
+    local col = Instance.new("Frame")
+    col.BackgroundTransparency = 1
+    col.BorderSizePixel = 0
+    col.LayoutOrder = layoutOrder
+    col.Name = name .. "Col"
+    col.Size = UDim2.new(0.28, 0, 1, 0)
+    col.Parent = UI.MusicSettingsFrame
+
+    local colLayout = Instance.new("UIListLayout")
+    colLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    colLayout.Padding = UDim.new(0, 2)
+    colLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    colLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+    colLayout.Parent = col
+
+    local lbl = Instance.new("TextLabel")
+    lbl.BackgroundTransparency = 1
+    lbl.BorderSizePixel = 0
+    lbl.FontFace = GothamMedium
+    lbl.LayoutOrder = 1
+    lbl.Size = UDim2.new(1, 0, 0.5, 0)
+    lbl.Text = labelText
+    lbl.TextColor3 = Color3.fromRGB(180, 180, 180)
+    lbl.TextScaled = true
+    lbl.Parent = col
+
+    local box = Instance.new("TextBox")
+    box.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+    box.BorderSizePixel = 0
+    box.FontFace = GothamMedium
+    box.LayoutOrder = 2
+    box.Name = name .. "Box"
+    box.Size = UDim2.new(1, 0, 0.5, 0)
+    box.Text = defaultVal
+    box.TextColor3 = Color3.fromRGB(255, 255, 255)
+    box.TextScaled = true
+    box.Parent = col
+
+    local boxCorner = Instance.new("UICorner")
+    boxCorner.CornerRadius = UDim.new(0, 4)
+    boxCorner.Parent = box
+
+    local boxStroke = Instance.new("UIStroke")
+    boxStroke.Color = Color3.fromRGB(36, 36, 36)
+    boxStroke.Parent = box
+
+    UI[name .. "Box"] = box
+    return box
 end
-_0x844C(string.char(86,111,108,117,109,101),string.char(49), 1,string.char(77,117,115,105,99,86,111,108,117,109,101))
-_0x844C(string.char(83,112,101,101,100),string.char(49), 2,string.char(77,117,115,105,99,83,112,101,101,100))
-_0xE3E8.MusicLoopCol = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.MusicLoopCol.BackgroundTransparency = 1
-_0xE3E8.MusicLoopCol.BorderSizePixel = 0
-_0xE3E8.MusicLoopCol.LayoutOrder = 3
-_0xE3E8.MusicLoopCol.Name =string.char(77,117,115,105,99,76,111,111,112,67,111,108)_0xE3E8.MusicLoopCol.Size = UDim2.new(0.28, 0, 1, 0)
-_0xE3E8.MusicLoopCol.Parent = _0xE3E8.MusicSettingsFrame
-_0xE3E8.MusicLoopColLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.MusicLoopColLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.MusicLoopColLayout.Padding = UDim.new(0, 2)
-_0xE3E8.MusicLoopColLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.MusicLoopColLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.MusicLoopColLayout.Parent = _0xE3E8.MusicLoopCol
-_0xE3E8.MusicLoopLabel = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.MusicLoopLabel.BackgroundTransparency = 1
-_0xE3E8.MusicLoopLabel.BorderSizePixel = 0
-_0xE3E8.MusicLoopLabel.FontFace = _0x1033
-_0xE3E8.MusicLoopLabel.LayoutOrder = 1
-_0xE3E8.MusicLoopLabel.Size = UDim2.new(1, 0, 0.5, 0)
-_0xE3E8.MusicLoopLabel.Text =string.char(76,111,111,112)_0xE3E8.MusicLoopLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
-_0xE3E8.MusicLoopLabel.TextScaled = true
-_0xE3E8.MusicLoopLabel.Parent = _0xE3E8.MusicLoopCol
-_0xE3E8.MusicLoopToggle = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.MusicLoopToggle.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-_0xE3E8.MusicLoopToggle.BorderSizePixel = 0
-_0xE3E8.MusicLoopToggle.FontFace = _0x1033
-_0xE3E8.MusicLoopToggle.LayoutOrder = 2
-_0xE3E8.MusicLoopToggle.Name =string.char(77,117,115,105,99,76,111,111,112,84,111,103,103,108,101)_0xE3E8.MusicLoopToggle.Size = UDim2.new(1, 0, 0.5, 0)
-_0xE3E8.MusicLoopToggle.Text =""_0xE3E8.MusicLoopToggle.Parent = _0xE3E8.MusicLoopCol
-_0xE3E8.MusicLoopToggleCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicLoopToggleCorner.CornerRadius = UDim.new(0, 4)
-_0xE3E8.MusicLoopToggleCorner.Parent = _0xE3E8.MusicLoopToggle
-_0xE3E8.MusicLoopToggleStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.MusicLoopToggleStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.MusicLoopToggleStroke.Parent = _0xE3E8.MusicLoopToggle
-_0xE3E8.MusicLoopState = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.MusicLoopState.AnchorPoint = Vector2.new(0.5, 0.5)
-_0xE3E8.MusicLoopState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-_0xE3E8.MusicLoopState.BorderSizePixel = 0
-_0xE3E8.MusicLoopState.Name =string.char(76,111,111,112,83,116,97,116,101)_0xE3E8.MusicLoopState.Position = UDim2.new(0.5, 0, 0.5, 0)
-_0xE3E8.MusicLoopState.Size = UDim2.new(0.7, 0, 0.6, 0)
-_0xE3E8.MusicLoopState.Parent = _0xE3E8.MusicLoopToggle
-_0xE3E8.MusicLoopStateCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.MusicLoopStateCorner.CornerRadius = UDim.new(0, 4)
-_0xE3E8.MusicLoopStateCorner.Parent = _0xE3E8.MusicLoopState
-_0xE3E8.MusicListScroll = Instance.new(string.char(83,99,114,111,108,108,105,110,103,70,114,97,109,101))
-_0xE3E8.MusicListScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-_0xE3E8.MusicListScroll.BackgroundTransparency = 1
-_0xE3E8.MusicListScroll.BorderSizePixel = 0
-_0xE3E8.MusicListScroll.LayoutOrder = 6
-_0xE3E8.MusicListScroll.Name =string.char(77,117,115,105,99,76,105,115,116,83,99,114,111,108,108)_0xE3E8.MusicListScroll.ScrollBarThickness = 4
-_0xE3E8.MusicListScroll.ScrollingDirection = Enum.ScrollingDirection.Y
-_0xE3E8.MusicListScroll.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.MusicListScroll.Parent = _0xE3E8.MusicContent
-_0xE3E8.MusicListLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.MusicListLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.MusicListLayout.Name =string.char(77,117,115,105,99,76,105,115,116,76,97,121,111,117,116)_0xE3E8.MusicListLayout.Padding = UDim.new(0, 4)
-_0xE3E8.MusicListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.MusicListLayout.Parent = _0xE3E8.MusicListScroll
-_0xE3E8.MusicListPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.MusicListPadding.Name =string.char(77,117,115,105,99,76,105,115,116,80,97,100,100,105,110,103)_0xE3E8.MusicListPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.MusicListPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.MusicListPadding.Parent = _0xE3E8.MusicListScroll
-_0xE3E8.NoMusicLabel = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.NoMusicLabel.BackgroundTransparency = 1
-_0xE3E8.NoMusicLabel.BorderSizePixel = 0
-_0xE3E8.NoMusicLabel.FontFace = _0x1033
-_0xE3E8.NoMusicLabel.Name =string.char(78,111,77,117,115,105,99,76,97,98,101,108)_0xE3E8.NoMusicLabel.Size = UDim2.new(1, 0, 0, 60)
-_0xE3E8.NoMusicLabel.Text =string.char(78,111,32,109,117,115,105,99,32,102,111,117,110,100,46,10,10,80,108,97,99,101,32,97,117,100,105,111,32,102,105,108,101,115,32,105,110,32,76,117,99,105,100,47,77,117,115,105,99,47)_0xE3E8.NoMusicLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
-_0xE3E8.NoMusicLabel.TextScaled = true
-_0xE3E8.NoMusicLabel.TextWrapped = true
-_0xE3E8.NoMusicLabel.Visible = false
-_0xE3E8.NoMusicLabel.Parent = _0xE3E8.MusicListScroll
-_0xE3E8.SettingsContent = Instance.new(string.char(67,97,110,118,97,115,71,114,111,117,112))
-_0xE3E8.SettingsContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-_0xE3E8.SettingsContent.BorderSizePixel = 0
-_0xE3E8.SettingsContent.LayoutOrder = 1
-_0xE3E8.SettingsContent.Name =string.char(83,101,116,116,105,110,103,115,67,111,110,116,101,110,116)_0xE3E8.SettingsContent.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.SettingsContent.Visible = false
-_0xE3E8.SettingsContent.Parent = _0xE3E8.Pages
-_0xE3E8.SettingsContentCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SettingsContentCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SettingsContentCorner.Parent = _0xE3E8.SettingsContent
-_0xE3E8.SettingsContentStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SettingsContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.SettingsContentStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.SettingsContentStroke.Name =string.char(83,101,116,116,105,110,103,115,67,111,110,116,101,110,116,83,116,114,111,107,101)_0xE3E8.SettingsContentStroke.Parent = _0xE3E8.SettingsContent
-_0xE3E8.SettingsFrame = Instance.new(string.char(83,99,114,111,108,108,105,110,103,70,114,97,109,101))
-_0xE3E8.SettingsFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
-_0xE3E8.SettingsFrame.BackgroundTransparency = 1
-_0xE3E8.SettingsFrame.BorderSizePixel = 0
-_0xE3E8.SettingsFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-_0xE3E8.SettingsFrame.Name =string.char(83,101,116,116,105,110,103,115,70,114,97,109,101)_0xE3E8.SettingsFrame.Size = UDim2.new(1, 0, 1, 0)
-_0xE3E8.SettingsFrame.Parent = _0xE3E8.SettingsContent
-_0xE3E8.SettingsFramePadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SettingsFramePadding.PaddingBottom = UDim.new(0, 5)
-_0xE3E8.SettingsFramePadding.PaddingLeft = UDim.new(0, 5)
-_0xE3E8.SettingsFramePadding.PaddingRight = UDim.new(0, 5)
-_0xE3E8.SettingsFramePadding.PaddingTop = UDim.new(0, 5)
-_0xE3E8.SettingsFramePadding.Parent = _0xE3E8.SettingsFrame
-_0xE3E8.SettingsFrameLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SettingsFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SettingsFrameLayout.Padding = UDim.new(0, 6)
-_0xE3E8.SettingsFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SettingsFrameLayout.Parent = _0xE3E8.SettingsFrame
-_0xE3E8.AnimsToggle = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.AnimsToggle.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.AnimsToggle.BorderSizePixel = 0
-_0xE3E8.AnimsToggle.LayoutOrder = 1
-_0xE3E8.AnimsToggle.Name =string.char(65,110,105,109,115,84,111,103,103,108,101)_0xE3E8.AnimsToggle.Size = UDim2.new(1, 0, 0, 38)
-_0xE3E8.AnimsToggle.Text =""_0xE3E8.AnimsToggle.Parent = _0xE3E8.SettingsFrame
-_0xE3E8.AnimsToggleCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.AnimsToggleCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.AnimsToggleCorner.Parent = _0xE3E8.AnimsToggle
-_0xE3E8.AnimsToggleStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.AnimsToggleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.AnimsToggleStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.AnimsToggleStroke.Parent = _0xE3E8.AnimsToggle
-_0xE3E8.AnimsTogglePadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.AnimsTogglePadding.PaddingBottom = UDim.new(0, 8)
-_0xE3E8.AnimsTogglePadding.PaddingLeft = UDim.new(0, 8)
-_0xE3E8.AnimsTogglePadding.PaddingRight = UDim.new(0, 8)
-_0xE3E8.AnimsTogglePadding.PaddingTop = UDim.new(0, 8)
-_0xE3E8.AnimsTogglePadding.Parent = _0xE3E8.AnimsToggle
-_0xE3E8.AnimsToggleLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.AnimsToggleLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.AnimsToggleLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.AnimsToggleLayout.Padding = UDim.new(0, 6)
-_0xE3E8.AnimsToggleLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.AnimsToggleLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.AnimsToggleLayout.Parent = _0xE3E8.AnimsToggle
-_0xE3E8.AnimsToggleLabel = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.AnimsToggleLabel.BackgroundTransparency = 1
-_0xE3E8.AnimsToggleLabel.BorderSizePixel = 0
-_0xE3E8.AnimsToggleLabel.FontFace = _0x1033
-_0xE3E8.AnimsToggleLabel.LayoutOrder = 1
-_0xE3E8.AnimsToggleLabel.Name =string.char(65,110,105,109,115,84,111,103,103,108,101,76,97,98,101,108)_0xE3E8.AnimsToggleLabel.Size = UDim2.new(0.8, 0, 1, 0)
-_0xE3E8.AnimsToggleLabel.Text =string.char(65,110,105,109,97,116,105,111,110,115)_0xE3E8.AnimsToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.AnimsToggleLabel.TextScaled = true
-_0xE3E8.AnimsToggleLabel.TextWrapped = true
-_0xE3E8.AnimsToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.AnimsToggleLabel.Parent = _0xE3E8.AnimsToggle
-_0xE3E8.ToggleState = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.ToggleState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-_0xE3E8.ToggleState.BorderSizePixel = 0
-_0xE3E8.ToggleState.LayoutOrder = 2
-_0xE3E8.ToggleState.Name =string.char(84,111,103,103,108,101,83,116,97,116,101)_0xE3E8.ToggleState.Size = UDim2.new(0.2, 0, 0.6, 0)
-_0xE3E8.ToggleState.Parent = _0xE3E8.AnimsToggle
-_0xE3E8.ToggleStateCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.ToggleStateCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.ToggleStateCorner.Parent = _0xE3E8.ToggleState
-_0xE3E8.ToggleStateRatio = Instance.new(string.char(85,73,65,115,112,101,99,116,82,97,116,105,111,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.ToggleStateRatio.Parent = _0xE3E8.ToggleState
-_0xE3E8.ToggleStateStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.ToggleStateStroke.Color = Color3.fromRGB(255, 0, 0)
-_0xE3E8.ToggleStateStroke.Transparency = 0.5
-_0xE3E8.ToggleStateStroke.Parent = _0xE3E8.ToggleState
-_0xE3E8.SidebarContainer = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.SidebarContainer.BackgroundTransparency = 1
-_0xE3E8.SidebarContainer.BorderSizePixel = 0
-_0xE3E8.SidebarContainer.LayoutOrder = 2
-_0xE3E8.SidebarContainer.Name =string.char(83,105,100,101,98,97,114,67,111,110,116,97,105,110,101,114)_0xE3E8.SidebarContainer.Size = UDim2.new(0.2, 0, 0.3, 0)
-_0xE3E8.SidebarContainer.Parent = _0xE3E8.MainFrame
-_0xE3E8.Sidebar = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.Sidebar.AnchorPoint = Vector2.new(1, 0.5)
-_0xE3E8.Sidebar.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-_0xE3E8.Sidebar.BorderSizePixel = 0
-_0xE3E8.Sidebar.Name =string.char(83,105,100,101,98,97,114)_0xE3E8.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
-_0xE3E8.Sidebar.Size = UDim2.new(1, 0, 1, -10)
-_0xE3E8.Sidebar.Parent = _0xE3E8.SidebarContainer
-_0xE3E8.SidebarCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SidebarCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SidebarCorner.Parent = _0xE3E8.Sidebar
-_0xE3E8.SidebarStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SidebarStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.SidebarStroke.Name =string.char(83,105,100,101,98,97,114,83,116,114,111,107,101)_0xE3E8.SidebarStroke.Parent = _0xE3E8.Sidebar
-_0xE3E8.SidebarPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.SidebarPadding.PaddingBottom = UDim.new(0, 8)
-_0xE3E8.SidebarPadding.PaddingLeft = UDim.new(0, 8)
-_0xE3E8.SidebarPadding.PaddingRight = UDim.new(0, 18)
-_0xE3E8.SidebarPadding.PaddingTop = UDim.new(0, 8)
-_0xE3E8.SidebarPadding.Parent = _0xE3E8.Sidebar
-_0xE3E8.SidebarLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.SidebarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SidebarLayout.Padding = UDim.new(0, 3)
-_0xE3E8.SidebarLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.SidebarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.SidebarLayout.Parent = _0xE3E8.Sidebar
-_0xE3E8.Topbar = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.Topbar.BackgroundTransparency = 1
-_0xE3E8.Topbar.BorderSizePixel = 0
-_0xE3E8.Topbar.Name =string.char(84,111,112,98,97,114)_0xE3E8.Topbar.Size = UDim2.new(1, 0, 0, 30)
-_0xE3E8.Topbar.Parent = _0xE3E8.Sidebar
-_0xE3E8.TopbarSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.TopbarSizeCons.MaxSize = Vector2.new(2147483647, 30)
-_0xE3E8.TopbarSizeCons.MinSize = Vector2.new(0, 28)
-_0xE3E8.TopbarSizeCons.Parent = _0xE3E8.Topbar
-_0xE3E8.TopbarLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.TopbarLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.TopbarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.TopbarLayout.Padding = UDim.new(0, 4)
-_0xE3E8.TopbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.TopbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.TopbarLayout.Parent = _0xE3E8.Topbar
-_0xE3E8.Logo = Instance.new(string.char(73,109,97,103,101,76,97,98,101,108))
-_0xE3E8.Logo.BackgroundTransparency = 1
-_0xE3E8.Logo.BorderSizePixel = 0
-_0xE3E8.Logo.Image = _0x418A.GetAsset(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,108,111,103,111,46,112,110,103))
-_0xE3E8.Logo.ImageColor3 = Color3.fromRGB(0, 64, 180)
-_0xE3E8.Logo.LayoutOrder = 1
-_0xE3E8.Logo.Name =string.char(76,111,103,111)_0xE3E8.Logo.Size = UDim2.new(0, 30, 0, 30)
-_0xE3E8.Logo.Parent = _0xE3E8.Topbar
-_0xE3E8.LogoRatio = Instance.new(string.char(85,73,65,115,112,101,99,116,82,97,116,105,111,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.LogoRatio.Parent = _0xE3E8.Logo
-_0xE3E8.Icon = Instance.new(string.char(73,109,97,103,101,76,97,98,101,108))
-_0xE3E8.Icon.AnchorPoint = Vector2.new(0.5, 0.5)
-_0xE3E8.Icon.BackgroundTransparency = 1
-_0xE3E8.Icon.BorderSizePixel = 0
-_0xE3E8.Icon.Image = _0x418A.GetAsset(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,108,111,103,111,46,112,110,103))
-_0xE3E8.Icon.ImageColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.Icon.LayoutOrder = 1
-_0xE3E8.Icon.Name =string.char(73,99,111,110)_0xE3E8.Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
-_0xE3E8.Icon.Size = UDim2.new(1, -2, 1, -2)
-_0xE3E8.Icon.Parent = _0xE3E8.Logo
-_0xE3E8.Title = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.Title.BackgroundTransparency = 1
-_0xE3E8.Title.BorderSizePixel = 0
-_0xE3E8.Title.FontFace = _0x340D
-_0xE3E8.Title.LayoutOrder = 2
-_0xE3E8.Title.Name =string.char(84,105,116,108,101)_0xE3E8.Title.Size = UDim2.new(0, 60, 0, 30)
-_0xE3E8.Title.Text =string.char(76,117,99,105,100)_0xE3E8.Title.TextColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.Title.TextScaled = true
-_0xE3E8.Title.TextWrapped = true
-_0xE3E8.Title.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.Title.Parent = _0xE3E8.Topbar
-_0xE3E8.TitleStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.TitleStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.TitleStroke.Transparency = 0.6
-_0xE3E8.TitleStroke.Name =string.char(84,105,116,108,101,83,116,114,111,107,101)_0xE3E8.TitleStroke.Parent = _0xE3E8.Title
-_0xE3E8.TitlePadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.TitlePadding.PaddingBottom = UDim.new(0, 2)
-_0xE3E8.TitlePadding.PaddingTop = UDim.new(0, 2)
-_0xE3E8.TitlePadding.Parent = _0xE3E8.Title
-_0xE3E8.CloseTab = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.CloseTab.BackgroundTransparency = 1
-_0xE3E8.CloseTab.BorderSizePixel = 0
-_0xE3E8.CloseTab.LayoutOrder = 100
-_0xE3E8.CloseTab.Name =string.char(67,108,111,115,101,84,97,98)_0xE3E8.CloseTab.Size = UDim2.new(0, 30, 0, 58)
-_0xE3E8.CloseTab.Text =""_0xE3E8.CloseTab.Parent = _0xE3E8.Sidebar
-_0xE3E8.CloseTabLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.CloseTabLayout.Padding = UDim.new(0, 4)
-_0xE3E8.CloseTabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.CloseTabLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.CloseTabLayout.Parent = _0xE3E8.CloseTab
-_0xE3E8.CloseTabSizeCons = Instance.new(string.char(85,73,83,105,122,101,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.CloseTabSizeCons.MaxSize = Vector2.new(2147483647, 34)
-_0xE3E8.CloseTabSizeCons.MinSize = Vector2.new(0, 28)
-_0xE3E8.CloseTabSizeCons.Parent = _0xE3E8.CloseTab
-_0xE3E8.CloseTabPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.CloseTabPadding.PaddingBottom = UDim.new(0, 3)
-_0xE3E8.CloseTabPadding.PaddingTop = UDim.new(0, 3)
-_0xE3E8.CloseTabPadding.Parent = _0xE3E8.CloseTab
-_0xE3E8.TabContainer6 = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.TabContainer6.BackgroundTransparency = 1
-_0xE3E8.TabContainer6.BorderSizePixel = 0
-_0xE3E8.TabContainer6.LayoutOrder = 1
-_0xE3E8.TabContainer6.Name =string.char(84,97,98,67,111,110,116,97,105,110,101,114,54)_0xE3E8.TabContainer6.Size = UDim2.new(1, 0, 0, 22)
-_0xE3E8.TabContainer6.Parent = _0xE3E8.CloseTab
-_0xE3E8.TabContainer6Layout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.TabContainer6Layout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.TabContainer6Layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.TabContainer6Layout.Padding = UDim.new(0, 4)
-_0xE3E8.TabContainer6Layout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.TabContainer6Layout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.TabContainer6Layout.Parent = _0xE3E8.TabContainer6
-_0xE3E8.TabIcon6 = Instance.new(string.char(73,109,97,103,101,76,97,98,101,108))
-_0xE3E8.TabIcon6.BackgroundTransparency = 1
-_0xE3E8.TabIcon6.BorderSizePixel = 0
-_0xE3E8.TabIcon6.Image = _0x418A.GetAsset(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,99,108,111,115,101,46,112,110,103))
-_0xE3E8.TabIcon6.LayoutOrder = 1
-_0xE3E8.TabIcon6.Name =string.char(84,97,98,73,99,111,110,54)_0xE3E8.TabIcon6.Size = UDim2.new(0, 30, 0, 30)
-_0xE3E8.TabIcon6.Parent = _0xE3E8.TabContainer6
-_0xE3E8.TabIcon6Ratio = Instance.new(string.char(85,73,65,115,112,101,99,116,82,97,116,105,111,67,111,110,115,116,114,97,105,110,116))
-_0xE3E8.TabIcon6Ratio.Parent = _0xE3E8.TabIcon6
-_0xE3E8.TabLabel6 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.TabLabel6.BackgroundTransparency = 1
-_0xE3E8.TabLabel6.BorderSizePixel = 0
-_0xE3E8.TabLabel6.FontFace = _0x340D
-_0xE3E8.TabLabel6.LayoutOrder = 2
-_0xE3E8.TabLabel6.Name =string.char(84,97,98,76,97,98,101,108,54)_0xE3E8.TabLabel6.Size = UDim2.new(0, 60, 0, 30)
-_0xE3E8.TabLabel6.Text =string.char(67,108,111,115,101)_0xE3E8.TabLabel6.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.TabLabel6.TextScaled = true
-_0xE3E8.TabLabel6.TextWrapped = true
-_0xE3E8.TabLabel6.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.TabLabel6.Parent = _0xE3E8.TabContainer6
-_0xE3E8.TabUnderline6Close = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.TabUnderline6Close.BackgroundTransparency = 1
-_0xE3E8.TabUnderline6Close.BorderSizePixel = 0
-_0xE3E8.TabUnderline6Close.LayoutOrder = 2
-_0xE3E8.TabUnderline6Close.Name =string.char(84,97,98,85,110,100,101,114,108,105,110,101,54,67,108,111,115,101)_0xE3E8.TabUnderline6Close.Size = UDim2.new(0, 0, 0, 1)
-_0xE3E8.TabUnderline6Close.Parent = _0xE3E8.CloseTab
-_0xE3E8.NewScriptFrame = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.NewScriptFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-_0xE3E8.NewScriptFrame.BackgroundColor3 = Color3.fromRGB(11, 11, 11)
-_0xE3E8.NewScriptFrame.BorderSizePixel = 0
-_0xE3E8.NewScriptFrame.Name =string.char(78,101,119,83,99,114,105,112,116,70,114,97,109,101)_0xE3E8.NewScriptFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-_0xE3E8.NewScriptFrame.Size = UDim2.new(0, 408, 0, 214)
-_0xE3E8.NewScriptFrame.Visible = false
-_0xE3E8.NewScriptFrame.ZIndex = 2
-_0xE3E8.NewScriptFrame.Parent = _0xE3E8.ScreenGui
-_0xE3E8.NewScriptFrameStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.NewScriptFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.NewScriptFrameStroke.Color = Color3.fromRGB(0, 99, 255)
-_0xE3E8.NewScriptFrameStroke.Name =string.char(78,101,119,83,99,114,105,112,116,70,114,97,109,101,83,116,114,111,107,101)_0xE3E8.NewScriptFrameStroke.Parent = _0xE3E8.NewScriptFrame
-_0xE3E8.NewScriptFramePadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.NewScriptFramePadding.PaddingBottom = UDim.new(0, 6)
-_0xE3E8.NewScriptFramePadding.PaddingLeft = UDim.new(0, 6)
-_0xE3E8.NewScriptFramePadding.PaddingRight = UDim.new(0, 6)
-_0xE3E8.NewScriptFramePadding.PaddingTop = UDim.new(0, 6)
-_0xE3E8.NewScriptFramePadding.Parent = _0xE3E8.NewScriptFrame
-_0xE3E8.NewScriptFrameLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.NewScriptFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.NewScriptFrameLayout.Padding = UDim.new(0, 8)
-_0xE3E8.NewScriptFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.NewScriptFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.NewScriptFrameLayout.Parent = _0xE3E8.NewScriptFrame
-_0xE3E8.NewScriptFrameCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.NewScriptFrameCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.NewScriptFrameCorner.Parent = _0xE3E8.NewScriptFrame
-_0xE3E8.NameBox = Instance.new(string.char(84,101,120,116,66,111,120))
-_0xE3E8.NameBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.NameBox.BorderSizePixel = 0
-_0xE3E8.NameBox.FontFace = _0x1033
-_0xE3E8.NameBox.LayoutOrder = 1
-_0xE3E8.NameBox.Name =string.char(78,97,109,101,66,111,120)_0xE3E8.NameBox.PlaceholderText =string.char(69,110,116,101,114,32,115,99,114,105,112,116,32,110,97,109,101,46,46,46)_0xE3E8.NameBox.Size = UDim2.new(0, 76, 0, 30)
-_0xE3E8.NameBox.Text =""_0xE3E8.NameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.NameBox.TextScaled = true
-_0xE3E8.NameBox.TextWrapped = true
-_0xE3E8.NameBox.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.NameBox.Parent = _0xE3E8.NewScriptFrame
-_0xE3E8.NameBoxPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.NameBoxPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.NameBoxPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.NameBoxPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.NameBoxPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.NameBoxPadding.Parent = _0xE3E8.NameBox
-_0xE3E8.NameBoxStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.NameBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.NameBoxStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.NameBoxStroke.Parent = _0xE3E8.NameBox
-_0xE3E8.NameBoxCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.NameBoxCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.NameBoxCorner.Parent = _0xE3E8.NameBox
-_0xE3E8.DescBox = Instance.new(string.char(84,101,120,116,66,111,120))
-_0xE3E8.DescBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.DescBox.BorderSizePixel = 0
-_0xE3E8.DescBox.FontFace = _0x1033
-_0xE3E8.DescBox.LayoutOrder = 2
-_0xE3E8.DescBox.Name =string.char(68,101,115,99,66,111,120)_0xE3E8.DescBox.PlaceholderText =string.char(69,110,116,101,114,32,115,99,114,105,112,116,32,100,101,115,99,114,105,112,116,105,111,110,46,46,46)_0xE3E8.DescBox.Size = UDim2.new(0, 76, 0, 30)
-_0xE3E8.DescBox.Text =""_0xE3E8.DescBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.DescBox.TextScaled = true
-_0xE3E8.DescBox.TextWrapped = true
-_0xE3E8.DescBox.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.DescBox.Parent = _0xE3E8.NewScriptFrame
-_0xE3E8.DescBoxCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.DescBoxCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.DescBoxCorner.Parent = _0xE3E8.DescBox
-_0xE3E8.DescBoxPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.DescBoxPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.DescBoxPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.DescBoxPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.DescBoxPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.DescBoxPadding.Parent = _0xE3E8.DescBox
-_0xE3E8.DescBoxStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.DescBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.DescBoxStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.DescBoxStroke.Parent = _0xE3E8.DescBox
-_0xE3E8.ScriptBox = Instance.new(string.char(84,101,120,116,66,111,120))
-_0xE3E8.ScriptBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.ScriptBox.BorderSizePixel = 0
-_0xE3E8.ScriptBox.FontFace = _0x296B
-_0xE3E8.ScriptBox.LayoutOrder = 3
-_0xE3E8.ScriptBox.Name =string.char(83,99,114,105,112,116,66,111,120)_0xE3E8.ScriptBox.PlaceholderText =string.char(69,110,116,101,114,32,115,99,114,105,112,116,46,46,46)_0xE3E8.ScriptBox.Size = UDim2.new(0, 76, 0, 80)
-_0xE3E8.ScriptBox.Text =""_0xE3E8.ScriptBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.ScriptBox.TextSize = 20
-_0xE3E8.ScriptBox.TextWrapped = true
-_0xE3E8.ScriptBox.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.ScriptBox.TextYAlignment = Enum.TextYAlignment.Top
-_0xE3E8.ScriptBox.Parent = _0xE3E8.NewScriptFrame
-_0xE3E8.ScriptBoxPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.ScriptBoxPadding.PaddingBottom = UDim.new(0, 4)
-_0xE3E8.ScriptBoxPadding.PaddingLeft = UDim.new(0, 4)
-_0xE3E8.ScriptBoxPadding.PaddingRight = UDim.new(0, 4)
-_0xE3E8.ScriptBoxPadding.PaddingTop = UDim.new(0, 4)
-_0xE3E8.ScriptBoxPadding.Parent = _0xE3E8.ScriptBox
-_0xE3E8.ScriptBoxCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.ScriptBoxCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.ScriptBoxCorner.Parent = _0xE3E8.ScriptBox
-_0xE3E8.ScriptBoxStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.ScriptBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.ScriptBoxStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.ScriptBoxStroke.Parent = _0xE3E8.ScriptBox
-_0xE3E8.Options = Instance.new(string.char(70,114,97,109,101))
-_0xE3E8.Options.BackgroundTransparency = 1
-_0xE3E8.Options.BorderSizePixel = 0
-_0xE3E8.Options.LayoutOrder = 4
-_0xE3E8.Options.Name =string.char(79,112,116,105,111,110,115)_0xE3E8.Options.Size = UDim2.new(0, 76, 0, 34)
-_0xE3E8.Options.Parent = _0xE3E8.NewScriptFrame
-_0xE3E8.OptionsCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.OptionsCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.OptionsCorner.Parent = _0xE3E8.Options
-_0xE3E8.OptionsLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.OptionsLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.OptionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.OptionsLayout.Padding = UDim.new(0, 8)
-_0xE3E8.OptionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.OptionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.OptionsLayout.Parent = _0xE3E8.Options
-_0xE3E8.Save = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.Save.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.Save.BorderSizePixel = 0
-_0xE3E8.Save.FontFace = _0x1033
-_0xE3E8.Save.LayoutOrder = 1
-_0xE3E8.Save.Name =string.char(83,97,118,101)_0xE3E8.Save.Size = UDim2.new(0.2, 0, 0.3, 0)
-_0xE3E8.Save.Text =string.char(83,97,118,101)_0xE3E8.Save.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.Save.TextScaled = true
-_0xE3E8.Save.TextWrapped = true
-_0xE3E8.Save.Parent = _0xE3E8.Options
-_0xE3E8.SaveStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.SaveStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.SaveStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.SaveStroke.Name =string.char(83,97,118,101,83,116,114,111,107,101)_0xE3E8.SaveStroke.Parent = _0xE3E8.Save
-_0xE3E8.SaveCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.SaveCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.SaveCorner.Parent = _0xE3E8.Save
-_0xE3E8.Cancel = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.Cancel.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-_0xE3E8.Cancel.BorderSizePixel = 0
-_0xE3E8.Cancel.FontFace = _0x1033
-_0xE3E8.Cancel.LayoutOrder = 2
-_0xE3E8.Cancel.Name =string.char(67,97,110,99,101,108)_0xE3E8.Cancel.Size = UDim2.new(0.2, 0, 0.3, 0)
-_0xE3E8.Cancel.Text =string.char(67,97,110,99,101,108)_0xE3E8.Cancel.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.Cancel.TextScaled = true
-_0xE3E8.Cancel.TextWrapped = true
-_0xE3E8.Cancel.Parent = _0xE3E8.Options
-_0xE3E8.CancelCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.CancelCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.CancelCorner.Parent = _0xE3E8.Cancel
-_0xE3E8.CancelStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.CancelStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.CancelStroke.Color = Color3.fromRGB(0, 64, 180)
-_0xE3E8.CancelStroke.Name =string.char(67,97,110,99,101,108,83,116,114,111,107,101)_0xE3E8.CancelStroke.Parent = _0xE3E8.Cancel
-_0xE3E8.ResetThemeBtn = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xE3E8.ResetThemeBtn.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-_0xE3E8.ResetThemeBtn.BorderSizePixel = 0
-_0xE3E8.ResetThemeBtn.LayoutOrder = 6
-_0xE3E8.ResetThemeBtn.Name =string.char(82,101,115,101,116,84,104,101,109,101,66,116,110)_0xE3E8.ResetThemeBtn.Size = UDim2.new(1, 0, 0, 38)
-_0xE3E8.ResetThemeBtn.Text =""_0xE3E8.ResetThemeBtn.Parent = _0xE3E8.SettingsFrame
-_0xE3E8.ResetThemeBtnCorner = Instance.new(string.char(85,73,67,111,114,110,101,114))
-_0xE3E8.ResetThemeBtnCorner.CornerRadius = UDim.new(0, 6)
-_0xE3E8.ResetThemeBtnCorner.Parent = _0xE3E8.ResetThemeBtn
-_0xE3E8.ResetThemeBtnStroke = Instance.new(string.char(85,73,83,116,114,111,107,101))
-_0xE3E8.ResetThemeBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-_0xE3E8.ResetThemeBtnStroke.Color = Color3.fromRGB(36, 36, 36)
-_0xE3E8.ResetThemeBtnStroke.Parent = _0xE3E8.ResetThemeBtn
-_0xE3E8.ResetThemeBtnLayout = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116))
-_0xE3E8.ResetThemeBtnLayout.FillDirection = Enum.FillDirection.Horizontal
-_0xE3E8.ResetThemeBtnLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ResetThemeBtnLayout.Padding = UDim.new(0, 6)
-_0xE3E8.ResetThemeBtnLayout.SortOrder = Enum.SortOrder.LayoutOrder
-_0xE3E8.ResetThemeBtnLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-_0xE3E8.ResetThemeBtnLayout.Parent = _0xE3E8.ResetThemeBtn
-_0xE3E8.ResetThemeBtnPadding = Instance.new(string.char(85,73,80,97,100,100,105,110,103))
-_0xE3E8.ResetThemeBtnPadding.PaddingBottom = UDim.new(0, 8)
-_0xE3E8.ResetThemeBtnPadding.PaddingLeft = UDim.new(0, 8)
-_0xE3E8.ResetThemeBtnPadding.PaddingRight = UDim.new(0, 8)
-_0xE3E8.ResetThemeBtnPadding.PaddingTop = UDim.new(0, 8)
-_0xE3E8.ResetThemeBtnPadding.Parent = _0xE3E8.ResetThemeBtn
-_0xE3E8.ResetThemeBtnLabel = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE3E8.ResetThemeBtnLabel.BackgroundTransparency = 1
-_0xE3E8.ResetThemeBtnLabel.BorderSizePixel = 0
-_0xE3E8.ResetThemeBtnLabel.FontFace = _0x1033
-_0xE3E8.ResetThemeBtnLabel.LayoutOrder = 1
-_0xE3E8.ResetThemeBtnLabel.Size = UDim2.new(0.8, 0, 1, 0)
-_0xE3E8.ResetThemeBtnLabel.Text =string.char(82,101,115,101,116,32,84,104,101,109,101)_0xE3E8.ResetThemeBtnLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xE3E8.ResetThemeBtnLabel.TextScaled = true
-_0xE3E8.ResetThemeBtnLabel.TextWrapped = true
-_0xE3E8.ResetThemeBtnLabel.TextXAlignment = Enum.TextXAlignment.Left
-_0xE3E8.ResetThemeBtnLabel.Parent = _0xE3E8.ResetThemeBtn
-_0xE3E8.HomeTab = _0x418A.CreateTab(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,104,111,109,101,46,112,110,103),string.char(72,111,109,101), _0xE3E8.HomeContent, 1,string.char(84,97,98,85,110,100,101,114,108,105,110,101))
-_0xE3E8.ExeTab = _0x418A.CreateTab(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,101,120,101,99,117,116,111,114,46,112,110,103),string.char(69,120,101,99,117,116,111,114), _0xE3E8.ExeContent, 2,string.char(84,97,98,85,110,100,101,114,108,105,110,101,50))
-_0xE3E8.SearchTab = _0x418A.CreateTab(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,115,101,97,114,99,104,46,112,110,103),string.char(83,101,97,114,99,104), _0xE3E8.SearchContent, 3,string.char(84,97,98,85,110,100,101,114,108,105,110,101,51))
-_0xE3E8.ScriptsTab = _0x418A.CreateTab(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,115,99,114,105,112,116,115,46,112,110,103),string.char(83,99,114,105,112,116,115), _0xE3E8.ScriptsContent, 4,string.char(84,97,98,85,110,100,101,114,108,105,110,101,52))
-_0xE3E8.MusicTab = _0x418A.CreateTab(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,109,117,115,105,99,46,112,110,103),string.char(77,117,115,105,99), _0xE3E8.MusicContent, 5,string.char(84,97,98,85,110,100,101,114,108,105,110,101,54,77,117,115,105,99))
-_0xE3E8.SettingsTab = _0x418A.CreateTab(string.char(76,117,99,105,100,47,65,115,115,101,116,115,47,108,117,99,105,100,95,115,101,116,116,105,110,103,115,46,112,110,103),string.char(83,101,116,116,105,110,103,115), _0xE3E8.SettingsContent, 6,string.char(84,97,98,85,110,100,101,114,108,105,110,101,53))
-_0x418A.CreateSettingsInputbox(string.char(66,97,99,107,103,114,111,117,110,100,32,67,111,108,111,114,32,40,82,71,66,41),string.char(49,48,44,32,49,48,44,32,49,48),string.char(66,97,99,107,103,114,111,117,110,100,67,111,108,111,114), 2)
-_0x418A.CreateSettingsInputbox(string.char(83,101,99,111,110,100,97,114,121,32,66,97,99,107,103,114,111,117,110,100,32,67,111,108,111,114,32,40,82,71,66,41),string.char(49,56,44,32,49,56,44,32,49,56),string.char(83,101,99,111,110,100,97,114,121,66,97,99,107,103,114,111,117,110,100,67,111,108,111,114), 3)
-_0x418A.CreateSettingsInputbox(string.char(65,99,99,101,110,116,32,67,111,108,111,114,32,40,82,71,66,41),string.char(48,44,32,57,56,44,32,50,53,53),string.char(65,99,99,101,110,116,67,111,108,111,114), 4)
-_0x418A.CreateSettingsInputbox(string.char(83,101,99,111,110,100,97,114,121,32,65,99,99,101,110,116,32,67,111,108,111,114,32,40,82,71,66,41),string.char(48,44,32,54,51,44,32,49,55,57),string.char(83,101,99,111,110,100,97,114,121,65,99,99,101,110,116,67,111,108,111,114), 5)
-_0x418A.LoadSettings()
-_0x418A.ApplyTheme()
-_0x418A.InitDefaultScripts()
-_0x418A.Dragify(_0xE3E8.Show)
-_0x418A.CreateExeTab(string.char(84,97,98,32,49))
-_0xE3E8.AddExeTabBtn.MouseButton1Click:Connect(function()
-_0x418A.CreateExeTab()
+
+MakeMusicSetting("Volume", "1", 1, "MusicVolume")
+MakeMusicSetting("Speed", "1", 2, "MusicSpeed")
+
+UI.MusicLoopCol = Instance.new("Frame")
+UI.MusicLoopCol.BackgroundTransparency = 1
+UI.MusicLoopCol.BorderSizePixel = 0
+UI.MusicLoopCol.LayoutOrder = 3
+UI.MusicLoopCol.Name = "MusicLoopCol"
+UI.MusicLoopCol.Size = UDim2.new(0.28, 0, 1, 0)
+UI.MusicLoopCol.Parent = UI.MusicSettingsFrame
+
+UI.MusicLoopColLayout = Instance.new("UIListLayout")
+UI.MusicLoopColLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicLoopColLayout.Padding = UDim.new(0, 2)
+UI.MusicLoopColLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicLoopColLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicLoopColLayout.Parent = UI.MusicLoopCol
+
+UI.MusicLoopLabel = Instance.new("TextLabel")
+UI.MusicLoopLabel.BackgroundTransparency = 1
+UI.MusicLoopLabel.BorderSizePixel = 0
+UI.MusicLoopLabel.FontFace = GothamMedium
+UI.MusicLoopLabel.LayoutOrder = 1
+UI.MusicLoopLabel.Size = UDim2.new(1, 0, 0.5, 0)
+UI.MusicLoopLabel.Text = "Loop"
+UI.MusicLoopLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+UI.MusicLoopLabel.TextScaled = true
+UI.MusicLoopLabel.Parent = UI.MusicLoopCol
+
+UI.MusicLoopToggle = Instance.new("TextButton")
+UI.MusicLoopToggle.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+UI.MusicLoopToggle.BorderSizePixel = 0
+UI.MusicLoopToggle.FontFace = GothamMedium
+UI.MusicLoopToggle.LayoutOrder = 2
+UI.MusicLoopToggle.Name = "MusicLoopToggle"
+UI.MusicLoopToggle.Size = UDim2.new(1, 0, 0.5, 0)
+UI.MusicLoopToggle.Text = ""
+UI.MusicLoopToggle.Parent = UI.MusicLoopCol
+
+UI.MusicLoopToggleCorner = Instance.new("UICorner")
+UI.MusicLoopToggleCorner.CornerRadius = UDim.new(0, 4)
+UI.MusicLoopToggleCorner.Parent = UI.MusicLoopToggle
+
+UI.MusicLoopToggleStroke = Instance.new("UIStroke")
+UI.MusicLoopToggleStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.MusicLoopToggleStroke.Parent = UI.MusicLoopToggle
+
+UI.MusicLoopState = Instance.new("Frame")
+UI.MusicLoopState.AnchorPoint = Vector2.new(0.5, 0.5)
+UI.MusicLoopState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+UI.MusicLoopState.BorderSizePixel = 0
+UI.MusicLoopState.Name = "LoopState"
+UI.MusicLoopState.Position = UDim2.new(0.5, 0, 0.5, 0)
+UI.MusicLoopState.Size = UDim2.new(0.7, 0, 0.6, 0)
+UI.MusicLoopState.Parent = UI.MusicLoopToggle
+
+UI.MusicLoopStateCorner = Instance.new("UICorner")
+UI.MusicLoopStateCorner.CornerRadius = UDim.new(0, 4)
+UI.MusicLoopStateCorner.Parent = UI.MusicLoopState
+
+UI.MusicListScroll = Instance.new("ScrollingFrame")
+UI.MusicListScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.MusicListScroll.BackgroundTransparency = 1
+UI.MusicListScroll.BorderSizePixel = 0
+UI.MusicListScroll.LayoutOrder = 6
+UI.MusicListScroll.Name = "MusicListScroll"
+UI.MusicListScroll.ScrollBarThickness = 4
+UI.MusicListScroll.ScrollingDirection = Enum.ScrollingDirection.Y
+UI.MusicListScroll.Size = UDim2.new(1, 0, 1, 0)
+UI.MusicListScroll.Parent = UI.MusicContent
+
+UI.MusicListLayout = Instance.new("UIListLayout")
+UI.MusicListLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicListLayout.Name = "MusicListLayout"
+UI.MusicListLayout.Padding = UDim.new(0, 4)
+UI.MusicListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicListLayout.Parent = UI.MusicListScroll
+
+UI.MusicListPadding = Instance.new("UIPadding")
+UI.MusicListPadding.Name = "MusicListPadding"
+UI.MusicListPadding.PaddingBottom = UDim.new(0, 4)
+UI.MusicListPadding.PaddingTop = UDim.new(0, 4)
+UI.MusicListPadding.Parent = UI.MusicListScroll
+
+UI.NoMusicLabel = Instance.new("TextLabel")
+UI.NoMusicLabel.BackgroundTransparency = 1
+UI.NoMusicLabel.BorderSizePixel = 0
+UI.NoMusicLabel.FontFace = GothamMedium
+UI.NoMusicLabel.Name = "NoMusicLabel"
+UI.NoMusicLabel.Size = UDim2.new(1, 0, 0, 60)
+UI.NoMusicLabel.Text = "No music found.\n\nPlace audio files in Lucid/Music/"
+UI.NoMusicLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
+UI.NoMusicLabel.TextScaled = true
+UI.NoMusicLabel.TextWrapped = true
+UI.NoMusicLabel.Visible = false
+UI.NoMusicLabel.Parent = UI.MusicListScroll
+
+UI.SettingsContent = Instance.new("CanvasGroup")
+UI.SettingsContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.SettingsContent.BorderSizePixel = 0
+UI.SettingsContent.LayoutOrder = 1
+UI.SettingsContent.Name = "SettingsContent"
+UI.SettingsContent.Size = UDim2.new(1, 0, 1, 0)
+UI.SettingsContent.Visible = false
+UI.SettingsContent.Parent = UI.Pages
+
+UI.SettingsContentCorner = Instance.new("UICorner")
+UI.SettingsContentCorner.CornerRadius = UDim.new(0, 6)
+UI.SettingsContentCorner.Parent = UI.SettingsContent
+
+UI.SettingsContentStroke = Instance.new("UIStroke")
+UI.SettingsContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SettingsContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.SettingsContentStroke.Name = "SettingsContentStroke"
+UI.SettingsContentStroke.Parent = UI.SettingsContent
+
+UI.SettingsFrame = Instance.new("ScrollingFrame")
+UI.SettingsFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.SettingsFrame.BackgroundTransparency = 1
+UI.SettingsFrame.BorderSizePixel = 0
+UI.SettingsFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+UI.SettingsFrame.Name = "SettingsFrame"
+UI.SettingsFrame.Size = UDim2.new(1, 0, 1, 0)
+UI.SettingsFrame.Parent = UI.SettingsContent
+
+UI.SettingsFramePadding = Instance.new("UIPadding")
+UI.SettingsFramePadding.PaddingBottom = UDim.new(0, 5)
+UI.SettingsFramePadding.PaddingLeft = UDim.new(0, 5)
+UI.SettingsFramePadding.PaddingRight = UDim.new(0, 5)
+UI.SettingsFramePadding.PaddingTop = UDim.new(0, 5)
+UI.SettingsFramePadding.Parent = UI.SettingsFrame
+
+UI.SettingsFrameLayout = Instance.new("UIListLayout")
+UI.SettingsFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SettingsFrameLayout.Padding = UDim.new(0, 6)
+UI.SettingsFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SettingsFrameLayout.Parent = UI.SettingsFrame
+
+UI.AnimsToggle = Instance.new("TextButton")
+UI.AnimsToggle.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.AnimsToggle.BorderSizePixel = 0
+UI.AnimsToggle.LayoutOrder = 1
+UI.AnimsToggle.Name = "AnimsToggle"
+UI.AnimsToggle.Size = UDim2.new(1, 0, 0, 38)
+UI.AnimsToggle.Text = ""
+UI.AnimsToggle.Parent = UI.SettingsFrame
+
+UI.AnimsToggleCorner = Instance.new("UICorner")
+UI.AnimsToggleCorner.CornerRadius = UDim.new(0, 6)
+UI.AnimsToggleCorner.Parent = UI.AnimsToggle
+
+UI.AnimsToggleStroke = Instance.new("UIStroke")
+UI.AnimsToggleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.AnimsToggleStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.AnimsToggleStroke.Parent = UI.AnimsToggle
+
+UI.AnimsTogglePadding = Instance.new("UIPadding")
+UI.AnimsTogglePadding.PaddingBottom = UDim.new(0, 8)
+UI.AnimsTogglePadding.PaddingLeft = UDim.new(0, 8)
+UI.AnimsTogglePadding.PaddingRight = UDim.new(0, 8)
+UI.AnimsTogglePadding.PaddingTop = UDim.new(0, 8)
+UI.AnimsTogglePadding.Parent = UI.AnimsToggle
+
+UI.AnimsToggleLayout = Instance.new("UIListLayout")
+UI.AnimsToggleLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.AnimsToggleLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.AnimsToggleLayout.Padding = UDim.new(0, 6)
+UI.AnimsToggleLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.AnimsToggleLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.AnimsToggleLayout.Parent = UI.AnimsToggle
+
+UI.AnimsToggleLabel = Instance.new("TextLabel")
+UI.AnimsToggleLabel.BackgroundTransparency = 1
+UI.AnimsToggleLabel.BorderSizePixel = 0
+UI.AnimsToggleLabel.FontFace = GothamMedium
+UI.AnimsToggleLabel.LayoutOrder = 1
+UI.AnimsToggleLabel.Name = "AnimsToggleLabel"
+UI.AnimsToggleLabel.Size = UDim2.new(0.8, 0, 1, 0)
+UI.AnimsToggleLabel.Text = "Animations"
+UI.AnimsToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.AnimsToggleLabel.TextScaled = true
+UI.AnimsToggleLabel.TextWrapped = true
+UI.AnimsToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+UI.AnimsToggleLabel.Parent = UI.AnimsToggle
+
+UI.ToggleState = Instance.new("Frame")
+UI.ToggleState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+UI.ToggleState.BorderSizePixel = 0
+UI.ToggleState.LayoutOrder = 2
+UI.ToggleState.Name = "ToggleState"
+UI.ToggleState.Size = UDim2.new(0.2, 0, 0.6, 0)
+UI.ToggleState.Parent = UI.AnimsToggle
+
+UI.ToggleStateCorner = Instance.new("UICorner")
+UI.ToggleStateCorner.CornerRadius = UDim.new(0, 6)
+UI.ToggleStateCorner.Parent = UI.ToggleState
+
+UI.ToggleStateRatio = Instance.new("UIAspectRatioConstraint")
+UI.ToggleStateRatio.Parent = UI.ToggleState
+
+UI.ToggleStateStroke = Instance.new("UIStroke")
+UI.ToggleStateStroke.Color = Color3.fromRGB(255, 0, 0)
+UI.ToggleStateStroke.Transparency = 0.5
+UI.ToggleStateStroke.Parent = UI.ToggleState
+
+UI.SidebarContainer = Instance.new("Frame")
+UI.SidebarContainer.BackgroundTransparency = 1
+UI.SidebarContainer.BorderSizePixel = 0
+UI.SidebarContainer.LayoutOrder = 2
+UI.SidebarContainer.Name = "SidebarContainer"
+UI.SidebarContainer.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.SidebarContainer.Parent = UI.MainFrame
+
+UI.Sidebar = Instance.new("Frame")
+UI.Sidebar.AnchorPoint = Vector2.new(1, 0.5)
+UI.Sidebar.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.Sidebar.BorderSizePixel = 0
+UI.Sidebar.Name = "Sidebar"
+UI.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
+UI.Sidebar.Size = UDim2.new(1, 0, 1, -10)
+UI.Sidebar.Parent = UI.SidebarContainer
+
+UI.SidebarCorner = Instance.new("UICorner")
+UI.SidebarCorner.CornerRadius = UDim.new(0, 6)
+UI.SidebarCorner.Parent = UI.Sidebar
+
+UI.SidebarStroke = Instance.new("UIStroke")
+UI.SidebarStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.SidebarStroke.Name = "SidebarStroke"
+UI.SidebarStroke.Parent = UI.Sidebar
+
+UI.SidebarPadding = Instance.new("UIPadding")
+UI.SidebarPadding.PaddingBottom = UDim.new(0, 8)
+UI.SidebarPadding.PaddingLeft = UDim.new(0, 8)
+UI.SidebarPadding.PaddingRight = UDim.new(0, 18)
+UI.SidebarPadding.PaddingTop = UDim.new(0, 8)
+UI.SidebarPadding.Parent = UI.Sidebar
+
+UI.SidebarLayout = Instance.new("UIListLayout")
+UI.SidebarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SidebarLayout.Padding = UDim.new(0, 3)
+UI.SidebarLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SidebarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SidebarLayout.Parent = UI.Sidebar
+
+UI.Topbar = Instance.new("Frame")
+UI.Topbar.BackgroundTransparency = 1
+UI.Topbar.BorderSizePixel = 0
+UI.Topbar.Name = "Topbar"
+UI.Topbar.Size = UDim2.new(1, 0, 0, 30)
+UI.Topbar.Parent = UI.Sidebar
+
+UI.TopbarSizeCons = Instance.new("UISizeConstraint")
+UI.TopbarSizeCons.MaxSize = Vector2.new(2147483647, 30)
+UI.TopbarSizeCons.MinSize = Vector2.new(0, 28)
+UI.TopbarSizeCons.Parent = UI.Topbar
+
+UI.TopbarLayout = Instance.new("UIListLayout")
+UI.TopbarLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.TopbarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.TopbarLayout.Padding = UDim.new(0, 4)
+UI.TopbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.TopbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.TopbarLayout.Parent = UI.Topbar
+
+UI.Logo = Instance.new("ImageLabel")
+UI.Logo.BackgroundTransparency = 1
+UI.Logo.BorderSizePixel = 0
+UI.Logo.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
+UI.Logo.ImageColor3 = Color3.fromRGB(0, 64, 180)
+UI.Logo.LayoutOrder = 1
+UI.Logo.Name = "Logo"
+UI.Logo.Size = UDim2.new(0, 30, 0, 30)
+UI.Logo.Parent = UI.Topbar
+
+UI.LogoRatio = Instance.new("UIAspectRatioConstraint")
+UI.LogoRatio.Parent = UI.Logo
+
+UI.Icon = Instance.new("ImageLabel")
+UI.Icon.AnchorPoint = Vector2.new(0.5, 0.5)
+UI.Icon.BackgroundTransparency = 1
+UI.Icon.BorderSizePixel = 0
+UI.Icon.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
+UI.Icon.ImageColor3 = Color3.fromRGB(0, 99, 255)
+UI.Icon.LayoutOrder = 1
+UI.Icon.Name = "Icon"
+UI.Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
+UI.Icon.Size = UDim2.new(1, -2, 1, -2)
+UI.Icon.Parent = UI.Logo
+
+UI.Title = Instance.new("TextLabel")
+UI.Title.BackgroundTransparency = 1
+UI.Title.BorderSizePixel = 0
+UI.Title.FontFace = BuilderSans
+UI.Title.LayoutOrder = 2
+UI.Title.Name = "Title"
+UI.Title.Size = UDim2.new(0, 60, 0, 30)
+UI.Title.Text = "Lucid"
+UI.Title.TextColor3 = Color3.fromRGB(0, 99, 255)
+UI.Title.TextScaled = true
+UI.Title.TextWrapped = true
+UI.Title.TextXAlignment = Enum.TextXAlignment.Left
+UI.Title.Parent = UI.Topbar
+
+UI.TitleStroke = Instance.new("UIStroke")
+UI.TitleStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.TitleStroke.Transparency = 0.6
+UI.TitleStroke.Name = "TitleStroke"
+UI.TitleStroke.Parent = UI.Title
+
+UI.TitlePadding = Instance.new("UIPadding")
+UI.TitlePadding.PaddingBottom = UDim.new(0, 2)
+UI.TitlePadding.PaddingTop = UDim.new(0, 2)
+UI.TitlePadding.Parent = UI.Title
+
+UI.CloseTab = Instance.new("TextButton")
+UI.CloseTab.BackgroundTransparency = 1
+UI.CloseTab.BorderSizePixel = 0
+UI.CloseTab.LayoutOrder = 100
+UI.CloseTab.Name = "CloseTab"
+UI.CloseTab.Size = UDim2.new(0, 30, 0, 58)
+UI.CloseTab.Text = ""
+UI.CloseTab.Parent = UI.Sidebar
+
+UI.CloseTabLayout = Instance.new("UIListLayout")
+UI.CloseTabLayout.Padding = UDim.new(0, 4)
+UI.CloseTabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.CloseTabLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.CloseTabLayout.Parent = UI.CloseTab
+
+UI.CloseTabSizeCons = Instance.new("UISizeConstraint")
+UI.CloseTabSizeCons.MaxSize = Vector2.new(2147483647, 34)
+UI.CloseTabSizeCons.MinSize = Vector2.new(0, 28)
+UI.CloseTabSizeCons.Parent = UI.CloseTab
+
+UI.CloseTabPadding = Instance.new("UIPadding")
+UI.CloseTabPadding.PaddingBottom = UDim.new(0, 3)
+UI.CloseTabPadding.PaddingTop = UDim.new(0, 3)
+UI.CloseTabPadding.Parent = UI.CloseTab
+
+UI.TabContainer6 = Instance.new("Frame")
+UI.TabContainer6.BackgroundTransparency = 1
+UI.TabContainer6.BorderSizePixel = 0
+UI.TabContainer6.LayoutOrder = 1
+UI.TabContainer6.Name = "TabContainer6"
+UI.TabContainer6.Size = UDim2.new(1, 0, 0, 22)
+UI.TabContainer6.Parent = UI.CloseTab
+
+UI.TabContainer6Layout = Instance.new("UIListLayout")
+UI.TabContainer6Layout.FillDirection = Enum.FillDirection.Horizontal
+UI.TabContainer6Layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.TabContainer6Layout.Padding = UDim.new(0, 4)
+UI.TabContainer6Layout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.TabContainer6Layout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.TabContainer6Layout.Parent = UI.TabContainer6
+
+UI.TabIcon6 = Instance.new("ImageLabel")
+UI.TabIcon6.BackgroundTransparency = 1
+UI.TabIcon6.BorderSizePixel = 0
+UI.TabIcon6.Image = Funcs.GetAsset("Lucid/Assets/lucid_close.png")
+UI.TabIcon6.LayoutOrder = 1
+UI.TabIcon6.Name = "TabIcon6"
+UI.TabIcon6.Size = UDim2.new(0, 30, 0, 30)
+UI.TabIcon6.Parent = UI.TabContainer6
+
+UI.TabIcon6Ratio = Instance.new("UIAspectRatioConstraint")
+UI.TabIcon6Ratio.Parent = UI.TabIcon6
+
+UI.TabLabel6 = Instance.new("TextLabel")
+UI.TabLabel6.BackgroundTransparency = 1
+UI.TabLabel6.BorderSizePixel = 0
+UI.TabLabel6.FontFace = BuilderSans
+UI.TabLabel6.LayoutOrder = 2
+UI.TabLabel6.Name = "TabLabel6"
+UI.TabLabel6.Size = UDim2.new(0, 60, 0, 30)
+UI.TabLabel6.Text = "Close"
+UI.TabLabel6.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.TabLabel6.TextScaled = true
+UI.TabLabel6.TextWrapped = true
+UI.TabLabel6.TextXAlignment = Enum.TextXAlignment.Left
+UI.TabLabel6.Parent = UI.TabContainer6
+
+UI.TabUnderline6Close = Instance.new("Frame")
+UI.TabUnderline6Close.BackgroundTransparency = 1
+UI.TabUnderline6Close.BorderSizePixel = 0
+UI.TabUnderline6Close.LayoutOrder = 2
+UI.TabUnderline6Close.Name = "TabUnderline6Close"
+UI.TabUnderline6Close.Size = UDim2.new(0, 0, 0, 1)
+UI.TabUnderline6Close.Parent = UI.CloseTab
+
+UI.NewScriptFrame = Instance.new("Frame")
+UI.NewScriptFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+UI.NewScriptFrame.BackgroundColor3 = Color3.fromRGB(11, 11, 11)
+UI.NewScriptFrame.BorderSizePixel = 0
+UI.NewScriptFrame.Name = "NewScriptFrame"
+UI.NewScriptFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+UI.NewScriptFrame.Size = UDim2.new(0, 408, 0, 214)
+UI.NewScriptFrame.Visible = false
+UI.NewScriptFrame.ZIndex = 2
+UI.NewScriptFrame.Parent = UI.ScreenGui
+
+UI.NewScriptFrameStroke = Instance.new("UIStroke")
+UI.NewScriptFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.NewScriptFrameStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.NewScriptFrameStroke.Name = "NewScriptFrameStroke"
+UI.NewScriptFrameStroke.Parent = UI.NewScriptFrame
+
+UI.NewScriptFramePadding = Instance.new("UIPadding")
+UI.NewScriptFramePadding.PaddingBottom = UDim.new(0, 6)
+UI.NewScriptFramePadding.PaddingLeft = UDim.new(0, 6)
+UI.NewScriptFramePadding.PaddingRight = UDim.new(0, 6)
+UI.NewScriptFramePadding.PaddingTop = UDim.new(0, 6)
+UI.NewScriptFramePadding.Parent = UI.NewScriptFrame
+
+UI.NewScriptFrameLayout = Instance.new("UIListLayout")
+UI.NewScriptFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.NewScriptFrameLayout.Padding = UDim.new(0, 8)
+UI.NewScriptFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.NewScriptFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.NewScriptFrameLayout.Parent = UI.NewScriptFrame
+
+UI.NewScriptFrameCorner = Instance.new("UICorner")
+UI.NewScriptFrameCorner.CornerRadius = UDim.new(0, 6)
+UI.NewScriptFrameCorner.Parent = UI.NewScriptFrame
+
+UI.NameBox = Instance.new("TextBox")
+UI.NameBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.NameBox.BorderSizePixel = 0
+UI.NameBox.FontFace = GothamMedium
+UI.NameBox.LayoutOrder = 1
+UI.NameBox.Name = "NameBox"
+UI.NameBox.PlaceholderText = "Enter script name..."
+UI.NameBox.Size = UDim2.new(0, 76, 0, 30)
+UI.NameBox.Text = ""
+UI.NameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NameBox.TextScaled = true
+UI.NameBox.TextWrapped = true
+UI.NameBox.TextXAlignment = Enum.TextXAlignment.Left
+UI.NameBox.Parent = UI.NewScriptFrame
+
+UI.NameBoxPadding = Instance.new("UIPadding")
+UI.NameBoxPadding.PaddingBottom = UDim.new(0, 4)
+UI.NameBoxPadding.PaddingLeft = UDim.new(0, 4)
+UI.NameBoxPadding.PaddingRight = UDim.new(0, 4)
+UI.NameBoxPadding.PaddingTop = UDim.new(0, 4)
+UI.NameBoxPadding.Parent = UI.NameBox
+
+UI.NameBoxStroke = Instance.new("UIStroke")
+UI.NameBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.NameBoxStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.NameBoxStroke.Parent = UI.NameBox
+
+UI.NameBoxCorner = Instance.new("UICorner")
+UI.NameBoxCorner.CornerRadius = UDim.new(0, 6)
+UI.NameBoxCorner.Parent = UI.NameBox
+
+UI.DescBox = Instance.new("TextBox")
+UI.DescBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.DescBox.BorderSizePixel = 0
+UI.DescBox.FontFace = GothamMedium
+UI.DescBox.LayoutOrder = 2
+UI.DescBox.Name = "DescBox"
+UI.DescBox.PlaceholderText = "Enter script description..."
+UI.DescBox.Size = UDim2.new(0, 76, 0, 30)
+UI.DescBox.Text = ""
+UI.DescBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.DescBox.TextScaled = true
+UI.DescBox.TextWrapped = true
+UI.DescBox.TextXAlignment = Enum.TextXAlignment.Left
+UI.DescBox.Parent = UI.NewScriptFrame
+
+UI.DescBoxCorner = Instance.new("UICorner")
+UI.DescBoxCorner.CornerRadius = UDim.new(0, 6)
+UI.DescBoxCorner.Parent = UI.DescBox
+
+UI.DescBoxPadding = Instance.new("UIPadding")
+UI.DescBoxPadding.PaddingBottom = UDim.new(0, 4)
+UI.DescBoxPadding.PaddingLeft = UDim.new(0, 4)
+UI.DescBoxPadding.PaddingRight = UDim.new(0, 4)
+UI.DescBoxPadding.PaddingTop = UDim.new(0, 4)
+UI.DescBoxPadding.Parent = UI.DescBox
+
+UI.DescBoxStroke = Instance.new("UIStroke")
+UI.DescBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.DescBoxStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.DescBoxStroke.Parent = UI.DescBox
+
+UI.ScriptBox = Instance.new("TextBox")
+UI.ScriptBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.ScriptBox.BorderSizePixel = 0
+UI.ScriptBox.FontFace = Inconsolata
+UI.ScriptBox.LayoutOrder = 3
+UI.ScriptBox.Name = "ScriptBox"
+UI.ScriptBox.PlaceholderText = "Enter script..."
+UI.ScriptBox.Size = UDim2.new(0, 76, 0, 80)
+UI.ScriptBox.Text = ""
+UI.ScriptBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ScriptBox.TextSize = 20
+UI.ScriptBox.TextWrapped = true
+UI.ScriptBox.TextXAlignment = Enum.TextXAlignment.Left
+UI.ScriptBox.TextYAlignment = Enum.TextYAlignment.Top
+UI.ScriptBox.Parent = UI.NewScriptFrame
+
+UI.ScriptBoxPadding = Instance.new("UIPadding")
+UI.ScriptBoxPadding.PaddingBottom = UDim.new(0, 4)
+UI.ScriptBoxPadding.PaddingLeft = UDim.new(0, 4)
+UI.ScriptBoxPadding.PaddingRight = UDim.new(0, 4)
+UI.ScriptBoxPadding.PaddingTop = UDim.new(0, 4)
+UI.ScriptBoxPadding.Parent = UI.ScriptBox
+
+UI.ScriptBoxCorner = Instance.new("UICorner")
+UI.ScriptBoxCorner.CornerRadius = UDim.new(0, 6)
+UI.ScriptBoxCorner.Parent = UI.ScriptBox
+
+UI.ScriptBoxStroke = Instance.new("UIStroke")
+UI.ScriptBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ScriptBoxStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.ScriptBoxStroke.Parent = UI.ScriptBox
+
+UI.Options = Instance.new("Frame")
+UI.Options.BackgroundTransparency = 1
+UI.Options.BorderSizePixel = 0
+UI.Options.LayoutOrder = 4
+UI.Options.Name = "Options"
+UI.Options.Size = UDim2.new(0, 76, 0, 34)
+UI.Options.Parent = UI.NewScriptFrame
+
+UI.OptionsCorner = Instance.new("UICorner")
+UI.OptionsCorner.CornerRadius = UDim.new(0, 6)
+UI.OptionsCorner.Parent = UI.Options
+
+UI.OptionsLayout = Instance.new("UIListLayout")
+UI.OptionsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.OptionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.OptionsLayout.Padding = UDim.new(0, 8)
+UI.OptionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.OptionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.OptionsLayout.Parent = UI.Options
+
+UI.Save = Instance.new("TextButton")
+UI.Save.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.Save.BorderSizePixel = 0
+UI.Save.FontFace = GothamMedium
+UI.Save.LayoutOrder = 1
+UI.Save.Name = "Save"
+UI.Save.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.Save.Text = "Save"
+UI.Save.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.Save.TextScaled = true
+UI.Save.TextWrapped = true
+UI.Save.Parent = UI.Options
+
+UI.SaveStroke = Instance.new("UIStroke")
+UI.SaveStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SaveStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SaveStroke.Name = "SaveStroke"
+UI.SaveStroke.Parent = UI.Save
+
+UI.SaveCorner = Instance.new("UICorner")
+UI.SaveCorner.CornerRadius = UDim.new(0, 6)
+UI.SaveCorner.Parent = UI.Save
+
+UI.Cancel = Instance.new("TextButton")
+UI.Cancel.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.Cancel.BorderSizePixel = 0
+UI.Cancel.FontFace = GothamMedium
+UI.Cancel.LayoutOrder = 2
+UI.Cancel.Name = "Cancel"
+UI.Cancel.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.Cancel.Text = "Cancel"
+UI.Cancel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.Cancel.TextScaled = true
+UI.Cancel.TextWrapped = true
+UI.Cancel.Parent = UI.Options
+
+UI.CancelCorner = Instance.new("UICorner")
+UI.CancelCorner.CornerRadius = UDim.new(0, 6)
+UI.CancelCorner.Parent = UI.Cancel
+
+UI.CancelStroke = Instance.new("UIStroke")
+UI.CancelStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.CancelStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.CancelStroke.Name = "CancelStroke"
+UI.CancelStroke.Parent = UI.Cancel
+
+UI.ResetThemeBtn = Instance.new("TextButton")
+UI.ResetThemeBtn.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.ResetThemeBtn.BorderSizePixel = 0
+UI.ResetThemeBtn.LayoutOrder = 6
+UI.ResetThemeBtn.Name = "ResetThemeBtn"
+UI.ResetThemeBtn.Size = UDim2.new(1, 0, 0, 38)
+UI.ResetThemeBtn.Text = ""
+UI.ResetThemeBtn.Parent = UI.SettingsFrame
+
+UI.ResetThemeBtnCorner = Instance.new("UICorner")
+UI.ResetThemeBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.ResetThemeBtnCorner.Parent = UI.ResetThemeBtn
+
+UI.ResetThemeBtnStroke = Instance.new("UIStroke")
+UI.ResetThemeBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ResetThemeBtnStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.ResetThemeBtnStroke.Parent = UI.ResetThemeBtn
+
+UI.ResetThemeBtnLayout = Instance.new("UIListLayout")
+UI.ResetThemeBtnLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ResetThemeBtnLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ResetThemeBtnLayout.Padding = UDim.new(0, 6)
+UI.ResetThemeBtnLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ResetThemeBtnLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ResetThemeBtnLayout.Parent = UI.ResetThemeBtn
+
+UI.ResetThemeBtnPadding = Instance.new("UIPadding")
+UI.ResetThemeBtnPadding.PaddingBottom = UDim.new(0, 8)
+UI.ResetThemeBtnPadding.PaddingLeft = UDim.new(0, 8)
+UI.ResetThemeBtnPadding.PaddingRight = UDim.new(0, 8)
+UI.ResetThemeBtnPadding.PaddingTop = UDim.new(0, 8)
+UI.ResetThemeBtnPadding.Parent = UI.ResetThemeBtn
+
+UI.ResetThemeBtnLabel = Instance.new("TextLabel")
+UI.ResetThemeBtnLabel.BackgroundTransparency = 1
+UI.ResetThemeBtnLabel.BorderSizePixel = 0
+UI.ResetThemeBtnLabel.FontFace = GothamMedium
+UI.ResetThemeBtnLabel.LayoutOrder = 1
+UI.ResetThemeBtnLabel.Size = UDim2.new(0.8, 0, 1, 0)
+UI.ResetThemeBtnLabel.Text = "Reset Theme"
+UI.ResetThemeBtnLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ResetThemeBtnLabel.TextScaled = true
+UI.ResetThemeBtnLabel.TextWrapped = true
+UI.ResetThemeBtnLabel.TextXAlignment = Enum.TextXAlignment.Left
+UI.ResetThemeBtnLabel.Parent = UI.ResetThemeBtn
+
+UI.HomeTab = Funcs.CreateTab("Lucid/Assets/lucid_home.png", "Home", UI.HomeContent, 1, "TabUnderline")
+UI.ExeTab = Funcs.CreateTab("Lucid/Assets/lucid_executor.png", "Executor", UI.ExeContent, 2, "TabUnderline2")
+UI.SearchTab = Funcs.CreateTab("Lucid/Assets/lucid_search.png", "Search", UI.SearchContent, 3, "TabUnderline3")
+UI.ScriptsTab = Funcs.CreateTab("Lucid/Assets/lucid_scripts.png", "Scripts", UI.ScriptsContent, 4, "TabUnderline4")
+UI.MusicTab = Funcs.CreateTab("Lucid/Assets/lucid_music.png", "Music", UI.MusicContent, 5, "TabUnderline6Music")
+UI.SettingsTab = Funcs.CreateTab("Lucid/Assets/lucid_settings.png", "Settings", UI.SettingsContent, 6, "TabUnderline5")
+
+Funcs.CreateSettingsInputbox("Background Color (RGB)", "10, 10, 10", "BackgroundColor", 2)
+Funcs.CreateSettingsInputbox("Secondary Background Color (RGB)", "18, 18, 18", "SecondaryBackgroundColor", 3)
+Funcs.CreateSettingsInputbox("Accent Color (RGB)", "0, 98, 255", "AccentColor", 4)
+Funcs.CreateSettingsInputbox("Secondary Accent Color (RGB)", "0, 63, 179", "SecondaryAccentColor", 5)
+
+Funcs.LoadSettings()
+Funcs.ApplyTheme()
+Funcs.InitDefaultScripts()
+
+Funcs.Dragify(UI.Show)
+
+Funcs.CreateExeTab("Tab 1")
+
+UI.AddExeTabBtn.MouseButton1Click:Connect(function()
+    Funcs.CreateExeTab()
 end)
-_0xE3E8.Show.MouseButton1Click:Connect(function()
-_0x418A.OpenUI()
+
+UI.Show.MouseButton1Click:Connect(function()
+    Funcs.OpenUI()
 end)
-_0xE3E8.CloseTab.MouseButton1Click:Connect(function()
-_0x418A.CloseUI()
+
+UI.CloseTab.MouseButton1Click:Connect(function()
+    Funcs.CloseUI()
 end)
-_0xE3E8.Save.MouseButton1Click:Connect(function()
-local _0x3CE3 = _0xE3E8.NameBox.Text
-local _0xCDC0 = _0xE3E8.DescBox.Text
-local _0x69D9 = _0xE3E8.ScriptBox.Text
-if _0x3CE3 ==""then return end
-_0x418A.SaveScript({ Name = _0x3CE3, Description = _0xCDC0, Code = _0x69D9 })
-_0xE3E8.NewScriptFrame.Visible = false
-_0xE3E8.NameBox.Text =""_0xE3E8.DescBox.Text =""_0xE3E8.ScriptBox.Text =""_0x418A.RefreshSavedScripts(_0xE3E8.SearchBox2.Text)
+
+UI.Save.MouseButton1Click:Connect(function()
+    local scriptName = UI.NameBox.Text
+    local scriptDesc = UI.DescBox.Text
+    local scriptCode = UI.ScriptBox.Text
+    if scriptName == "" then return end
+    Funcs.SaveScript({ Name = scriptName, Description = scriptDesc, Code = scriptCode })
+    UI.NewScriptFrame.Visible = false
+    UI.NameBox.Text = ""
+    UI.DescBox.Text = ""
+    UI.ScriptBox.Text = ""
+    Funcs.RefreshSavedScripts(UI.SearchBox2.Text)
 end)
-_0xE3E8.Cancel.MouseButton1Click:Connect(function()
-_0xE3E8.NewScriptFrame.Visible = false
-_0xE3E8.NameBox.Text =""_0xE3E8.DescBox.Text =""_0xE3E8.ScriptBox.Text =""end)
-_0xE3E8.NewScriptBtn.MouseButton1Click:Connect(function()
-_0xE3E8.NewScriptFrame.Visible = true
-_0xE3E8.NameBox.Text =""_0xE3E8.DescBox.Text =""_0xE3E8.ScriptBox.Text =""end)
-_0xE3E8.SearchBox:GetPropertyChangedSignal(string.char(84,101,120,116)):Connect(function()
-local _0xB4BB = _0xE3E8.SearchBox.Text
-_0xE3E8.PrevBtn.Visible = false
-_0xE3E8.NextBtn.Visible = false
-if _0xB4BB ~=""then
-_0x418A.PerformSearch(_0xB4BB, 1)
-elseif _0x418A.CurrentSource ==string.char(83,99,114,105,112,116,66,108,111,120)then
-_0x418A.PerformSearch("", 1)
-else
-if _0xE3E8.NoResultsLabel then _0xE3E8.NoResultsLabel.Visible = false end
-_0x418A.CurrentScripts = {}
-_0x418A.RenderSearchResults()
-end
+
+UI.Cancel.MouseButton1Click:Connect(function()
+    UI.NewScriptFrame.Visible = false
+    UI.NameBox.Text = ""
+    UI.DescBox.Text = ""
+    UI.ScriptBox.Text = ""
 end)
-_0xE3E8.PrevBtn.MouseButton1Click:Connect(function()
-if _0xCC51 > 1 then _0x418A.PerformSearch(_0x1CC3, _0xCC51 - 1) end
+
+UI.NewScriptBtn.MouseButton1Click:Connect(function()
+    UI.NewScriptFrame.Visible = true
+    UI.NameBox.Text = ""
+    UI.DescBox.Text = ""
+    UI.ScriptBox.Text = ""
 end)
-_0xE3E8.NextBtn.MouseButton1Click:Connect(function()
-if _0xCC51 < _0xB84E then _0x418A.PerformSearch(_0x1CC3, _0xCC51 + 1) end
+
+UI.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+    local query = UI.SearchBox.Text
+    UI.PrevBtn.Visible = false
+    UI.NextBtn.Visible = false
+    if query ~= "" then
+        Funcs.PerformSearch(query, 1)
+    elseif Funcs.CurrentSource == "ScriptBlox" then
+        Funcs.PerformSearch("", 1)
+    else
+        if UI.NoResultsLabel then UI.NoResultsLabel.Visible = false end
+        Funcs.CurrentScripts = {}
+        Funcs.RenderSearchResults()
+    end
 end)
-_0xE3E8.SourceBtn.MouseButton1Click:Connect(function()
-_0x418A.CycleSource()
+
+UI.PrevBtn.MouseButton1Click:Connect(function()
+    if currentPage > 1 then Funcs.PerformSearch(currentQuery, currentPage - 1) end
 end)
-_0xE3E8.FilterBtn.MouseButton1Click:Connect(function()
-_0x418A.CycleFilter()
+
+UI.NextBtn.MouseButton1Click:Connect(function()
+    if currentPage < totalPages then Funcs.PerformSearch(currentQuery, currentPage + 1) end
 end)
-_0xE3E8.SearchBox2:GetPropertyChangedSignal(string.char(84,101,120,116)):Connect(function()
-_0x418A.RefreshSavedScripts(_0xE3E8.SearchBox2.Text)
+
+UI.SourceBtn.MouseButton1Click:Connect(function()
+    Funcs.CycleSource()
 end)
-_0xE3E8.ExeBtn.MouseButton1Click:Connect(function()
-if _0x1CF4 then
-local _0xBC87 = _0x1CF4.inputBox.Text
-if _0xBC87 and _0xBC87 ~=""then
-loadstring(_0xBC87)()
-end
-end
+
+UI.FilterBtn.MouseButton1Click:Connect(function()
+    Funcs.CycleFilter()
 end)
-_0xE3E8.ClrBtn.MouseButton1Click:Connect(function()
-if _0x1CF4 then _0x1CF4.inputBox.Text =""end
+
+UI.SearchBox2:GetPropertyChangedSignal("Text"):Connect(function()
+    Funcs.RefreshSavedScripts(UI.SearchBox2.Text)
 end)
-_0xE3E8.CopyBtn.MouseButton1Click:Connect(function()
-if _0x1CF4 then _0x8139(_0x1CF4.inputBox.Text) end
+
+UI.ExeBtn.MouseButton1Click:Connect(function()
+    if ExeActiveTab then
+        local code = ExeActiveTab.inputBox.Text
+        if code and code ~= "" then
+            loadstring(code)()
+        end
+    end
 end)
-_0xE3E8.AnimsToggle.MouseButton1Click:Connect(function()
-_0x87A2.Animations = not _0x87A2.Animations
-if _0xE3E8.ToggleState then
-local _0xE617 = _0x87A2.Animations and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-if _0x87A2.Animations then
-_0x44D7:Create(_0xE3E8.ToggleState, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = _0xE617 }):Play()
-local _0x4B72 = _0xE3E8.ToggleState:FindFirstChildOfClass(string.char(85,73,83,116,114,111,107,101))
-if _0x4B72 then _0x44D7:Create(_0x4B72, TweenInfo.new(0.3), { Color = _0xE617 }):Play() end
-else
-_0x44D7:Create(_0xE3E8.ToggleState, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = _0xE617 }):Play()
-local _0x4B72 = _0xE3E8.ToggleState:FindFirstChildOfClass(string.char(85,73,83,116,114,111,107,101))
-if _0x4B72 then _0x44D7:Create(_0x4B72, TweenInfo.new(0.3), { Color = _0xE617 }):Play() end
-end
-end
-_0x418A.SaveSettings()
+
+UI.ClrBtn.MouseButton1Click:Connect(function()
+    if ExeActiveTab then ExeActiveTab.inputBox.Text = "" end
 end)
-_0xE3E8.ResetThemeBtn.MouseButton1Click:Connect(function()
-_0x87A2.BackgroundColor = Color3.fromRGB(0, 0, 0)
-_0x87A2.SecondaryBackgroundColor = Color3.fromRGB(10, 10, 10)
-_0x87A2.AccentColor = Color3.fromRGB(0, 99, 255)
-_0x87A2.SecondaryAccentColor = Color3.fromRGB(0, 64, 180)
-_0x418A.ApplyTheme()
-_0x418A.SaveSettings()
+
+UI.CopyBtn.MouseButton1Click:Connect(function()
+    if ExeActiveTab then SetClipboard(ExeActiveTab.inputBox.Text) end
 end)
-_0xE3E8.MusicPlayBtn.MouseButton1Click:Connect(function()
-if not _0x6B61 or not _0x6B61.Parent then
-_0x3162 = _0x418A.GetMusicFiles()
-if #_0x3162 > 0 then
-_0x418A.LoadAndPlayMusic(_0xD865)
-end
-return
-end
-if _0x140A then
-_0x6B61:Pause()
-_0x140A = false
-_0xE3E8.MusicPlayBtn.Text =string.char(226,150,182)else
-_0x6B61:Resume()
-_0x140A = true
-_0xE3E8.MusicPlayBtn.Text =string.char(226,143,184)end
+
+UI.AnimsToggle.MouseButton1Click:Connect(function()
+    Settings.Animations = not Settings.Animations
+    if UI.ToggleState then
+        local col = Settings.Animations and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+        if Settings.Animations then
+            TweenService:Create(UI.ToggleState, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = col }):Play()
+            local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.3), { Color = col }):Play() end
+        else
+            TweenService:Create(UI.ToggleState, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = col }):Play()
+            local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.3), { Color = col }):Play() end
+        end
+    end
+    Funcs.SaveSettings()
 end)
-_0xE3E8.MusicPrevBtn.MouseButton1Click:Connect(function()
-_0x3162 = _0x418A.GetMusicFiles()
-if #_0x3162 > 0 then
-_0x418A.LoadAndPlayMusic(_0xD865 - 1)
-end
+
+UI.ResetThemeBtn.MouseButton1Click:Connect(function()
+    Settings.BackgroundColor = Color3.fromRGB(0, 0, 0)
+    Settings.SecondaryBackgroundColor = Color3.fromRGB(10, 10, 10)
+    Settings.AccentColor = Color3.fromRGB(0, 99, 255)
+    Settings.SecondaryAccentColor = Color3.fromRGB(0, 64, 180)
+    Funcs.ApplyTheme()
+    Funcs.SaveSettings()
 end)
-_0xE3E8.MusicNextBtn.MouseButton1Click:Connect(function()
-_0x3162 = _0x418A.GetMusicFiles()
-if #_0x3162 > 0 then
-_0x418A.LoadAndPlayMusic(_0xD865 + 1)
-end
+
+UI.MusicPlayBtn.MouseButton1Click:Connect(function()
+    if not MusicSound or not MusicSound.Parent then
+        MusicFiles = Funcs.GetMusicFiles()
+        if #MusicFiles > 0 then
+            Funcs.LoadAndPlayMusic(MusicIndex)
+        end
+        return
+    end
+    if MusicPlaying then
+        MusicSound:Pause()
+        MusicPlaying = false
+        UI.MusicPlayBtn.Text = "▶"
+    else
+        MusicSound:Resume()
+        MusicPlaying = true
+        UI.MusicPlayBtn.Text = "⏸"
+    end
 end)
-_0xE3E8.MusicLoopToggle.MouseButton1Click:Connect(function()
-local _0xBE93 = _0xE3E8.MusicLoopState.BackgroundColor3 == Color3.fromRGB(0, 255, 0)
-local _0x180D = _0xBE93 and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(0, 255, 0)
-_0xE3E8.MusicLoopState.BackgroundColor3 = _0x180D
-if _0x6B61 then _0x6B61.Looped = not _0xBE93 end
+
+UI.MusicPrevBtn.MouseButton1Click:Connect(function()
+    MusicFiles = Funcs.GetMusicFiles()
+    if #MusicFiles > 0 then
+        Funcs.LoadAndPlayMusic(MusicIndex - 1)
+    end
 end)
-_0xE3E8.MusicVolumeBox:GetPropertyChangedSignal(string.char(84,101,120,116)):Connect(function()
-local _0x2A1F = tonumber(_0xE3E8.MusicVolumeBox.Text)
-if _0x2A1F and _0x6B61 then
-_0x6B61.Volume = math.clamp(_0x2A1F, 0, 10)
-end
+
+UI.MusicNextBtn.MouseButton1Click:Connect(function()
+    MusicFiles = Funcs.GetMusicFiles()
+    if #MusicFiles > 0 then
+        Funcs.LoadAndPlayMusic(MusicIndex + 1)
+    end
 end)
-_0xE3E8.MusicSpeedBox:GetPropertyChangedSignal(string.char(84,101,120,116)):Connect(function()
-local _0x5DB3 = tonumber(_0xE3E8.MusicSpeedBox.Text)
-if _0x5DB3 and _0x6B61 then
-_0x6B61.PlaybackSpeed = math.clamp(_0x5DB3, 0.1, 10)
-end
+
+UI.MusicLoopToggle.MouseButton1Click:Connect(function()
+    local isLooped = UI.MusicLoopState.BackgroundColor3 == Color3.fromRGB(0, 255, 0)
+    local newColor = isLooped and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(0, 255, 0)
+    UI.MusicLoopState.BackgroundColor3 = newColor
+    if MusicSound then MusicSound.Looped = not isLooped end
 end)
-local _0x971C = false
-local _0x6E55
-_0xE3E8.MusicSliderBar.InputBegan:Connect(function(_0x71BF)
-if _0x71BF.UserInputType == Enum.UserInputType.MouseButton1 or _0x71BF.UserInputType == Enum.UserInputType.Touch then
-_0x971C = true
-_0xEFB8 = true
-local function _0x7A7C(inp)
-local _0x9B88 = _0xE3E8.MusicSliderBar.AbsolutePosition.X
-local _0x72D3 = _0xE3E8.MusicSliderBar.AbsoluteSize.X
-local _0x5186 = math.clamp((inp.Position.X - _0x9B88) / _0x72D3, 0, 1)
-_0xE3E8.MusicSliderFill.Size = UDim2.new(_0x5186, 0, 1, 0)
-_0xE3E8.MusicSliderKnob.Position = UDim2.new(_0x5186, -6, 0.5, -6)
-if _0x6B61 and _0x6B61.TimeLength and _0x6B61.TimeLength > 0 then
-_0x6B61.TimePosition = _0x5186 * _0x6B61.TimeLength
-_0xE3E8.MusicTimeLabel.Text = _0x418A.FormatTime(_0x6B61.TimePosition) ..string.char(32,47,32).. _0x418A.FormatTime(_0x6B61.TimeLength)
-end
-end
-_0x7A7C(_0x71BF)
-if _0x6E55 then _0x6E55:Disconnect() end
-_0x6E55 = _0x86B4.InputChanged:Connect(function(inp)
-if _0x971C and (inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch) then
-_0x7A7C(inp)
-end
+
+UI.MusicVolumeBox:GetPropertyChangedSignal("Text"):Connect(function()
+    local vol = tonumber(UI.MusicVolumeBox.Text)
+    if vol and MusicSound then
+        MusicSound.Volume = math.clamp(vol, 0, 10)
+    end
 end)
-_0x71BF.Changed:Connect(function()
-if _0x71BF.UserInputState == Enum.UserInputState.End then
-_0x971C = false
-_0xEFB8 = false
-if _0x6E55 then _0x6E55:Disconnect() end
-end
+
+UI.MusicSpeedBox:GetPropertyChangedSignal("Text"):Connect(function()
+    local speed = tonumber(UI.MusicSpeedBox.Text)
+    if speed and MusicSound then
+        MusicSound.PlaybackSpeed = math.clamp(speed, 0.1, 10)
+    end
 end)
-end
+
+local sliderDragging = false
+local sliderInputConn
+
+UI.MusicSliderBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        sliderDragging = true
+        MusicSliderDragging = true
+        local function UpdateFromInput(inp)
+            local barPos = UI.MusicSliderBar.AbsolutePosition.X
+            local barSize = UI.MusicSliderBar.AbsoluteSize.X
+            local frac = math.clamp((inp.Position.X - barPos) / barSize, 0, 1)
+            UI.MusicSliderFill.Size = UDim2.new(frac, 0, 1, 0)
+            UI.MusicSliderKnob.Position = UDim2.new(frac, -6, 0.5, -6)
+            if MusicSound and MusicSound.TimeLength and MusicSound.TimeLength > 0 then
+                MusicSound.TimePosition = frac * MusicSound.TimeLength
+                UI.MusicTimeLabel.Text = Funcs.FormatTime(MusicSound.TimePosition) .. " / " .. Funcs.FormatTime(MusicSound.TimeLength)
+            end
+        end
+        UpdateFromInput(input)
+        if sliderInputConn then sliderInputConn:Disconnect() end
+        sliderInputConn = UserInputService.InputChanged:Connect(function(inp)
+            if sliderDragging and (inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch) then
+                UpdateFromInput(inp)
+            end
+        end)
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                sliderDragging = false
+                MusicSliderDragging = false
+                if sliderInputConn then sliderInputConn:Disconnect() end
+            end
+        end)
+    end
 end)
-_0x418A.SwitchTab(_0xE3E8.HomeTab)
-_0x418A.SetAllUnderlines(_0xE3E8.HomeTab)
-_0xE3E8.Show.Visible = true
-_0xE3E8.MainFrame.Visible = false
+
+Funcs.SwitchTab(UI.HomeTab)
+Funcs.SetAllUnderlines(UI.HomeTab)
+
+UI.Show.Visible = true
+UI.MainFrame.Visible = false
+
 coroutine.wrap(function()
-while _0xE3E8.ScreenGui and _0xE3E8.ScreenGui.Parent do
-_0x418A.UpdateStats()
-_0x418A.UpdateMusicSlider()
-_0x8239(0.5)
-end
+    while UI.ScreenGui and UI.ScreenGui.Parent do
+        Funcs.UpdateStats()
+        Funcs.UpdateMusicSlider()
+        Wait(0.5)
+    end
 end)()
-_0x436D.PlayerRemoving:Connect(function(player)
-if player == _0x0F90 then
-_0x418A.ClearCache()
-if _0x6B61 then _0x6B61:Stop(); _0x6B61:Destroy() end
-end
+
+Players.PlayerRemoving:Connect(function(player)
+    if player == Player then
+        Funcs.ClearCache()
+        if MusicSound then MusicSound:Stop(); MusicSound:Destroy() end
+    end
 end)
