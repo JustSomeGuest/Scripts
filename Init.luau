@@ -35,12 +35,6 @@ local function Load(URL)
     return Result
 end
 
-local Blacklist = Load(Repo .. "Blacklist/Init.luau")
-
-if Blacklist.IsBlacklisted() then return end
-
-pcall(Load, Repo .. "Tags.luau")
-
 local Scripts = {
     Lucid = "Universal/Lucid/Init.luau",
     PolariaRM = "Universal/PolariaRM/Init.luau",
