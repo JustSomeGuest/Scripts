@@ -1,58 +1,36 @@
-if not game:IsLoaded() then 
-    game.Loaded:Wait() 
+if not game:IsLoaded() then
+    game.Loaded:Wait()
 end
 
-local Shared = (function()
-    local Success, Env = pcall(getgenv)
-    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
-end)()
+local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local function expect(expected, value, fallback)
-    if type(value) == expected then
-        return value
-    end
-
-    if fallback ~= nil then
-        if type(fallback) == "function" then
-            return function(...)
-                warn("[Expect]: Missing executor functionality. Using fallback function.")
-                return fallback(...)
-            end
-        end
-
-        warn("[Expect]: Value has unexpected type. Using fallback value.")
-    end
-
-    return fallback
+local function GetService(Service)
+    local Service = game:GetService(Service)
+    return cloneref and cloneref(Service) or Service
 end
 
-local cloneref = expect("function", cloneref, function(...) return ... end)
+local Hui = gethui and gethui() or GetService("CoreGui")
+local TweenService = GetService("TweenService")
 
-local Services = setmetatable({}, {
-    __index = function(self, name)
-        local success, cache = pcall(function()
-            return cloneref(game:GetService(name))
-        end)
-        if success then
-            rawset(self, name, cache)
-            return cache
-        else
-            error("Invalid Service: " .. tostring(name))
-        end
+local StarterGui = GetService("StarterGui")
+local Players = GetService("Players")
+local UserInputService = GetService("UserInputService")
+local VirtualInputManager = GetService("VirtualInputManager")
+local RunService = GetService("RunService")
+
+local function UID(Length)
+    Length = Length or 64
+
+    local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
+    local Id = table.create(Length)
+
+    for i = 1, Length do
+        local Rand = math.random(1, #Chars)
+        Id[i] = Chars:sub(Rand, Rand)
     end
-})
 
-local Success, Hui = pcall(function()
-    return gethui and gethui()
-end)
-
-local CoreGui = Success and typeof(Hui) == "Instance" and Hui or Services.CoreGui
-
-local StarterGui = Services.StarterGui
-local Players = Services.Players
-local UserInputService = Services.UserInputService
-local VirtualInputManager = Services.VirtualInputManager
-local RunService = Services.RunService
+    return table.concat(Id)
+end
 
 Shared.TouchGui = Shared.TouchGui or {}
 
@@ -98,10 +76,10 @@ local TouchControlFrame = PlayerGui and PlayerGui:FindFirstChild("TouchGui") and
 local OriginalJump = TouchControlFrame and TouchControlFrame:FindFirstChild("JumpButton")
 
 local TouchGui = Instance.new("ScreenGui")
-TouchGui.Name = "TouchGui"
+TouchGui.Name = UID()
 TouchGui.ResetOnSpawn = false
 TouchGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-TouchGui.Parent = CoreGui
+TouchGui.Parent = Hui
 
 local function GetOppositePos(Position, AnchorPoint)
     return UDim2.new(
@@ -166,12 +144,12 @@ Jump.BorderSizePixel = 0
 Jump.Image = "rbxasset://textures/ui/Input/TouchControlsSheetV2.png"
 Jump.ImageRectOffset = Vector2.new(1, 146)
 Jump.ImageRectSize = Vector2.new(144, 144)
-Jump.Name = "Jump"
+Jump.Name = UID()
 Jump.ScaleType = Enum.ScaleType.Fit
 Jump.Parent = TouchGui
 
 local JumpRatio = Instance.new("UIAspectRatioConstraint")
-JumpRatio.Name = "JumpRatio"
+JumpRatio.Name = UID()
 JumpRatio.Parent = Jump
 
 local Thumb = Instance.new("ImageLabel")
@@ -183,12 +161,12 @@ Thumb.Image = "rbxasset://textures/ui/Input/TouchControlsSheetV2.png"
 Thumb.ImageColor3 = Color3.fromRGB(0, 0, 0)
 Thumb.ImageRectOffset = Vector2.new(1, 1)
 Thumb.ImageRectSize = Vector2.new(144, 144)
-Thumb.Name = "Thumb"
+Thumb.Name = UID()
 Thumb.ScaleType = Enum.ScaleType.Fit
 Thumb.Parent = TouchGui
 
 local ThumbRatio = Instance.new("UIAspectRatioConstraint")
-ThumbRatio.Name = "ThumbRatio"
+ThumbRatio.Name = UID()
 ThumbRatio.Parent = Thumb
 
 local Knob = Instance.new("ImageLabel")
@@ -199,13 +177,13 @@ Knob.BorderSizePixel = 0
 Knob.Image = "rbxasset://textures/ui/Input/TouchControlsSheetV2.png"
 Knob.ImageRectOffset = Vector2.new(1, 1)
 Knob.ImageRectSize = Vector2.new(144, 144)
-Knob.Name = "Knob"
+Knob.Name = UID()
 Knob.ScaleType = Enum.ScaleType.Fit
 Knob.Size = UDim2.new(0.45, 0, 0.45, 0)
 Knob.Parent = Thumb
 
 local KnobRatio = Instance.new("UIAspectRatioConstraint")
-KnobRatio.Name = "KnobRatio"
+KnobRatio.Name = UID()
 KnobRatio.Parent = Knob
 
 if OriginalJump then
