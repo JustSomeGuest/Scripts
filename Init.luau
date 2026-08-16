@@ -36,7 +36,6 @@ end
 local Scripts = {
     Lucid = "Universal/Lucid/Init.luau",
     PolariaRM = "Universal/PolariaRM/Init.luau",
-    WallyWest = "Universal/WallyWest/Init.luau",
     Shiftlock = "Universal/Shiftlock/Init.luau",
     SoundDock = "Universal/SoundDock.luau",
     DeltaKD = "Universal/DeltaKD.luau",
