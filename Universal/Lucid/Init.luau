@@ -265,6 +265,20 @@ local function HideExec()
     if Hui and Hui ~= GetService("CoreGui") then Scan(Hui) end
 end
 
+function Funcs.UID(Length)
+    Length = Length or 64
+
+    local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
+    local Id = table.create(Length)
+
+    for i = 1, Length do
+        local Rand = math.random(1, #Chars)
+        Id[i] = Chars:sub(Rand, Rand)
+    end
+
+    return table.concat(Id)
+end
+
 function Funcs.HttpGet(url)
     local RequestFunc = (syn and syn.request) or request or http_request
     if not RequestFunc then return nil end
@@ -1606,7 +1620,7 @@ Shared.Lucid.IsLoaded = true
 UI.ScreenGui = Instance.new("ScreenGui")
 UI.ScreenGui.DisplayOrder = 2147483647
 UI.ScreenGui.IgnoreGuiInset = true
-UI.ScreenGui.Name = "Lucid"
+UI.ScreenGui.Name = UID()
 UI.ScreenGui.ResetOnSpawn = false
 UI.ScreenGui.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
 UI.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
