@@ -6,7 +6,7 @@ if not isfolder("GelatekHubRemastered/Audios") then
 	makefolder("GelatekHubRemastered/Audios")
 end
 
-local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM/Audios/"
+local Repo = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/GelatekHubRM/Audios/"
 local Files = {
 	"GaleFighter.mp3",
 	"Ender.mp3",
