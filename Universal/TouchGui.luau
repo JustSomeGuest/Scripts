@@ -19,15 +19,12 @@ local RunService = GetService("RunService")
 
 local function UID(Length)
     Length = Length or 64
-
     local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
     local Id = table.create(Length)
-
     for i = 1, Length do
         local Rand = math.random(1, #Chars)
         Id[i] = Chars:sub(Rand, Rand)
     end
-
     return table.concat(Id)
 end
 
@@ -115,7 +112,6 @@ end
 
 local function UpdateMovement(zone)
     local keysToPress = ZoneKeys[zone] or {}
-    
     for key, isActive in pairs(ActiveKeys) do
         local shouldBeActive = false
         for _, zoneKey in ipairs(keysToPress) do
@@ -124,7 +120,6 @@ local function UpdateMovement(zone)
                 break
             end
         end
-        
         if shouldBeActive and not isActive then
             ActiveKeys[key] = true
             SendKey(key, true)
@@ -188,26 +183,26 @@ KnobRatio.Parent = Knob
 if OriginalJump then
     Jump.Position = OriginalJump.Position
     Jump.Size = OriginalJump.Size
-    
+
     OriginalJump:GetPropertyChangedSignal("Position"):Connect(function()
         Jump.Position = OriginalJump.Position
     end)
-    
+
     OriginalJump:GetPropertyChangedSignal("Size"):Connect(function()
         Jump.Size = OriginalJump.Size
     end)
-    
+
     local oppositePos, oppositeAnchor = GetOppositePos(OriginalJump.Position, OriginalJump.AnchorPoint)
     Thumb.Position = oppositePos
     Thumb.AnchorPoint = oppositeAnchor
     Thumb.Size = OriginalJump.Size
-    
+
     OriginalJump:GetPropertyChangedSignal("Position"):Connect(function()
         local newOppositePos, newOppositeAnchor = GetOppositePos(OriginalJump.Position, OriginalJump.AnchorPoint)
         Thumb.Position = newOppositePos
         Thumb.AnchorPoint = newOppositeAnchor
     end)
-    
+
     OriginalJump:GetPropertyChangedSignal("Size"):Connect(function()
         Thumb.Size = OriginalJump.Size
     end)
@@ -227,15 +222,19 @@ local function GetZoneFromNormalized(X, Y)
     elseif X > 0.33 then
         Horizontal = "Right"
     else
-        Horizontal = "Center"
+        Horizontal = ""
     end
 
     if Y < -0.33 then
-        Vertical = "Top"
+        Vertical = "Forward"
     elseif Y > 0.33 then
-        Vertical = "Bottom"
+        Vertical = "Backward"
     else
-        Vertical = "Center"
+        Vertical = ""
+    end
+
+    if Vertical == "" and Horizontal == "" then
+        return "Neutral"
     end
 
     return Vertical .. Horizontal
@@ -244,42 +243,35 @@ end
 local function UpdateKnobPosition(Input)
     local ThumbPosition = Thumb.AbsolutePosition
     local ThumbSize = Thumb.AbsoluteSize
-
     local Center = ThumbPosition + (ThumbSize / 2)
-
     local Relative = Vector2.new(
         Input.Position.X - Center.X,
         Input.Position.Y - Center.Y
     )
-
     local Radius = ThumbSize.X / 2
     local Distance = Relative.Magnitude
-
     if Distance > Radius then
         Relative = Relative.Unit * Radius
     end
-
     local Normalized = Relative / Radius
     TargetKnobPosition = Vector2.new((Normalized.X + 1) / 2, (Normalized.Y + 1) / 2)
-    
     local Zone = GetZoneFromNormalized(Normalized.X, Normalized.Y)
     UpdateMovement(Zone)
 end
 
 local function ResetKnob()
     TargetKnobPosition = Vector2.new(0.5, 0.5)
-    UpdateMovement("Center")
+    UpdateMovement("Neutral")
 end
 
 RunService.RenderStepped:Connect(function()
     local smoothed = CurrentKnobPosition:Lerp(TargetKnobPosition, 0.3)
     CurrentKnobPosition = smoothed
-    
     Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     Knob.Position = UDim2.new(CurrentKnobPosition.X, 0, CurrentKnobPosition.Y, 0)
 end)
 
-Knob.InputBegan:Connect(function(Input)
+Thumb.InputBegan:Connect(function(Input)
     if Input.UserInputType == Enum.UserInputType.Touch then
         Dragging = true
         ActiveInput = Input
