@@ -32,15 +32,12 @@ end
 
 local function UID(Length)
     Length = Length or 64
-
     local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
     local Id = table.create(Length)
-
     for i = 1, Length do
         local Rand = math.random(1, #Chars)
         Id[i] = Chars:sub(Rand, Rand)
     end
-
     return table.concat(Id)
 end
 
@@ -78,14 +75,14 @@ UI.BackpackBtn.BackgroundColor3 = Color3.fromRGB(18, 18, 21)
 UI.BackpackBtn.BackgroundTransparency = 0.08
 UI.BackpackBtn.BorderSizePixel = 0
 UI.BackpackBtn.LayoutOrder = -2147483647
-UI.BackpackBtn.Name = UID()
+UI.BackpackBtn.Name = "BackpackBtn"
 UI.BackpackBtn.Position = UDim2.fromOffset(16, 4)
 UI.BackpackBtn.Size = UDim2.fromOffset(44, 44)
 UI.BackpackBtn.Parent = TopbarPlus or UI.InvGui
 
 UI.Corner = Instance.new("UICorner")
 UI.Corner.CornerRadius = UDim.new(1, 0)
-UI.Corner.Name = UID()
+UI.Corner.Name = "Corner"
 UI.Corner.Parent = UI.BackpackBtn
 
 UI.BackpackIcon = Instance.new("ImageButton")
@@ -95,14 +92,14 @@ UI.BackpackIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 UI.BackpackIcon.BackgroundTransparency = 1
 UI.BackpackIcon.BorderSizePixel = 0
 UI.BackpackIcon.Image = "rbxasset://textures/ui/TopBar/inventoryOff.png"
-UI.BackpackIcon.Name = UID()
+UI.BackpackIcon.Name = "BackpackIcon"
 UI.BackpackIcon.Position = UDim2.fromScale(0.5, 0.5)
 UI.BackpackIcon.Size = UDim2.fromOffset(36, 36)
 UI.BackpackIcon.Parent = UI.BackpackBtn
 
 UI.BackpackIconCorner = Instance.new("UICorner")
 UI.BackpackIconCorner.CornerRadius = UDim.new(1, 0)
-UI.BackpackIconCorner.Name = UID()
+UI.BackpackIconCorner.Name = "BackpackIconCorner"
 UI.BackpackIconCorner.Parent = UI.BackpackIcon
 
 UI.MainUI = Instance.new("Frame")
@@ -110,14 +107,14 @@ UI.MainUI.AnchorPoint = Vector2.new(0.5, 1)
 UI.MainUI.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 UI.MainUI.BackgroundTransparency = 1
 UI.MainUI.BorderSizePixel = 0
-UI.MainUI.Name = UID()
+UI.MainUI.Name = "MainUI"
 UI.MainUI.Position = UDim2.new(0.5, 0, 1, -6)
 UI.MainUI.Size = UDim2.new(0.5, 28, 0.9, 0)
 UI.MainUI.Parent = UI.InvGui
 
 UI.UILayout = Instance.new("UIListLayout")
 UI.UILayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.UILayout.Name = UID()
+UI.UILayout.Name = "UILayout"
 UI.UILayout.Padding = UDim.new(0, 4)
 UI.UILayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.UILayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
@@ -129,20 +126,20 @@ UI.BackpackFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 UI.BackpackFrame.BackgroundTransparency = 0.3
 UI.BackpackFrame.BorderSizePixel = 0
 UI.BackpackFrame.LayoutOrder = 1
-UI.BackpackFrame.Name = UID()
+UI.BackpackFrame.Name = "BackpackFrame"
 UI.BackpackFrame.Size = UDim2.new(0.2, 0, 0.3, 0)
 UI.BackpackFrame.Parent = UI.MainUI
 
 UI.BackpackCorner = Instance.new("UICorner")
 UI.BackpackCorner.CornerRadius = UDim.new(0, 6)
-UI.BackpackCorner.Name = UID()
+UI.BackpackCorner.Name = "BackpackCorner"
 UI.BackpackCorner.Parent = UI.BackpackFrame
 
 UI.Topbar = Instance.new("Frame")
 UI.Topbar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 UI.Topbar.BackgroundTransparency = 1
 UI.Topbar.BorderSizePixel = 0
-UI.Topbar.Name = UID()
+UI.Topbar.Name = "Topbar"
 UI.Topbar.Size = UDim2.new(0.2, 0, 0.3, 0)
 UI.Topbar.Parent = UI.BackpackFrame
 
@@ -152,7 +149,7 @@ UI.SearchBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 UI.SearchBox.BackgroundTransparency = 0.6
 UI.SearchBox.BorderSizePixel = 0
 UI.SearchBox.FontFace = Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-UI.SearchBox.Name = UID()
+UI.SearchBox.Name = "SearchBox"
 UI.SearchBox.PlaceholderColor3 = Color3.fromRGB(111, 111, 111)
 UI.SearchBox.PlaceholderText = "Search"
 UI.SearchBox.Position = UDim2.new(1, 0, 0, 0)
@@ -167,13 +164,13 @@ UI.SearchBox.Parent = UI.Topbar
 UI.SearchBoxStroke = Instance.new("UIStroke")
 UI.SearchBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UI.SearchBoxStroke.Color = Color3.fromRGB(255, 255, 255)
-UI.SearchBoxStroke.Name = UID()
+UI.SearchBoxStroke.Name = "SearchBoxStroke"
 UI.SearchBoxStroke.Thickness = 0.9
 UI.SearchBoxStroke.Transparency = 0.8
 UI.SearchBoxStroke.Parent = UI.SearchBox
 
 UI.SearchBoxPadding = Instance.new("UIPadding")
-UI.SearchBoxPadding.Name = UID()
+UI.SearchBoxPadding.Name = "SearchBoxPadding"
 UI.SearchBoxPadding.PaddingBottom = UDim.new(0, 6)
 UI.SearchBoxPadding.PaddingLeft = UDim.new(0, 6)
 UI.SearchBoxPadding.PaddingRight = UDim.new(0, 6)
@@ -182,17 +179,17 @@ UI.SearchBoxPadding.Parent = UI.SearchBox
 
 UI.SearchBoxCorner = Instance.new("UICorner")
 UI.SearchBoxCorner.CornerRadius = UDim.new(0, 3)
-UI.SearchBoxCorner.Name = UID()
+UI.SearchBoxCorner.Name = "SearchBoxCorner"
 UI.SearchBoxCorner.Parent = UI.SearchBox
 
 UI.TopbarSizeCons = Instance.new("UISizeConstraint")
 UI.TopbarSizeCons.MaxSize = Vector2.new(9999, 34)
 UI.TopbarSizeCons.MinSize = Vector2.new(0, 34)
-UI.TopbarSizeCons.Name = UID()
+UI.TopbarSizeCons.Name = "TopbarSizeCons"
 UI.TopbarSizeCons.Parent = UI.Topbar
 
 UI.TopbarPadding = Instance.new("UIPadding")
-UI.TopbarPadding.Name = UID()
+UI.TopbarPadding.Name = "TopbarPadding"
 UI.TopbarPadding.PaddingBottom = UDim.new(0, 4)
 UI.TopbarPadding.PaddingLeft = UDim.new(0, 4)
 UI.TopbarPadding.PaddingRight = UDim.new(0, 4)
@@ -201,7 +198,7 @@ UI.TopbarPadding.Parent = UI.Topbar
 
 UI.BackpackLayout = Instance.new("UIListLayout")
 UI.BackpackLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.BackpackLayout.Name = UID()
+UI.BackpackLayout.Name = "BackpackLayout"
 UI.BackpackLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.BackpackLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
 UI.BackpackLayout.Parent = UI.BackpackFrame
@@ -210,7 +207,7 @@ UI.ToolsFrame = Instance.new("Frame")
 UI.ToolsFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 UI.ToolsFrame.BackgroundTransparency = 1
 UI.ToolsFrame.BorderSizePixel = 0
-UI.ToolsFrame.Name = UID()
+UI.ToolsFrame.Name = "ToolsFrame"
 UI.ToolsFrame.Size = UDim2.new(0.2, 0, 0.3, 0)
 UI.ToolsFrame.Parent = UI.BackpackFrame
 
@@ -219,14 +216,14 @@ UI.Tools.AutomaticCanvasSize = Enum.AutomaticSize.Y
 UI.Tools.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 UI.Tools.BackgroundTransparency = 1
 UI.Tools.BorderSizePixel = 0
-UI.Tools.Name = UID()
+UI.Tools.Name = "Tools"
 UI.Tools.ScrollBarThickness = 6
 UI.Tools.ScrollingDirection = Enum.ScrollingDirection.Y
 UI.Tools.Size = UDim2.new(1, 8, 1, 0)
 UI.Tools.Parent = UI.ToolsFrame
 
 UI.ToolsPadding = Instance.new("UIPadding")
-UI.ToolsPadding.Name = UID()
+UI.ToolsPadding.Name = "ToolsPadding"
 UI.ToolsPadding.PaddingBottom = UDim.new(0, 6)
 UI.ToolsPadding.PaddingLeft = UDim.new(0, 6)
 UI.ToolsPadding.PaddingRight = UDim.new(0, 8)
@@ -236,7 +233,7 @@ UI.ToolsPadding.Parent = UI.Tools
 UI.ToolsLayout = Instance.new("UIGridLayout")
 UI.ToolsLayout.CellPadding = UDim2.new(0, 8, 0, 8)
 UI.ToolsLayout.CellSize = UDim2.new(0, 60, 0, 60)
-UI.ToolsLayout.Name = UID()
+UI.ToolsLayout.Name = "ToolsLayout"
 UI.ToolsLayout.Parent = UI.Tools
 
 UI.HotbarFrame = Instance.new("Frame")
@@ -244,20 +241,20 @@ UI.HotbarFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 UI.HotbarFrame.BackgroundTransparency = 1
 UI.HotbarFrame.BorderSizePixel = 0
 UI.HotbarFrame.LayoutOrder = 2
-UI.HotbarFrame.Name = UID()
+UI.HotbarFrame.Name = "HotbarFrame"
 UI.HotbarFrame.Size = UDim2.new(0, 386, 0, 44)
 UI.HotbarFrame.Parent = UI.MainUI
 
 UI.HotbarSizeCons = Instance.new("UISizeConstraint")
 UI.HotbarSizeCons.MaxSize = Vector2.new(2147483648, 60)
-UI.HotbarSizeCons.Name = UID()
+UI.HotbarSizeCons.Name = "HotbarSizeCons"
 UI.HotbarSizeCons.Parent = UI.HotbarFrame
 
 UI.HotbarLayout = Instance.new("UIListLayout")
 UI.HotbarLayout.FillDirection = Enum.FillDirection.Horizontal
 UI.HotbarLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 UI.HotbarLayout.HorizontalFlex = Enum.UIFlexAlignment.None
-UI.HotbarLayout.Name = UID()
+UI.HotbarLayout.Name = "HotbarLayout"
 UI.HotbarLayout.Padding = UDim.new(0, 8)
 UI.HotbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.HotbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
@@ -268,14 +265,14 @@ UI.HotbarTemplate.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 UI.HotbarTemplate.BackgroundTransparency = 0.4
 UI.HotbarTemplate.BorderSizePixel = 0
 UI.HotbarTemplate.LayoutOrder = -1
-UI.HotbarTemplate.Name = UID()
+UI.HotbarTemplate.Name = "HotbarTemplate"
 UI.HotbarTemplate.Size = UDim2.new(0, 44, 1, 0)
 UI.HotbarTemplate.Visible = false
 UI.HotbarTemplate.Parent = UI.HotbarFrame
 
 UI.HTCorner = Instance.new("UICorner")
 UI.HTCorner.CornerRadius = UDim.new(0, 6)
-UI.HTCorner.Name = UID()
+UI.HTCorner.Name = "HTCorner"
 UI.HTCorner.Parent = UI.HotbarTemplate
 
 UI.HTIcon = Instance.new("ImageLabel")
@@ -284,7 +281,7 @@ UI.HTIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 UI.HTIcon.BackgroundTransparency = 1
 UI.HTIcon.BorderSizePixel = 0
 UI.HTIcon.Interactable = false
-UI.HTIcon.Name = UID()
+UI.HTIcon.Name = "HTIcon"
 UI.HTIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 UI.HTIcon.ScaleType = Enum.ScaleType.Fit
 UI.HTIcon.Size = UDim2.new(1, -8, 1, -8)
@@ -293,13 +290,13 @@ UI.HTIcon.Parent = UI.HotbarTemplate
 UI.HTStroke = Instance.new("UIStroke")
 UI.HTStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UI.HTStroke.Color = Color3.fromRGB(0, 0, 0)
-UI.HTStroke.Name = UID()
+UI.HTStroke.Name = "HTStroke"
 UI.HTStroke.Thickness = 2
 UI.HTStroke.Transparency = 0.5
 UI.HTStroke.Parent = UI.HotbarTemplate
 
 UI.HTRatio = Instance.new("UIAspectRatioConstraint")
-UI.HTRatio.Name = UID()
+UI.HTRatio.Name = "HTRatio"
 UI.HTRatio.Parent = UI.HotbarTemplate
 
 UI.HTLabel = Instance.new("TextLabel")
@@ -309,7 +306,7 @@ UI.HTLabel.BackgroundTransparency = 1
 UI.HTLabel.BorderSizePixel = 0
 UI.HTLabel.FontFace = Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 UI.HTLabel.Interactable = false
-UI.HTLabel.Name = UID()
+UI.HTLabel.Name = "HTLabel"
 UI.HTLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
 UI.HTLabel.Size = UDim2.new(1, -8, 1, -8)
 UI.HTLabel.Text = ""
@@ -334,11 +331,6 @@ local UnselectedColor = Color3.fromRGB(0, 0, 0)
 local UnselectedTransparency = 0.5
 local SelectedColor = Color3.fromRGB(59, 130, 246)
 local SelectedTransparency = 0
-
-local function setBackpackTransparency(target)
-    local tween = Tween(UI.BackpackFrame, 0.2, {GroupTransparency = target})
-    tween:Play()
-end
 
 UI.BackpackFrame.Visible = false
 UI.BackpackFrame.GroupTransparency = 1
@@ -392,19 +384,19 @@ end
 
 local function updateInventory()
     for _, child in ipairs(UI.HotbarFrame:GetChildren()) do
-        if child:IsA("ImageButton") and child ~= UI.HotbarTemplate then 
-            child:Destroy() 
+        if child:IsA("ImageButton") and child ~= UI.HotbarTemplate then
+            child:Destroy()
         end
     end
     for _, child in ipairs(UI.Tools:GetChildren()) do
-        if child:IsA("ImageButton") and child ~= UI.BackpackTemplate then 
-            child:Destroy() 
+        if child:IsA("ImageButton") and child ~= UI.BackpackTemplate then
+            child:Destroy()
         end
     end
 
     local ch = LocalPlayer.Character
     local equippedTool = ch and ch:FindFirstChildOfClass("Tool")
-    
+
     local allTools = {}
     for _, tool in ipairs(LocalPlayer.Backpack:GetChildren()) do
         if tool:IsA("Tool") then table.insert(allTools, tool) end
@@ -433,10 +425,10 @@ local function updateInventory()
         slot.Visible = true
         slot.LayoutOrder = i
         slot.Parent = UI.HotbarFrame
-        
+
         local icon = slot:FindFirstChildOfClass("ImageLabel")
         local label = slot:FindFirstChildOfClass("TextLabel")
-        
+
         if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
             icon.Image = tool.TextureId
             label.Text = ""
@@ -444,14 +436,14 @@ local function updateInventory()
             icon.Image = ""
             label.Text = tool.Name
         end
-        
+
         if tool == lastEquippedTool and tool ~= equippedTool then
             local stroke = slot:FindFirstChildOfClass("UIStroke")
             stroke.Color = SelectedColor
             stroke.Transparency = SelectedTransparency
         end
         applySlotSelection(slot, tool == equippedTool)
-        
+
         slot.MouseButton1Click:Connect(function()
             if tool.Parent == ch then
                 tool.Parent = LocalPlayer.Backpack
@@ -471,17 +463,17 @@ local function updateInventory()
                 matches = false
             end
         end
-        
+
         if matches then
             local slot = UI.BackpackTemplate:Clone()
             slot.Visible = true
             slot.LayoutOrder = bpIndex
             slot.Parent = UI.Tools
             bpIndex = bpIndex + 1
-            
+
             local icon = slot:FindFirstChildOfClass("ImageLabel")
             local label = slot:FindFirstChildOfClass("TextLabel")
-            
+
             if tool.TextureId ~= "" and tool.TextureId ~= "rbxasset://textures/Unknown.png" then
                 icon.Image = tool.TextureId
                 label.Text = ""
@@ -496,7 +488,7 @@ local function updateInventory()
                 stroke.Transparency = SelectedTransparency
             end
             applySlotSelection(slot, tool == equippedTool)
-            
+
             slot.MouseButton1Click:Connect(function()
                 if tool.Parent == ch then
                     tool.Parent = LocalPlayer.Backpack
@@ -530,8 +522,8 @@ local function hookChar(char)
     updateInventory()
 end
 
-if LocalPlayer.Character then 
-    task.spawn(hookChar, LocalPlayer.Character) 
+if LocalPlayer.Character then
+    task.spawn(hookChar, LocalPlayer.Character)
 end
 LocalPlayer.CharacterAdded:Connect(hookChar)
 
@@ -564,7 +556,7 @@ UserInputService.InputBegan:Connect(function(input, gpe)
         table.sort(allTools, function(a, b)
             return (toolOrder[a] or 0) < (toolOrder[b] or 0)
         end)
-        
+
         local tool = allTools[slotNum]
         if tool then
             if tool.Parent == ch then
