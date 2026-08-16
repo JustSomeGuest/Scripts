@@ -542,5 +542,5 @@ end)
 
 Warn("[Gelatek Hub Remastered]: Reanimated in " .. string.sub(tostring(tick() - Speed), 1, string.find(tostring(tick() - Speed), ".") + 5))
 if not DisableAnimations then
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/GelatekHubRM/Modules/Animations.luau"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/GelatekHubRM/Modules/Animations.luau"))()
 end
