@@ -107,30 +107,30 @@ local function GetAsset(Path)
   return LoadAsset(AssetPath)
 end
 
-local function Tween(Object, Speed, Properties, EasingStyle, EasingDirection)
-  if EasingStyle == nil then
-    EasingStyle = "Quad"
-  end
-
-  if EasingDirection == nil then
-    EasingDirection = "Out"
-  end
-
-  local TweenInformation = TweenInfo.new(Speed, Enum.EasingStyle[EasingStyle], Enum.EasingDirection[EasingDirection])
-
-  return TweenService:Create(Object, TweenInformation, Properties)
+local function Tween(Object, Speed, Props, Style, Dir)
+    return TweenService:Create(
+        Object,
+        TweenInfo.new(
+            Speed,
+            Enum.EasingStyle[Style or "Quad"],
+            Enum.EasingDirection[Dir or "Out"]
+        ),
+        Props
+    )
 end
 
 local function UID(Length)
-  local Chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-  local Id = table.create(Length)
+    Length = Length or 64
 
-  for i = 1, Length do
-    local Index = math.random(#Chars)
-    Id[i] = Chars:sub(Index, Index)
-  end
+    local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
+    local Id = table.create(Length)
 
-  return table.concat(Id)
+    for i = 1, Length do
+        local Rand = math.random(1, #Chars)
+        Id[i] = Chars:sub(Rand, Rand)
+    end
+
+    return table.concat(Id)
 end
 
 local IsMobile =
@@ -199,7 +199,7 @@ local function Style(Object, CornerRadius)
   local Stroke = Object:FindFirstChildOfClass("UIStroke")
   if not Stroke then
     Stroke = Instance.new("UIStroke")
-    Stroke.Name = UID(64)
+    Stroke.Name = UID()
     Stroke.Parent = Object
   end
 
@@ -210,7 +210,7 @@ local function Style(Object, CornerRadius)
   local Gradient = Stroke:FindFirstChildOfClass("UIGradient")
   if not Gradient then
     Gradient = Instance.new("UIGradient")
-    Gradient.Name = UID(64)
+    Gradient.Name = UID()
     Gradient.Parent = Stroke
   end
 
@@ -232,7 +232,7 @@ local function Style(Object, CornerRadius)
   local Corner = Object:FindFirstChildOfClass("UICorner")
   if not Corner then
     Corner = Instance.new("UICorner")
-    Corner.Name = UID(64)
+    Corner.Name = UID()
     Corner.Parent = Object
   end
 
@@ -291,7 +291,7 @@ UI.Chat = {}
 local CUI = UI.Chat
 
 CUI["ScreenGui"] = Instance.new("ScreenGui")
-CUI["ScreenGui"]["Name"] = UID(64)
+CUI["ScreenGui"]["Name"] = UID()
 CUI["ScreenGui"]["ResetOnSpawn"] = false
 CUI["ScreenGui"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
 CUI["ScreenGui"]["Parent"] = Hui
@@ -301,26 +301,26 @@ CUI["Chat"]["AnchorPoint"] = Vector2.new(0, 0)
 CUI["Chat"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
 CUI["Chat"]["BorderSizePixel"] = 0
 CUI["Chat"]["ClipsDescendants"] = true
-CUI["Chat"]["Name"] = UID(64)
+CUI["Chat"]["Name"] = UID()
 CUI["Chat"]["Position"] = UDim2.new(0, -320, 0, 2)
 CUI["Chat"]["Size"] = UDim2.new(0, 308, 0, 188)
 CUI["Chat"]["Visible"] = true
 CUI["Chat"]["Parent"] = CUI["ScreenGui"]
 
 CUI["ChatCorner"] = Instance.new("UICorner")
-CUI["ChatCorner"]["Name"] = UID(64)
+CUI["ChatCorner"]["Name"] = UID()
 CUI["ChatCorner"]["Parent"] = CUI["Chat"]
 
 CUI["ChatLayout"] = Instance.new("UIListLayout")
 CUI["ChatLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
-CUI["ChatLayout"]["Name"] = UID(64)
+CUI["ChatLayout"]["Name"] = UID()
 CUI["ChatLayout"]["Padding"] = UDim.new(0, 2)
 CUI["ChatLayout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
 CUI["ChatLayout"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
 CUI["ChatLayout"]["Parent"] = CUI["Chat"]
 
 CUI["ChatPadding"] = Instance.new("UIPadding")
-CUI["ChatPadding"]["Name"] = UID(64)
+CUI["ChatPadding"]["Name"] = UID()
 CUI["ChatPadding"]["PaddingBottom"] = UDim.new(0, 4)
 CUI["ChatPadding"]["PaddingLeft"] = UDim.new(0, 4)
 CUI["ChatPadding"]["PaddingRight"] = UDim.new(0, 4)
@@ -329,12 +329,12 @@ CUI["ChatPadding"]["Parent"] = CUI["Chat"]
 
 CUI["ChatStroke"] = Instance.new("UIStroke")
 CUI["ChatStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
-CUI["ChatStroke"]["Name"] = UID(64)
+CUI["ChatStroke"]["Name"] = UID()
 CUI["ChatStroke"]["Parent"] = CUI["Chat"]
 
 CUI["ChatStrokeGradient"] = Instance.new("UIGradient")
 CUI["ChatStrokeGradient"]["Color"] = GradientColor
-CUI["ChatStrokeGradient"]["Name"] = UID(64)
+CUI["ChatStrokeGradient"]["Name"] = UID()
 CUI["ChatStrokeGradient"]["Parent"] = CUI["ChatStroke"]
 
 CUI["Messages"] = Instance.new("ScrollingFrame")
@@ -345,7 +345,7 @@ CUI["Messages"]["BackgroundTransparency"] = 1
 CUI["Messages"]["BorderSizePixel"] = 0
 CUI["Messages"]["CanvasSize"] = UDim2.new(0, 0, 0, 0)
 CUI["Messages"]["LayoutOrder"] = 1
-CUI["Messages"]["Name"] = UID(64)
+CUI["Messages"]["Name"] = UID()
 CUI["Messages"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
 CUI["Messages"]["ScrollBarThickness"] = 4
 CUI["Messages"]["ScrollingDirection"] = Enum.ScrollingDirection.Y
@@ -353,18 +353,18 @@ CUI["Messages"]["Size"] = UDim2.new(1, -8, 1, -8)
 CUI["Messages"]["Parent"] = CUI["Chat"]
 
 CUI["MessagesCorner"] = Instance.new("UICorner")
-CUI["MessagesCorner"]["Name"] = UID(64)
+CUI["MessagesCorner"]["Name"] = UID()
 CUI["MessagesCorner"]["Parent"] = CUI["Messages"]
 
 CUI["MessagesLayout"] = Instance.new("UIListLayout")
 CUI["MessagesLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
-CUI["MessagesLayout"]["Name"] = UID(64)
+CUI["MessagesLayout"]["Name"] = UID()
 CUI["MessagesLayout"]["Padding"] = UDim.new(0, 2)
 CUI["MessagesLayout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
 CUI["MessagesLayout"]["Parent"] = CUI["Messages"]
 
 CUI["MessagesPadding"] = Instance.new("UIPadding")
-CUI["MessagesPadding"]["Name"] = UID(64)
+CUI["MessagesPadding"]["Name"] = UID()
 CUI["MessagesPadding"]["PaddingRight"] = UDim.new(0, 6)
 CUI["MessagesPadding"]["Parent"] = CUI["Messages"]
 
@@ -375,7 +375,7 @@ CUI["MessageTemplate"]["BackgroundTransparency"] = 1
 CUI["MessageTemplate"]["BorderSizePixel"] = 0
 CUI["MessageTemplate"]["FontFace"] =
 Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-CUI["MessageTemplate"]["Name"] = UID(64)
+CUI["MessageTemplate"]["Name"] = UID()
 CUI["MessageTemplate"]["Position"] = UDim2.new(0, 0, 0, 0)
 CUI["MessageTemplate"]["RichText"] = true
 CUI["MessageTemplate"]["Size"] = UDim2.new(1, 0, 0, 0)
@@ -393,18 +393,18 @@ CUI["ChatFrame"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
 CUI["ChatFrame"]["BackgroundTransparency"] = 0.95
 CUI["ChatFrame"]["BorderSizePixel"] = 0
 CUI["ChatFrame"]["LayoutOrder"] = 2
-CUI["ChatFrame"]["Name"] = UID(64)
+CUI["ChatFrame"]["Name"] = UID()
 CUI["ChatFrame"]["Size"] = UDim2.new(1, 0, 0, 44)
 CUI["ChatFrame"]["Parent"] = CUI["Chat"]
 
 CUI["ChatFrameCorner"] = Instance.new("UICorner")
-CUI["ChatFrameCorner"]["Name"] = UID(64)
+CUI["ChatFrameCorner"]["Name"] = UID()
 CUI["ChatFrameCorner"]["Parent"] = CUI["ChatFrame"]
 
 CUI["ChatFrameLayout"] = Instance.new("UIListLayout")
 CUI["ChatFrameLayout"]["FillDirection"] = Enum.FillDirection.Horizontal
 CUI["ChatFrameLayout"]["HorizontalFlex"] = Enum.UIFlexAlignment.Fill
-CUI["ChatFrameLayout"]["Name"] = UID(64)
+CUI["ChatFrameLayout"]["Name"] = UID()
 CUI["ChatFrameLayout"]["Padding"] = UDim.new(0, 4)
 CUI["ChatFrameLayout"]["SortOrder"] = Enum.SortOrder.LayoutOrder
 CUI["ChatFrameLayout"]["VerticalAlignment"] = Enum.VerticalAlignment.Center
@@ -412,7 +412,7 @@ CUI["ChatFrameLayout"]["VerticalFlex"] = Enum.UIFlexAlignment.Fill
 CUI["ChatFrameLayout"]["Parent"] = CUI["ChatFrame"]
 
 CUI["ChatFramePadding"] = Instance.new("UIPadding")
-CUI["ChatFramePadding"]["Name"] = UID(64)
+CUI["ChatFramePadding"]["Name"] = UID()
 CUI["ChatFramePadding"]["PaddingBottom"] = UDim.new(0, 2)
 CUI["ChatFramePadding"]["PaddingLeft"] = UDim.new(0, 10)
 CUI["ChatFramePadding"]["PaddingRight"] = UDim.new(0, 2)
@@ -421,12 +421,12 @@ CUI["ChatFramePadding"]["Parent"] = CUI["ChatFrame"]
 
 CUI["ChatFrameStroke"] = Instance.new("UIStroke")
 CUI["ChatFrameStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
-CUI["ChatFrameStroke"]["Name"] = UID(64)
+CUI["ChatFrameStroke"]["Name"] = UID()
 CUI["ChatFrameStroke"]["Parent"] = CUI["ChatFrame"]
 
 CUI["ChatFrameStrokeGradient"] = Instance.new("UIGradient")
 CUI["ChatFrameStrokeGradient"]["Color"] = GradientColor
-CUI["ChatFrameStrokeGradient"]["Name"] = UID(64)
+CUI["ChatFrameStrokeGradient"]["Name"] = UID()
 CUI["ChatFrameStrokeGradient"]["Parent"] = CUI["ChatFrameStroke"]
 
 CUI["Chatbox"] = Instance.new("TextBox")
@@ -436,7 +436,7 @@ CUI["Chatbox"]["BorderSizePixel"] = 0
 CUI["Chatbox"]["FontFace"] =
 Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 CUI["Chatbox"]["LayoutOrder"] = 1
-CUI["Chatbox"]["Name"] = UID(64)
+CUI["Chatbox"]["Name"] = UID()
 CUI["Chatbox"]["PlaceholderColor3"] = Color3.fromRGB(114, 114, 114)
 CUI["Chatbox"]["PlaceholderText"] = "Tap here to chat"
 CUI["Chatbox"]["Text"] = ""
@@ -449,7 +449,7 @@ CUI["Chatbox"]["Parent"] = CUI["ChatFrame"]
 
 CUI["TextConstraint"] = Instance.new("UITextSizeConstraint")
 CUI["TextConstraint"]["MaxTextSize"] = 22
-CUI["TextConstraint"]["Name"] = UID(64)
+CUI["TextConstraint"]["Name"] = UID()
 CUI["TextConstraint"]["Parent"] = CUI["Chatbox"]
 
 CUI["Send"] = Instance.new("TextButton")
@@ -459,7 +459,7 @@ CUI["Send"]["BorderSizePixel"] = 0
 CUI["Send"]["FontFace"] =
 Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 CUI["Send"]["LayoutOrder"] = 2
-CUI["Send"]["Name"] = UID(64)
+CUI["Send"]["Name"] = UID()
 CUI["Send"]["Size"] = UDim2.new(0, 36, 0, 36)
 CUI["Send"]["Text"] = "↑"
 CUI["Send"]["TextColor3"] = Color3.fromRGB(114, 114, 114)
@@ -469,15 +469,15 @@ CUI["Send"]["Parent"] = CUI["ChatFrame"]
 
 CUI["SendRatio"] = Instance.new("UIAspectRatioConstraint")
 CUI["SendRatio"]["AspectRatio"] = 1
-CUI["SendRatio"]["Name"] = UID(64)
+CUI["SendRatio"]["Name"] = UID()
 CUI["SendRatio"]["Parent"] = CUI["Send"]
 
 CUI["SendCorner"] = Instance.new("UICorner")
-CUI["SendCorner"]["Name"] = UID(64)
+CUI["SendCorner"]["Name"] = UID()
 CUI["SendCorner"]["Parent"] = CUI["Send"]
 
 CUI["SendPadding"] = Instance.new("UIPadding")
-CUI["SendPadding"]["Name"] = UID(64)
+CUI["SendPadding"]["Name"] = UID()
 CUI["SendPadding"]["PaddingBottom"] = UDim.new(0, 2)
 CUI["SendPadding"]["PaddingLeft"] = UDim.new(0, 2)
 CUI["SendPadding"]["PaddingRight"] = UDim.new(0, 2)
@@ -487,12 +487,12 @@ CUI["SendPadding"]["Parent"] = CUI["Send"]
 CUI["SendStroke"] = Instance.new("UIStroke")
 CUI["SendStroke"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border
 CUI["SendStroke"]["Color"] = Color3.fromRGB(255, 255, 255)
-CUI["SendStroke"]["Name"] = UID(64)
+CUI["SendStroke"]["Name"] = UID()
 CUI["SendStroke"]["Parent"] = CUI["Send"]
 
 CUI["SendStrokeGradient"] = Instance.new("UIGradient")
 CUI["SendStrokeGradient"]["Color"] = GradientColor
-CUI["SendStrokeGradient"]["Name"] = UID(64)
+CUI["SendStrokeGradient"]["Name"] = UID()
 CUI["SendStrokeGradient"]["Parent"] = CUI["SendStroke"]
 
 AnimateStroke(CUI["ChatStrokeGradient"])
@@ -557,7 +557,7 @@ local function AddMessage(DisplayName, MessageText, UserId)
 		DisplayName,
 		MessageText
 	)
-	Clone.Name = UID(64)
+	Clone.Name = UID()
 	Clone.Visible = true
 	Clone.LayoutOrder = #Labels + 1
 	Clone.Parent = CUI["Messages"]
@@ -766,7 +766,7 @@ if IsMobile then
         local JumpCorner = JumpButton:FindFirstChildOfClass("UICorner")
         if not JumpCorner then
           JumpCorner = Instance.new("UICorner")
-          JumpCorner.Name = UID(64)
+          JumpCorner.Name = UID()
           JumpCorner.Parent = JumpButton
         end
         JumpCorner.CornerRadius = UDim.new(1, 0)
@@ -776,7 +776,7 @@ if IsMobile then
         local JumpBtnIcon = JumpButton:FindFirstChild("JumpBtnIcon")
         if not JumpBtnIcon then
           JumpBtnIcon = Instance.new("ImageLabel")
-          JumpBtnIcon.Name = UID(64)
+          JumpBtnIcon.Name = UID()
           JumpBtnIcon.Image = GetAsset("CoreGuiPlus/Assets/cgp_jump.png")
           JumpBtnIcon.AnchorPoint = Vector2.new(0.5, 0.5)
           JumpBtnIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -811,7 +811,7 @@ if IsMobile then
           local StickCorner = StickImage:FindFirstChildOfClass("UICorner")
           if not StickCorner then
             StickCorner = Instance.new("UICorner")
-            StickCorner.Name = UID(64)
+            StickCorner.Name = UID()
             StickCorner.Parent = StickImage
           end
           ProtectCorner(StickCorner, UDim.new(1, 0))
