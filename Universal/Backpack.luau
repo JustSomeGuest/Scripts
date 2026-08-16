@@ -11,12 +11,12 @@ end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
 local TweenService = GetService("TweenService")
-local Players = Services.Players
-local StarterGui = Services.StarterGui
-local UserInputService = Services.UserInputService
+local Players = GetService("Players")
+local StarterGui = GetService("StarterGui")
+local UserInputService = GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
-local RunService = Services.RunService
+local RunService = GetService("RunService")
 
 local function Tween(Object, Speed, Props, Style, Dir)
     return TweenService:Create(
