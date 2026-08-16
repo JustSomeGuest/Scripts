@@ -80,18 +80,18 @@ UI.Button.BackgroundTransparency = 1
 UI.Button.BorderSizePixel = 0
 UI.Button.Image = GetAsset("Shiftlock.png")
 UI.Button.ImageColor3 = Color3.fromRGB(255, 255, 255)
-UI.Button.Name = UID()
+UI.Button.Name = "Shiftlock"
 UI.Button.Position = UDim2.new(0, 18, 0, 2)
 UI.Button.Size = UDim2.new(0, 54, 0, 54)
 UI.Button.Parent = UI.ScreenGui
 
 UI.ButtonRatio = Instance.new("UIAspectRatioConstraint")
-UI.ButtonRatio.Name = UID()
+UI.ButtonRatio.Name = "ShiftlockRatio"
 UI.ButtonRatio.Parent = UI.Button
 
 UI.ButtonCorner = Instance.new("UICorner")
 UI.ButtonCorner.CornerRadius = UDim.new(1, 0)
-UI.ButtonCorner.Name = UID()
+UI.ButtonCorner.Name = "ShiftlockCorner"
 UI.ButtonCorner.Parent = UI.Button
 
 UI.Close = Instance.new("TextButton")
@@ -99,7 +99,7 @@ UI.Close.AnchorPoint = Vector2.new(0.5, 0.5)
 UI.Close.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 UI.Close.BorderSizePixel = 0
 UI.Close.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-UI.Close.Name = UID()
+UI.Close.Name = "Close"
 UI.Close.Position = UDim2.new(0.75, 4, 0.25, -4)
 UI.Close.Size = UDim2.new(0, 20, 0, 20)
 UI.Close.Text = "×"
@@ -110,12 +110,12 @@ UI.Close.ZIndex = 10
 UI.Close.Parent = UI.Button
 
 UI.CloseRatio = Instance.new("UIAspectRatioConstraint")
-UI.CloseRatio.Name = UID()
+UI.CloseRatio.Name = "CloseRatio"
 UI.CloseRatio.Parent = UI.Close
 
 UI.CloseCorner = Instance.new("UICorner")
 UI.CloseCorner.CornerRadius = UDim.new(1, 0)
-UI.CloseCorner.Name = UID()
+UI.CloseCorner.Name = "CloseCorner"
 UI.CloseCorner.Parent = UI.Close
 
 local function GetHum()
