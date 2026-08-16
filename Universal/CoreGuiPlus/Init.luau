@@ -296,7 +296,7 @@ CUI["ScreenGui"] = Instance.new("ScreenGui")
 CUI["ScreenGui"]["Name"] = UID(64)
 CUI["ScreenGui"]["ResetOnSpawn"] = false
 CUI["ScreenGui"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
-CUI["ScreenGui"]["Parent"] = CoreGui
+CUI["ScreenGui"]["Parent"] = Hui
 
 CUI["Chat"] = Instance.new("CanvasGroup")
 CUI["Chat"]["AnchorPoint"] = Vector2.new(0, 0)
