@@ -2,16 +2,14 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (function()
-    local ok, env = pcall(getgenv)
-    return (ok and env) or _G or {}
-end)()
+local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
 
 local function GetService(Service)
-  return cloneref(game:GetService(Service))
+    local Service = game:GetService(Service)
+    return cloneref and cloneref(Service) or Service
 end
 
-local Hui = (gethui and gethui()) or GetService("CoreGui")
+local Hui = gethui and gethui() or GetService("CoreGui")
 local CoreGui = GetService("CoreGui")
 local TweenService = GetService("TweenService")
 local Players = GetService("Players")
