@@ -94,15 +94,15 @@ local function GetOppositePos(Position, AnchorPoint)
 end
 
 local ZoneKeys = {
-    TopLeft = {"W", "A"},
-    TopCenter = {"W"},
-    TopRight = {"W", "D"},
-    CenterLeft = {"A"},
-    Center = {},
-    CenterRight = {"D"},
-    BottomLeft = {"S", "A"},
-    BottomCenter = {"S"},
-    BottomRight = {"S", "D"},
+    ForwardLeft = {"W", "A"},
+    Forward = {"W"},
+    ForwardRight = {"W", "D"},
+    Left = {"A"},
+    Neutral = {},
+    Right = {"D"},
+    BackwardLeft = {"S", "A"},
+    Backward = {"S"},
+    BackwardRight = {"S", "D"},
 }
 
 local ActiveKeys = {W = false, A = false, S = false, D = false}
