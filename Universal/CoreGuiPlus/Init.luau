@@ -185,7 +185,7 @@ local function ProtectProperty(Object, Property, Value)
 end
 
 local function ProtectCorner(Corner, Radius)
-  ProtectProperty(Corner, "CornerRadius", Radius or UDim.new(0, 8))
+  ProtectProperty(Corner, "CornerRadius", Radius or UDim.new(0, 12))
 end
 
 local function Style(Object, CornerRadius)
@@ -236,12 +236,12 @@ local function Style(Object, CornerRadius)
     Corner.Parent = Object
   end
 
-  ProtectCorner(Corner, RadiusValue)
+  ProtectCorner(Corner, RadiusValue or UDim.new(0, 12))
 
   local function StyleDescendantCorners(Parent)
     for _, Child in ipairs(Parent:GetChildren()) do
       if Child:IsA("UICorner") then
-        ProtectCorner(Child, RadiusValue)
+        ProtectCorner(Child, RadiusValue or UDim.new(0, 12))
       else
       StyleDescendantCorners(Child)
     end
@@ -309,6 +309,7 @@ CUI["Chat"]["Parent"] = CUI["ScreenGui"]
 
 CUI["ChatCorner"] = Instance.new("UICorner")
 CUI["ChatCorner"]["Name"] = UID()
+CUI["ChatCorner"]["CornerRadius"] = UDim.new(0, 12)
 CUI["ChatCorner"]["Parent"] = CUI["Chat"]
 
 CUI["ChatLayout"] = Instance.new("UIListLayout")
@@ -354,6 +355,7 @@ CUI["Messages"]["Parent"] = CUI["Chat"]
 
 CUI["MessagesCorner"] = Instance.new("UICorner")
 CUI["MessagesCorner"]["Name"] = UID()
+CUI["MessagesCorner"]["CornerRadius"] = UDim.new(0, 12)
 CUI["MessagesCorner"]["Parent"] = CUI["Messages"]
 
 CUI["MessagesLayout"] = Instance.new("UIListLayout")
@@ -399,6 +401,7 @@ CUI["ChatFrame"]["Parent"] = CUI["Chat"]
 
 CUI["ChatFrameCorner"] = Instance.new("UICorner")
 CUI["ChatFrameCorner"]["Name"] = UID()
+CUI["ChatFrameCorner"]["CornerRadius"] = UDim.new(0, 12)
 CUI["ChatFrameCorner"]["Parent"] = CUI["ChatFrame"]
 
 CUI["ChatFrameLayout"] = Instance.new("UIListLayout")
@@ -474,6 +477,7 @@ CUI["SendRatio"]["Parent"] = CUI["Send"]
 
 CUI["SendCorner"] = Instance.new("UICorner")
 CUI["SendCorner"]["Name"] = UID()
+CUI["SendCorner"]["CornerRadius"] = UDim.new(0, 12)
 CUI["SendCorner"]["Parent"] = CUI["Send"]
 
 CUI["SendPadding"] = Instance.new("UIPadding")
@@ -730,7 +734,7 @@ if NineDot then
       if NineDot then
         local Corner = NineDot:FindFirstChild("Corner")
         if Corner and Corner:IsA("UICorner") then
-          ProtectProperty(Corner, "CornerRadius", UDim.new(0, 8))
+          ProtectProperty(Corner, "CornerRadius", UDim.new(0, 12))
         end
       end
     end
@@ -769,7 +773,7 @@ if IsMobile then
           JumpCorner.Name = UID()
           JumpCorner.Parent = JumpButton
         end
-        JumpCorner.CornerRadius = UDim.new(1, 0)
+        JumpCorner.CornerRadius = UDim.new(0, 12)
 
         ProtectProperty(JumpButton, "Image", "")
 
@@ -785,7 +789,7 @@ if IsMobile then
           JumpBtnIcon.Parent = JumpButton
         end
 
-        Style(JumpButton, "1,0")
+        Style(JumpButton, "0,12")
       end
 
       local ThumbstickFrame = TouchControlFrame:FindFirstChild("ThumbstickFrame")
@@ -795,7 +799,7 @@ if IsMobile then
           OuterImage:Destroy()
         end
 
-        Style(ThumbstickFrame, "1,0")
+        Style(ThumbstickFrame, "0,12")
 
         local StickImage = ThumbstickFrame:FindFirstChild("StickImage")
         if StickImage then
@@ -814,7 +818,7 @@ if IsMobile then
             StickCorner.Name = UID()
             StickCorner.Parent = StickImage
           end
-          ProtectCorner(StickCorner, UDim.new(1, 0))
+          ProtectCorner(StickCorner, UDim.new(0, 12))
 
           StickImage:GetPropertyChangedSignal("Position"):Connect(
           function()
