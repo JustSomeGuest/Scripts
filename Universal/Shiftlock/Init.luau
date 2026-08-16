@@ -2,26 +2,24 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (function()
-    local ok, env = pcall(getgenv)
-    return (ok and env) or _G or {}
-end)()
+local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
 
 local function GetService(Service)
-    return cloneref(game:GetService(Service))
+    local Service = game:GetService(Service)
+    return cloneref and cloneref(Service) or Service
 end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
 local Players, RunService, UIS, Workspace, StarterGui = GetService("Players"), GetService("RunService"), GetService("UserInputService"), GetService("Workspace"), GetService("StarterGui")
 
 local function UID(Length)
-    Length = Length or 32
+    Length = Length or 64
 
     local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
-    local Id = {}
+    local Id = table.create(Length)
 
     for i = 1, Length do
-        local Rand = math.random(#Chars)
+        local Rand = math.random(1, #Chars)
         Id[i] = Chars:sub(Rand, Rand)
     end
 
@@ -56,7 +54,7 @@ end
 
 Shared.Shiftlock = Shared.Shiftlock or {}
 
-if Shared.Shiftlock.isLoaded then
+if Shared.Shiftlock.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "Shiftlock",
         Text = "Shiftlock is already running!",
@@ -66,13 +64,13 @@ if Shared.Shiftlock.isLoaded then
     return
 end
 
-Shared.Shiftlock.isLoaded = true
+Shared.Shiftlock.IsLoaded = true
 
 local UI = {}
 
 UI.ScreenGui = Instance.new("ScreenGui")
 UI.ScreenGui.DisplayOrder = 1
-UI.ScreenGui.Name = UID(64)
+UI.ScreenGui.Name = UID()
 UI.ScreenGui.ResetOnSpawn = false
 UI.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 UI.ScreenGui.Parent = Hui
@@ -82,18 +80,18 @@ UI.Button.BackgroundTransparency = 1
 UI.Button.BorderSizePixel = 0
 UI.Button.Image = GetAsset("Shiftlock.png")
 UI.Button.ImageColor3 = Color3.fromRGB(255, 255, 255)
-UI.Button.Name = UID(64)
+UI.Button.Name = UID()
 UI.Button.Position = UDim2.new(0, 18, 0, 2)
 UI.Button.Size = UDim2.new(0, 54, 0, 54)
 UI.Button.Parent = UI.ScreenGui
 
 UI.ButtonRatio = Instance.new("UIAspectRatioConstraint")
-UI.ButtonRatio.Name = UID(64)
+UI.ButtonRatio.Name = UID()
 UI.ButtonRatio.Parent = UI.Button
 
 UI.ButtonCorner = Instance.new("UICorner")
 UI.ButtonCorner.CornerRadius = UDim.new(1, 0)
-UI.ButtonCorner.Name = UID(64)
+UI.ButtonCorner.Name = UID()
 UI.ButtonCorner.Parent = UI.Button
 
 UI.Close = Instance.new("TextButton")
@@ -101,7 +99,7 @@ UI.Close.AnchorPoint = Vector2.new(0.5, 0.5)
 UI.Close.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 UI.Close.BorderSizePixel = 0
 UI.Close.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-UI.Close.Name = UID(64)
+UI.Close.Name = UID()
 UI.Close.Position = UDim2.new(0.75, 4, 0.25, -4)
 UI.Close.Size = UDim2.new(0, 20, 0, 20)
 UI.Close.Text = "×"
@@ -112,12 +110,12 @@ UI.Close.ZIndex = 10
 UI.Close.Parent = UI.Button
 
 UI.CloseRatio = Instance.new("UIAspectRatioConstraint")
-UI.CloseRatio.Name = UID(64)
+UI.CloseRatio.Name = UID()
 UI.CloseRatio.Parent = UI.Close
 
 UI.CloseCorner = Instance.new("UICorner")
 UI.CloseCorner.CornerRadius = UDim.new(1, 0)
-UI.CloseCorner.Name = UID(64)
+UI.CloseCorner.Name = UID()
 UI.CloseCorner.Parent = UI.Close
 
 local function GetHum()
@@ -231,7 +229,7 @@ end)
 UI.Close.MouseButton1Click:Connect(function()
     Disable()
     UI.ScreenGui:Destroy()
-    Shared.Shiftlock.isLoaded = false
+    Shared.Shiftlock.IsLoaded = false
 end)
 
 Player.CharacterAdded:Connect(function(NewChar)
