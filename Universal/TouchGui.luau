@@ -11,7 +11,6 @@ end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
 local TweenService = GetService("TweenService")
-
 local StarterGui = GetService("StarterGui")
 local Players = GetService("Players")
 local UserInputService = GetService("UserInputService")
