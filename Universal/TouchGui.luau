@@ -174,6 +174,8 @@ Knob.ImageRectSize = Vector2.new(144, 144)
 Knob.Name = UID()
 Knob.ScaleType = Enum.ScaleType.Fit
 Knob.Size = UDim2.new(0.45, 0, 0.45, 0)
+Knob.AnchorPoint = Vector2.new(0.5, 0.5)
+Knob.Position = UDim2.new(0.5, 0, 0.5, 0)
 Knob.Parent = Thumb
 
 local KnobRatio = Instance.new("UIAspectRatioConstraint")
@@ -209,7 +211,6 @@ if OriginalJump then
 end
 
 local Dragging = false
-local ActiveInput = nil
 local CurrentKnobPosition = Vector2.new(0.5, 0.5)
 local TargetKnobPosition = Vector2.new(0.5, 0.5)
 
@@ -240,13 +241,13 @@ local function GetZoneFromNormalized(X, Y)
     return Vertical .. Horizontal
 end
 
-local function UpdateKnobPosition(Input)
+local function UpdateKnobPosition(TouchPosition)
     local ThumbPosition = Thumb.AbsolutePosition
     local ThumbSize = Thumb.AbsoluteSize
     local Center = ThumbPosition + (ThumbSize / 2)
     local Relative = Vector2.new(
-        Input.Position.X - Center.X,
-        Input.Position.Y - Center.Y
+        TouchPosition.X - Center.X,
+        TouchPosition.Y - Center.Y
     )
     local Radius = ThumbSize.X / 2
     local Distance = Relative.Magnitude
@@ -267,28 +268,25 @@ end
 RunService.RenderStepped:Connect(function()
     local smoothed = CurrentKnobPosition:Lerp(TargetKnobPosition, 0.3)
     CurrentKnobPosition = smoothed
-    Knob.AnchorPoint = Vector2.new(0.5, 0.5)
     Knob.Position = UDim2.new(CurrentKnobPosition.X, 0, CurrentKnobPosition.Y, 0)
 end)
 
 Thumb.InputBegan:Connect(function(Input)
-    if Input.UserInputType == Enum.UserInputType.Touch then
+    if Input.UserInputType == Enum.UserInputType.Touch or Input.UserInputType == Enum.UserInputType.MouseButton1 then
         Dragging = true
-        ActiveInput = Input
-        UpdateKnobPosition(Input)
+        UpdateKnobPosition(Input.Position)
     end
 end)
 
 UserInputService.InputChanged:Connect(function(Input)
-    if Dragging and Input == ActiveInput then
-        UpdateKnobPosition(Input)
+    if Dragging and Input.UserInputType == Enum.UserInputType.Touch then
+        UpdateKnobPosition(UserInputService:GetMouseLocation())
     end
 end)
 
 UserInputService.InputEnded:Connect(function(Input)
-    if Input == ActiveInput then
+    if Input.UserInputType == Enum.UserInputType.Touch or Input.UserInputType == Enum.UserInputType.MouseButton1 then
         Dragging = false
-        ActiveInput = nil
         ResetKnob()
     end
 end)
