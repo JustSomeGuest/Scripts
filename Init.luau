@@ -43,7 +43,7 @@ local Scripts = {
     TouchGui = "Universal/TouchGui.luau",
 
     GelatekHubRM = "Games/GelatekHubRM/Init.luau",
-    SanityExe = "Games/SanityExe/Init.luau"
+    SanityExe = "Games/SanityExe/Init.luau" --lowk forgot this existed
 }
 
 for Name, Path in pairs(Scripts) do
