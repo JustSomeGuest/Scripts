@@ -1,1 +1,4072 @@
-return({m=function(o,k)return function(f)local p,c,j,l,m,h,e,b,i,a,g,n,_ m=0b10001 repeat if m>=0x46 then if m>0b1000110 then h,n,b,p=k[0b10][0b10][k[0b10][1]],0b11000,k[0b11][0b10][k[0b11][1]],e h=h(p,n)l,i,n,p=0b10000,e,k[0b10][0b10][k[0b10][1]],k[1][0b10][k[1][1]]n=n(i,l)i=0b11111111 p=p(n,i)l,n,_,i=e,k[1][0b10][k[1][1]],0b1000,k[0b10][0b10][k[0b10][1]]i=i(l,_)l=0b11111111 n=n(i,l)l,i,_=e,k[1][0b10][k[1][1]],0xff i=o.c(i(l,_))b=o.c(b(h,p,n,o.d(i)))return o.d(b)else b=b+p m=(p>0 and b>h or p<=0 and b<h or p~=p)and 0b1101110 or 0x118/m end elseif m>0b100 then h,b,p,e=0b101,1,1,0 m=(h~=h or p>0 and b>h or(p<=0 or p~=p)and b<h)and 0x6e or 0b100 else l=0b1010101 a,j,l,g,i,c=f.sub,b,"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~",f,e*l,b m,a=0x46,a(g,j,c)g,j,l,_=1,true,l.find,l l=l(_,a,g,j)n,i=i+l,1 e=n-i end until false end end,f=function(a,b)return a.z(a.n(a.k"{{cJz0IEu55&r-Isw)Tp0$~3U7&&zn8LT?*06G8|0->Wo2mb&AswxKn1Yo}q7&uP=8Ula??`0AI1_dFL835l0mN*t41;Q3(oe%<`5EnTFfCu6f`Us#r2%r!E2u}dt7l;=>G6vuYtb05F0)q-q02KlO>tGTFLp%;ZE5925FOwSp3t$r%|2e-KFOwVq4Etad0YDrtlN|v64PX@*Iip4k{{RlZ9xsz00QV1I7Xv^aFOwke01#jp0YD%xliwi#5nvesKp`*xlOg~TU>X=X|79Bh6Rbr5KK}q2zZox+8UX(kU=kQPPyhbEWgGw%tVR)F7ypPMKRZtV7G>WZ02ZuA0s<mGeHa1(9sn1tNCYDHBR^CGAs+x3tldcjA|yW_0s$ZZcNwfo20|r2T?8TDApjbzO9)~nKYcX@K_UPftV|vtpB9KGKN$#M0fHCrWg-9^B4A}B0RJ7VO#nOrD~R_fKUfSQB>*0y|5O_QA7v&0ApfIP8~`DcEdc)_Whnq7qgWq*03@SV9snf)A^#?$SRMc;U?p!FIb|mW09G9Z0RJukBEK<5qgm-71mFdLC;=fRqgj<71mGqF;3x#(2f!i!lP>@%zcNUp(^?@3;01sv0U;)%D_S54;3ov&DFomRVE-YLFaRpQGfAhTTOtJD1%N97Atv{uTOkDCC>l8<|3Oj!ETJYk0ADSWG5{_C0WSdnRWJboF#!NF0Rb}s097;tK{Wy(HUwce13*<c1%WvM06GStI|3k8JO-g70RTM*!9D^YRX+g%Km$NQ0wF>KVD&=-K|}-LMbc6{|4NQ4QB0vHJAVL1wNJk@O93JOM<Ya407#)Je?0(6lQjTJ0RdG@0RT(^0Zjn_P5}W`PXZuN0Rd40AW{M$RZ{~%R0Ba(1YlMKVf|MM1X#6C{3$Q~3ISPVF92GjUjHQkTh3en006H57|vY)!(IWRU{@|0IS%1m1k54?!>c0B1i~T&#a#)rdsYO(0T%?tUIf!v38VGQ1jSz;#9;g<F8(0F0>3dyp$s{n0AZtB1^|FJ07i48Tmd0C;76lf0U^I!BLG;VUIJlVUnBrv&RZHm85<-28PGi?0AiCm{{Ul?I{;)#KL0cu1;02@p(npU0A;^8Q2^m)>$Ow^z-I%%Xp=mv0BHn390Wyb1Vn51jxbgQVr;ckCI2&5NeeYVzdQF+&SDJWKTHfm{}UrnVE}EDLjM2<lS2S*lSKajZ<9p;aFa&=0CAH?0CJN^{{VB7NdR<{O8)?LlS=@0lT7~rcau#3c#}^50C|&70D6;9{{VYRMLQ`4lUG3id<cMj2!MVFfK`78fPe^qfe3&F2!Qp12!MkH03sFAVXI471pomJpo9&eg{lpph7F)24WL>Lpogjj0Ei8si4CBN4WNsv4WNt-pp6Znjt!t5f0I!Fk4i>74j@-T0FV|ykqCg27C=>#7C@91K$Qr9mI#1Vmli;n7C@O6K$;dnRhtNaoEAWx7C@c|fK{IeffW%T1s>p_9^h4>2!Ns<;G-VkqzHgjr4b;e9^j`4fT#$7RjD4}su3Wo2!N~};8m>=Ag&Q1B`1KdCxBJ3CxEdCfU+lmvnPO6v=Jb+8Njv~z_$?~Rk#r#5GQ~V5g-i+fK|B&fVvsLy9j|b2!K_*Fd)4!AQ2HDzAzwFzc3)c8Nk6JU<@K)Rl*s-4;jG2Fd)Pk!1cuuAjSuPCq=(N|5%PWUs`250RNJ|Lsnor7(4$}L_GjF06d8QDL-LP{{s9w|1S(fF+)!PAHR+|U|VH81i(c1S71B@z(qX(H~#=TM=vk{Aprjt{5&rVL^4GGPXQN*LP9IK?*S~i0RW&Hp(poC0LKC#Ke+(|zqtVdxd9sjA;|xuY#{*1U_2LJIEX?&Qv_kj0Ra6e1%b+lLPk%y{{bDj0S~zW4F9<S5V-*yxdHDHxd9UiLCc6jgGEjPA_JfUKmy<dU>*Jpq0ERvKoq$F^#u+g%@ANBxd9I6xd9RgAOa!Ih(bF=UIU=H0SyXb3IKf)6JgJYLPJCi0{I03;}!wXh(bY3dJqB*7va%fTu)j6tJ0y%pwm1c)Byq2`aM9_0wLGZXHj2%M*!HNJWv4BE<n}U0Rh!7VA=v9*T3IJUP?(nZ{R~)?}$T0Ef<R|p(lS#0NaQ|KQsXWMcf1cM-+k|10J9r0^v{Hh(kjlAQT`TBEo$Q1%cj(LqHlMfT{su-vMAl0c79-U`sv$WZ{TIK_DmsBEWY{0OAPXO}POGfcPZ<Dxfi7OaSAEL!Uxlxd9<8;sPS%P88r<xd8_Q0^lDuqE}1+<pm%>1tJ>`<k98}-~nL-1m_FjCAlF1FCYtn4FDA3=nLR5pk4+*2Dt$T7a{2mAn7p>!VqQZ695yr0f`9^V+RE57l0Ii6`%=99pUU5U|JC%4@B)AK(AoA0SF91?jOJ;iWG$J9AFj;f(f7$<?x~(0AdT`6{9Mm@gbl-r?~+b1%etS@+3f2t`lat0T&oS^DDqElp5d}!Sok^P!Pfs03-e!0riMOMoPH>M;W;R4&Y9p2|yzU074Yx_8ou$z#t%4U=Sh!Rrfu>K_emfKHwE3LACi7U@sd(xd9mfD844)`iMhENFCxQKe+(}xdA3&0t2AjEFfWEOaS{1;90qe0Rx}|Ko?}fC14o<CH^kK{G)9l0L)<DJr_8mZpOiFH2(kstY-i_03!cKFfjiq{~pk<OfvxegdqM_;s5WGNC5y<zySfH?{Ogj%c%fKU_rYWIRYU9&Ti#l9R35L1FBaL0R&+GJsLPr8W=63{cX|U{5db7IZb~60%bk`hNBFCe<71a0R><^2VnmuOaTR>Z6E>v1<q>#fB*m&W(2?i1_A;GV*v*PqW`0AAppr>J{MIv2*J|><Sqq)2nB-wWk3KUqi;3=zX_vmH313;feBOw;{sp{0$~gb0Sg6UU!gf60Syr;4iP2Y4+&upWk3JmZZ$gp;B5clE6!~I!yF>_E?_?Y;5khJ5EKPs7~l~WK@tZd7+@fvl^7Ud69dH$7A6Y;imnl003pr`0vHPeDDEdi7|w4fAyi;KO&c760TdBs22ex>N~J^wMHLsqCgc_pC>t6j0T&yBqi!u=CgC6|RTwd483;icGoTqQ22mLXK^UPXiyAk@8xEn>8zz8>8)z9OgBV~-J{cLJ90Y<1GaW$%)gBk&9tj|aB%+f>UjZM#M_mX-AOoUQEJG8a0WM-5E^Qt~L7mInfJtCJOW-viAp{2k8ekq8W(<KU<F5b}L<he}T`)ryfG|h}M>eWuG&ZU<FiH?WAOR*Xbs}B`BQ)V7{5e<RsU!h{PHZA4!y-dNA}UU5BQu~SPG%z??E}GuBR7U4DWFIRGUZNV8BiV!NCFcDNCG28^Cov?RVPkCCvT-FZ=or2p{XbW;&LG>0%0q4AuLn{Vi%w%c!no-VJ!xsOnG93fFJ<^Vg{!#2_sNez#5@YYbqu%Um-9<ZAbzHapwdnE(Ss=U@(eCSuiDxbOQodbP9|;N~tg-;S&!rn`JV1p)yJgpfZ;RGG$DF#2{rwi8BU51e`Pkn211bgEdeDf;b@@VRy?m6eTx|;Z--DY$|udDjy>%PwJsJPAviia$+i?H!7evkhKO2VNhRa3O8e9m|{0n7!!}?IHdtNCG#GS>ZaU)AORBrAxk+SMLMdkK{{E5JIO&j%t1S70^`EVHpF{rA^{h4MJYW9VoJa|)h0S<VGhqqXl6dWAwFnjW$Zp197#V1ifK$fa0_WdJ`uB3Ktbg}&f!6F;X>(Qr9<ptL;_-K%|Ss8K_+MN02tf~tENQ?f^YyyLHcG2DMk)rizP=9W=%%|<39jOe@bdWFtaLkCP)h5NG-D+b7};gv~yw!JxLAUO#yfUNKh96Bw<#oN5)Db0ZK>IO-e`KAOQ!4N6bnOGYYPzOEE!9@+|@cuBQYks)OQ7uAoctW=qss7*_IP0jPuOOCnrML}ArT(zHy{uuLT1AOR2x25hVf3~ZuIO`#lN))WOzSfNcPO#%cbM+7OWLX}O{08J-GO>P?dvQ4TJ6CJ_DPHVwV!OSbF!NV(g11rJGPJpdWQn!Rp2_ozOPCZ6WdBqh_dBIVuVNea_#9u&4QBHZmAtAYI7}~{Bgu$Uweqj&6z6-}jQ;A_yPRCy$0aFPx$3|3=p{Z0R%=;u*pX1ELN>oZC090URR236#CRLt+AysWH0t9U*1SA^PfkndARWHC*45n4H=95Mv0aiL=vxG%*RYh~x2Gv)wL06A7S887%0Tc&@YD`zx5LdVX8G-k!6<Aj#S;GNYk*xv*k*7adp*b}HS_NWLV9o)cO#sseBG-}u$g0<q6$k}eEnxu&1zP^pzyMp$YybcNlK~fIf&jp70itGwT&@j*{5dZ)fn648EQ&UvUIVFL1EL<&PbOe$;o)FUGj>lR0T)jy6<~5eU{5As;=v%HDzrsm?ZIIxtpWrpr(r6lQDJ@{0iY_RVI2fw2*TdIG?PdHW4yuu7!<t92|;8l=3$bHEBX$_R4d{Up#dpkVZudakKv_eWWi+<0!_hZ0%2%6XF+EIV{RY;P0xNNC20o%X?{O(VLb(6p+MznekN&Ip%WqvWj=oZhNEpX03oGds#&IL65(ptMM4u{LlSzyLIUDkt!l810tA64Rcf&SYK`V<GRbQ2ABg}nED51&GbRWDUq1mvUm_C(CS8URMO}hw`x8nohHN#VY^>idhHTH^MQp6bY%YNyp<RnMh(%RxL4j@Gj4I!QD!8MiD&LB2F6{yY8L%d8Lf`;xyygpG-5=cwZRx~`787Ddp)k9_MylEdZaP_^ZrUFp0d7y>69H6y>n$d4V&QL3<vU|xwLHqfI|AcB0G&txs@(*8jnQvjz;7T1Z&VJ`%0_T;!Enk{aLQ9(9AG{fIo?4(2a2l7OmNCja1paH%0+RigMo1lvmFklGX$Say8$!=pG^Tt1fNY)0W}FCDAOY0WpbLKA##MR0tB|F1Su{CLX=>2a#f~sgC76@HnvJtay$HUt-*7e#VD>pr74=hC<5aCt1Ja$KMMef>Y*X(qD@6UYYGO6K5TP7aC5H#9AVxIbgDjOb;1F4qCkfZrGO&<0QqAbVND};1djY*NMNKQ00e_~1cD9IKukqdc+cT@yy|(p;Y0%BO1$lOyzO|mY;hzQm4l@i>a0ZyjXr{S(*Sr>K86fL8_j`66N*RV0ooISM;3!W0GVw6|5yM2@}%P#`Vn|9bE<!)dhvmJL$rE-zaXgr2Zn#FdO;z3{2_dT=%ITJ0`Nf}0YNK&rhQ8MA$^W>8jfXq0(}WHm41ljf6C#1*3+hq5c~yV`R#w9IWz%U<O4|iCx17<1HerH(;y6`GO1F9GPno<fcb_L%xM8%Ljb^TTtERA-^E_}f`9xuFYQ5H4<b}+6Vqma>w$r(oE!v#s0kq&LDO`C^udDDbb=}@(^yi&%=g7T2x2EdRf3(yf)3LdIHiNrVJU+XbFU_Z*a3vEEdm6nuO|WoIH!a-poFg`gjBCOYjT9bT!rf)g~Cms0tCWG1SEgL!a{`;0EN23Muoy(002J1N`)8vIWD|G77zme^RK2whX3J)ud@okuc(IiVW<-UM2m@LhwdSV%`}H9%`k`j^B#RAKMD$q?4k+`F9l*0GlHgw;bDmAg1_V8f})7Ot%#vHNj8F`14J3=VfiA6N#O7Uz=EU<p|xX^MgfT<&TZA8=^%O`07;Sup^=J$Migv<T8M&45CH*EUmU_UvxA0<zafh-Jo1BriwPkM0u5z80Io&gGyoxIU^%U2jEcx%jDwVngP$#-gMy4oav+Rf28<5V#fFX7K{bukTr&ipO##Xx2|XQ22|rB%H4VZS6Vqm;juK&x(|=H=j!><R2vDX2MAK)EnxF%~P^1i@5>Td(P`?MEkkbYfY*4yUj!>x(0Z^lkP`r^d;T@4szaRmTS>X!;P_vbiJt2}%w31N2P^OYf!r+px#*z-xP^Obi0S%K-zaRkwolv3)Jy4>g1f5W#lO^*|rj%nLloU|Ep=Oj&t&~uv14P(IL6qxY1He$E456WBm7#wk2cedsW)y6pdX%AQ5CN)Cqm-e1mxQ60p?@Hw0hdsr3j(2Yn2q6>QlWI1p?^@Om{6dYP^PJv4%4A#nVi9yp?@HO0R)|)VhKH=Vh!C;qM51}6E??XnzP}W#B3_|<-;n@<-#gpJ{m<i@+O*4tpWs~Cz^NQv6?3)3t{l%&TQ~u8D8;Un*2E~fuR-?Vxo@0FoS_U3ecvT%mJGK=-kkv1f9^L1f9^L2|a(}shg$YAmIU3Dkk=&ociM-oc5(Eqi!_;bt|A@ECS;{0Eq%X>i{7pqZr3S9$-F|88JdX2Z}8RfhIyNUJ8PvZ#Dr62QLC+S8gBy5w99R<(>55U7c`0AOW2k^EnA6m7e|~o^Ujt?!Un1o~pp$o=E1N4$~qS1)r+G;h*}9EAAsJSpzFlSqh)2%>o1&Fo7-!qT<m2pIHVAVObX#&Tn2@p*CPX8#DqH5yGlKT%gxspp}IvIH4(`KtU)1;y9~9!l2yq8Yn`_3I;;VphD1~`hgr_s#J?~LdBsJA)yYShaORdfB*m&Dx)1>QG+3N1de?GRwM+5cL^d5)9O&Bq9OsJ!2citqEr_XP^P0RL8HL*qwcI#JQ@Q$M8iCt<vj>ulq56w#-uo5r1;;c2BaeR&7}Co14K|Kq+mb;z)1MS459eOrTE_mp{Dr8L=<fJ+NAi&5CQnZq&M7kr&-~r_}?G_r|IET3j+AlsAD0hH`J*3-zxaVsEB~5(T1oF)A+_Usd53S_}?G_1fBT8Pz0U$!U;Xef~h6*s<*|ZtBE12OCv|Z5&{Sq`pUr*1R|k1H33>w1!(rCt0e%d_NJ?3D^f+3tO|lGK&{syt^uNClt5I5ul=76-~eJ&hJ+6P-@;rD;#7$jK~#gQDyijV;-O~hL1h%eSCgtgX0Wk=uveTj1fNYo0Y731JwIX%-9KWm?g1zp;$>=(Cb7t&v5-HICZ(~EEwPX$14J9(X0ae=-~+&rBn+WDhO#@K2cZ$OkR}vtkUFtDi4XyhBh|5xJhbW|w2(g_0a3JSAqxVKGqv+!wa65ywU9rMCbf_twU8#Y)DF{-Cbm^Uwvay{0YC(uP@)8#kRk~^kRrAv^Ho5QCAVy0x9$Z(Z($`vKOsZ{;*%}6;Ee(VN|EQcw*a@d1_kLx4I*EoZ#Dr(45mj9qx(Mqk3-IE0000h02z<Jw?LtqR3SjB>cR%NhatGyGa6t%0U42^f`SB{f`SB{F~SKwQo;hbSHUCU0awZ<!Ua{io<X@W#VRquD;&YyECS;{0Eq%X03oU+0~oZ!AQ}Zf2Z}992Z1gmVJ!!O4>MTNMMb);fx6L60tC@Vy3t0Fy7WK+po~Pi$L2VZ7<<ldJ0Uh;J{vDWNfix({9wC`rU(IA8-WR18-k3wy2wcoVT_{!z)~IJ78ybv^En;myvu>9yszJa2D}x(yjv!`sF2|gLXhe<DaF0lVZFKw%q!~SE6#3Q;VYM5J{nO15CvjuO})Ym;Js-k2|;9uKVt!YbO}Q%<eV$&z5F>L$5p*Q(;7d;zU^VYus??&0lu&y69HIDD+a$x2_e6*G{3MvuqMAQ09C(<M!ycz9arVR7y%)`SM34>SLXyNE(St6z*WGO2EZ2OP;WuOj3IeY1fpBilSl!=TVqugTWY{0lOk=U!!5x<!)>hs1Z}4TB&)~6P=Hm#tH#4_ni&%V7;cIw!#A^l#>7D3#DL8L1d4#i#DK=cV!#2QfW*WkB<z$#98}5@CKL^V22#TTb_Pm^D-5B9e*s)j3&MqI6#<1~#8d@ktYL*_$w6fW!u<g(AzQS?Qe@%9hTmAG#UtRw;s&9`3&9Ygzv^(t#&E&LPH^8K0mcb4OeV*A0a3@f?E(b3=f^j|$MxnF$2Zd$H_CLlr8mL`O_cYgV<5;-5yvbO_eRMAkpamdJoiEbo%ccno%cc#2{at*1@}V9Lm?$W_f%ENs3FRp<tX<-Des}ZC<5Z6Z#Dt>%*s$a-1))^2Kmg&3JWg`gI8`K0TeHO{6)*WVNuK8U$7z4V$0HP%m1bl14J3Mp{U}^fZzkbfaJUkq1D5aMgh#;!x&PffXzZt2SLuh!2uKyV*wZDf&jqgfdLohg(7=`%X^6rp?ibNHB<j)mCxOQ&(u`U)L+y_&x)Ub&-7-`hhY$+dy~*Q>|xM*pCAFy2{UAd718yf(FrpeR;6Tu1f3vcf&`spf(bojg3%WfP)4QFFCo&W-%v)<P)*VZP(}kp<A>7GKm)+hL=2%yP)5^GN7RzB2SJulMnn`0P+HPZNe`jR<I;t*>b(ZlP(jr}e;@(XP(fh}0>(;NhSphu)>)LP)>)rfhSn#*)>($u)DF{7M%QRz*HB*|0YC(uP(lQqP(lekwBpwn6H1__*cSoV_&-oa*r2T`*r28ZL>r){*eGBFz$j2e453g)*-%H?;}Hiz5!+Bk6bzuc*r2Hop-@BB*ic;DI3e7T-yi{@+>yZx0-Fj!X5B$y-3F20AOQrOL1F}*k-`Z*QbA(f7Zbq--dKU&XLPCFXMe#4-e+Lm!3N$cCG#Tj1>a|3-%7*iB9#&X2pCTR69gzrr{BtSAm7c#-!1@4qt0w!000008JuL!<pKKu80{lIU_Ki;l376&4r0pTnp+{%Dkka^1>kyt;E81@qi)wV0V!bNC<5Z6Z&x+}Dgt3EV__@>W4Av5i2^_XArNC2s;uK4&}Bag3M~hLF6wImEea4X41;bU0jeBf0Te29Cq?0o!QpyMK!*;cfB*m&yQ2ynU>O}^b_9axVF@pQ=B4780pfuFfac<W?c$%IIW_@W2*NpNE<g(6sbB-Z(L@ZPfac>g$`u)bQR1;6<k6-SY=K&l;?b!P0f9r}A#>5D<vO{6<<Y+&0p$rH3j!+9v*yCV=Fzm~(ZA8AmFCf)=4vM94%5-5=c>`6=a4fTQH3)EpG`pl(V_`GkRlD;(W2)U6AFPw=;*=dflUGgfky%aRT|9(==Ff;BgW`~Mz51b0qIO1=wp29Qu~4G<bUL5>f~+eV`c;cMC51c7eE8R<YWw?<YtNM7heaV?BvE2Y-4)rsAFjm0p!E#V|?w7A?=Rj-yi|)Y@rJRV{`6GmtpQ>bnat+&8F@@fTiwZX6_EtV`lHBLGK1*e;@$_o%5mzJ!4`7ovQPq?<Mm#<i+s4VesmPY$`-UD%_(gU_K=p+rkh9Vo<H{0s~KHh43dJ@QS7jVdyurQt(UsIoJXg6Jn~tFzL?fs>bovf$>LQAOZ2Hv;h+V-pe`j1@hj(@=~hQ@^v3aM)F5M@*oCP@($A`4#o5Bq4T+=!vAdZ8yx>)2ZsM_^P?wkHUSC;|6=nIvsnfO^#5V>Dcrn*1f9Hs2|Y->f&`se0`w@;yoU7`0af)htSg;kD_H|8SqiE3Sq%aN8NcTBfI#*5Sq2MXSr-`2ZvX(l001^%J{x6X71R;JKV0@Lf%f?YD5EcKH32DIAt(akH>=$&1!F$|i3Gp^AuG;o4Z#?>V;b+JLBbRY20_gBLD2TpfgE9CYgKeph4(?h_g`R#4y8|k000*bqa9!wg5n`|1dbD66GQ}tcLahB)9QJK_)nqud7mHw_*4lqd4~B|;rYPy`FV_0JSf9Fo#Q;6<vj>uDh(5=cg6Z<0s5kYM?%#S0tgtE;S&M^p*fc|0a^uZE(1c%Ao@~F#`=v5?X|22CHtd6(XI?altBEZ{QSTAlSf4WV*I8K|G;8g8G@+%sTV=~qx$Z}WmzF+qPAgWA7Us|=Z5``Vf_Y<e;@$_osMD&J?DZA-SX#x{kK6I;tgd!0KbN#Z8QKO+kk$Gw?+P?f&M>j0t7#2{**sv14J5(M*ihs1Hes_0MiLVI4S=)KL??JA~+`gM?dJnI3oTyDG&kLI3xaQy8-~ipaK9~<WmCRKLA>U!CRAqoNBlU0B#@w4&o~+7#8A$0s##H0p}qEkA<Zx0s;}C0{>qi1t1O5RX`2J0~+B28s$Q<0cAt^!9)V$dyE1D$1MB;1v<t81CvDp1Ej|#1?ol(BC#Py45mj`52HT-%hwsp!x+oSTLJ_5djbR+p#=GJ1ja`BVFCo5YT*Q)YT*Q)Olsj10B#^7;?AokKc!U#F~J2)#VREMEApY1;9&v<!_y$(X#{{kGXNvq;oxfm1-YOPFcnx2B?dtO20je}1i7Xg0tUII0tP)G0ibvTQvwFCM)Tttu&Nk1g9%hPiU<J*cx4CzXlTE+Ca|Fb26$)^Ax(H<0>Q;D!eJH}LLKwu#R3S@UjYc=%=bil;lcqIR^iD42wNZsTP6q#!Bii?ISV2=1qo{53GJ*^E7L<O?V~FT#SjHz3TsUXX&?y=<_SS$i4`R2zV`zw<XB{i3H&)yA;$?J(~2evfZ+;?KZhU!3Lha80a!~b1`Dc+Aq%B63oa8_A|uQyE(!~YKnoxS3l7s~CRGfX0SvSSD2zcV!~sz#0^(u;X{-!`+&>Bm3Tdni3JWg`gL_~j4?;$T4GIAbY%Kx=Y$pUME|dmBsz41v1`TZtK?4C*ltBt4K?)5vGci?V1r8k{4nKUQq6D3#q6s~SrJ@bprJ@dOfgeGov=3@DK@X+04?F)L0tbeQrK}G-@DCBQs3v&A5coUo0t7qf5TQ9V0TEhDfdy$jA`s_*1Hh_8JrJr?lSl#);*kfTQ4*=<2cfC|0jc5;sp(V@0jc8<(B)<J0cL5TDP<PoAsiEDAroB<0tAv>2NTIg14J5i;UNMOC?Nm?z{_M4Ar}-O5eK0m6(I%(q01j30~5;$5CMwI0}~+>6GAh7CeZ>Gpnfd^1b!z3Bp=5XK;RZyekK-vG5{EUI2L|9^%t9A7rnC_U_KcEIj13hA_Sd&A_Sd&A_SeHej*p@!5=|>G#Ijh7(#wD7}wmoA_s<kEEu{lRTvSoe*A?Q#6cO_Q>}Y5!T}fjiW&Tk8CYOu14IG<O#y*|89;#M0igiX45k0$lSTsn8qRG10000OGJzl)fiVX_0nULY6busq7YCvMz-|bD6bFGKi5Y<@5n^8)Vj&a$W*kc8VI2N+9R7dx0X+y}%3mNH-DVsw;Siz?W&b_^hNEpX03olFMFASu1s(K39i%?I6Ji|+GvG!Z{ed0;#ysFc1fAeQ1fAeQ2|Z#0DIOqGP(~lg0UuCbEFp^20v}LKAF##)M6kynppf7Lz_7#&p-@I3P)8v|P*Dd#BGHBv3{YAhP)Vc@q0xgMadSatBkCa|4ncn)0wa2%3j#{2S%#G)^I;@elq6Z7S%xG^xWFX1#v~5YP(~$f0SzTkUmyYmolrsqow8z72|co6B_;DVaHS@MAyp<K>?)K)D%682psJ}RpsfM~9slMg-~c9ACngJFpJUE!p5Ymv#CqTZ8K5yH{5dX)ftv6lCb+->FpOb{(<eHdK_`gcAOa`C0TTgK)61adD5ZfYp!6ukAF80{C?EhRM@A?P(<Z8*<tembDdMy#;=dp%0tbfTtSREKDG{@&X7wt@Au926AYeWj0Xe;)sbU13sbUE|sbU13s;OcsDAQQU#Vg%GD}LCeLZfaq0YlRvQ9=UZ_e0`h5&{Sq*I|7V0s^5qGyz%#Z7TU<D>=X`ImRn|fLZsw82TeHU_KiqA{C?yVnN_6sm2HaS`)wkDO+L!soE=HBwZG0VPc_P7GnM6{GuO5WgkI&Qu2Xi1cF|?EeRnlqaRHCrc8h!0wLjO%Od*af+k`vE)4<%E(Zi8)#om(W}tq-0Mi>`E-c>ws{kx4$}VjabZrGMswQDCv|xuXp&^mLfJXoT7m>pWAX`Ir1cFcrA&^3jY8*x|2_Y~EDZZN^7?Vc=F=QnmtOO-JC;&E}LpGm7HVUfBFsjWkh=88KA;S%UDyXR#_$M;>EEE%kRK7(XRH`r@lk{eOf-~Gx6&r&k94uioF#)zuC&p6TLNux$W<d}(fixqHg*2=nG^{2GK_ijOSTyJqQyqqmLNy(qAObZgPN5NDVbnHGp*BTr;Dpdc$^?N$$vk9x<stzWDn-gRMa?$OU^dQX2|>OhFcOnU0yjm&5=fLKMZyL2B=m!tge01Z6*ee5IBlUg*UbNgMarQ#cHtLcC@Z@rId<VWkhm=Z1h^;DAT_un14J7{u0fHaIU|7A0gFR9i(e-I04N=b2mv~{CI|tldg-`1qqutGxO(MWNEYI>WVj+Z)5WxGIhQ;|J0KxDmopUrmnb`+VHEUYmoq#mVLT~q0t6{%ssaQYC?-5hz&uOFJg&2!002BFDm=5CJt91TJseXBARI_NyulG+s%{G=yv066!9Fb|DC*&%Der+O0^*}@HuC~M<Rt+hZ6E?Z%9?W^nq@x<3g5sr0kp$n=OR7|00DdMMtiOdgKi)K6fb_!1whhT0YIPspXNZrjX<GOIW%2k14J1$CP0AzA_Krp=)(-5qfk_%SO@`0L0x7P%mL-&0KjhEK$Mb)U1C68X+Sj7$;LuLdZ9we)6)Q2W68oo`r%X>L98n|`sG7|;X^(JreGj70WX4PqC+gxSW+MZ%ynf?!b7NFL#SpcLk`n8rbLp#L^!`VrlmyuO++}R14J4)rbHmQzyrWIqzs|l5NJ5K2mw(=mL?R;IJ!hQsYE!ubw;ycMmWD90!AspR2o4zv`4(5M>w=cIKNb7frx@f;UGsirbiCbN;sxS%YjHZzj0<r?=2BXab^QV&gV$-fCIpBWDpFYaet<&2mwhrrWDLLx>ZPVX-GJ{O6(y@IKM|A0!m_m8bNV%OZ8!;OE|Pkaep|bOZGrZs&QsZ4$~sOWlT`POsaiMEAqoDeM2kq#Sl~lVyZ1n;$t0fCQJ|jQA~k`3t=~D8U8~Uh{LxS&TpZh0AAiIOp5xPO=m$(`jZJD`iM<Xks%RbpbM!+PH=%vH{Yiq0!|4tsYXu;Ax|oBluxNlJRoB{sYCt1OBy+FhEEL>^oCFtK~+%nlu+tnD(Yb?3IW|L1!F$|iR{1tAq&oIEnyfBgY=6E2K0<l3Jfm_0u(bbN<~pBfpt-0d@}@?B49q)gWWU)pG^Tt4c|=x`85(^D@TY!K~cH?0UNmi7r#YY|C2@nQj<plQ(pT-lSu+pQQ$ZOBb8O%;~D~>Rsx|K;D+ugqLW4e6#y7Hp|2)Q0$1K4S1aQgU!giq0TKcT7y<#669Nbu0s$@rA`d`UrUSqL(*dHmV2U^(0C6D^pzP#i1R2h7H)5|~KN~p*p%n+Bqpxou0!#^k4HBs)>tH?-qgn9bS!F?g03)MtHvuX`Vbv=SK`a8}KtjN8HtIsaZ9>CtaUmLDKU6PZ7$83fiY-e4E*9Y~L;xTHSqcj;4FVCNtQmoAU_SsPW>^uWTH;#)S|n`(1SDr#p*oW_0R?U)qFN*7XX6=Eh-5YZTO;vWI{;iQVW|NRLI<E)E1_F&qs%%7qs)*a%wRuofHxprTol6mIxjSVT^3?e8xwvk#RP&~3#>8|V^uPn<1!1S5PP9raRgFA=3O3U14J4`CS6m2LIc1~L?aBLL?a+BUPLig2cQ6AASPWI6B<S3m0uHqUr>OFP=d7z9700n90Y<QK@!0|YdHxeMPMAkU?NPN#lAy4B1KU>1!4*lYzAQ_;b95@y@zAvV!udURb?Qc1Eo9Y{9sxFXapEADq)H+En!7KV{rxz0dWRomQ19-Ni0ni5`_h3WlB;fW-;+$9Mdo+XTO16XD~k?0%r*!VSjE_KsjY-2_a~IWkPqsB}0zEL;~WKEodR_0tA&Fl_qFuU}%*l1>_u3nE^%(B7y-&45mj9qoY6oRgwNfnlflW!6vGjH)$i`X__=?eZXl#sfKANyqn?)Mw{$uQNdIl!I^6@WhH7f;cAP(m1+&<Y7P7|20{{?H7Epv50j||Yea!-&5Z&Cip_^>sRnD@00E$gWNVbDw4mb{sRLBa3J3vgsHp}B0jUYNu*0~i1Go~Y3Tvqe5Mcp~f&#$Ff~gi6LM@XvlErOefo-aZj4HolDh`7xtLkk~S*-#D^CIrzZT>)QMMk&_VO1X@DsB8a7zb^pmw*8<ac-*SZhE0^ic#|(s_Jf_!4m<h^lz$z;ct4SJ9?o!`XM`30^>jcGU*uO!+SE~s{t3S>Tk-xZ)Ik0R1VXLhH#R>aEX*~iH(E;1o}sCPAn4yvnBUTMT8B4-oS8qW(W=c1&KItR2oxwCULDHafEXn-DPxkVg#Ku2|rE&Nd%vZP62<SaWP>ZL61u&D)fbN#6fbPRB}w5o`O^dhMtUa4>Nvn<#W@4Rdf1`E90Xpe}gM<>QQsbtpWsa=W{&3bGAmv3t@2glO#TqDhL1oVp5YPb0>3g26XGeba5X?AOdt^Arm2S6m|6hRdsO`btG&&Bx5|J1EoB13Uv(=ROWW;p>_gP^B`2}1f5jk1f5jk1f5b;;&vo6ROWZop?8%<)hLxgDK!Bo0^*}^S2qDF0%0pRfh+}M_do!N1i%0x&TS6>0001&#H0pSVhRT8_6&Cl3oi_VZy*8`IB)3Yc<AAHm#qQ>m!}bU=;j4!$ijG(paa0`1U-1`29rkuc|K#DWc3-GY!weelSTkpm{(>8q3Wms7YG6Xz;A>hfVZby2O{dJ5CQ6=cq+pMWi6p*V!>q%0$Gz4BJ2fvyTN)^ix1>5pq3Be02u5FdV3851R4}^AtNGsx8Qnv1`A<(19~GMdm|*1NdkN#(W!cGQ|YFC(Sdz<pCF?GecHhgq3Np_sYQOO+QEJVlR2&Bf8Sw$q$8h@fjtFc*Fb=hKmt*L0iqCdFJ^-4L4xQ_Pyz(#M+77+2ZH1Pf~O``f=@|<EC+-v5rX}o`vD`SfemFp0EYjgZZ!ZQlSTom5=Mpnp@o=WhjFMGFOx_DhT`QQ1SM7os{krqBP#NPDn<&0ioq>~`{0GY1`UC~5Fm;~K!-$36cdHT7j1+NLd6P&x&bBux(mZbh#r9*h{InX0*J#w7h%IxC5b1&iNH*mgnQ(|d8f)o0*N7DiQtByKp+Ct3(vv^iZh{#!XF?4Fa({#0tqxXz!^E};lcu-4c)>5G5{A5!Ul^<!HX2;MZb)TFEblXCBK3PhDyJTi@%VIG_!8zj9h_HjBf1$1iy!jRN#zM=BbQq#?(U@yowl^qc*Be>WoFRbc@A}5aEq3ZHa&Y0Ka1Z2_P_oNp=K|<L5LaMeYKP4Z)}u0aJ_erj8!Lj`FmQ3i7ayVpAM53JM1DtO^XO@}iCuGaaqvk23*}_%jUx1TzPZqi-Pq|I3p{07+m!7*bUtAqN6(^H`FD%-Ez;0+0-i)`E|cfR8<fiH|*uctkb{Lp_obfFLOXFR#u9ksD!=LLm&nY&1(C1pxve009E8#@^;2lD|k^uSo#{09Nb*1y<$=fFscg!nSFW(^w<I42t?;0RqH;0%2uz2}1g2lg>oHNnW+^Bn4<@>J}+Owd5AH=@<cPAOa+>Sn|XG|3tv!0RMOF0tI*G0RN%SIyM1X1!(9d0RKCaMgzf40Mi4)J+moPJ+}w~VgA7Z2n8!&y8&DgV*ENUtASl~0fMZ-Ul3zK03(@UEoJWj0cNkkWd*`|lNC9LWt3(?l+Hi7;m#s8l<%OGnxF!K2O{xcg_N9Tl$HP@;)pBH=9a2+;g-+y8nwkU1fNb-0mh=14by%bWtV}$A(yo60tB?@0t9^4L3v`;mmENsw+5Gae*gg4Qnv~S003e;r2?1KxYMfUn3kcKrGFp-DVVQ?rEHkkkeJ7T7@<_TtH*|!rD2)JlRD=`NXLQ%ipQ0i4bwkHnhn7rn)N(CLIj;ZLYfWJ^hO1n8=;%@O#%e;M+7N9Le-l;K%4evoA!SI0HrQJN}C|_=!Tpw!JKO7l$_|0oamn*0tyC*LktQG=z^RzAsk`Ia{@)3Ljj#9O#%dFr=949QCH}S2MH=7ohl%mDkhzs;~xM3Hff3t03ay>74PE)o>>8&8i5SKEaMBlMFO8)p`StR0tCu|N1wh$0tIBgMgpH0Lm&gdzC!|^zF!#a2mvvmf`$kIzDNNV;GzJ){cmg_0T*CD8ab>5VZK2EpT0-}5Mcq3zCjRRzET}vZzd6AW}$+AA)z5{0t6vv1SB9Qp{iqGp<`yD-jf*KiW#b+%At0gqLM+Pl17uiM*^e2NM6F_AhZLe<tZa3!T=-fLnERl#SjT1J;OVvq8I?8w0njP0gB~-03i(kq<#qF7{5tg&Tudw%K#X<1r!p61!K-_)B~b5qp<uc?!aoI{7X76J)ss6NGW0$0s{7MfB^+Tp$%m}0B?q)ZZ#0VMgj81Ri(3`rM<;F`e8grVXZp?<3Io)i5M4yd#Eo$M`!iIr8a=2ng*q)e_<d&^c1GTfu{5m9(42y1f4VqKTZKj4c}7zM5Y%L=w_$cp{L`;)hZ?7D{Wyc0^>jcS&2O&H>m(1OC>)Cit6iZr|WR1DAO8XK7SZFp(afNsOw>+s3_bV1cEXXstF~jQuLvzZ9ra$D^-IlZA0}dUW%z+jj5qJH6sC92*RJp-GZrl00Y33nnVGis*~Za4rN|105N2H%C!p#zyM;L1{RE>oEoW|2@)Zk1F7W2WlCS+W~X6g83I_mtDFHftLFSO1fNa;SfU9%gjk{t-8Buu??D^lezUBqvmva0w5&j^JV2v7l0c(8pGAJ6tPK-X2CX{4L9J9DAOfuxQ&a|`MS`wWAKwA8qOMd8t_V~H14PazuFfC>!0u!Lp#iT{1`c6VAF@gbz*GnpjH2*5u2cyUA@C!vR1~i2gZ!}YA+RssAOf(c2_X&w#Og7PC9(Nou?AgVAOZxPwgL$~T|y1rQe8r^7ZcnDvcEyHT~v{>U0>@#+yb&BGgJn%(#&DAs6SK&vs4YUp_4i{s3QYJ8~Wj>BC`;vAOpZu1OcJ6R0a-Vs6K&cR0;{es3;bUR2mk9EYhT5ULGQ<L|-4nK>(>E*x{)RvjSmf<$-8YtAS?)Vym3B_F=V7KLa2F1f8pb1f8pb1f8pbNwsc)F@XWAit>iGupynco_`<$wh1#=X17YYVYgRww^x5xX15koRU&((xW<9F_Q(<f2vr#2;S&TX98$)(`v8r&<-h>b2m*t^`CdAzr7F0X9J$${xySz?qXN01K@njxt0tHQx~k&gx~SzS{Q)Wc0Vq@g;#OfQ|A8z2fh+}M_do!NRzLtD&TZcS0000O;KLwbS3em!Sb;wZ3N2fK)h=6sEea4X0%LC=wE`3`eyl_R+xH*=Y1@bl4y1eUf&mxrg*MzF0o#ZS0o&Xq14TU<hy?-LlSTu<hy%O~qS|AVM*_S1;}}1aNdmmia2-O~sb&X80Ra>c*|`DR*{GloqS>My03i~#M!hH@y=t~py(AM@Bmw};Bn2wALcRLHy;H`$<$w^Q>UQ(KHvzuopCAIhED19?B?7-dLBBaa!A4cT!A-w8B?1FP8o@?EzZ!r8z`;Zep*beNIVUB-IWPhTML8k@6b!!F1;05c0uP}%A{_uZGNDFw!eL>;DqkQ1!gs-_3j(T&_{PI(p~Lvp!&E|lp+>_(V8cRY!w%C*IVQvo!NmHXIVQyVjVb~J9yjL15CFsw1`A<QrfC^*gjvHFIHNxIij)Wd_lU$N0dO0^(X+)mCjrGUUmya-FhLU`RNCt>M#eBf#?iFK(Z5nKM#c>jwMNH1VaK&p1;@2e#~a+WLJ9`8ObQIDwL-@sQ!(Y`$WfulbPlt`1~UYoP60FtKX*<6Ne$ml0W}h0DmZgk7X`^^!O8s%0t6EM2g#4d1!*n^g8YWZKvl|Bsu_-P$!*}vZ=oi~p#sU<%Z_@<j%gAgRZfm$$wLKY_+e&y0r_PU0$0bQZXp2j?~_IVOB6uNqjC2j0XJ#G8Iwu^|IJ`N966yTO{)UV1f@*`pw9%MZK?#L8U&!w1f|glWlyRdz|sj}ngpX81fbKZ1f|ptB~c=P)ea%>stIEp31HR<W!DZRQ(7lL*b?9ZCJrMV4j}c}66M+w<yDhM0I6UEp%UaC65!hxrQGTlq4Sww-7vu3lSq32To;63J{vd#WtHC%px^^wT^2+GY2iv0AmRgHUKIobY2yQ6<>UikUlYUwW!_*uMHdT#=m7;0-~uD=>w&2cW8e>h_N;*A0fKM;AOU})ZZ!ht|A<CFD!Bn1s{dFu0_R{p891~B;sYgD11tiU24zC}25s93q(N4>0UJmL&F=sWLnZ@&4NCqHh5b4MDsCVFtCL6b0Ra-h8h{x&h(_B%MGFrB;tr%jQg^ulAr*kR0UsGE&FT`QLmdNx1VA6Ts{tScN~91aMjB1AQWIq-11b|>`V(y^3&Qmq4{C@TMO?W7BdQXrjvj>`11*#&r8#Z`Ah`h)8HoaO8HJA*xd90o;s@XkY63js;5uSKHn{-<fI7;10z@=KMKHMm8bDq#U?jN#B{k4MDy5f6xdApH90Z^d3P`F0<vauPT|s3xL1H9cBFAnZ0_i7hGX#+J>MRX71dNz$G-Ud4VKC0X0_%uKMmRs9PQV%f2)O|<pd3J67Qip6S~pt2Kw7}>a3KKe1_91sK-U;JqXD4p0jMAW{}22;FQGh80sj`Ga3BFA{5<I{0fOCNj|>6qh)177J-GoDJfjF8Is0HhYv6DT0_}*ONJ1>R0S@3Kpa=d9!slrf7#rUf{{`&@0R(4ZZU1Ef2uX8HZ(-kLWn=*c0OSN$|6yr#0R(h;aQ|fi2WMq;XJ!9xb^!=xb#7z-bZKvH0S0qu^I>uY!2>{Ob!h?r0$)b~30H4&|7&w_VPj<h3;#%TbZ}E;a(4Y`0e}ZkY+-q2|8jEy3rufgVf}0YqX7_Ab7gYhNp5g;bOhxLRPT3XWo`kb3R85yVRCe3az_iG3j0!Z0_F*Ka%pt$WoBt?65vB`a(!h3;RteNVPpbBcVuO30RjeTa{>bW2ms)3Y-D9}0lx}uVQXb(0b>d8Y-w|J1_5&c4*nZ}V|8<MZ*5_}b8}^M0Sf`(bL)9-0fP(zAY*K4zi?u2VRB?4pkd#0YXJmzBO*p`|88^v18!w^0q-bsVt56@IxjE%W&)sdFJ@tFY5#0#Wpgh_Z*>1?VQo`WZ7yp4b0(k!MQ(L%0euPwL04sIXJ{+{?Lra&0SN*jQ*?R$8ej%aZ*py6Y`*~pO=V<h1%N8<3ztH5X&V7kVQ%?z3&RC?Np53rZohMHY+-a^1!D*QQe|g#Y+-T%{|6&RI5tE#Lw^AWOJ#X?Zydn>0w6|1Ha0{72JcRFZDJ=N2O~lMHAOHtH30@w-*j?mZf6EyH%9+BLpeAB2Sac7ZEa;C00$#DH2*|4MmGTlM{Lt?Vi({F!9)mw2uA)!Wd|cfH$p)-|3m=@P;zf@W%qJ)c@KazMMF71LNEaZLu@V}0pPzwH8?gyFarQWe>g-pMn(Y$CPD8>bY*P?U_>-TzcfTN0SHeAfMNS|Zx>-jHbpi?-!=gXNn{Y9X=eRt6{0mZIYUG?{{aI|X>0)pLjP}XY-M3?0Rrz;NdW~BVRHdo^=MO|b2XrHVRtTnXK8e3bz*f<fchjLbQxeSV{dIQ-AY0rQ*Uicpk;IabT3n5a%pgM|8p;GVQFqJRrhXbc3GfdY%ff|bz^B{FF{7ZbAK;vZ)a~Va3g?;8v@G&VP6A=4_^;ob0QB-XcYhtRs)7$9={&HJ|3-Qcx7XCF+dN(i60*@1PWddUl3m}4Rc>*VRB<=AL1P^P=W)<Um!mZ-w)11V=v+!#1HWU=v^QGPaiN%ZFLuOX=6Xa93RjFr$7HFPhU??rXX~JAag(V1Pb^c|6jjfu48O(b7k}&_5-H|bprtkL2mbHZDH7<a{&fJ|8Hz>ax(!3X8&?;ZBj=<0T2H|VPk7&a&L8eZe#;O0T@$dg5d9DVRCr`Eek<o$zz{D1j7^r#saAbQ`=>9Bf<d%Qz8KXw*d%JiG%?PilajRY;Sl02UBl#|8iqxa{&!Qb@Os^nLq*K0Rus7=WGE3vjDTAY-Mvla{&iNX>8)a1xMxq;{gr_B~9Z21#I5!fdK+(X853JW&dsg1Z8Y<WdZpH0HFe417&Vx0lNccsDK4`Xz76l|8iw;Wnpvy1^0Dsbf(|}WN!if0zh<ia&7?yV(#nUYXJzP0cmb^Rb>i*Zr?y}-{4^gpzQ*&AOmg&U<7n>?gM}YW?>Biba`<1Wp8E<0C;e3a`$ur3Cmz>b8unxV-R3-VqyUZNpA0RbYX4+AO}`u?PG|bG64YuGXVs@RYYlR0R;e|GX6BcMsi_oWdQ`<HsELh26ND(1#~-MV&)(TV{bL!P@w)2;BRvQ1a)*~|2P2#X>eg_a`$rq1pvbYZe@6G8$fVlVJYAScmU%E2y}1pz}x`=APQvrfchQ*aNNLj0S9trZ*g^Lauxw)Y!m>)0SLwb0zmV@$3SOg?Q|qSVRv9)0S0xQZW};r0S4Hh+aLkY1!Zz_)ByxwW@S%qb^!+jfB^yw2B0TxWpwc17hwzsU;(F}3T$s-WDx}cVFB+BV{dE^A!lK7_hMmZH=t)@X>R{!ZvhByWp{A@a&LHf0R?1b(`;b?z$+kkJYaNb>tky@;Atg+WMOpYWdQ|X00KY?LUL3CAX-BX`omKjfMqX%=?z^X0mcjdqf%jR{0;#Cz+`W20R&S1AK?d5WoKz`ZvQg@5mIGvY-!D73;<+Pzn~LA6H}vQa^m3SLjhrFJs=Hy0)zx)2ux{bXocb10SsOMZe#?-3scv0VRBl4P;Y<%4HyB18sPcB4^%H;NFfD<(-1@_fDWN$2gMRie_?WKWpr?COMt!#MHEACZgf6?K?!4hAp)fldVo107=RCD{{}>5VsdG70j~~FXnCmsa}s3<^+*+9Y!%@F2uNx7WMxI&AOQnaN&iFv2S{{ua7Xe#fCvD9|Dpj6P;&WYHUW%83{zolY2S2ddSy;lp$bF&Y}7zQVPj}z0s9b4JU~-nc4cI^fX4x#f@1*;L`>jx{bd295JY8oD=Y6HC_;69AT3F5_bCAc3F0_GAanm|ZE$R5AYyg@bRckVcV%*B|8;C2bZ>8LAf9>vAZ2)Pnt-yPAnj)lz#wUCgmW$dXA4ASZ$mhM0ccI9wI~GvIvT_%BJ`za|7mn+bz&}KZ+~qsL0VaJM*+gUFA|_oY;|)0VK4q3pk-lmWpgiV{y{)<bT4FYcW(Yy0WWWLbS`Xl-(eytDJT}eLvQb7WdReIz+!J<`*LI&DK9}Fc4_}|bai2DAZum)c>}{oRY@RiVY_5y8G>zZVw0dCCuC)IN#Gbja~8gHAU!S@BXx6Sa+YDK;G`IW`<O{J;1&UO79t9~0m3nWbYV+G7yuIf0pUbtW?^+~bUwGnP+@X&WyFI$;7N8-puJ=aJYv5k5e5UbQi(%zxnT@YgrRf(w*(AQWpi(AcK2mTZG0gNMrCx{V`vP85JRsZbY*k|AP*ozCtv{+Qnvs%WpYzWAY*6(<Hn%fP(VO$a%}>m0Sg~Pd1Gv4$V35y4P^fcL2z(vc~oefWrN@gRd9qMZJ>00a|*#`a%FR9Q%dg%Q+H_*fK*{(`vDIHgH>*1WpW2>X>M5n+d$KR0tV9n|3q?OXK7}60Z9;I!EV5IBcO0#Zls|9PjF>!RY?H{NkjEv0RRaa;|n1c97BHPB}r~@b#!9lKt&E~fKGS-51?M63=xB*aKI7a3?l;pqz!SPP0@9CpyOcZfD-}5L}}G?f`EB&qedhEVRU6wqd^fFqXt4#Y<qw`a&rSgZe&oYpaSC00T5DUB0>bBOljY9bO8`k=73Ibr*vs%pFwD04*J3%`h#J0*WdvKRB3ej(m)vk!)bFMVQl{AKxBC!a&>NQ-f|!z0R&XhAp}W&>0ki}M0Ijulfhp9;AM0}Z_OYHOTa&6Wo}1xX@P(jqx(;CE?@x;NoQ{01ONj7=77%tMxkYNPcLp$aACgS3<kpkLi2M0hX7@vQ(<Oh?gAtZT1ht`ctU0GXkm6~(&1BSV$L|gX8{ISpku%R3+_*%LUnZFU;zYEzi4lF0T4p5pl9~$KyGAQqB8<NwEueHN3Ilm0Tx~ZM^tiQZu+2d$sk{O0S`iN6@gQqApcNlcx7w>2vCb}bD;ol(;xzY`@m`Oa}OZd01^WM7gb3YL341+U{WCgwqW1D%VB9oKnW0G0)hbuD^*D&U~a)+3Ic%vWc>^RV^U#cX?1fu0SafLOkrXUfd@f;ECB*P-~a#s06_l%3qfvUXm4`sP;U!C1#Ke*MsjAep$Sb5-~mGnK{$ZlOmAahY#0CnKkwFNW@Z3D0Sr~$Nk73%VR@RM0T1*A<^lu_YhY|dX>$DJ0II<XNN;j!diKwNVQglgNk(jCTX;dpz;10U!2|_i^8pS7M+3nD2~%&&a&$by3kriiV+>Z?WpereVQd7V1yKHj;Bx^9RY_1`>ttj}fB}f$XJvER0i_KB#6oX4fNcT&3k0N0WoC2%3hn`fRBv#DpkZ!y=V5b4J0JmoNN;W8bjA?@h%BTpU{iE*Pj72w0RxEwL=TCgY6Ig<yg>#(;{gSt!_)>zC4>hTWe%v|Z*25XVJ~9{5dleVW^bzj4KSf?V&G#&LIIaq0TTiyLl;6xLJIl;Xc7s7LSb@LX#Z(rYi?z8a{-6~WNv^nXAca8C@3jHQndWyGT?1yAZBknBnvEofvsS4VWc1t0f+<S{{}&JVRT_~0sRgH<49#;WOHcWZ*&0+NuI!RVb5c9VPb)RdO%@p|7BEpaAg4lMo(#U0TTtQTw@dnOUPVg0<1A43Jt?0fdW4z=v*Wa0*4c%35_9QBd-isWo-DMWn<(<ep8@EVPj<h9s=ZVAarjanIbG8rbtI20Sc9Ye}e&IQ)6IHWn=*e0^u{F3j`rwS8`!+a00**49W6DWC=Q9a^zBJV`$_GAr_|!<w2t0E-o&M0S*m;SY>EeA_AgWifAVTSV0d8h9X4_rZV3Fzy~~VuHb2B?`}OJWB)*9aw4}rJZ5qLAaj!7J@+CqG6CRXK0#vqd7vJnJTGECJTJTiK>)yTJ_-s52W)O<pdvmBx#u8lT>!^&ZXk&O?qDc@AauWIVRRsJWz7I%_hoY+gkW+YWqA8#W5MAkb0Aeo{~&j0X>4U6YxiYkaKIoSX>@b_AcP=iX>MU`AlGJfZsh=P0YGVV|9LJTNpv7^a#L@1(g4RGAoyTmo}lj_WMy+1fGi+$|7~w?bZBLAAopQzX=CAUZgVW|0bpbxVG@9HWgz0pKy%c<xxf$raAk6RX|iBtE($y^8cY5nct&MmbairN{c|E8Eg(~6VRHXtXdrWAa%ph-8bD;A0&IC8W^#XTZ6G{iK2q5r9s?mRZe?^V0Um$?!9D_`LTqn%E>a*bAwC-bcWHEEXk~#1qxc+v3&m(aE<9p#FS|Yp4j^H6Wh>)m+hKOBfOKUKre<&Nav*Vae?TB%W0EkSb2Gp);AIX68bTm`38_tWY;<WY3*dex;ACYWWn^ji02Lq+AZR&&Zo?oE;sfCQa}WkXb!lvLE&pk5AZ>MXX=BA8J|KB9pdJNi0xwNE13@ny0%mV)_aFzRKSOnMbZ>3rKy5=bLttj1VdvmuWe(#<Vs~$MZW17DZ*mUj)}O{<Y%BnCAjWfLvvhQ4fJI<#WJdsH+h%3(!DVwke|lx6VCF+|A3;7}3IzaR6Le)wpbda+^kL@U0l@2Gc`Tty8-PJab@OF&Jz`FnX+BhFmtk&eWZ@t-p(!A4y=NjLAv`Z>Z~_5Y5P8RZ1x0w&#t;E#Af)61D2~JgXtjh92B*+v&ItijVPeL>m?LrlaTW_e0xH2I5LHRhfh|LBKy-2+VF3xj2V=ei1px<5VR+U;2bWE0Zr5TD3C7){0S^IK0Tlvl6UF^yokxQPLzkiwh~{J0g|nhU{dN7IZUGEIWMuve1axiz0V@F#KmrLQ!~$yi#Rmz|V+|A_eMMoyL2_kb0VJX8LT?P9Z4F~{0T_TJpaLo&MknC~YUL#cA$0$40zb)_nVFf-nVJCyEdZoIWdXqq10y*E0i-yD5dlJUJ#O`d219Ie0l)}{Hw8m%kbnUU0^<lp@ByO;MFFGz<p)D=a5Z@dY6Joy0SyA=N#rB}#Yuz?2Ba?q4WDB{piOi%AOREs$}^=C1d5<Y<N}LVqy;Nj1PcelMh$Y2AOR5phzTnL;xESV1nFZ$0!i{kQ*U*0`(tG(Le98R>xKUwxB(ULpP!;_AOizBAh%@!4+TcR3B&>iZ3PL2EN1*cLT~4I0SO=@0YMQ^Y}(~OXrcl`Z<~NK0r3^c1h+xRgf1>F0r?LFC<y@qKj5R+KMFl?qyZ2K#tkJ)2}ZHtWkO>a1q%XWe>xyRY-|A!1P0(2#R3L|<pd@>j8bKDg2VuGJB0znJB$Q`goF<JPHzGRVr6UrB@0e()ChH^!rb7tAlRe-adl;Kc`gAIa0bhm1WJSu!&GH$&43SdWdRyWg959dgadN?Nv8C|No`?gWdZ*LLvn9$0zc+AW@cspKmiF@;kjW~asdkSqfSm?5CLc4Jw^zE1EFN)1Y<#Cbp2_gAOb(rGcz-Q06->y4Z;HCCWiv4t0W0WQgv<!qk85D=K}+P0|5^NCc9(;2fxJ#W^^VHdZ818eW?^D69fuz1qP~MF$D=qfJgA43>gGd1OOue69AzE#tg(10*XpUBnl}u<xn;NuEh}nh>7LA0!Yy3P;zB<9>UPK00000KmiB>A!#3Pb#nm?17w{A0mR^)1p}naCJrHL0BmJ)d~o0iga=M#cytTO4Fm!q0SyA=sAU1fsAUubq-@0wM?-U{hg2c~<sc<S0;*$X0;=?66$&eP<s}y_p=1rDs)-!~6#hhk9|P2_h6nW*L<7}wBnqyhhB5&cp+s{^U}PMIMWKKKKkjs7y9B8~y)u;L3{GWtPzb34>jV-4$^2ykY5ZdZ$}NOl5+Vv?a&M?083J#zr3DxT&r+pMZwX0ErD36=HKCvk0w6ym3VjL<;UIHwZDpj!{dA@vWo00AXl4IxAZTTBWi9~$83}NjglmF3B%~%538uxMNrVGYqvQiolmrhVs7ar0W^Vx&0u09m74!uRoCFXD=u~NRY_DYkKjWmt3#Y>%`ELAS4CzE=b7KP2KiN7(1jJ+lpmJ#?aIIkhHEFNJ0Ut@POh7eh1;o~cui;MNu$B}AE68wV2J3a?6$z{AWf4T5Wo%`1Whp4VkOqbXg8>%>j)8;&58I>|d<)KGhD~*IX=99K0TKbJUWEc_<)j4aT4e<3`oN_R0)kF&cTjBGVR`!C0T2E`Z*CK3Aoaik0u=--*hLAV|5I#fWMy(ea!+Mp0T%)cjHV6+C=)_qu*b3I6a*_JgcC!=3?sN90TCkt2L$j-Zi8=Pyypf910gV^5(8BCX>DbC;|nl4FmEs*FCYNH0Tv{pBm;(}W(_B%ilB25WWPb=0l}&!69lS>g-CC5|7m(}ZggR6LH}%NXKrm}Zglej3^AhBqyYosj{~j&JA>QH0&40+2Shdi4CFuuK$f-#MFK-Y>N?>N1i%MM+{6x{tp`NkD-k2S-^&xDQ)P5?M8I>4Msj{38aD$1Y0HKfKm%`JqysQu#RhNVL>URM{^P|4R&Q)|ZDpSU0Wkp!TtWfl1%Fd;Wo2Xm3I`+n0b(wLOmA;+LvR0V0zc8~g&w#AQS2wA0>p}?WugLMzk<q2hXe%S0aJqm!BlU1XJ?{8-~a#s06+jkBm*ak<q75n1CWGcgABn>Q*>c;s~`x)2?B2i0zc;IgRkdjBLzlcDi2I)b9AoY;9(V{0sxS@MH{060P%-!9wXgCGWy*>ZI1yUW^Z+F?_@3t3WMNdWg!1yb!2I8AZBU*Y-MvGX>K4)-*sbYWG{;1F98V;LuHkP6#@()B?8Q`#3c<&OB4ah)Fl%HireJB3qfvaZF4Z=0Ra&Kh_0jpNu%WisJuo8D6HQl0!m_KMqugML<=N1#WteJ0;4kr5d+A-ge?#TC{khIU;zY)(u4k&XAD$wVQzD9|6y`vZew`?5ZzO(;9_BND?wptQ*LFbpbkdU@ni=CWK^H#p$82I#&QQ>0RhF}P-O=M-DLyCE5rs=Z%uFyKmiT_<GSVy0^|HJgkr#FZvhKQZTDekWov+Max($uSU_iQ9U>A?3sh-WbZliFrQ;Z63<9G55d{cCY;SXAR1aZd0S*BrGX(=B%%<TF0woxx2H+*eHUSg#0m>GH2n%3IV{dLJHUSL*B{L%l4uF2*w>AL<4MG7D5WrQ{Zry-vFTgeeV-8L`Wp`{KX>fF*!W^&(6a*{%q!kA1F69M`D+KHaOj=|IPOsoXZ+QO!6h&@yWpW_5b7OK4z#wk2pe_$CE&&b$#5zU=#BF7~0mKP~L}hbh34t4O35sL_pbDXBZ*B@<fei$t=%ogPMy3JedBh1MBLfPd4+^Ohp%4RRPDSAl0w(%}1V)3z2TyPwW<YLp0Sy5JdxQbS_E5tDKVr@bQ(<=UOymIpVuGXwLt$<SV|pP5E(`-B1mppvl%@YtWpib8RA^-jZDsF)69LK#Bm#?@#1I0DJ7ovTZ{-pSiqFK3=6VhyAP^z}1W0e+0L=_jNdX4}VP;_nMSpl@V|8?Ia$ADVS7tH+1_J<Ufd*3_Wnpq-Xamc3zyiY}ZovmN11^AHsWd3yO~OTUb3q03B4g|VV+i(wICtS|!Dps50SmoldtrYTLSbWTXL8Kp{UC=TAShBtLMgui3NbJ&AOK-8-!K6nQ)P6(WMP+bc_0P0I0c{pVL1N*5<z2QWo~rz39AW!IRrp5H8la*90{idG&VC2KsP!20R<EQATa?EP5*Cob7ewxbael3ZZSh_X=7{q0SAj<Ze?S10sk0BWpq$-Z*c!*a&&n^Xkl*uXJuqlX=iR>du##wV^(i$bwz;sbwCXzB2#c>Wn}(sfeJ}(aCLM-|7B-kZUF>$a_?bq0S@edd1Z3{Qe|y#c4=;B{{T_}2>=9sLH{x%lNkU3U=jZqIdv5otU3VyIsg>k76m~u*Cdk|0>BUgz!n&DtUCh10H8ep7X_gI0+u-yA5Q=l|4<niEoBh^1OJE^K@qtC0lEDF2*EnP8ZWFp{s_PozZx)402=-QViu!A2mk~D|3Gv@F91CN488{eK{O(xL;`@JPY)vi1O(s&Aq58l{TTy5WfcGhqeTA;00*N+2ml5DqeTn=2&_K<*E|3i2>}TU;6DKO9-~JCK}HP#3jeG?07L*F&O-kH0000YPXHCV2n`7c1wjBE5g`li5`aViBM1XW4FLZPtU&-t042^DLkI;6K?$P^L<1oULUk$&Pzwu1MgSrlf&C2~;7R}GU=$ktIU6AbPyhDLL>vms4g^O4BMt)!!43gY3l0SXAr1l<4iF6v1w0-g45bNA|LzQ<31>(e#2z3T!+RHi9svyurFa7&45k(33s3*?72-ny7X{`CBrkv@16T<lUIpb1Pyf3c<ID@-{|x~XOm$;vWc@F2B`#`nZ*Bqq009MXV_|G;e*p?XZfR{{ts~hFZAWtA0S5a72WIzjZ*6p70Rd70c^GMC1+4)`0Sjxxo(H1=LID&7h64xy{{aC500IPK0lyy*B&sS0T0t5AH{TWn0Rak1?^91sM1LS;WdMHw0U7`Ug#lrJ^P@lnU|_-)K{F$tqd^D&0$-p{0F!qY00T=xBcnoR0L!dAQJ@=SU;=?<6y8)|Lka)}0RRW8|1Jvv2w)T#IXkRARsb5#KT3f)Apa6z6Bs!`H6ywM;Ryrg9?n4n<P-W{U<F=b20=C>s{bzx0103f7&(4YVgvxKAwdfYVY+GoK6GFlWfo$?2L1s63X>iH3t$#}1%OQ<1Q-A_8wX<gW+EC41`k0vBC7u}4gd^b7Z^Fmz8ptppgLhqB@;n^IU=J+4gd{dfM+}aAz_11A!QkGAp1xU8=xBi4x>u{5daTh8W%Zb{Ty?EOA-JOQWx(u6wXIyAyfc1FCGkF7#|=)bwNVo{s<rpWf}kxqe)*701~W20|G@NMCTP{8v_6eAQP-a$^!yM0|p!hAPb-rtldR^pd*tZFM?$q{{R)EOcMYWlm8?D7r!MgiZ%ZOIy8zm1w1zYia7^9IEp(7|3Es5Jq<!TzyB~eU>qblK|lW?qfHb57_3LGhd>#VA_##B0)?SZ87lx8lmG$b8U%p%Ish91rIRKA8~>9i02~My8A^W$7AHxe87&2(|C1#E9g`;j9{&gz8c7HhCP@E5Kp~?}6#yUWtVo_f7XhWA8Z7ewAfJG#ARqw*PW@r%;0r`)b8u|?VR-?92UTusZvSt0ZUF{Wb7kLhNn`;8V!&tt?*(RTZ|WckcW?i4Yjbd6V`TyT5x?M4WnpYkX#aV0X=8InP*b}B4#GfAWpo5#P=2`J0S;qtY;46~|7T%xVqs@x0Xqd_-GFof3dbQ0;QwWEa{&rXVR-((qjLcQZ*u_z>vU=RAQKWGbaH9GVs&(7WJeT0RMrB41ZNe22L+&GW%3f>1_J>T-~~!=V)_BWa|QrzX8{IgyKi!N00ET&7vXNc20%I>C36ZKL?E~vVFCgJp&&^_0b&a97k~nS7NG;7AZ>FB?M>03a(MxwO+pIk3KWC~VJ`{bQ)P00c4cxPL1$$J;}2<Wa|#gv3MLey3+4P6K@DU92}y2dZ~shTVr6Ur1XTZJcys{_S7mIkV{dI`0%H;Zq#*ZnZy=TeEFb{^{~-Z4XmoUNbN@OoFL!r$E^@zbVr*}CE(U-v|7c}lWOHb5bpI`MXmxF3Zee$6Y%iF=XJtS3!2UOYJpmvlcWGq*bZ9*^GB74+pJi!hXmkNWB!fNaa3%ongh&Y_0R>6<Z8czy;0^%<epW9gHzcEnzyW^%fB~NZ3>yU(g&+c91F8aK1OjLU0%QgPXa}kU<Ol@l2?t~f2WSiW3FHh3;lCI#H5tz=By||{qyGWLBfmoc4Zj>OjetA<RUJJ5HUK%l`ye)U;5z^oZxsJM05kv~!$t|@TVZ)(7hE9xAUyyX-=j$m01o}(LjXTQ07d){F8cuj0ss6DFQE=201nqdHYA&&52C^}zh4?QPXGt}z!086r4jdI7mkF7B+i86VD}UoIS3&Ve>y+EMLcB~027qK5wDXU02GJd6_Ozq`ir3#lVKR6N)Q0Q8ILwB5lD`p5W0?`5tE}B&Pa~J&b3JZ!%C2XU>OU56qhIf61Kq_4MDfz8(ytoI8Oj16YLlh`~Ob>8%GE*|Lpt!;5h|v6F&ek-vA&%HX^$L9AHZn7Yd*nHAMrXBLk%G9YHrE`(YlVMW+h@9}oitMGOfGAnXYQi^2y;THsV+V*3FL0RcmAZggdTZgc?#MR;Wbf%ysm-~wd{Q)OXt%VTH-VGRL81*Hm8zhiP~aCCDB!44z=WC<k;`GpK&4*`V?<tGSDb&~)O!3+T+59RL#aA9eWAO}`y-*ahVY-RsS1y%n<X>BqA18!yicL4}cZ*ysM|7mY-0SQ!hWjkeVcL4%F;KTv)p#KC#Zgp(|3q`wObDbblba@E?1iwOIV`~8q0z*V|X>y++2cZK`bsm8KLvm$dbY%eqzMX*q3srDr0iaX=bYXOJ0TWVX|7LP!b7)gxcH3oS93%k>A_GEi%Xl(`<PZeJ8DdOn`*U;<fC~WuJaz9D7_2+IARdz${{R6&G$H&DF8``63IGCN6B*SxS7RCG10Vvy17QCX8aW6F8a&_s7Y36U00fg8{{RK5EC&DvV80R>J5?JzYM?%PSl|ck!3e(}Gx7ob&fj8LdpSKLto-M~4Il(>5<LJl`v5BgV{#55JP$r>AwmE~03Z<`6X5I-2GL;`1`7Z^02jIqBY6!ZJ^&95;6UpD9uNaa5ClH}5Bd@#k`AK}2niWJ*G~W)6vI&wLk>s(1}^{r|M>_3{Rb*TUjYn9Wp4Xraxj2LRY^nv{{wS%VgUdF0q-sW24}_KV`u?=2FN4?VtI6BJRq+J0RS2+g%m76JpTX}!#)8XPXP57CjbE_;AIj30{^2y2mk}W87_Zd5g0kY7cT-v`_4ajVN?Jw6$JJJLC!z{!ig9(D6eG{00gQ*1usAb?wP>99WXLrH{Tim1O@>FFgh?W`0gtbrP}2OC1g4!_b@VKKcN5wngRboG9#lv2LJ*8{0uLl3?Kjk)&b?tJ`N!n0$~F|`!Xa1VFX|h7dfgFAO#kI1{5O~6C)Ta&OwhuLXSfck3b2a?*~CMBOD<JWfT7Z1*1X<00xuy8UP6eV<3|p0PPB*q+k-2Kn)=P>IL8-A|VS>B4%R(ryvp~$HJ+g49DRH>IQ%fOW+Qq;SZxm_YD9LrXr(94FLZVU=$iTBP>1t0284RB>)4epDPFe6krhm0Ra{MD1bOYG9tekF6s$M76`@{2*-~zEKd<dWfv9z3%~}p3z}I&7_P)%78bw_U<VWpZx==g7fBcwN)BijLDzUJFb--N#DgG{M<4(h4j&tU>f{<FiBTIRl^mik!x<&v906#qCvZ;yIXPqjcc2{=p*4U5K};AyUtNGfM@m{_89}EWL9a)m8cjnb84iIQN+bel1BW02#rOOTE)!t_K{F)2RG}YW5f?bgU?2Yh2~A;XZboviVQpmrw<Z>@0cZbmZ*^{DRB~beZgX&9a%FB~|9JrrM`d(DW6yMHc4fY1y7C88|7m1pVqtOuKhN_sGcy1{yT=MaQ*LR3z`vk#zsk_R*zZwwVPwD40zcL_W@cspKmi88>B*@0$3e@6%&1dnZ+8O!KgpSynVFfIe*qCmZDD6+9cl0jCetU&iG-jE00d^=V*w!%C3oQgb>kKqf<cDBf<gkUI&#NA7KnubpgsT|Y~V7AK?8-rFJWa7mH>=E)dh+}7&)Q=hXr5|qZ&ECAqeAz!vTN5L4yD>2MY!uqGC+N2LljaV*(!%CZXX1gkV($gkcAZ00_`v3D99x3WQ+`(V+~4VGV5of3-KE5gz~!c7df2gar_U0!D)Zlz<VwdO;Fk5g9oVU{MSI<_yyl4BrgjmjDdI|3?4Me>guwJO5=C00yH)3;_2BlO32K6&N|S|2Ux%9{?4qEawRT52Zl?0T5sk-xxSg|H=j~7GUlMJH8eHQ;7>yZ@*_}Y-Lk)+W-Oo3{zotWm9Ez-*jniXLC(pZ*2c>ax(!3W^!-uZBj=<SqK3GZuMnK;L~2i0R%;Ee|2pE3q@gb2LOLlba`xL0R&mM%K;E>=R*ubTFL<k|5Zs-baHQNW&Z&cMrm$jMrr?Yb96&!X>4TwPi8}GVRLf=89xsM0R{mD2?7HK+n~__+#r7-*q{LcNC*L+0Z2hKAz5NPzyj}<ITs+!f)%4d(*^*EApxQon_vXL>l!aCfH^^+1#c7IJ^(WS9|U0rPtyPs_k#oo2Lu5z0R11JM8iJ<A>SDF1_+A?1Y;qpEC~Am2@3)n01B2n{}&;wJpeoa7XNJ_CIT0%JOFn-02%@SK>!>3;Qb2&!A}4d{0=T~3PGIU3ZMg^JpdQ~ps5T4qyh#F0u2ra<czN*5<(R1;19k8{QnX!sx1is5MXx`8#xD{Isg<1U>86D8U#QQ1W+Cz2qOQCBojgu5djVNLv?bc0CZDtb^mf>WdRCPV{-p#aCAa!Z+HR!18Ze@0R(h;{cx<HVsCG3WnuSj0SN+NQ+acA?`3TP21LMOWpdvE26J?BOh5qz_iS%>0l)wO1!n(YY;$D+0WbmI1a5C`WlO*>Vb%qpZy*WcW<Y=e2i^fdY-MwEl0pI>(u$w~jG?_CA-y33L47kipa=j2U=Vg->XM--gFz#MK?6ZK{UL#Y1HK$bi5vSgD<Gs@1r#+k_ZcoI#sLIDGa`Bj!38~_20=C<i2+{(2nriL&VdIDVeHpo$)wIbxS<(O0Dl7r0R?nnVqL-h6k|qdY;<LEbL=EW0pkG)0^>q-Zu<cU1VcI?0R&Y4Wq5P}6H;Yv|72xyQ)OXtV}EE;Wpj0GbR0qN4FUpZJU{`eEMErz0$>svKs>Dg)f7YG7(ZYG0|rk3RTToJ1Ol=J1#TG&Ky3yBsdX4mfj$5WLFESp$Q0*bVgeRHHPs=kp$JWaEdi)n0RKvVIY2}_Wf%JZ39W$&lO6yI|798g45LX90KW~RNDlxG0U;0nqe%|{5RWx1zY#}e82}Li;R@T%MkwOWN8*7P&h<zD!$~WGU>F-Y|Dh8n01~P#3UdGxRRIA36krpcpzi=fWfTZNLka*_3eG_YLqZ5cLkT1KL<mD$prH;T01_8Z06G*-6%=0=Komr27!+R=O(PUc7|s-2{Th{k6#)!XVPdUSLIG@PV89Na%K=pl1F13r%QFM3GzE+IH31R_X*NxDbNgvy!3qgfcV%VYZb@!tZ@Yxanctb2nVFiqpJ{UcWn*+{Z*Bnt|4(&v0R>e=Y5#390R&TNdS&*=Kyqcv0R&KNVdr@QKMF*%palQ~{|aLPArB_2D*qJ#F#tJ1G9i9>p#ft8AP^;}qhA?a0}(QLpg5kv{}u%S0S!=Pa?fUOa&2W}yg&m0zX1qAF(Isdp&0%MC6gEc0-+2b{JCPk-~#~&X>M?rb#y|Lpa5=T!;1{R0s>;c882%fI==uIB@;I(TVw&=Z@>a?6hFS;B+k`8egqT2fCH%j1PJF089sx-!+~@_F50%B9sxx}0BgcQHoqdj9xkdc_~2l_6&X1Q3mgUj8ZSIg04K@-2m`EUVE+jS4j(!Q3>{rRj-gKg9nQcCkN|l)zJP6{3%?sMU*Nwvbr~D1K7pb>{{TGz7^6iA0PhTS86CvnYY{&0P#hdDPe2Wb8~;HOxc~yW0R;bG6c{>n8yu{4Kn6lU&0rUG8wH^M7i$whP#hjF?f}3+Iw5ia0h1u#00M6rL^1##qrXTC01m7|1)v!E0YMJ|KtBK)za8~90|5{N06+j7j(Zn9Gk_JNNe%@-`$GT%CKjVf3jn1Md_fV`KnEo^1mO~WtOVg3ju<{UmjM629yU(^AkIbpsl*n)9yd<_9B6{X8Q>Ga63y)hQqBYaa{(!6baZfY-#RZZa&yo^b1wgGWppoLaA`01b}}ylL_ct0XMbfq0T(83a;(7bLU}!8QQ#(XZ~t<1J!EBbV*&pF0Rtv+Jpl>-RdQ@aZewp`r)2>v3Z)8zV%p#?XJc<|3gQgoFLSk`tv?3f1||#REe4-vZ)J32Xc5E*NEaagM`d&Y1VV3Q|9JrgaARR?Y`Xym7{mbva=`)t`vhrm!3b?(cu@WrpmPBVbZ>NF{cHhZ0099600RF7V*wu!B%?y#2mk@9D#alX8Q(YG76bwc<O)ikQ%_DrWg5X=fCv8p2QQ;S1^@xCWfcGd+yMdOf|l1g7a+W16ab(=0Q3o<1Wg14K~De^_5Tt-G$5%m4Tx(OLQ7x<OThpEXJG%o8ZKZG7&t-uGbL!CI{+9^8T%M50f4G32>=EB0|8h;G$W%z2>|~Fh#El>xc~>(xd8$Lp$FR`sWbf!5}^o)8bcGg{{RHJ00p@L0n7wo1O+(4U|{Va4OQ=RWpYV*VN`i={biEG3{7u!b7lWRb#!!ZZZQG>1ypZ!V`u>ie?)0>V{dM5lEC``3<e@YXkl(=Uu9$g2SWnH2LdGj00RLG0Ru-tYc(U=p#c<O0;ByvuLD6gBP2!y0>K0Nx&Q^>K?b8o1_1pB-9ZCV6EF$@_c0m-yJ{I=6B^w)2gC?v7UG~q48H&hza25o(!v<rUBq0Y7+@9L;1DG101FNT3<fU}lOO8<4Pt{51;qzJH6<c|f)<S6IbjZMA%dab7(q88qYfYr&fejJPC+px17#><?*$+gB=n&Uts&Px3!x6+4;=&$LHjr%0|601I3lC}M-2cEU=|oT-VXp0K|3M&ArV3UJ0hb>5C9Hf{}~uL2oE4a2-giBKnMX7v%?bs-44oPQ*3E$;bC(B0T4lAb8l>QzjS3#Z*ytG;sNJa0Sp3#!@>k@VgGb!0R>}hVQtrN0SE-<4+$tnX*^>9%47p>Wp~R21WA8OZf{}&Kj8jh{<}a5RB3HxOl1phXA2+<0bvTp6axdoe_>)}Yyk>J$$<M|bOd1m10XLTp2MaG0Rj`rz+!?K@@79A1W#rqe>XruZ#rNR7}#V40a%j#4OoIrZ+2yEW$|w4AXuX0gAPG5Bc|g5WfOK_XdnSoqHp^VJm#Pu^$|WZza1MNB@GhbU^}}26W!oJF(QE>1bbi*4uKT}0S;!y`%`rBLPc(MZ2`{%MQ&td>Ed7r0AB+ZK`|re-~k7K<vHr28VSGx1!WNc?*hLWE*YRZRT`f?05<?W4ZvIA1AB-a%|QXV0R~23{v9A3!ah#`5yJmIM+GndAOINu0|5(6bz^B{|1U#fV`yao20v+VVQF%6o@AK7Zvp@U1DL=MBo;w@7$7*{0So{GEgvB7lNkU3C!jfX6@?l6f)^3TDk1-16{;Zrju196y*D%!U!e~p00IDk0|6n`1OR~r0$~ON0SCW(88IoK2)`RH>7f5RRUAD4H~>EXjt@03PXG&({~-Vgsxl4$3V&c289BcoHr2rXngHJy2C6g<0RIbM8W=e>AT9MSZDB+3AQ)vD0R0SOp$&>K12sAKU>O-b0Y?Wg0M8i!5DgyXS)u_0_ib=90Dv@M0R#VUXJ-KecVTw_0R(1jVPgRV?_p_XW+LVbB`*IcTV5qDT`MW)Bmo6v0Ga>=Y;XT}WpV)pbYWuEY$zdap&)c!VE_T&99AVZB9q|(L3=eJx#0pqHX(umuLD6hA%NiodjtjlK{+9#M-Bi6|4JPb9|gY`FZem&AwW6iHUK%l9se_|Kma`e7(weZAxyym9^j)!3+n&~i(x<=;1u5*{RTRt6bJzeNN?+HWvSqFR$&T7cqRd64O8R714Rz?#05qF4^w4ybZKs9#d8N`41K~0B}3&0R_AGRX&u1V00{sDyUhb(1wk_;6JY|cp$s4Z0)+$ugaxVsi3S3Z2L&+*2hj<t3ULYz5eov53=gCYR21QOr4Is;5Ct(22hmj$3ULz+5fl%x6$){M77Ym(EQCM+EP@w`87dM<8ZpEh6yzKn!2*S;9T$l-WgY^N9|bWWst3^_3UMM05hEv2BvL8yB^QY_WhO5%Cj~K8C>k*-9MLKtaVsJbRV*a2EhkYfDe*5XkyS7+F)=aGGBj~BHxX4d0+BTZF*XO$H!m?&I5E*VG;ultkvj!3RXhjLJqmF?4G}*Nu~k44Q9%^(LKl%k6!BF=7m-B*kw%DdM+ebWND6UD4G~H_QA<AYRZKyVO&5_)8Zl2C(UnlDkx@>uQc+96BU4{>6&b8L)1V^6MBh|p5&%`#;a1MOKLF&Q7tTNczyS9c&OrdeU=bQQ{>O<_lNkV4sw#g609arU8950c$4LM(2{Q;l2_XR&oC!Y(BSHWp5r4!2PtyP*1uG484)I`R5dQ#KK{6p=5E$P(RT(`1_aLK1UkU(PtUvc)CgkMZTOvR|02~7XlOF#7T&gb&09|1H6&wIR06_pALH{x$qd*4$USOvX7dQ$a>x5qhf*t=sI3%M+4FC<_p%Enj0|TH(1Ya-!6aWYYWMJ_j|3L=;VXQj<JO2O}-xdWyGb5HQ!C|8UpkfK20{}Yn02LF!3qTT+7y$ocPXHEU0SQh2VQFqga$#*{{{as|VPk7&a{q62Ze&AmY;X5+0T2QVGXV=o|8H$&LvL<$W&dt;0T@$dV{hMXWMOi72Mr2E{dfeX4O3-da%25y289k&V{&P5`*d>%g%49@baeM=Zf61p3{7=&`)OkX#RpSqWM$uCVR8Wx4=7V~|8j3@WdRF8V~JxB;1y#97DNvx1f&xr59$X*6cDQl1Qii%4CKiY5-AU44HD!D<xXYscM3x(LKFlARB3eoY-IroRAqQ{uqq-b00Kf71O!PZ-~pctNo`?gDu6B^GyeeuOmAmz0TlczCLBo&RAFLOZvSLua%^dCWdT(U0jV+p%QFM3Gy%)kH31R_X*Mnb0TlmEZ&GD*b!>FMb4+1kWo#^D8GlZ1Q(<;xWF_SC14$Yy0|tXsWo>Y;Y+-a|Gei(8<4({@zzGEi$OViBMW8}-zit5rLu_&Y;Ro+SZ*X}50SQudjczpq0Sy9SHiHB~4SWfq0mlbWa%FZ0LitWDKnY`EZewL^n*jt4!2u2l0T{;tpAkf5Y-JUI0!RtJQ*U*0V`UD)M(=5CbY&4j3_)a(WLaP>KntM^6$4Mi3=kE=LIoCtQ)CYpMo`5V3IJ1PD_|JLOGO!kO(hyc4yGg<0$@Z6AmU-e6da3WgaH>FP81~`1_A{h#$M$giJk&wS7mHtfM7uh53fmXW^Y3&5CR4={%z$@Y+-q2a!7w=VPtb?Z*&=D0DVFOK`WvGqd6pi!#TxpL!bpDa>^x(bwegA4vGR(Eo_MZazcq94*}>NK>KU~0triQZ(;%e3PEmZZDDk2|8H({0Si=bXTxV~THsrNR3M_^GXehxW^!+BQb$7X0SHw|hh;`-ZvSLPX>xOPLumhLY-CSnLu_Gxb8`U(X>efzfFA({bYWsw1EHdABz_GbV{~bDWlVYjJq`#f0TWVXeSvJL=W_uPajBSqZ)|M71p#JqWpii)Ndf%|bE86UcrpP5dXNDD?tudU0TI+-Ud(|3{0uJc0RjQ!RRh961OfpC1Ox^G4Y>ydCd;4)0S=yP0lx=UX>(~}o!|%Te!&j_0RRsq2SjD-b7KMl33fzpcmRt40TEyX5oO*1)<6M&0SiNUV{BznBi;mH1ONgD1Z6=pl_J^U0@>jM*umUj1Na}GAA$)$1_1yZWmgdZ0pP+G`oIARqPpV+6z1SO02c%x0{>3{7j+jItUUPu0psmp77ZLM-}@K_27m;J89@>Mxd8&X0RdnV{}?*I8!)Us0M6>bzZ)^^K>=YDP~RCGE&)IYpacQ`19N$90S9tr|8aF?b94a=Xzz4%a9;tX1#n~kVQg#w0RaX8zXA=MBM$@|0HOa4ApilB82|$Q0RaOeDmwrKq5lsf00om900v$G0SCVsF$7@<_`v@+-xdT20RvV4a%=$uM@3Wt{{~HEbZBp60e=!qbz^B{E$~49V|8?IaxXD1|1bdxRdZ!>E&D-d_Q4QgaBysUX=7XBFKTmduK?c6p>T8o2Xo<Nay@f1l?+32WxQab1HLn$69EH<1S(;_zZouI5g0ia0d(s@EhgXzML+}J7k>th5H>N+KTja<02#g+B0w5!1ph$*BLFvwECl~CG^#EK00dzF6dE~`9RLNE|2-KatUmxh0RI_f6#xdKL<|1_2frLIU=$edH{Tir0{}e$8u|pl2n4}T02YcX-vlr=&O{3WT?1bcHctQ@2!II)g!elD91P(s06)L)A27~F1fvQOIP0n~4gnSp03HAe@0L9qBsM`m0ABw9I*Km@G&HL9F%jVx1Hc~u3vd4zLjYC)M86>SGtNg0!crJ46aEAzAOH-LApi}(sxb}#4qygBAgcfm0ss&K2@wJS67~cpWf>a4NDlxL_rD-71t1hbJ|q95OcMYVlO+KE7Lz9c7YG+0|49fHCP)YqB>zST5+X!k7#aUKPyf}w95BwkLmc54PXHt(02r<%1VR8KALAMy;{W~Q7)x&$K>#}dT`4WWG5|*)*BKzkw`KrFDk=Zr0jkgUzaTInBwY&;IXWe23MFA%081r*C4cw?BPD+&agx6tFwXr&LSY+S2@yA{^)ETW6-&YzZx%uS06_pTlO6yY|Eezw032Wy8QnQez)b)s9Hj>p)Jg;@1k@fE9UcKb097wDW*kspH8jR60^nCq04e~YDGneW4k`CW03a&lQWP){{5VK0qZn@&LjUON|GY11w`QR!06y+#fldHoXkl^yh%OhvuK<c-fFELnG(1P30FYU~G(R*tAX&S=IEpR=Gc<6=AO8R$mOmRMtU-SOkN|4GA2W4i?@|{m5(J41lOU#TKrjt$KzD&3Z9pIw01&DI2oVGz20#QP+hrJtAV&^uKp!vu2S5}-JtLz_60ZOtlO%0GCT&0#{~kyP6eULp68|Gb2oWJeU>9m_K@$^<Aw@tk4Mjk|7#TTr93T{cZ9@P_6rU8I7{e5lA{3hY{_IMkFq0er41aGGKmbMnH&^xjm{<Hl05hyX|9|5EER!DqBQT+Ss=xt2B*R1pCZgfrK>z~)D7C>l0Jl(O7P3G^3@QK}^)Ffg4QHS@PXI=`5TFkbp<Vz_T7I9a|9pw+cZ;fZjcRjtF)k&lF)LUAG%+>svnD}-vp>DVCT|x*zW_i0InF}LMKo7W{+=Gp5FW!3FM#P0FN7yxA0`JF0596Sv?pTv{)AirD3<>~8z!tm07w9}A`a{l4&wjx5ypzIECVq%0)y|gin%%m;622^AOI-|p*kS?&a^5K`(Z&kA~km(G%5+eIshREbiFGGdr(0-Aqajf{t){=iZBE<G^+J7xd9mVz#srEZ~qxY05Je6Wg7NUAW0B>Kp`)aBL4ssK|dp-O%$&HE|VsFKq!1b7{4D%2o@(ve8LlNBSl~td_evz2Gsp82HPGl0R(h;|8Qji26J?BY5#6#0RRC5b9Mh>0RbWb1$1HiVr&BdV{dL_VgGai0Ve?gTLJ$9TU!AETmb?9CIJN|VQp|b_W=ZF1;RW51SY?1bUOh7J^=t{{s906X>N06a&-Rz4LoLVZge33V{dG4ay=pe`vy}C!vZ2c0SEg$F9Tsd0Rb%me*!Hn0R$~A3!wi3C1e2wZDDl(V`u>aU0neJ|0Q7o0bc<JL*H+0ZDno{zzPBX22OQtVr6mx-vJE)0WJgpcL9F`ZfR@*15N;d{{(b$b!7nsX8&Pqb7cVsLT~?XY-M3?0S8O}WqEgRa%2Gp|3_?ZVqt6n0sklg2u5{oV|0IMZ*Bn!Nn{Hk|7m7vWpV%j0sjO60}nwmBX9c=JTZVFK{Fzw|3L@<0bmgqIR8O1A*?$9I{@z!-xdV{V5%z!p8x`25f}pD0bv9F0bx%75(5DWL;en+azkNbXk`Ka1XFZxZ~+HI?PV+AZ+Q#g3;+e~A`9S?847_IId%UP8LT=0Isg~nK`|tg7y@7r82*po8f6dw0zoqWC14O3J5?Dy?*KLcMd6?Wqey=W00fgE00lzee+H^D4*&;XM`Qm82oE4a2n`-@KtVVnxZq$H3jnVhAFMzXpcxgRIR7D|MhyT7zaIB8U=|DFM+7hc{}lig2>}gEb^l{&WG_==a%ul?baMd)X>ehmX>xM`4g$(VfKK~iZ7SefUL|*3yfNWE!v!vCb0`5*=V5kb2qP!}3IGBB8jcS&Fl7+{?*TzGAtInVRT}yjK|X(g0;5L@0R02rfCQ>B4gdwd)4(@i78W@bAUy8?8qPkHLQeo4|NIg!3>gR-PyYZMH5n@<tUUfMpch94FaR3>_Y}@QnBxKvF;DjZ6q99u2nriI@81{(1{a11bZ_l$L_-8_7QqW%RR3XOASfkdD=Fn9OJxKCK|R0=00h53<uXDCBru{BelcJ^02o0tBR-<;Gk{M36+OZuqd<8FGC%_Z1HTzA5`f=202a<b5uq4P*FP*G%ON~DAQk23G(!o@;sK#NWfT7Z1fxO;00jV_Fct#NK?TCGWMKai8aY8VA)`b83IGOW6#xgLZ$t|K2;iX3Lj<GkL>(f|MFwJE6dS)ep${Vf2?itzss=9-*Z>O!!x9C>488@#4M8^|quk&Qf4?0sU=<iS-C+F>p+KWZ4*(9o{~#`47#KMS4!<8k2n-!R451MG<ltPu5CH~IVRHU%;R;k~ZDmYlziwxAXaNiXVNlm^b7^P71a*LD0rv%CY=Phb4^4Idb7^B!Y-wa=|8hoYY-|AqRc}OTZ8CHqWp`m<_i1`%1WHS8Z(^qcKj0#PZ$JnNW)A!a!VW@VVr6Ur3g<>|aty!%0RaOb|1Tf`1XN{sbgp%w00t>H%^o+)LHjZ$H)3EA7dfeaF%20#Hy}PuBfl6v1snhkZ$TmEa9}_Ha^M9*13@zJB5xpY;eA0dBdRL=w83*A{0lA{A0_J!6+wXob-)Ip41XX12TuSaK?H+c2nNCY3oitU2?T`o8iwErDh3TlWpw-{f+WCYa{&-cZ~tLrL2hJFY+-$QC}IHxP+@hLfcXpoq5{D}bZ!9y_u`heAA<n~Qe}H{b#j0M;*Yo?AkPm01Ey`@R|FRs{!`)<P#PF5WfK1Y0;(+t00UtE6BsvO5*9mEy&G}CJ3%@lKfwh4{GqHt06zd6LHjf!RYG7A7dgML8ZN9o0)QI?#0LBX!CYZM06qX4lRp~(2g5)CUV;Rn^&bSJ2n44@03nY55;!xeE(ZV!?_d-dIb0wDza70WPk=jB9z6(vL3h3xLSh7O6hCJm^(YNQ3J8fhqe>6|01K={07U>Id%qceU=BewBW6L}1QWnU04D*cOaMPBsxb`!44=R^VDB`lG!YLV8W=hMqe~9}4Xi}~r%?bfr+_uU6bME9^A9g-VG2gS8!oJ$J^)VuD<<Ithc0*of**hy0ge+nG#PCFLjXxf1~C8J-~ZC8H4+`58yNpNza=uNHW2{-4`3V_Ijlwi=U4zT`CvsL5|bS6Cm=xqBPl^X09SheG8^KPBLEN;;r9<<8U^4)0963>Go_#rb|DhK9Wnoi9X}Ib6&X0{0%$S<U=adgh#N!y61f2axc~vV-v9%-00OL`zaITDy#PB^A3Xp_TL4TC;8Fk*BN7rL^qQbJAQKQ{Pyj1s{~G`iqe>9~6rYMQ1vWbnU|(Q0`T~ds0);S&F$XpmJYXBtfhP?k%0Uex-#`FFWgQ6MOcS06;4=j{J0D<ZU?bj^p%qX6$wpunPyYZGM+z_i836ST2?!l6p+^ZY|97_kssO?1|KJ3Hzasz`76B5=VPvG!#LQrCieS`*3ur(??`UakWRxHQ6Hdi%1xZYX;%cG@DFGS&3GYy0WMpY>XYT<30T>OBOksKdZ*_D51#EA3?`3iU6A`FXWo?geY+-c#K;vTkMFHsx{b1>$Y2!c#R%!2ZX<}>yfM#iK|6~CTB`895Y5#0=B`ryAB`NO#1$1EpVsmeDe{=yOPH!M{=>XScAan79AgcglX#F4$;Bp{yWnpr6V`wh(;BIqe1%RfX;sG@VKqKNHBm@e53MIiHb8l^B2&VmX3czJ$AarPD|7{>>WpZUM0RIC41_A&MqeJ%w00DeJIsg}{?=1=d0)wDAqeOiN0$@G>JOCN%Ae{s30IDtv13-7c%*P8X66~OV00O}S0r3PLq9WwlpaBp81l?Qb1*$6u2A~lbuQ@?9B;SDp4S@vzU=kQPp$#Db?*#k}F96{MK{NFs0pSLTp{gth0Otr`5@n#~!52X_{UYMw384-m019-Dz-GV;n1Kvn6KVkcJ?!8blN|sJs@pCKec%)s+2IbVRWAX76=(oHi@+HJ;Li`LE(inTdcZvZ|01JC1^@)CK>lKYBdk9FO8^X>;J^^7FAD@<2Edcw9{>@mFad!U8NWF|K0^Q!U7<MtN+ui|1-~CSzKXy*RUkb8o#0S^85k|05G4R;Af*Zrz!X}*3qchNKs>tu7mYwa04fXsMQ;Ekp%Db3|NIqz-d}-1J|d%I;1{9)7b^f5lO+HL=c+am9>9cyK>!~Aqelw>8HgW1{(2w*sxb}#8esDm8PMSi06+iuLH|D@qfHb538DKKEFywO3orl?-v9)oM+^pmLJ{hK0Re!(1P4d|@*4hDvjszJZ*FA)ZwymmZusDOWjVt5I)he*|Ah!uNmF!xa&K#80To7Az~4q`a&vTV0#9cDLu_Gla{&}n|7BxuZe(F{dH+FUV`Xl1LvLSfZ*l<z0K*S>NWV#LW^Vxw2#Wy?5NfGubY-9hNom1=%J)HIbZbC!0S;38b#8;G0TD!HY{zAEWdccsC1t}0Rlja)Zf|#PbW0AVXn<s8Zew;q3m8cd|3YD7YiDwAb^C5)8e%g65lwIY^1woMbaZcSG5<qsX=7^v2SfjFZf<2`bN~YX0R#X83_&s@`=dZ;;6XAXqd{E<XP^)mI09q?ULa?qK?pWL0{{hJ0{}nY76k<X3>PGZ!v1R{6H;Yna%FSvXqT!AQ-I<^Z+PP}0UBce0C=DmWe{}$|6m~tK?1BhV}Sh@3t&2R7Z|KO_IY9$0Cs>CWfB071iu<DaKK7I0iXpu{D5+RI&~QuW8i@R8)Xy(ARICEz)pb^V*d(kZ((F}baK9=Ap}EjWM!n_1@~ogay#L0V_|G@Y!E?---+L0ZDp**{)xc^0RRqV5dc{M6hMij895d}0~#PM6#)_e0~td(=>dj8{S=d+zZox202k_$fM*Gz3d7)2WpaOZX=7yp2xDErH*#fWCL#h9CMh(by#q0TIlmY#C!!T-H$d~@DIpv<z-1F`fVV;k043qhL7jjA_ZZGX0Kp<)5*l)vLI(N3IY0&h2tvU3b!}qBU=B@nbN^{$R&Q)|ZDs5>05#(Q1iFA|0R?|!Y+-G10R{u3-V#6w0RSHzq8TpzV5Y#682|!wL47SZU<d>=K?bp5|Eeno00dwW8Sgv48!t726~7y;F!%#H00Cez0c9ZnWfcGgqeKe;{RRO52frOJU={lqIrTsXzaB7P{T2a07XSypA2I%!pf_L?7B}A-{{#d!L<R=|1iy57aAg4oJwzS<C?#YoDJ63%u`B>!0cir_0R_`y0sRJIga>AFZ*5W&M?xRREWiORKq6qnVSfbx0w+N+Ax=Oo0aRknKPZDh0K+OndtebMU<@Dt0|hUuBF+UOA}@m?1tkPp3U+%m!T}cwWd#qml~_6h%nzjocENYR2UlPa7k0oRc|iyPVQM?T2p$g)gbV=~p+@)vEsF}KGYUa)aBTB=RP{i!B6ej{W$ScwZy<A4qa;BzQ6cHUD1%a<1M7hVBZKJ}9z;_k7*ipZI2OepT4fq%fsbM@f&mw%2B`oTAHiNl7!1Xse-0o30zoq(ZeRyN038SmU_dva2;euT|4#r8<ugGFBii<X1!5xw0bt`yZ~t#_Q*>c;WdSs*Pe`r?1)*hRbzff~UUgWL8vq7$><4t?^#^q54RqpDaAjrvWOUO4Ke?Hing5xYngI<^Y+>VhV!|K=qB39v00Qj@RiLaou0R-L0f!(EBU`~-V7|l+qXK^c2x)F`b##EH{yCrn009v}G9g~Y0{jdwp<dtu0pwo;lNbO50s#dA1my+-4F?1!Qh)~m4sT9ncT>k=Msl9vQupQu`hkyO0FR^x>48E50SN`;17LLv*WeFe1pNVCfH|o#3>iJ&HXuIEK6U~=1s@y$3jh~nL>2*gBcB;v0uV9T!5#$-{I5Wt;zns~Wpe>L5KPE`L2hIx;iAIECt?E>1;FK{C}I~uNi!%Ua3BJkp(`OBazr$=U~)zTbHXtpC1B{{=T86#=|UR;Wo2&vM|Eid22f#g|7C7;0Si@dWSma`PoZ-G5dnifV{CtEWMy&!Kj4vpev$zJ6a@r{0;OR80i#6>00NU8>i`3%f*1AxMhyUW1<pj7ffvq20K;uY0is|Qz(5ftO+al!nt>Ui0bmEt0b>0a0bvNg9Wksx`to3t10e~M9smmO2o4!Q1i=es7Z(5wqYEGc3nFSj3n8ZfHqHwnYyd~3p;E7478^MVfejJh4qgEP4?#F12B8oFp`{TBU;zkX3m_7_0vLY)6Qf5C00I=^{MA4Sq8wls89AZ<5+(o?Wf=e!U!zD502Ty+2?9aY76HK*0l^pn!5N|d5+nc-Wf%YfUI@aI9{?J~pg9KM^&1A^0u#W1000-=&J)5qU>FME6DLyu90TdQz!(GLGy~<A9ibBnp&1IG4}b!{lOO;dU>MQB8s-(CNe~sF9ikY{NNy;h8(<j~pcE+Lpe_UZAfXf$VHygc2!a2TApjv@85lW!4`Ugj6)6A*5aU%C0bvLN=m`a2A_9Ro3uPNHph^)Y01skU8O}-kLrVQ4OFF^lE?^okpb5YYp%wBD0UH>=20@b|021q98tR}ODu7HA0RJPSOA-Jip%$qs0U!au7XiT-0l_8HWgIfV1Aqbx${b)>8#2HJz!YT&Bo+uE?Fk4W7NZC%8KD;CC^Ent9Y6@dlOq7<CSV&KKoz1Hp%?Kh9Y7Z&0bvM1J|zAJ;U~W&E?^uOe>tp106YL&QsXZfPyd(&;V2P92VzwT3E(LLfeR4;3=bi@0?r@_HqK1-gH6s{p*CO~A;1nm4WZ>15`i5r;2ppMlO($UDh;8b7%CM&9`-VzO%!PWB>*d6c^xvKDMA^c87&n+dI4e>0bvM1KOq3&>nzR#;u->B36mwe04)Il3uPZ<U{1LeS-=npRL)Kj!%y-N!yYrB3cwAa86aB#4+cO4qXs|)7Gm(-Ko()%AO=AJ7hoPdb^rxnF8moU4M6~c_b_E3VxUhJ05Q4;0WuIlF`*eP;UDZvKo7x_CQCpb7&-4jK_a6B;4`5bQ7+5CB7*^82qXg<0b#!hza}!QNiF~}UMiptPyf;c0SgR3tqcc20?sI67#K<zo6b;&!eAdv;0r(v%b^-f;UI8;4WI&(Unc-GU>{|`AxNNeP#0yuAL$-oAbWuS8!rGgp&Km#zY#$}Ba<nNz!|?8OAIL!7y-b)uP8FCOA+7~7@#)SPyhS^z#;meJOKY0lPCZ-PXHG0K|&*=3cxp^4)-qr5xAhEPzwP6IEW}h5xD^d|G5AJxd8*JI{y~{Ip;|g7##oK8wNQ62uW`Lb97;DV`TvY|88Y>0SZ)Qc>i=lb#!!ZZUOB1?*2~}Lg=7pa&P~2Ze&z)VQzE%aJ4~Wc>xbXZ~bzzU{h&&Wl(AVcx7w>3rt~o?{9T<PXeI<161!}VgUr&fdK_ozeH(mG64hyApyGE##6cgVqtQ>Mhw4INla;TbO>Vs{R9SK0S8cFWMuzoZf5}mMQ(M!Z2<{WZ*mL75C2t3Mr>txL2R#SXKroBAq3Z;Z2tiaR%LQ@X=8g~Yy*J-5LHPNp}RwGAHZ^9Y0KaT|5jyVbZ>Gp0q+M*VR#YZ2Tf^RZW96tRY?t{4GzS+LT@BsZ2<}pq*O0&Z~+DO!wegs3c$T|3V>yD0SymfMC)mC3t(v~U<ycY|8i-1Z*Fv9Z1VvQ0cR3I3Q28YUuR`ZVPYlV2=4%YL349ubO8kdqT2xnCSXZpGN2b#?@2*(a0$RtVRTDrZx`qZH$exaMhqZ}MqxUD2nN6cV>=>4UvF%0ax*-mQz1a_Wn=*hJ|S0fVXJU(0e}ua!B{6KOgm*}?;t^AV<_MUg8u;sRY^l{a&Gz?KnwumQek9ib=z|R9>G;^K7ed#pKfIV1yC74^uSH;Z*_BJN#ij?Y+q?(YXJuqKyD$R{{R620{{aILGLjmtUBtT96>VwBBMYD00BWVUm;)+7&rmM0s+L{SwP<w1p++4cWL)@V`xYL5L0Dz_d#rI4rX%z00I9C00UFKH8K@np$#Db0RVvl0U=cb0l@?Sfdv5}1_8lU2LfRT0D%bsAqoM(RSN=P3<CiT1ECHCK~)a{!4Lvr5d#4d1EHl81VI!8;SB;71|b)!2EiByVHpSk8VI2qstG|H3E>?8fgS-NAF2VtAOc|_0|6ofp(CmUK_mp>B?W;d1|cV^2Eix?VJQd!DhQz~`UycS3E?fj7cXA#F(l4HxnX>v5dS0qE+Z{I05AIdU@-C^F-jsB9Pb6c95e$VGQS%CGNBG405iWB|1gLcKohwE0{@5^KM{x;LlXbF0Rg!I1i1kH1A^dwBMS%!lYJhOz!n%eU==VR?=~T<KQka0V+Z#i6(kEFG+-APpE<)q2PKN&10ojk24M#UVT~YA85k}9Gyw@xZ(?k3?|4UbX=6ZaVR`#ya(4j%4n=ry?`3jnWsKlMXkq_!0SZEOVq$FFWdUPEWp-G>Z*2c%0S!}cV`*W(Y*S@&c4=3j5Pwi*a%OLGZIj{uQ*>c;a{&%h|6_7xWo}bwZ~t^uZ*Ob?3Pt~IZ**mIO=WKXbpa4VVQg$f_6NXkX9S}G4ntx8aCCKYWldpjdTStZ0p?G3WpWdM{{aX?Z*6dIb6Rx33w9!7bQPim6k^{QNM&JUa3Dl!*>i5-RzYQC3!?!WJ4tRD2T5*p6~K((etY0SaBu+-P#)s^5<w8e5m0q<V`yJtb7fF+4d8SHfl&`6;{pREp%WVea~lBHb3<XOAaj7A5mfJGY-Mnp07YhIbcg^1;R%f(LSb?UVciNAVRCP5ErM2M-)L!LY-I#N4^B^SbZKUtAcNp;3u5;~Wpj7{WMOV}+71A8oWcPO2tZYE!(?F>fChqv!MI>!Yvih64FMT8M+xl=R&V$-pg92r0S;4PW@UeLc|&MrV`~B7zX()sVRLi?Aq>AsZbxBlWix?R|1tp%QfX&sbR>X+HNp}IrXZ&bs>2)r_(&oEfI&qPMs;j#eRDs8RB3c<WguYemqR<iR%zED2}5W+E1)0(3qovf7~&+M-3d6rY;<TGVpDY9+aP6fL}egk6+s_%VRT_~DB<3~HX*-BbY*P;3_d_`#6#fKqYJPC;$*yJ3q!wQZgydFN8ccD{z#x`X>4S2Wp19EU~ObjY@vXhfO7s3K>z~*2LS*S-@X?>&OdcQHa`Cb9RLde5sV`L6F?M`8UO*R|0@Ro0$>ptIqR%DZ9o(P;$;y4{R0KV8j~CV1e5<A00pWo2LJ~DU=tcQU=bEM{s}`J5H1w}D**p1j3X046pSPP5<wIO0SjAR|0Q=Nb0sY$F5g`N1#MxaAOQyaNdV7)0R>w@En2-@>|tkfbz-Gq0Urb@bru*81FL`zz_$UaED^yH7!2V%e^nYi05$+SieUc(sxS-y1Yj2a6u>|LI{+9^9{(6EK{+F%M-E>A1H(fGf&xGn;J+7tJwiu6gu!+58y|$B0)ZGoIU)a}Neci4H6AnlEduBlK{q0!NAd#TV2%I<hGiB227ibhKoPkC1_I#yIKJS*K1T&G0RIX9{{{gDX>dnjX>x#|<Dgn+bHbqfLjp!&14(m10R&x6PQU>LaNHnl%;Nt61Gfbi9tNTB3?Kjj$lw712iHYzVUPf1#$Xiza{)9Te;;E$02?!)e+5A^Az%?0Bm&nv06rLj1|*;dmis;&Aw)d@8ly)41^@<c7e4?q{{Sb9A`(CpjISpXMHB*|2nGQNe{UB;05Sj~8)5$y01NyPFJ%{h00E;&3jhfx;D0++AUyy#03Ra%8~_mf7cONT>P3J!MS&hOpdA)F`&A|cAv~-=06_l$3%@HlsyrClG(aLrAWQ%cz;z<`B&<gP02z!Z6aPjO{1-1z02TlI5iU;v4o4CHFaRC^6h{j%UjP;W4hbrT3o3w-Ls=zU<SC*BE`utA0?SoNW9$e9h40`B0P_PVDPj2`0zoq)-=jeY00RKwLJ0Cl;1Cml{b3<v0wK>5C8I+Hph%^@9DhfN8#F7<Lu8@<8C?YwH8mM7`rpC?2*d=F82|-$ZxTHz;3LjG1j4^h0181fA`D>$oCARRBToPy0%-eU2slW92!sXTA<jSyVs3!FI6*)P0R?nHAp!pcW@&C@0S8n4Z?#}$a{&!Qb#-!jKy(4)0SHph0PAUR&>#r}BSLg;e*qQnpP!;20pr^`AOt1^REdBA89(BhpzpYk1I7pA?vo&R0S(&3Q)OYi!r)Lq1_1yIfv*_vlN$g7fFY_Z2>$>DU=kWR1wh|22sytPIG_^+{{aaoTV5|*U3V)fBz;8*B`$yf?=D>{Bz(vN00Hj=K{6pSApu|z*%uyRU%*3b-oRB!o?pNP0RazL;58uu_rDn~THrZBG$G%kLJ0r@lmG*7{}Vm{F#sLk7xe}Ls00F}OFkA4-8GN`1OX8w15#!Gadl~OWphhq-FYZxMrmx!paBDV0$~RLfNW)Ra}OZT2mu5cJAk0UU=rULIdv8qkzyA?i!vlRzyT2;f5AH-0#~C%1|c9Fp<o`NV7o30p<ommIU_&^{|E~lJ_rdKJpOVZejx}32)`ZsE~*3I2w)T$H}_x?7Ca#c0S!!Fbz^B{FE}L*0m}I=g{7xqT>$}K0sRD|0RaUrYIAS@ZUG8PQ%_Ds-)>`XWMw6R00QYPC52pMAzWho4K7ci4IuzkfC1tK0p<Ub7yt%zKr8^4JOB+<L<cN@P)JX!03KLm2v}eVTmdqp03(!O1;qlO1_kO9iVy?}w;~t;r4A*gAe_G>5C*>)F%kg_-U!4DU=bH7pacxOrC?5?LT`8hRRag_P;zB<S-}TZX*+XiqJRMhPFMf}A?W~BOk%AHT8Iu#Z~szdb9HQVb4<TsVr6Ur4rm2q{c>jF6H;YvWM$!UUSkC$Pry^s3qyJ5V{Bz@15`i>00rNO0YNe&LZmr$_Z1neh~XDOF(mXX09wEpMIlxtHYWU5;vWG5cq%Rc1NWmu3o>9hC8I|F4FCnBMGOE2{){347p);d3t;~g7&)O2BLD`gWfcW52L&((1u_V#1uzIN<OLAU2@u~wKo$c9A`ssjKnh|I*$E-80SY0%5X1!{A-^mj1tJjH1qw2b3o@S}qy-`n-#q|)3SuF-3w|C518u?m44PoS94@LY3a<bSU=xNQ5r!fS`vC=pA^{3PZfXB*VRUJ4ZgT<s1OWhO0R?7kZ~t#{0S`i9V{89sa&L8RWJ7QLYytoQQUL)+0sjF)0T@$dV{hMXWMOi71WgM;Ut?osZgd6X6a>cl0;v;~1Z8w|X>R*xbC59#0SJEOuQNsnC8c5%0H8j902moRIwC;Y;~yB7ITs-PV2B{y1piVHDhwGwIwOBUi5E5~&Oht}-vJOYsWFm3CpG^VEhIrRCagT~06G900RXBj39A4BvA{S1WC8(U&9@{nMd*NK68V5MKPbN&FJKb+Kn6iS7JoQKLOZv?1K{6v7#gfS2;dz-t2H6}p#-!b1zCg!|GyqDU=|oT2-gf9KW>2s6aZxu>i`G@;R)RU3Sble7&#jvDi9W-e-9x53qdp{1EB8=K{p|Gp$(%&Hwyp<b>XZ&6yXQ~^$r9}4+Kd(03FU<LHwdm01yqK5CwquK{g?Q!4Z=k0M!!2VH3n)ISJrA0R15ahe0_Zqel+w01<`(5)VNXWf!{u6#=0Z&O{0!7<<k|0Kfqk&PD;E|6mpxIhH&cBh(|H6GAc@VHXXdH6zj-!59>vOTif%z&QMW4lf%bCJ_-MVdWb8fEytKC51sYCEgR^2EQCHlO+d1`!yyh0UU@MLJ|MD00g-J1-StA235fwRlqnwH6`vW!5&}}`ojDVF8@#e`5plTQ*{4tZ~+HIWpi}@a&LJ71#n|w|7>gl4^4G*Y5!wRZ+B2^VR`;bpaBp@VQFk-|70L^Zy;=MVgF=0AORCcWpv&IqC{zPa0H-EVf$@m#DoY*ZgX`1VQyn(0RwJj_jdsWvtVvy0SEp7!bxNS2y}05e|2qQWpV)y2m-%WZ)|mKWz1m)_5niy4Fcj*aAjo`WCFnr5TRmdfC3^Dg#S!$Z*Wv^XJ_whWdR8RVN-Nr|8!*m4n}EiWdBBKa&vS;Xld_kWC0Ls3^M@+{%~S50S9JsZ*AXFM?wJx2cczT-vI_tVRCLj0R+Y#VF3&iLLb4~VFTiykGKH^Mbcmx;6wj!Zf<2`bO8{5Qe|dxWpij4g8xiub94X!0R+DQ0}MekBmBVu-p?f(K{6u$<1!&WYDEGNF<=nU0&igL0uW{pOe=svZe)-y!6RbcfC@kl2qf2l7ymh_F$@_!HX!#t&OS^+J_Q^A_X_|Q3~y2oD+_82X$>|7MmZpJ0S!_A7Xb&h1db3kZ!y0aE_{IkLgS(J0qH;j<iP`F699b#=79y18UO}(;p%R{2X}!8VuLQuLi%38F5#j8E?^THKRKZeA^-`Eqyb_13Rys|U<UvJ2n(wmJ^~>OcVG>GAqA=kgBS>datMPNX(V8K6B`L)4nZ{}g~62%2SE^izyt?E3ZM~Gf`Rj(5_bUw2!j|1gQ*>Np===&h2ancfCR(@f{s8G`vG>whv65Y{}3bq7G)Ly2dn|1)FS{qdILOq0s!YcU=<r61i%=f5LY1p5Cvca2O$N8pkD@H6&N{yzz2ZARS1B?Kn9~gfWtt5!Iz;CB_hB>gn|KK3aSS{83KU}2Vf0|K?Q1vLm3BS7>Gp9M~dO68ekS7pa?(?4Imo)1*nb#02yEw89Aa1K^qCI1LO&$8405pE(xU^p%EFO7d(LU0N(|Z9sm)rp=B8B01}+x1rbUbU>E)jU=k((6QL3$@*rRsLqMT`1(P2D*BxLNAYdAyKuHk)03M@A4*(ybQxhivAOXN20l^^w!K)yn1E3-S!6N~|BvWM>48R3o1szNn48T?gpe1Dr1SSSSCk8>6CZQ8Ap&1V#2H}%mAOI*}7!M*63t{aA8^q2?v0)xy8J-p36es{G2>=7|9I6B5Dg*Nx2jwdV{4C3%6hdJdA>bdt1(Sav04-n{7&#GxKN+DFDF7}L1OZ{M3PC$20O2nK=qLIHU@!xL3}qVt4d0_m5dZ}kV;RofNf|)|&Pvtd&P#I2!x}+=3cwDdN@~EW34t*N;0Ffb2nOTeItJt52IJsh8dsnO0PiyV6)z8AGi4lJHDF5;05k?+H3C7aG@}8)HV8pC1R*xdp%ofo8$4hUp_3xd061V88el6T8KKh_DjHxcq8I^T3PDReCII0t7Ni1UCk9|uIRb$U4S)>`p#>6ybr~6h1Q~-F&P*C(IU8I63cwDdOB!Je0F^NY;0Ffb2pNk8<KXjP8*(5J;4=IcFYXUvGi4o5;7k($^)?1!Hv&O6{1z^{13@|yVLPD~G@%?^R-hdq1(PE*pc^!xo-6_xp%*JOpe=$JUIAeWK|LY@VJ|5IRT=?dCk9|V0)Y$-K&uU-4L}7l;}{u3D0Ue{&P`9jC}13RK&lGB4hFzI31Kl5AP1@j!3a6SxEUk32E(}XU>q6%1>iFL7cVXkK{KHjO2Hj$zzspalOzB>U>uD=AO1H$P89$@qfHe506?J_EC4}esUDX=0iXyYLn{#DD^3vOD_|WZ00h7Z6@)4VK?(*y4F~}RN<<e*ml)1YOyeCGAPfLPzmp{ZL!(c)K^0pjNC)8zWe}u95T+GGRAU|s!9@$qJcT18y%`J44*VD{2BA7vK|drKfkp^H5E_8F1Qa3<fGA)c9|96}qaOeTEXp2W9(<rr87%-T5<mm_DFghyDg*p0p&2W`ARqik;1Ge6CIA#*9{LiXA!#5`7XTKce@_+w7oi$1$snm9F~9+!2tflp9m703&QB_VJYXMI-~_;z7@-;o;UH1q2OtG&lP9lW9|__TqY2=-1tf$9qaI)&nP3~0FRx%55TPMhpag-FUnl@aU?3x4BYEK4QW-*kQ5Zsi95CAeKR9C<p#fknL90R`0O2nMz(@fB40rq-F9HEcWg?Bhx&}Z66N4GfP(K3Bl~Dl0Qb5BYSpW(^4r&L$0tn$T2EYfS2EdI72EqXs2EqWq2EhTR7hoYAAP_(@NW&^x4?#)}Buix#BsK@(tv3>(Hlr5+ObNkFUKD{${2VS7fld}7mrtP_E`cI;fE1yV{V9;ZAs9KoD?#U@QyLwh9zZ~$9jP%LpeuqI0bwo~V;J56VG8^mE&^dYL3=|X0pTzF9WMgmRZs~aQ3L@D5#R?90VN0+YtA1*89*X6fD7PNQV$?g3IS9F;0+c5wFM<Z86`{3Q)dGrRDVDQzz!Aw0uJFZ4Bsjf!7?zzDiuLWGDH@^9aR>@OJyXs;2$6+VpTU9AvPfaOcEhY908Y1p&eAABb=Z?zy-gPDgahsB4=PE>i`-B0R=lCfB*p57aPC;!C)igARaQK09Oj&1Ll7~7$3p_{on)TSfL&;01*F^EC4a8Js1G}Spva`D?<{w0sj%X00+4N0=a(y5~@8K09pm$|2UxyApl#U4gV_uT%ipx0A2r~4KDy*qf-w*0AGkJK@|nV1!npJ;a~#b6S)Bjx%&YN0_YF`VTdcELKFhx3%~<O5eY#>{tqApxd9Ei00X2C;Siw%3dR|rVj{s~zd=PKzbr2jp+UPvCjud4zbgU282>m>8W}D@G$;R~LJ0t6U=kPqIZyrPWdQ_k|6y%q0RRC6WB+etWdR6DZgc;1VQyn(0RwKoWp@DuMsfq82LD5EY;STi0SEtPa&K)?M?wMr5JF*NYiDwA_jPV$14Iu(Z*u=+WpYz#dSy`mX?SI90SZNU|7BERVnTFoU-tn7P7GlMRYYlTZ88A_1YrRW1H}Jfa#Le+Z)|M;0R~WEa%FCG{{aY9NkeaPZf|9B0R#o%0Sp17zfxgjX?1f0p;Pa4a&K!E;6-kA|7`&eL2z(vd1?YfO&9?N5aR&_7DE343PEFZX?A7*OlfXq0S8uP|6_D-axwu6LH}-JXm4^*Z)yGw;ZSdLX>@6C|84;cRY^=~bN_TqVR>(LbOHYjMrmwpL}_yT24Dk$3P^8qX?p)}ZggR60TEXJWpZ?BV_|GT-)w1TZfzE!21EP+pcY^cRY^u{Wi@yM2LuSg0S*VJ1Hu0R2T);TWNB{yX8{RQZ*p``<|iQm3l9SUg9%kh`UFJ_0R&8CW^@7l3<9K5X=iA30euPqq*QNk0SyBr|3YtcbZ>0|3cplkcyvN_0bp+X0Twl<RB~Z%bA50vA!B&~2u2y;i$-BRfC@DrG+{NM0igs3AqV3=#0g?k9pGj6WC08c;Z$;UZvSIpbY%erL3Ce5Ze#%t0)bc_h}som2M|JUcnM%(V*CrD0bmDKX>(~}|7>Le5JPNbVSRE5p-*l`Z(}=PzY9ZbZ*yfr;{lHWSOE@0BP763qYcYJbsHdIFCa)F0a^P269OhfVQzL|)pJWC3IS*iOrS|_cW`xdSmIv+5(-B2J0}8ULJ@#yX=7`@Ze??G0S!~2Mf+rFMW8`)Wnlr`2_At=VPaaq2}t-aAU?n^pa@cFV`$PPf(R{v4}uE;Ay;yzVQ_FIU?Rd<BF6*zG~otPBLNCiWo-IOU|}I)2~BlubkS*4f^Yy8z(OS;5m23MGeBr>Y-+%7<PyI{ZggdGAax-i|7c}$WiBo*0m%;p$TuPoG$TCd5LInSa^XX7dth>5UV-liO<{N?f(K1${ca|r7)NDvP;&cka9bdGLug@cPiJLhQ(J&tpa%xv-ELr@0S0t=!T}1+X(}cG2mxXh!3k)7BL)#oZ*_BJPlH!6Lu@L50Rl-f0z>@?KB7!-b94a(ybB;gKn7`Ua}VGFe+*N1X>?;~K_ul46Ch4mfK)^P1p)sB00t!)JvJcsKF&V%K^bfUKmPzD05abe1!eyc00E;w2LJ;9V*()%CSVX5_c>(}0w6&M00aL)Gb6tmE?^P=88|^QCaNn4UjPJP5f}krA^~RqV*(!#CT|iwZvZg>BnH3*qXxkL27Vw11qr?x{X+);IYBfdH5vadC9FIEI{*{@4WP{=GC)BzCHkr12LoXmE+t?RzZf`A01^ipMFjh1X=C69a%F9A-FA>5L}hcApm_oR1Z`n-XaNIl>1mFj9f<(2-~a>)^J4)Qpbx<Tp$s6N8Gr#F5F`<y7=R>Sqe2J(0T)0y13`rW9$*7@B)9`p=Lui~{{R9Bw*?m-27U!%K`|oy3@-sid#WlVz+ey<I3~dP0;6DZ#0*1WaCGN&a%FNt5yAr#LHjZzDuDsN7%r^;I{-QW7LyqO{{q840U%ER8vX(T7(p^3p$#9_EPyg00O0`x0JjGB86O7X!304vAt(F|F9AX{Km?2g&L9ZSB7y}K!vzI^4Ppu)6NLEzLF*(y2LS;)qpv{*009qz6c9i>djJ*!0Rm3|7XhbL0|BKM17QReAU^rP_Za{MJYhBfBa`nK00mD6073=;bp$<O0vTX102v#A{{`O|29p~A2LGxo2ml9Q5*a-?K0rMH7o!Cw8{oeO-xmhXK~KWY^+Hgg8U=v}U=kYtIg=Uy32zfV`bfYZ0YC}}3L8593E)9BA)`YI0DTJz;0%^J7$FKkS2_R{DIg6fp*$+U-5Ci38O}pmqN*+52mlCR6A9oO0RIke6h8nn03iA=01r#R2n!lI-~Sl~lN<mJ2n_2TIsw2v0l*Id1<z@1VQ2V&0K!#r|7-yXbZB*LVt;O7X>0)mXZ+*;3SMY*bZ~P&Upg-@0R>RNV^H8<b9G_?0s-I#146$#0S!ZSa`Ayv=Wlg#!=dy*X>fGwLTtC-76d~tFLP^Saspst0$?s<&ET&AF98$-MREgUbMG#0Wpr8~2mu294@MvXlN|s8lfNDS1F9|uZ-5m3B>)@%1qcfqKK}>_8a#hEKSFUkXP_-XOdx+aKmo$~X@DAf-~|B=Om(kgX=E=EBXbu(TYp|9cU=JiUmE~^7r_NCYIARH4WM5Z0tAi$H6Z~kBApZfpgaH@H$g+8L4P(QqeKe;11CWL1eQA)BEK6kKde3gJOCFyp(`NYqeKP(1_B^D0M!%%;w3e}2TGtpH~%D~MGOE4sxSWx0103f7&$@zI3uG*4FC$i{~j=478p695x*q>3;Yo;0O1V(p%EYe4U-=L{|>4!3;+*c7OF?!Kn!3R3xN;~z(W5396>oDqel*Z01=@QCIAv;p#PH~028V)3;_2OU>8lGK>$4fT^t1f9{?W)VHFSo|2iY1NDlxOzwaO}U>FVH6DI(D7Y5-W02rz=2I1uxRG>l(p%x<l@sqzI02!(?4+<a|`d8pX9AFc_AU3T3LjXSj9HA8<ZvYyTBNPBM5EKAa8Uz4D0^ke=U>gQz{!+n106qXGK|OCFqe~J7pcX0>VQmTr03E6a02E*c0DqGt03NC}5ElUd8yPv1B>*3)^)>;49Iqf903eS49!5EeI1N2M|4J+(90k86KL21H7&}!aJpjKr06LvJIkq6I{Ywl$D2O9L6uJKa1-StPtV96+K>!~?L?NS6{TUSi9WekQlPlI006Z8K03sP6OaT8t03D-F5C9_oh$cT0syGz@ZzEtH8ARc%MH^s$AVEbTqf;6yAp0IND<Ve`FaQ(Z00yH@5e6Yb6aTpZ47mUTxdHVK2TDeoz#gMc68;LIMG?6H4Y>gQ0|a2X0Ry=J1oycC0SxKFL{I-)>m$~HX>`_r1el`UW;hR3Zgd49WFYov!vO|oLjeE*6#r9YVRB<=Qf2*f|KL<*ZE$R1|8!*m1w(9aZvAE8pkZ!lbZL6aWlnbi1OTF?g#iYeP+@cd0SNm*${=g+WdRjN%^*f;a{qI5LuhGiWKaKQLu_Gla{&qGa$$E4<PD%>Z*Ko&VRCsvV`F81ZgfL$Y;ST6psE1E3w&cqhyo4?YXR*82!H_$6u@t6cJ*ZhLj?fC2}5sg|8!w#Ze?--3bcfy6{A%4009jGBSHUTbZKvHa{&w94#^2pb#4;m4MVqYaCwYGbZ!QqVS9FE0mlYuaA6vt{{av}VPk7&a_?_-Ze$k%GXW9*O>cE`WkPjy|8#F|F+*%=WA|$T2NA$-Wn*;r00aSe;2}XVBfnq}7dfmt)_@rQRwgzjp$;Md?*TzICb1y`tUdDh;40t10-*z;4j+F21b!b01qk`!?*+daFZp3XGa-7pzy=242W1lg17i0H&OpB6h#Ei<{kidA5*au_G$P&xp$b7YCA@;8L)8h#0T`FS1Hr%yPwxN%3;{Sp3uI;7r$ZuO0SiO{hy+9DZ)9aCz#ql|22=JSKx85O1$1F^YySZSWMyn&c>(_uQe|dxWpilo1R|oOFhEJ-LT`97?E$X<0R!xSK`|jJ-2egp!2<n41O`D0L;kaX1^@sTWe@;g0c8>Z0^orI{3BlPU^;ad7^i|62jC9`PXHAJKqAHa;06Hi2EQ6Ewm>>{8T}fjLKkHe00qC#95G-N9|5-E1_A#HY;R#?b98dwX>Ml$3dUnZVfS=l0Ud(?0R?6Ia&l0iaARR?Y~ICy1ONjNHpw4<|2IHEI$#kPIQKy^A;_Vj4Iuz^0u`VG_CW;BKQTk488Jf<fda+=1VKS?8);=Hk^liCG*JN~Chr6Q0uv{MZxKBH`Jf#HGC&4FG5sP*!W1eP2?;*#Cm;fd7eK=h7&>>q87}(6zZoz3rL7eIU;#eJKmvXM1>_vV58?$b!Asz(DhK}n0$>msH{TXp1OoKL2T1f_N9Uq{2>=EuK{6xg0p1{>Idv5o58@X=Lop;e;WYr{VFV)r1Tc6DKrx~XpaVfNCI#UCJ5?Dy05$+S-+w$nMm^VobsE<mtUqC39qk}NH@zX<0R+DtGTgzx?;SI&Kxd#8qej;Y00qK9Km`C3NB;yc02=@ie>@*UMm?iQ10dXh^+0bG1px*0;sFfx!~a2Zb7gdM0R{YcLmH(41VV3QdHzp<0S7kaGe!vgB~F4A1T#SfLF+RlW&i<7z&Ujmg&I+U7Z$)D#2rEeA_DLPFdxALAqW5isw)St00dwW#sE8ifE3r?76wTLIb0)uH@!tl;y2$H1TdgAzZfkfbr%^o!W4f5G(rYJG$nxu?>TiC8in9G02KZJpgjN=qeKV*{|0p!98Uli1phTd27ft0LpuATMFL=86B#&v|2aiNI$#qRH}BsW1O_5A4qkHmVtBLQWprs|I{z;(0R?SgbYpvH0VFO50Rt>MVEz_EK{F%6J_8=)^8p%x8Uf&7fdTvt@h)Pb0pxf=KmZe|zcCD>K?VQ=pfC7lVgZ4Bp*{c`lN<j41gb0u00m%u66zp407C!?0!_b1024tpA)!GANBj;irs0R7d;kZhVRs15L2ltd&O!jgy+Z+_U=tcStRV@%PyhcxH6pBm3jP7(00{~K3TbYiaCLM>a@nES=XBR$VnV)v3dDhSW%W$SAOX*<5Jh-p>q2k5pl!Wla{&haz$6D|a&K)?NAW_#kj;slzzzfgkN*K>6#xOFL<_$F0+Sp71C)R{eiy?Tp%5eh1Oa3H7y)4gp%5Ve2LF>C00#&S8$Z4Sp$KIb010B@0`3B!3eH3w!5Gd(_K#xDMggK=6&pFK1wjjFBn$@O4F=!=`Ud3=Y5`>!01u=8M-BiGqecw?{}G`PB>)m-7pnjh0igm4>KbZ5IdTKx6b40bU=08U20{H52rCw$5hDN%dI-P)2*Q&d02g|}9tp!4p%Nw=pcX>`VXp;2I3faJ7z5}A>I`5B3V{L|i<2P$ml@7T8{-!n;0ZtrU!f8o02&408wKHY93X?tAcM@#M?nGS%wQKm00m$j{1RO+55XRx5)=U#FTnmEKmwB=03To%{}?%C82}rjNLLR494JFF2ct3$1NSmu7)hWLCjcP!3_}>90bm6|IU@7`;V)zw0bvG{AOK$>2oM`W0f7h#VATl<VFEJ484@EHlV2hLBF;%Q0~j>`o(kX#p%Wk(01#>cu@?p60KguB0T&Qu9e4Z_FAZTHp%WPa=@}US7T^L8AR}NHdKmy3I3P(700Ir9{w6~lU>O-Xp%lL;03@LlCNtm~xCWpEfhvF{U>P648>Sz?N)aExEFwG;<2<|0N@;;SU>a$F72hcUCZQDvfI&O=A(JB<z!Muq4F4ky8s8lTCISBlNp5p=VQyppWdQ?jWp@Du{%b=PLSbWTXLA2<b#7!-a$#=&b8umDWo~16{{as|Z*pX1a{p6ldSy^)cxC@=0SioFd2e;wbWZ}I0Rw6v0R;U{b72KlL}_g@{{lbJ>xCY;QTOZt1O`C?5>0h~b7^B!Wps4;AnkJvLk3U_VRQiuzg0<0X>)W5;{pE!MQ(L%0S{IGNk(jCctLDw|7UJ(Wo~o<1ph{9Y-|AzNN@jgX?kyNbYX1v1Hl0V4S@j%P+|LIWD4K`2~%%!{t_e%R%LQ@X=7dl<Ox(|cnkny7U25`MhCz~VPj<ilRw~&!F!+t1EGSi3g`xbg+u{jQwhLjWC2|V34uayc!tme0>J(X=Ll6vLvM0!?`3iU3;^R&VPx-Vb#nm%;8S#RpKohr0R;=fi~t4y00Rp_F(b}Ceu82?1snhi0M`KjBBMYD00CnH-yaYq&On92QV`=T4E><lA??5c0S*69WpZY3a&1%JWnpq-Xq7+;0p9=~zZfpmq8z{P7cXTJO`t&t0B-`n87}+b&OeUA_rDr0u!9*BGXVD>03{D2SWf^Cs+C{^_+rko!WoLgcJE*n89AC@1&S`;2QxRSFo{557XKPK3>pL(PXPBHWfNLJLJ0r|_rDr1>mWDZ7zF<}762{)6bAwQ1++kHWdR0ba=&F^bY%eq)gWm50R~GzWN&Q&UjJcYV`OD!XK4RvYHMt5Zf|h^adLBXb#`}n|9N^rLPJDFM*l}hNlHshO-}z$P*GA-R8?00S6EqEFflSS|1>o=H#j*VBL5>KB_<~*DJuUfEG;fCIy*f7Jw87`TU=dU|6gExe0_ca1NU=vVh=!XZewA^bhy9)xj-hM&7c7hPXq*m0=h1=-~=CG)de48D<5Mkh(jx2=@rxfy?_S2hzGwMe=)2-06GBsy#o5DfC-b}3aT#$02K=b<qW^T4Y<N8N|2=W7{DVwz$FerHzTSq;Sa|l5Wp!Bz#<o`01~~=9=*jAxq%Q;xrr3HftuhIrC}Ddp;Z^UVHUPv1h!!X8>3Y`(E~h?V?3~B7_VWa5WC<3yW$&Q8Lwg*R{#~Gk)Rr|0UM~{l^OxT9I@dYok9*E5<00U7@K1rU>KT!r@*TpWe6l7xIqZ9As{LUD<P$U5D35lvI4Zgr6Q$-5(NRJiy)<iBh(7u1NkHa{3QeYCZR7BBLENxfB_JKv4B}8v4I<-8KJHqD7d6v0bvJ0J0t>ODFf)g2xS`p4WqXJ0&>crD$1m`qZ!Ui<%9Ve%wV^G4xtqv02M0*-~<KX1?fV}V9^2a%|N{Y%wW9)Ec_KOx(~rE5MeH595dic7ZLz34FNC`!2^I70r?ws01sp_U>X=Xe)Gc_p%y9tDD^~M0bvJ0JR|~PDfh#*8Ux`73V;No3V;Rb7K8Q8L-iJe^<W$P&L9ZDGNBeA05hruU=0Of0?yzx(qkAd1p^t*Oz8s~=>P@b6%Olw3Jc*Y3+o&v3*x-#fD7a-{1z_}!7VNlVJ@K-8lfDIz#X8j4S^A08{=RdWPnU@6Y3!0q7Nh<U>r|?e-|qN6QLI=IDq*bmVg9-lOzBXVD%gZpdTiHP89$a|D#P502iScEWZF2WgY+o0igxD9D_U;V?54H?1LR#?0^Ko7@-&m;U1uX{s$lelO+HmU>%kT;u50?-~t{b2BRGNU>;yV87%-KWvL$&pab_L1N<ce{3iRM862RjJODfZ{T`Mh8c+W)qfY-205ymvLlL?E00FrH1GxYK|G5DRsyGz@HvAIc%E3?@A}%%o{|HHLb97;DWB+9V18!w^0R{Z_MB&5-W^!+BQu{|j;7|`jZ*pY2Wpe(ZP-%GX01Nv215W~>0RbQZ0QUg|XR^TrPGN1_;2`)RG64hy;Q<Y=Q)P5?`2cebq)@|Qa{poI=l$d9wFE`~Zgp(|4?%EnJ8XIE15Iya&p;9*{_TVT3{^=?X><K_5~BePMrmwp|3qnWWn*+{Z~txq3P^8qX?p)}ZggR60S{IGNk(jCctLDw*Jo~R5a9#`VF3>O1V;nG0S8cFWMqC8fB^|pZ*p`T!~YCcWpZ?BV_{uv1R@DlNd#pL0R*o?Z*+9u;0preOy6Z@bO8(jgi>kWXJ~W*3Ijw`Z@+K>2~=fx764-YDWDcYVPk7&a^G)tZe&#GfOBxZBtc_&0SHDGfJXmeV`TzA>6w|onVFfI0R#r20nrKvVK&48Vp9^pWn}vS3kqRZa$#_AN&$cl3;|djC=vn(4#9syZ+HO_P;3hzCunbMI{-i=4+2O8!S@0`$qvK`MsH*Pb#qK_b94a*??Z2HZYv-F0Rg`S0R$1OI^^IP|3Nb&qd^D&0slcWB%?wI00RGD5g0kFI{-WT02A{-V*?)%B>xN>1r$LvBcuO92>=6N5*Ijn0b~RLVNU=M1S4U`a&u)-VjQJDf>daIWlBH{Q(<;xNhSXNAO`>fDnT<Lb`FB0KmnjZG$9LO{t&?eK{X+xLkj$Spbek`lNta8Z@&>f05Jd^5r9GaH6jB+2DLV!5dR+l2cZxk00{q~5Fr2wU=tYqI0obj{0}an5BDPg3kc)^lN$gj1p)yJ1p@*N1OzAx;(rW5HX)-#3&McoL<%9m3t$gm4FL!EW8p8MIO7LIWpiWx0l^7VV{&P5bWQ<5009aeVgdpIY6Gzg1mOe$S-}KDU;z&2PGxrngKFakR%!opX<}?;0TWWcWoB|^b7%;GWcmuja|%FZVRB<=>J30LCx8QWz(F!0z9!)TU=SBL6F>of0R~TSWo}i_z~cb{E8qe^x&Q$b0KW&F0zon)1w}c(sWA{iGA1q}b-NZAJU}`C6bHa%e-Qu!sw@WpIl%uIH((JKJ5?J0JpeWUJEKPn{{RJ(9{>i!L;naStUv%g02+T8J~|;k&OgP%t8Wqnp(F&Q2Lz!{`v4jR06+j8K{ItGN?`~LfI<Ku0jSqS03!w^2nHuf0DUb6CHxI9p$$4fI0-;LAqeFB4K4zu6~X60GbdD_6#_W`LI0{S3;+sX78w4efFeOSB%?+R-vA509y0<UIYIw9B9=cHC9FaEu3#4>Kt}~I|M=hk?m;*q3*coL{{Rf5NDlxFlm8$94qzA<Ilu29HLOEoKo&teKP96{5C9Ju;Q|8Rp%f?p5Cg+O0N)&C8UPUk;S$c(N9Q3f^y4n@qb^{l85%iapbCH!2jw}=2jLXXM(pAVVHJ~qApjN#5h6Vc0aXPF;1><y4GH5J{^UCPqZsvrIA9s`z!1Ro7!{xy3E>){6d%g~8xdd(2Vx2!9ANz!?LZp<9ivJSy8sOcsvTe&?LZa3DF7a!6(<Iu8@L}p1cCivA7C2v0wArU^Z+5F_P`?lp&?(tA~mc<Cg2zr<UddU@<BZ%1K}d#bwworRs{hgp%w}u`5Y;L2Vf18BLF0>{z4uAAoU?73c)5-q5PmF_W>sX!6*U2rzd3{6(9~^4ICpFPWnS0U>xzl1;8o&VCo1WDhMGf2q7w=7xE239X8+w;gci)EK6V<9zY%*K>Yv>2qW<r`@{Y~2>=)@04;I}038ou1N1JT7#IQh9zmc8fs-WwFJSi_7&#Hc8KD_1^8geJ1OZ_cK|dqv0%0%%=qvvq7o$$K6)u2GJYvpG0KqJ~&Q1ZL8O~1vf?(+$I3Nk27!lwxzb4-@U>+Db2_YK4|0Ol7NB}_qAyZ`>O8_tc5=lcmKSSL-BLh5O8%qHH&}t1}5e;Dy9Krz?4Pv|izztym7hoPwp&IT9;5q;<3!yUn8C@?7p);WwCt)96V8#^zlO`OX5CA1(8KL7EE*zj2g8^X`K|s|b0%0%%;~E3uD`h_*02iZA795}(!v7i0PXGV^|N1T)!x_#{9HSo`pb4P=7@-;^02;q07d5O&8$ur&KqMd*qpJXrBqNX{BajxN{}uQQ01*rU5*lkK;u}EK9~(nSbU-H(0W$o%8ZQ$8Gi4!7U{Kc=05lV!H5Fkrqv`>`HWh(47eO|m8vI89E?}cj4gffa|0qEbxc~&Y0sj!HIu`&rU?5)^IKoIzFTfx#z^ohK55oZ96NBJ4!{F^;55fQch(SdEJ^wiY4M$~kO?CfsX=6rdY-MwM0S^IUOlfm;!QlUIY-|ArX>eiRX>xM`3k2XpXg_IeWO8M0!ej+!|4d<dZ*_D55dH^-P+??bX>Mol0Sr!W0%KufW%FzS#3s(6baHQb`vDUVr9^3SaBTZwdDDRb2uW^p|8!w)V`TvYZvSO>0SZ)Qcy#|lb#!!ZZUGCwL1SZOZglix5dT79V{2z}Z*{wFWcGqH0R{l%2mfYrZ*5XXLITr2;8_9npcVyZRC3>8ZgX&97~o@h{{as|Z*pX1a(`24dSy^)cobm$2^eBhZ+Bk-1%FjUX>BqA1OtJ&0oDKz;Q<Cv2O)I-0SHw|LvM0!Z)I`;1O&kW3<0CRQek9ib#nuuQ~n$PYh?ihMQ(NfZ2=EKaBysSY63$|=Ya+e;{gR3L#GT?NiJb1<P9-kY`;Wla%E$5?ZFEFNN;j!dT(xY|6yza5mse#bpL5%VQfKcX=g)jZ6RPDfFd9e;0G>+zX?-sa&%7`!2!7oGa~_m2~|l1MGJlfWK3mdbO8(jgnv?LXJ~W*2^_&~Of}*NMh<{RVKD$d2y}0AbaFZ&F{1P=#4{pO5rAc60Sx{I!Blc}Zew9||78IML3BlKWUB!V31L_jM+6Px5#LR3b#rApBQZn&Y-wX_0S7~G`)+O>zyJXO0|4Iw1wk?){o+9~-y&cT7&zWQ0RjIIOmAUiL2hL6P(;8?;yR!U0RkHTRwg$hqeBV+{{cZZA)`bK0RI9(HzA`%3;_89<G|>F1VK3=qkl&Z00luhA>`rz21*_j9|gY{|1f0|00+MsFaKZ?7&}!PJpku606pyB1tAE(AOAF#K^q-l7a98TfE(@s1~3330RI{Y0S8ELZDoH{VPXLWMR)+>e+g4%VRB<=0zthBW*}*BbaMm23r|yJbaY?<0fGo(!n_8eX@n0|aAYLFRlROcKx}DlWmEtN{{jU<zZoyAJpT6}7cMp!JvSTwASe(Oqe2M)eE|Z1JOCQbKd{2TPXH7_G$jJ!{C^HEp$;Md0{j3{0z?A>MFHdl0p}tHLH`AcDFQAtU=n{BI&~QutUe83{~Vkr5DC8=H2<LxBmf3MHX{BgK?h(I7dSyS^(6se0R*5t03N@)8!-jIL;x)U#r*3KF9tyZ1jUma0Obe>VF?j{HQ*Z~C7%%zp%5VoVF=;_d(K11qE13BB?k#T1U10S4k{D^WDn=|2!PH(9wZ0}0S^C8Z&GD*b!>F`b5mo9XHarwc0!+YZUF~Qgy8`I4Btj&bYo~SqyY}cLv?bNV42}Fp#c-)Qe`f|HscCJ0X;_jVV}TcAarjaX5I&ZAai4KIbkj!ze8wcV{0Irz;bgSV^m{uKp<gm1z`Vjc_3kDVQFsXE&&8)VK{&U00F-dK`|k$IyitB|3Nb$qd^D&0sdJb0>2n8tUCbrI{+6WV3QdD1JA=g0U#wH0$@4-{|;pl00h4oE`MMV7&%}O7fxXR5Cj1TX>M?J&vZg>cngD%;0kPrU;uEVMc@HOU@YMD-~oRP00kyNG9wDW-2n(ebrl&90vAF5F(i{100ECL|0)nc1wSzdIk!PEB?1HyLSO>|_rDr0U<W{dJwX3QKwuXbIb|5{00W30%i#gJ0sjbK7#KRgAvXK0L>K@T-xmhI>mfH6VMH9EWg7th1fxn300oLM-vc%~U>asY8p8EJK%hrvfE54`1^)pJOm$;vWH0P81<EA_aEBml0R`W5VPb4$%;0Ww{F^|40|a9M9}pz}swxKn0bmdr|2N+j1OWjGN<ULiPDEv6r=VrP&k6toT^?YBqIDMK7%1WtPT(m(0;(+c2LJ;apf_L<7WX?<8hb%IK{+G-fPn<VLk1<RKtBLL03FUg{Q`iX+*n|UAPWEmAtgHir9lPc1_j|X;XwbO9<qbv2ZP`wfviCSfGqxU!x(Q8Jperb^(zMC2nOdz03^=6M0X-x0uVNgL<!%DE(kL+i~}V>>og;I!32E3LjX9g0jNm;H4x+q5a&tb05K~eodE{q{0=YffWZqvHK76pz8LpI&OjT2ZxcQM=Q#i>3Ppj03r_(5D5@|F01RLjbr?;6CJrS*H6eJQe+|Px1tY9I9pJqj2IZ3)01k}-5B_^&M+Gqd-v8990-z9BK|Mgg6$8W*{sMpzPXHDX0S)wQ3qFMl{s2R0X>1W>@4$L)bxjm>irdB2z^`+2Wpm_Ubl#v7JOpa!1Q0`VWzfKe1K&eoa%2GsN>pWMZE$SV!H9=MWosb2Z+UFMBu;OCr6BulVTk}BbZBKDJ!6Q2AZBT74xoM{I{_sHXl8G9f`A4h{N&(<BXM<Qa(OQ60TBevF1`Q>0RjIWm_IZ(YY;vEh#No?xd8#A|3(G?0f-($68E_Q1p&ah0Rp-I0R*Zr4FCdQ_ZAsA1EB+m9zc&2xd8(LhTLQV;6*PHxd8?T0s{vEcHr&@XPr7ZvS0%N3Y|%cf@No6rNHh)0sRaDf<tIwZf9lxWB>#K3;_lve?c=NmN^w4lfv&6K{6zjMKYs8{uE$AG$v9HEDZX^qyq1u1EWL-06zj<0}?Yq@xbrE{RGJY1EWO;00i${1QRq%V2UdQ|1dRR6d5|d8UHeVAq)l!WfrRd1@$2Y?&JdX!3Y1p9xy>WBBM#|5Q^YP5A;AFF<{pf8#%^d0n1|t0lx@PZ*ysMu>b-80ayVBPiAIw|7COm0a*bBRsTe3Z88A^Ze`DR0R>Zw!0RCg0eb`+7Q$r}00P=Vo)!X@ITs*?!?OTD>i{MMPXq)(PXH7D^%6fc9HT)7{{RK4G7Uj9B6PZ;0YC}@K?aB!q@e!+0l5GJsw)WZ00&?ZpaM`C7@sW%0S#4}Kr5nD|9Nm_0R%;Eb^mPv3{7u!b7lWRb#!!ZZZQGB1ypZ!V`v%(2j(#Z0S7bWq96qT0&fXHG9jIUWfK^H^Fj&Az{_9*ZxKBI05Jd_^$|WZ-5Vo=0|5>Wrc-phT!9Y514V9R#y|_-0s$Lk6w-i03Q`E;12Z5Y;RGX~1^<EX2EQCG^<yZbNd6iiqe%$>2T~R9G7`>3n4u_A75_02U=$iTzZX?921qaa!z2bl2nIp*2nI(a21NxxGzb4W2muLqZ*psYb8ul}WdRNIg#SZfZDn#{0Sy0EX=QhCZ*p}1Q)zl-0SrN6zjJSFb#!F`q6GeHKxhF4V{Bn<?QlN90a@T62LS<b5IcWA&^u+RF$zk9^#nDu4K<=oZ+2zRZDnqBHN@}D1dsgz(Pdx|7db&Q^&~_=0%xLhV*($e5+qI{PvByr1+1V3s_Y;K(jf?5fe8U23g4qg4FC%(LA5u2DWe&o5hVZ&O5yJfU=bS%;32;o^)6<h1ZJTHlN|tG4!<Baqhx>x2_d}+0U-*bNDc^q6@MBzcr7si4-6sQ1vdj1&PKvw&PUn+!$`y;U>9pZ5+?ru5UMN*01aU65)7a;A$UX)Wf%T%U`7o91(O~CUlL^+00(lR2o3@L6LaATqe%|{3xAI_ED=X#84X~*5dZ~~AOI8$BOt$%A^;W6NerVHws-&&Ck&u13JjnVe;YYt1s@e8A3^mNApisv!jm5W7rSK}41h`z07yU(_W%>40U!#aN)Z157+@C~Ikh^z7$l(-C;%A^02<x_0Su}x3l{(s8~-_~F9-k|U=?2&II1rR0R;*ICH)Hl1EWO<0352%FAM-31pyr71N`d|E-fJ*0pu3^5nV3<;!glUeZ&L&qrVxU4Iuyw0%iQ`4K4xU9t30-{0*ru0qO>07zSY(1Z9&q82}#$f@KmWAb3Do1q7t_B+fxIqe3&IzCNI#3?Kjy3`7xDf1nSef1m~Y0~rOw6(C9gAVxzNI6)Ml^Fi*uU?2ey?jS*9bk}KiWr_fFSb+*b^KNO>;HSWI0SQgtVQFqga&N!^3I9}gWo2$jZe|^Cr~(2%&_p4IV3y<W3q@gb+W=E^dHrmeKv8vJWC0J}0z*V;a%BtvZ*Knq0!eNG7D8d~V{2z};h|J=VR>$R;Qc^jc>xCUV?P2v)@EjA06?{c{<&udQ)y&nVqx`i1V;o3VFEw%GrKc006+pi;1VTMzi4lF0zcCN;{pEzPjz$w5lL<LVP|CyNdiB#djH`^t`vI#1W<o$VR-=wLvQ}z|7CP#WB~+MVaI870sqAX1`H+u00"),b)end,i=function(c)local b,e,f,h h=string f,h,e=h.char,bit32,h.byte b=h.bxor f={[1]=0b11,[0b11]=f}f[0b10]=f e={[1]=0b11,[0b11]=e}e[0b10]=e b={[1]=0b11,[0b11]=b}b[0b10]=b h=c:j{e,b,f}return h end,h=function(o,k)return function(f,e)local i,p,b,l,a,_,n,g,q,h,m,j m=0x65 while true do if m>0x65 then if m>=0b10011110 then if m>0xd8 then m,a=0x220b/m,o.c(a(g,j))elseif m<=0xb4 then if m>0x9e then i,l,a,g,m,_=k[0b11][0b10][k[0b11][1]],k[0b10][0b10][k[0b10][1]],f,1,0x13,k[1][0b10][k[1][1]]g=h+g else return b end else m=h>p and 0x9e or 0x141-m end elseif m>=0x8c then if m<=0x8c then m=h>p and 0b10011110 or 0xc7-m else h=h+n m=n>0 and 0b10001100 or m+-0x5f end elseif m>0x69 then m=n~=n and 0x9e or 0xb4 else m=n~=n and 0x11a3/m or 0b110111 end elseif m>0x2b then if m>=0b1010110 then if m>0x56 then i,b,h,l=#f,"",0,1 n,p=1,i-l m=p~=p and 0x9e or 0 else m,i=0x9a,i(o.d(l))b=b..i end elseif m>0x37 then m=n<=0 and 0b1110 or 0b10111001-m else m=n<=0 and 0b101011 or 0b10110100 end elseif m<=0x13 then if m<=0b1110 then if m>0 then m=h<p and 0b10011110 or 0x7e else m=n>0 and 0b11011000 or 0b1101001 end else _=_(a,g)a,g,q=k[1][0b10][k[1][1]],e,#e m,q,j=0b11111001,1,h%q j=j+q end elseif m>0b100011 then m=h<p and m+0b1110011 or m+0b10001001 else m,l=0x56,o.c(l(_,o.d(a)))end end end end,g=function(c)local h,b,e,f h=string e,h,f=h.byte,bit32,h.char b=h.bxor f={[1]=0b11,[0b11]=f}f[0b10]=f e={[1]=0b11,[0b11]=e}e[0b10]=e b={[1]=0b11,[0b11]=b}b[0b10]=b h=c:h{e,b,f}return h end,F=function(z,ua)return function(V,e)local d,A,ja,Ta,a,g,ya,Qa,B,W,Ba,p,Sa,ta,pa,Pa,ca,Na,R,Ga,qa,Ka,C,D,O,sa,f,Ua,n,aa,U,l,ba,Oa,xa,w,Ca,Ea,Y,j,na,i,Ia,ia,M,Ha,y,r,m,u,T,da,v,F,N,za,Q,ra,ka,Ja,S,Da,ga,X,G,c,k,x,J,b,_a,h,q,ea,la,I,ma,La,P,Aa,s,K,H,Ra,fa,Fa,o,wa,oa,L,ha,va,E,Ma,t na=0x51 while true do if na>0b101111010 then if na<=0x2c9 then if na>=0x231 then if na<=0x282 then if na<0x251 then if na>=0x243 then if na<=0x24a then if na>0x248 then na,s=0x456-na,z.c(s(La,fa))elseif na>=0x247 then if na<=0x247 then ia=v[0xb2e]o,Ca=nil,za[ia]na=Ca==o and 0x1a0c1/na or 0xe1 else La=1 na,s=0x5aae0/na,ba-La end else na,K=0x69,K+f end elseif na<=0x24b then b=o na=b and 0x3c0 or 0x2b0 else v,fa=0b101010,Fa[0xf47a]La=fa-v na,K=0b1101001,K+La end elseif na>0x23c then if na<=0x23d then Ka,v,ia,fa,Ca=ba,V,ba+La,ua[1][0b10][ua[1][1]],1 na,ia=na+0b11010000,ia-Ca else La,fa=Oa-E,1 s=La+fa na=R<fa and na+-0xc1 or 0x27c end elseif na>=0x237 then if na<=0x237 then fa,v=f(s,La)La=fa na=La==nil and 0b1101001 or 0x2d20a/na else na,b=0x1bd,ca end elseif na<=0x231 then na=fa<=0 and 0b110101110 or 0x123 else na,v=na+-0xfb,0b10 fa=E+v V[fa]=La s=La end elseif na>0x26a then if na<0x27d then if na<0x273 then La=1 s=ba-La na=i>La and 0x756bc/na or 0x2fc-na elseif na<=0x273 then fa=ba<=f La=not fa na=La and 0x2df or 0x3d5-na else na,ia,fa,Ka,La,v=0x47c-na,1,V,E+s,ua[1][0b10][ua[1][1]],E Ka=Ka-ia end elseif na>0x27e then ia=fa(v,Ka)Ka=ia na=Ka==nil and na+0b10110 or 0x537-na elseif na<=0x27d then f,ba=0x13,Fa[0x283c]s,E=1,ba-f f=E+s ba,La=V[f],0b10 s=E+La La,f=V[E],V[s]s=La+f V[E]=s La=0 na=f>La and na+-0x1ab or 0x337 else ia,Ka=fa[1],fa[0b10]v=Ka[ia]fa[0b11]=v fa[0b10]=fa v=0b11 fa[1]=v v=nil za[La]=v na=Ta<=M and 0x28a76/na or 0x29d end elseif na<=0x25d then if na>0x25b then fa,v=fa(z.d(v))Ka=0 na=f==Ka and 0b110010000 or 0x3a5 elseif na>=0x258 then if na<=0x258 then Qa=Qa(b,Pa)fa=Qa na=Da<=Pa and 0x3df or 0x2f3 else B,oa=0b100001,ua[0b11][0b10][ua[0b11][1]]B,ha,na,W=Ea.byte,ca*B,0x1de,Ea end else o=Ka(ia,Ca)Ca=o na=Ca==nil and 0b110101011 or 0x88d01/na end elseif na<=0x266 then if na<=0x25f then s,La=Fa[0x283c],0b1111 La,E,s=0b10110,s-La,Fa[0xb2e]ba,La,s=s-La,0b110111,Fa[0xc32]La,f=0,s-La s=ba==La na=s and 0x5dc-na or 0x26a else La,fa=ba(f,s)s=La na=s==nil and 0x8a35c/na or 0x16ef6/na end else na=s and 0b110111001 or 0b101011011 end elseif na>=0x2ab then if na<=0x2b7 then if na<=0x2b0 then if na>=0x2af then if na<=0x2af then na,v=0b10100101,z.c(v(z.d(Ka)))else Pa=nil Qa=b==Pa na=Qa and 0b111110101 or 0x5e6-na end elseif na<=0x2ab then Ka,ia,Ca=Ka(ia,Ca)Ka,ia,Ca=z.b(Ka,ia,Ca)o=Ka(ia,Ca)Ca=o na=Ca==nil and 0x1ab or 0x9d93b/na else na=na+-0x245 La(fa,v,Ka,ia,Ca)end elseif na<0x2b5 then fa,v=Fa[0xf47a],0x36 La=fa-v na,K=0x69,K+La elseif na>0x2b5 then fa=1 na,La=0x181,f-fa else Pa,o=0x21,ua[0b11][0b10][ua[0b11][1]]na,b,ca,Pa=0b100000111,La*Pa,ia,ia.byte end elseif na<=0x2c7 then if na<=0x2bc then if na<=0x2b8 then b,na,Qa=Ka,0x212,pairs else fa,La=1,Oa-E na,s=0x2c7,La+fa end else Ka,fa,ia,v,na,La=E+s,V,1,E,0b100101110,ua[1][0b10][ua[1][1]]Ka=Ka-ia end elseif na<=0x2c8 then fa,na,La="",0x96,ua[0b1110][0b10][ua[0b1110][1]]else na,Qa,b=0x410-na,o.__iter,Ka end elseif na<=0x296 then if na>=0x294 then if na>=0x295 then if na>0x295 then ba,f=Fa[0x283c],0x31 f,na,E={},0b1101001,ba-f ba=f V[E]=ba else na,Ka=0x2af,z.c(Ka(ia,Ca,o))end else f,ba=0x11,Fa[0x283c]ba,E=nil,ba-f na,V[E]=na+-0x22b,ba f,ba=0x1a,Fa[0xb2e]E,f=ba-f,{}ba=f V[E]=ba end elseif na<=0x287 then if na>0x285 then na,ba,f=0x69,Fa[0x283c],0x3c E,s,f=ba-f,0b11000,Fa[0x5a98]ba=f-s V[E]=ba else fa=f<=ba La=not fa na=La and 0x1f6 or 0b101100010 end else s=s(La)La,na,Ka,fa,v=0x1505,0x30f,".",s.gmatch,s end elseif na>=0x29d then if na>0x2a7 then f,ba=0x1b,Fa[0x283c]f,s,E=Fa[0xb2e],0x10,ba-f ba,La,fa=f-s,Fa[0xc32],0x18 s,La=La-fa,1 fa,f,La=0b100,s-La,Fa[0x3da3]La,s=-1,La-fa na=f==La and na+-0b101101100 or 0b101010010 elseif na<=0x29d then K=K+f na=S<c and na+-0x234 or na+-0x250 else na=fa<=0 and 0x5d4-na or 0x43233/na end elseif na>0x298 then na,fa,v=0x1ed,ua[0b1110][0b10][ua[0b1110][1]],""else na,f=na+-0b100111011,La end elseif na<0x1d1 then if na<=0x1a5 then if na>=0x195 then if na>0b110011101 then if na>0b110011110 then v=fa[1]na=v>=E and 0x198 or na+-0x78 else na,La=na+0x1c7,La(fa)v,fa,Ka,ia=La.gmatch,0x1505,La,"."end elseif na<0x198 then if na<=0x195 then na=fa~=fa and 0b1101001 or na+-0b1110010 else na=s and 0x304 or na+0xd9 end elseif na>0b110011000 then v,Ka,fa,La,ia=E,E+s,V,ua[1][0b10][ua[1][1]],1 na,Ka=0x3c4,Ka-ia else Ka,ia=fa[0b10],fa[1]na,v=0x1dfb8/na,Ka[ia]fa[0b11]=v fa[0b10]=fa v=0b11 fa[1]=v v=nil za[La]=v end elseif na<=0x181 then if na>0b110000000 then Ca,v,Ka,ia,fa=1,V,ba,ba+La,ua[1][0b10][ua[1][1]]na,ia=0x2de,ia-Ca elseif na>=0x17e then if na>0b101111110 then na,b=0x251,b(Pa,ca)v=b else ba,f=Fa[0x283c],0x1b fa,E,La=0x3b,ba-f,Fa[0xb2e]s=La-fa v,f,fa=0b100,V[s],Fa[0xc32]na,La=0x9cae/na,fa-v s=V[La]ba=f*s V[E]=ba end else K=K+ba na=u<=X and 0b111100110-na or 0x1e end elseif na>0x190 then La=z.c(La(fa,v,Ka))return z.d(La)else Ka,ia=E+v,1 na,Oa=0x108,Ka-ia end elseif na>=0b110110001 then if na<=0x1bd then if na>=0b110111010 then if na>0b110111010 then na,Pa=na+0x179,0x1068fa8d Qa=b==Pa else d=Pa(ca,A)A=d na=A==nil and na+-0b11110110 or na+-0x14 end elseif na<=0b110110001 then La=1 s=ba-La na=Ja<La and 0x4d3-na or 0x3a2 else La,fa=V[E],ua[0b110][0b10][ua[0b110][1]]v,ia,o,Ka=La,V,1,ua[1][0b10][ua[1][1]]na,Ca,o=na+0b110100101,E+o,E+s end elseif na<=0x1c1 then na,qa,o,Qa,g=0b111010001,0xb1,ua[0b101][0b10][ua[0b101][1]],Ka,0b10100110 else na,s=0x3de,z.c(s(La,fa))end elseif na>0x1ad then if na>0b110101110 then na,Ka=0x387,1 v=f-Ka else na=s<La and 0x69 or na+-0x8b end elseif na>=0b110101011 then if na>0x1ab then Qa=3559143499 na=o~=Qa and 0x1c1 or 0x564-na else La=v na=k<t and 0x81 or 0x3b6-na end else Ea,Y=ua[0b11][0b10][ua[0b11][1]],0b100001 Y,ha,na,oa=d.byte,d,0x2f3-na,b*Y end elseif na<0b111110110 then if na<0b111101000 then if na>=0b111011110 then if na>=0x1e4 then if na<=0x1e4 then La=La(fa,v)V[s]=La fa,La,s=1,ba,1 na=La~=La and na+-0x17b or 0x2cd else La,s,ba=0x16,Fa[0xb2e],ua[0b1000][0b10][ua[0b1000][1]]f=s-La E,s,f=ba[f],0b100,Fa[0x283c]ba,s,La=f-s,E[0b10],E[1]f=s[La]V[ba]=f f,s=Fa[0xc32],0b11100 La,fa,ba=Fa[0x3da3],0b110,f-s s,La=La-fa,1 f=s==La V[ba]=f na=Ra>La and na+-0x17d or 0x296 end else B=B(W)Y,na,ha=ha+B,0x2e7,4294967295 end elseif na<0x1d2 then o=o(Qa)b=nil Qa=o~=b na=Qa and 0x1cb8d/na or 0x3bf elseif na<=0b111010010 then La=La(fa)fa=nil na=La==fa and 0x46b-na or 0x402a8/na else na,ca=0x258,ca(A)b,Pa=Pa+ca,4294967295 end elseif na<0x1ed then if na>0x1eb then ba,f=Fa[0x283c],0b11111 E,ba=ba-f,nil V[E]=ba f,ba=0x3e,Fa[0xb2e]f,s,E=ua[0b100][0b10][ua[0b100][1]],Fa[0xce9b],ba-f ba=f[s]na,V[E]=0xc9cc/na,ba elseif na<=0b111101000 then o=o(Qa,b)na,La=0x282,o else ba,f=Fa[0x283c],0x25 s,E,La=Fa[0xb2e],ba-f,1 na,f=0x254-na,s-La ba=V[f]V[E]=ba f,ba=0x29,Fa[0xc32]E,s,La=ba-f,Fa[0x3da3],0x31 f=s-La ba=V[f]V[E]=ba end elseif na<0b111110010 then na=0x234 fa(v)elseif na>0x1f2 then ca,na,Pa=Ka,0x65277/na,ua[0b1011][0b10][ua[0b1011][1]]else La=0x10f9208e na=s~=La and 0x5e590/na or 0x156 end elseif na>=0x20c then if na>=0x216 then if na>=0x223 then if na>0x223 then f,ba=0b111,Fa[0x283c]fa,E,La=0x17,ba-f,Fa[0xb2e]s=La-fa fa,f,v=Fa[0xc32],V[s],0b111000 La=fa-v na,s=na+-0x1bd,V[La]ba=f..s V[E]=ba else na,V[E]=0x2631a/na,f ba=f end else Ka=1 v=f-Ka na=ga>=Ka and 0x2d9 or 0x80efe/na end elseif na>0x212 then na,K=0x27d-na,K+f elseif na<=0x20c then f,s=f(z.d(s))Ca,v,La,fa,Ka=0b11,1,ua[0b1111][0b10][ua[0b1111][1]],f,ba na,ia,Ca=0x3a0,E+Ca,V else na=0x120 Qa,b,Pa=Qa(b)v,La,fa=Pa,Qa,b end elseif na<0x204 then if na>=0x200 then if na<=0x200 then La=z.c(La(fa,v,Ka))return z.d(La)else E,La,fa=Fa[0x283c],Fa[0xb2e],0b1110 na,s=0x69,La-fa f,v,fa=V[s],0b101110,Fa[0xc32]La=fa-v s=V[La]ba=f+s V[E]=ba end else v,fa=0x18,Fa[0x221d]La=fa-v na,K=0xcde6/na,K+La end elseif na<0x206 then La(fa,v,Ka,ia,Ca)fa=0b10 La,Ka=E+fa,0b11 v=E+Ka fa=V[v]V[La]=fa v=0b10 fa=E+v fa,La=nil,V[fa]na=La==fa and 0x3da or 0x2b3 elseif na>0x206 then fa=0x10f9208e na=La~=fa and 0x2f8-na or 0x27f73/na else na,La=0x59eaa/na,1 s=ba-La end elseif na>0x365 then if na>0x3b5 then if na<0x3d6 then if na<=0x3c4 then if na>0x3c0 then if na<=0x3c1 then na,f,ba=na+-0x358,0b1100,Fa[0x283c]E,ba=ba-f,nil V[E]=ba f,ba=0x38,Fa[0xb2e]E,ba=ba-f,nil V[E]=ba else La=z.c(La(fa,v,Ka))return z.d(La)end elseif na<=0x3bf then if na>0x3ba then na=Qa and 0x688-na or 0x24b elseif na<=0x3b7 then La,na,v,fa=Ka,0b100100000,Ca,ia else Ka(ia,Ca,o,Qa,b)Ca,ia=0b11001,Fa[0x3da3]Ka,Ca,o,ia=ia-Ca,nil,nil,za ia,Ca,o=z.b(ia,Ca,o)Qa,b=ia(Ca,o)o=Qa na=o==nil and 0x1874a/na or 0x3e2 end else b=o.__call na=J>=I and 0x2b0 or 0x74b80/na end elseif na<0x3ce then if na>0x3cb then s,f=0x38,Fa[0xb2e]s,La,ba,f=nil,nil,f-s,za f,s,La=z.b(f,s,La)fa,v=f(s,La)La=fa na=La==nil and na+-0x363 or na+-0x286 else La=z.c(La(fa,v,Ka))return z.d(La)end elseif na<0x3cf then na,La=na+-0x231,1 s=ba-La elseif na<=0x3cf then f=f(s)fa,La=0b10101,Fa[0x283c]na,La,fa,s,v=0x1e4,ua[0b1101][0b10][ua[0b1101][1]],E,La-fa,f else f,ba=0b11001,Fa[0x283c]ba,E=nil,ba-f V[E]=ba ba,f=Fa[0xb2e],0x2b f,E,ba,s=nil,ba-f,za,nil ba,f,s=z.b(ba,f,s)La,fa=ba(f,s)s=La na=s==nil and 0b1101001 or 0x311 end elseif na<0x3e2 then if na>0x3dd then if na<=0x3de then f,s=f(z.d(s))La,Ca,fa,Ka,v=ua[0b1111][0b10][ua[0b1111][1]],0b11,f,ba,1 ia,na,Ca=E+Ca,0x5e2-na,V else Ca=v(Ka,ia)ia=Ca na=ia==nil and 0x31b or 0x39d end elseif na<0x3da then La,fa=V[E],ua[0b110][0b10][ua[0b110][1]]v,o,ia,Ka=La,1,V,ua[1][0b10][ua[1][1]]o,na,Ca=E+s,0x295,E+o elseif na>0x3da then fa,na,v=Fa[0xf47a],0x69,0b111111 La=fa-v K=K+La else v,fa=0x37,Fa[0x221d]La=fa-v K=K+La na=P>v and 0x308 or 0b1101001 end elseif na<=0x3f7 then if na<0x3f2 then if na<=0x3e2 then Pa=b[1]na=Pa>=Ka and 0x792-na or 0x350 else ba,na,f=Fa[0x283c],0x457-na,0b111100 fa,E,La=0x2b,ba-f,Fa[0xb2e]s=La-fa v,f,fa=0x1e,V[s],Fa[0xc32]La=fa-v s=V[La]ba=f>s V[E]=ba end elseif na<=0x3f2 then fa,v=Oa-ba,1 na,La=0b110000001,fa+v else na,f,ba=0x69,0b1101,Fa[0x283c]E,f=ba-f,{}ba=f V[E]=ba f,ba=0b110100,Fa[0xb2e]La,s,E=0b101110,Fa[0xc32],ba-f f=s-La ba=V[f]V[E]=ba end elseif na>0x3f8 then fa,v=fa(z.d(v))Ka=0 na=f==Ka and 0x73e-na or 0b110110000 else na=0b1101001 Ka(ia,Ca,o,Qa,b)end elseif na>=0x397 then if na>=0x3a5 then if na<0x3b1 then if na>=0x3ad then if na>0x3ad then ca,A=b[0b10],b[1]Pa=ca[A]b[0b11]=Pa b[0b10]=b Pa=0b11 b[1]=Pa Pa=nil na,za[Qa]=0x350,Pa else ba,f=Fa[0x283c],0b110000 fa,E,La=0x35,ba-f,Fa[0xb2e]s=La-fa v,fa,f=0x19,Fa[0xc32],V[s]La=fa-v s=V[La]ba=f>=s V[E]=ba na=la>v and 0x69 or 0x620-na end else Ka=1 v=f-Ka na=G<Ka and 0b10111000 or na+-0x29d end elseif na>0x3b4 then na,Qa=0x38a,Qa(b)b,ca,A,Pa=0x1505,Qa,".",Qa.gmatch elseif na>0x3b1 then fa,v=Fa[0x221d],0x1c La=fa-v na,K=0x69,K+La else na,A,b=na+-0x55,0x21,ua[0b11][0b10][ua[0b11][1]]d,A,ca=o,o.byte,v*A end elseif na>=0x39d then if na>=0x3a0 then if na<=0x3a0 then La(fa,v,Ka,ia,Ca)fa=0b10 Ka,La=0b11,E+fa v=E+Ka fa=V[v]V[La]=fa v=0b10 fa=E+v fa,La=nil,V[fa]na=La==fa and 0xd6c80/na or 0x24d else Ka,v,ia,fa,na,La=E+s,E,1,V,0x535-na,ua[1][0b10][ua[1][1]]Ka=Ka-ia end else ca,Qa=0x21,ua[0b11][0b10][ua[0b11][1]]Pa,ca,na,A=fa*ca,Ca.byte,0x574-na,Ca end elseif na>=0x399 then if na>0x399 then s,f=0x17,Fa[0xb2e]La,ba,s=0b101100,f-s,Fa[0xc32]La,f=1,s-La s,fa,La=f-La,-1,nil na=s==fa and 0xe3594/na or 0x2b7 else v,ia,fa,La,Ka=E,1,V,ua[1][0b10][ua[1][1]],E+s na,Ka=0xda553/na,Ka-ia end else A,d,ya=A(d,ya)A,d,ya=z.b(A,d,ya)Ea=A(d,ya)ya=Ea na=ya==nil and 0x80564/na or 0x874ad/na end elseif na<0x385 then if na>0x36c then if na>0x372 then na,s=0x5e7-na,Oa-E else na=0x75c96/na s(La)end elseif na>0x36a then na,La,s=0x372,"",ua[0b1110][0b10][ua[0b1110][1]]elseif na>=0x369 then if na>0x369 then na,K=0x69,K+s else fa,v=Fa[0x221d],0b11010 La=fa-v K=K+La na=va<v and 0b11111 or na+-0x300 end else ia,Ka=fa[1],fa[0b10]v=Ka[ia]na,fa[0b11]=0x8290a/na,v fa[0b10]=fa v=0b11 fa[1]=v v=nil za[La]=v end elseif na>=0x38a then if na>=0x394 then if na>0x394 then s=Oa-E na=_a>=F and 0x73a-na or 0x312 else ba,f=Fa[0x283c],0b10001 s,E,La=Fa[0xb2e],ba-f,0x34 na,f=0b1101001,s-La ba=V[f]V[E]=ba f,ba=0b100110,Fa[0xc32]E,ba=ba-f,nil V[E]=ba end else Pa,ca,A=Pa(ca,A)Pa,ca,A=z.b(Pa,ca,A)d=Pa(ca,A)A=d na=A==nil and 0xc4 or 0x1a6 end elseif na<=0x386 then if na>0x385 then f=f(s)s=nil na=f==s and 0x6f2-na or 0x78752/na else na,v=0x3f9,z.c(v(z.d(Ka)))end else Ca,ia,o,na,Ka,Qa,b=1,fa,v,0x3f8,ua[0b1111][0b10][ua[0b1111][1]],E,V end elseif na<0x31b then if na>0x2f3 then if na<=0x308 then if na<=0x2fd then if na<=0x2f8 then if na>0x2f7 then Ra,E=0b1011011,0b10110111 na=da<=E and 0b111100110 or 0x361-na elseif na<=0x2f5 then na,La,fa=0x697-na,Oa-E,1 s=La+fa else o,Ca=v[0xb2e],ua[0b1000][0b10][ua[0b1000][1]]ia=Ca[o]na,f[s]=0x3f9-na,ia end else na=s>La and 0b1101001 or 0x2a7 end elseif na>0x304 then na,s,La=0x324,ua[0b10][0b10][ua[0b10][1]],f else fa,La=ua[0b110][0b10][ua[0b110][1]],V[E]ia,v,na,o,Ka=V,La,na+-0x1f8,1,ua[1][0b10][ua[1][1]]o,Ca=E+s,E+o end elseif na>=0x30f then if na<0x311 then fa,v,Ka=fa(v,Ka)fa,v,Ka=z.b(fa,v,Ka)ia=fa(v,Ka)Ka=ia na=Ka==nil and na+-0x77 or 0x8479b/na elseif na<=0x311 then v,M,Ta=fa[1],0b100000,0b10101 na=v>=E and 0x27e or 0b100000101 else na=s and na+0xc4 or 0x2d8 end elseif na<=0x30c then ba,f=Fa[0x283c],0b111100 E,s=ba-f,Fa[0xb2e]f,v,fa=V[s],0x1d,Fa[0xc32]La=fa-v s=V[La]ba=f~=s na,V[E]=0x69,ba else fa=z.c(fa(v,Ka,ia))return z.d(fa)end elseif na>=0x2db then if na>=0x2df then if na>0x2e7 then v,fa=1,Oa-ba na,La=0x23d,fa+v elseif na>0x2df then na,oa=na+-0b101111010,oa(Y,ha)ca=oa else v,fa=0x18,Fa[0x221d]na,La=0b1101001,fa-v K=K+La end elseif na<0x2dd then f,ba=0x10,Fa[0x283c]La,E,s=0x3e,ba-f,Fa[0xb2e]s,f=1,s-La na,ba=0x344-na,f==s V[E]=ba La,s,ba=0b11001,Fa[0x3da3],ua[0b1000][0b10][ua[0b1000][1]]f=s-La E=ba[f]v,fa,ba,f=0x32,Fa[0xc32],E[0b10],E[1]La=fa-v s=V[La]ba[f]=s elseif na>0x2dd then fa=z.c(fa(v,Ka,ia))return z.d(fa)else K=K+f na=m>=pa and 0x4e3-na or 0x69 end elseif na<0x2d8 then if na<=0x2d4 then if na>0x2cd then fa=1 La=E+fa na,V[La]=0x156,s f=s else na=fa>0 and na+-0x15c or na+0b10001110 end else fa=1 na,La=0x512-na,f-fa end elseif na<0x2d9 then La=1 s=ba-La na=H<La and 0x17fe8/na or 0x3d6 elseif na>0x2d9 then fa,La=1,Oa-E s=La+fa na=aa<fa and 0x243 or 0x19d else Qa,na,ia,Ka,b,Ca,o=E,0x39f-na,fa,ua[0b1111][0b10][ua[0b1111][1]],V,1,v end elseif na<0x345 then if na>0x32d then if na>0x337 then if na>0x33b then v,na,fa=0x1a,0b1101001,Fa[0x221d]La=fa-v K=K+La else Pa=Pa(ca)d,ya,na,ca,A=Pa,".",0x397,0x1505,Pa.gmatch end elseif na>=0x336 then if na<=0x336 then na=Qa and 0x2b8 or 0x3b7 else fa=ba<=s La=not fa na=La and 0xaf68f/na or na+0b10100110 end else na,K=0x69,K+f end elseif na>=0x321 then if na>=0x324 then if na<=0x324 then s=s(La)La=nil na=s==La and na+-0x5c or 0x2d4 else na=s<La and 0x69 or 0x195 end elseif na>0x321 then E=0x8e na=da<=E and 0x3f7 or 0b100000000 else s,La=Fa[0x283c],0b111000 La,s,E=0x12,Fa[0xb2e],s-La ba,s,La=s-La,Fa[0xc32],0b10111 La,f=0,s-La s=ba==La na=s and 0x361 or 0b110010110 end elseif na>=0x31e then if na>0x31e then ba,f=Fa[0xd917],0x1a E=ba-f K=K+E na=x<=f and na+0xbb or 0x388-na else s,f=0b11000,Fa[0x283c]na,ba=0b1101001,f-s E,s,La=V[ba],Fa[0xb2e],1 f=s-La fa,La,ba=0b10010,Fa[0xc32],V[f]s=La-fa f=V[s]E[ba]=f end else na,s=na+-0x129,fa end elseif na<=0x356 then if na<=0x34e then if na>=0x34b then if na>0x34b then v=fa[1]na=v>=E and 0b10000110 or 0x33d7a/na else ia,Ka=1,E+v Oa=Ka-ia na=ra>=ia and 0x624-na or 0x2d4 end elseif na>0x345 then f,ba=0x21,Fa[0x283c]E,ba=ba-f,nil V[E]=ba s,La,ba=Fa[0xc32],0x3f,ua[0b1000][0b10][ua[0b1000][1]]f=s-La na,E=0x3b0-na,ba[f]f,v,fa,ba=E[1],0b101111,Fa[0xb2e],E[0b10]La=fa-v s=V[La]ba[f]=s else na,ia,Ka=0x387,1,E+v Oa=Ka-ia end elseif na>0x353 then K=K+f na=wa>h and 0xd5 or 0x15e46/na elseif na>0x350 then na,K=0b1101001,K+s else Qa,b=ia(Ca,o)o=Qa na=o==nil and 0b1101001 or 0x732-na end elseif na<=0x35e then if na<=0x35c then if na<=0x35b then na=fa~=fa and 0x5a2da/na or 0x231 else na,A=0b110000000,A(d)Pa,ca=ca+A,4294967295 end else na,Ka=0xbd9d6/na,z.c(Ka(ia,Ca,o))end elseif na<=0x361 then s=Oa-E na=Sa>=r and 0b110010110 or 0x1f else v,Ka,ia=v(Ka,ia)v,Ka,ia=z.b(v,Ka,ia)Ca=v(Ka,ia)ia=Ca na=ia==nil and 0xa8aa7/na or 0xc43f1/na end elseif na>=0xab then if na>0xf0 then if na<=0x137 then if na<0x108 then if na<0b11111100 then if na<=0b11110111 then if na<=0xf5 then if na<0xf4 then ba,f=Fa[0x283c],0x36 s,f,E=Fa[0xce9b],ua[0b100][0b10][ua[0b100][1]],ba-f ba=f[s]V[E]=ba ba,f=Fa[0xb2e],0b111000 f,na,E={},0b1101001,ba-f ba=f V[E]=ba elseif na>0xf4 then N,E=0b1001110,0b11011111 na=da>E and 0x70 or 0xd4 else E=0x50 na=da>E and 0x7f or 0x140-na end else na,K=0x654f/na,K+s end elseif na<=0xf8 then E=0b10011 na=da>E and 0b1110110 or 0x1bf-na else La,fa=ba(f,s)s=La na=s==nil and 0x3cc or 0x449-na end elseif na<0b100000010 then if na>=0b11111101 then if na>0b11111101 then La,s=0x2e,Fa[0x283c]E,La,s=s-La,0x28,Fa[0xb2e]La,ba,s=0b1111,s-La,Fa[0xc32]f,La=s-La,0 s=ba==La na=s and na+0x295 or 0x412-na else b,Pa=o.__iter,nil na,Qa=0x4bc-na,b~=Pa end else va,E=0x60,0b110111 na=da<=E and 0x9e7c/na or 0b111 end elseif na<0b100000101 then s=s+fa na=fa>0 and 0x2fd or 0x2a7 elseif na<=0x105 then La,fa=ba(f,s)s=La na=s==nil and 0x69 or 0x311 else Pa=Pa(ca)na,b,Qa=na+0b11100001,4294967295,b+Pa end elseif na<0x123 then if na>=0b100011010 then if na>0b100011110 then V[E]=La V[f]=fa V[s]=v v,f,s=1,ua[0b110][0b10][ua[0b110][1]],V[E]fa=E+v La,v=V[fa],0b10 na,fa=na+0xac,E+v fa=V[fa]elseif na<=0b100011010 then f,ba,ja,j=0b111000,Fa[0x283c],0b11010101,0x64 ba,f,E,s=za,nil,ba-f,nil ba,f,s=z.b(ba,f,s)La,fa=ba(f,s)s=La na=s==nil and 0x4e6-na or 0x3a3ec/na else La=1 s=E+La na,La,f=0x19e,ua[0b1011][0b10][ua[0b1011][1]],V[s]fa=f end elseif na<=0b100001010 then if na<=0x108 then Qa,o,Ca,b,Ka,na,ia=E,v,1,V,ua[0b1111][0b10][ua[0b1111][1]],0x3ba,fa else f,ba=0b111011,Fa[0x283c]E,fa,La=ba-f,0x14,Fa[0xb2e]s=La-fa f=V[s]ba=not f V[E]=ba ba,f=Fa[0xc32],0b1100 s,f,E=0b110011,Fa[0x3da3],ba-f ba,s=f-s,1 La,f,s=-1,ba-s,nil na=f==La and 0x2da or na+0x2c4 end else na,Ka=0b101001010,z.c(Ka(ia,Ca,o))end elseif na>0b100101110 then if na>0b100101111 then La=1 na,s=0x399,ba-La else f,ba=0b111011,Fa[0x283c]ba,E=nil,ba-f V[E]=ba na=Ma>=f and 0b1101001 or 0x308 end elseif na<0b100101101 then if na>0x123 then f,s=Fa[0x283c],0b1011 ba=f-s fa,La,ba,E=0x1e,Fa[0xb2e],Fa[0xce9b],V[ba]s=La-fa f=V[s]E[ba]=f na=l<=fa and 0b10001101 or 0b110001110-na else v,Ka=a[K],1 K,ia,Ka=K+Ka,1,v[0x283c]na=Ka==ia and na+0x124 or na+0x1d4 end elseif na<=0b100101101 then La,fa=ba(f,s)s=La na=s==nil and 0x69 or 0x2d2-na else La=z.c(La(fa,v,Ka))return z.d(La)end elseif na>0b101010110 then if na<0b101101000 then if na<0x161 then if na<=0x15b then na,La=na+0x5e,1 s=ba-La else s=0x10f9208e na=f~=s and na+-0xad or 0b100011110 end elseif na<=0b101100010 then if na<=0b101100001 then fa,La=1,Oa-E na,s=na+0x238,La+fa else fa,v=Fa[0xf47a],0x1e na,La=0x9132/na,fa-v K=K+La end else na,K=0x69,K+s end elseif na>0b101110111 then if na>0b101111001 then na,K=0x9b0a/na,K+s else na,Ea=0x333-na,Ea(q,oa)b=Ea end elseif na>=0b101110001 then if na>0b101110001 then f,ba=0b100011,Fa[0x283c]f,E={},ba-f ba=f V[E]=ba s,ba,La=Fa[0xc32],ua[0b1000][0b10][ua[0b1000][1]],0x21 f=s-La f,s,E=Fa[0xb2e],0x32,ba[f]La,na,s,ba=E[1],0x69,E[0b10],f-s f=s[La]V[ba]=f else na=s>La and 0x69 or na+0x1ea end elseif na>0x168 then Ea=A(d,ya)ya=Ea na=ya==nil and na+0xcf or 0x25b else ba,f=Fa[0x283c],0x26 f,E={},ba-f ba=f V[E]=ba ba,f=Fa[0xb2e],0x28 f,s,E=ua[0b100][0b10][ua[0b100][1]],Fa[0xce9b],ba-f ba=f[s]na,V[E]=0x93a8/na,ba end elseif na<=0x147 then if na<0b100111111 then if na>=0x139 then if na>0x139 then fa,na,La=1,0x1a28a/na,Oa-ba f=La+fa else La=0 na=s>La and 0x3ac-na or 0x3149d/na end else ba,f=Fa[0x283c],0b100000 La,E,s=0b10010,ba-f,Fa[0xb2e]f,s=s-La,1 ba=f==s V[E]=ba f,ba=0b111110,Fa[0xc32]f,E,s=Fa[0x3da3],ba-f,0b10010 s,ba=1,f-s La,f,s=-1,ba-s,nil na=f==La and 0x2f5 or 0x20fb8/na end elseif na<0b101000110 then if na>0x13f then ba,f=Fa[0x283c],0x16 E,La,fa=ba-f,Fa[0xb2e],0x2a s=La-fa v,f,fa=0b100011,V[s],Fa[0xc32]La=fa-v na,s=0b1101001,V[La]ba=f[s]V[E]=ba else f,ba=0b101100,Fa[0x283c]fa,La,na,E=0x14,Fa[0xb2e],0b1101001,ba-f s=La-fa f,fa,v=V[s],Fa[0xc32],1 La=fa-v s=V[La]ba=f/s V[E]=ba end elseif na<=0x146 then Ka=v[1]na=Ka>=ba and 0x87 or 0x237 else Qa,b,Pa=Qa(b)v,fa,La=Pa,b,Qa na=g<=qa and na+-0b100111 or 0x230-na end elseif na<=0b101001110 then if na>=0b101001101 then if na>0x14d then f,ba=1,Fa[0x283c]E,f,s=ba-f,Fa[0xb2e],0x3d s,ba,La=Fa[0xf47a],f-s,0x23 f,fa,La=s-La,0b110001,Fa[0x221d]s,La,fa=La-fa,V[E],V[ba]na=La<=fa and 0x243 or 0b11110111 else Y=Y(ha)q,na,oa=oa+Y,0x179,4294967295 end else na,v=0x25d,z.c(v(z.d(Ka)))end elseif na<=0b101010010 then na,fa,Ca,ia,v,La=0x2ae,V,1,ba+f,ba,ua[0b1111][0b10][ua[0b1111][1]]Ka,ia,Ca=ia-Ca,s,V[E]else fa=0b10 La=E+fa fa,s=ua[0b1011][0b10][ua[0b1011][1]],V[La]na,v=0x8b,s end elseif na<0xd1 then if na<0xc0 then if na<=0xb8 then if na<=0b10110000 then if na<0xaf then if na>0xab then E=0b11110101 na=da<=E and na+-0x67 or 0b100101100-na else ba,f=Fa[0x283c],0x39 s,f,E=0x3a,Fa[0xf47a],ba-f La,ba,s=0x13,f-s,Fa[0x221d]s,f=V[E],s-La na=s and 0b101111101 or 0x356 end elseif na<=0xaf then ba,ta,f,p=Fa[0x283c],0xf9,0b100,0xdf f,E,s=Fa[0xb2e],ba-f,0x1a s,La,ba=Fa[0xf47a],0b1011,f-s f,La,fa=s-La,Fa[0x221d],0x10 La,s,fa=V[E],La-fa,V[ba]na=La>fa and 0b10101000 or 0x212-na else f,na,s=ua[0b10][0b10][ua[0b10][1]],0x26c20/na,ba end elseif na<=0b10110111 then if na<=0b10110001 then K=K+s na=xa<ea and 0x3cc or 0x69 else o={}o[1]=ia o[0b10]=V Ca=o za[ia]=Ca na=Ia<T and 0b100101111 or 0b11100001 end else E,U=0x23,0x88 na=da>=E and na+-0x14 or 0x9c end elseif na>0b10111011 then if na>0b10111101 then E=0x61 na=da<=E and 0x5c08/na or 0b11010101 else E=0b11001101 na=da<=E and na+0x28a or 0x287 end elseif na<=0xba then if na<=0xb9 then La,s,ba=0b1000,Fa[0xb2e],ua[0b1000][0b10][ua[0b1000][1]]f=s-La f,E,s=Fa[0x283c],ba[f],0x17 ba,La,s=f-s,E[1],E[0b10]f=s[La]V[ba]=f s,f=0b1000,Fa[0xc32]s,ba,La=Fa[0x3da3],f-s,0b111100 La,f=1,s-La fa,La,s=-1,nil,f-La na=s==fa and 0x2f3 or 0x20bed/na else La,ba,s=0b100000,ua[0b1000][0b10][ua[0b1000][1]],Fa[0xb2e]f=s-La f,E,s=Fa[0x283c],ba[f],0x30 ba,s,La=f-s,E[0b10],E[1]f=s[La]na,V[ba]=0x69,f end else ba,f=Fa[0x283c],0x31 E,ba=ba-f,nil V[E]=ba ba,f=Fa[0xb2e],0x3f s,E,f=0b100,ba-f,Fa[0xc32]s,ba=1,f-s s,La,f=nil,-1,ba-s na=f==La and 0x1ff54/na or 0x206 end elseif na>0xc9 then if na>0xce then if na<=0b11001111 then E=0b1000111 na=da>=E and na+-0xaa or 0b100 else f,ba=0x18,Fa[0x283c]E,f,s,ba=ba-f,nil,nil,za ba,f,s=z.b(ba,f,s)La,fa=ba(f,s)s=La na=s==nil and 0x46a-na or 0b10011001 end elseif na>0b11001011 then ba,f=Fa[0x283c],0b10101 na,E,fa,La=0x69,ba-f,0x33,Fa[0xb2e]s=La-fa v,f,fa=0b100100,V[s],Fa[0xc32]La=fa-v s=V[La]ba=f%s V[E]=ba elseif na>0xca then f,ba=0x14,Fa[0x283c]fa,E,La=0x17,ba-f,Fa[0xb2e]na,s=0x69,La-fa f=V[s]ba=not f V[E]=ba else Ma,E=0x79,0 na=da>E and 0xef16/na or 0x209-na end elseif na<0xc5 then if na<=0b11000010 then if na<=0b11000000 then E=0xa9 na=da<=E and 0x13 or 0x38 else E=0b1000 na=da>E and na+0b111010010 or 0x226 end else o=b na=Ga<=ma and 0b111001100-na or 0x1ad end elseif na>0xc7 then ba,f=Fa[0x283c],0x3e s,E,La=Fa[0xb2e],ba-f,0b101111 f=s-La ba=V[f]V[E]=ba f,ba=0b110,Fa[0xc32]f,E,s=Fa[0x3da3],ba-f,0x37 s,ba=1,f-s f,s,La=ba-s,nil,-1 na=f==La and 0x30b-na or 0x248 elseif na<=0xc6 then if na>0xc5 then Ka(ia,Ca,o,Qa,b)Ca,ia=0x3f,Fa[0x3da3]Ca,Ka={},ia-Ca na,ia=na+-0b1011101,Ca V[Ka]=ia else E=0b1101101 na=da<=E and 0x2c or 0b10010010 end else E,R=0b1011,1 na=da<=E and 0x88 or 0b11100111-na end elseif na>0b11100001 then if na<0b11101001 then if na<0b11100100 then if na<=0b11100010 then E=0x9d na=da<=E and 0b100011010 or na+0x43 else f,ba=0b11,Fa[0x283c]f,s,E=Fa[0xb2e],0b101110,ba-f v,na,f,ba,s=1,0x32d-na,ua[0b110][0b10][ua[0b110][1]],f-s,V[E]fa=E+v La,v=V[fa],0b10 fa=E+v fa=V[fa]end elseif na<0xe5 then E=0b1000 na=da>=E and 0xc2 or 0b11001001 elseif na<=0b11100101 then E=0b10011000 na=da<=E and 0x9812/na or 0b101101110-na else E,ka,D=0b1101011,0b10001110,0b10010110 na=da>=E and 0b1011110 or 0xd9 end elseif na>0xed then if na<=0b11101111 then E=0b1100 na=da<=E and 0x31e or 0x38f30/na else E=0x78 na=da<=E and 0b101101000 or 0x3ad end elseif na<=0xec then if na<=0b11101010 then if na>0xe9 then E=0b11000011 na=da>=E and 0b100100000-na or 0b1010101 else f,ba=0b101100,Fa[0x283c]s,f,E=0b10010,Fa[0xb2e],ba-f s,La,ba=Fa[0xf47a],0b101011,f-s La,f,fa=Fa[0x221d],s-La,0x2a La,s,fa=V[E],La-fa,V[ba]na=La>=fa and 0x3c6-na or 0x3068b/na end else E=0xcd na=da<E and 0b110101 or 0b10111101 end else na,La,fa=0x1af6a/na,ua[0b10][0b10][ua[0b10][1]],s end elseif na<0xd9 then if na<=0xd5 then if na<0xd4 then if na<=0xd1 then ba,na,f=Fa[0x283c],0x13a-na,0b110011 f,E={},ba-f ba=f V[E]=ba ba,f=Fa[0xb2e],0b101111 La,s,E=0x14,Fa[0xc32],ba-f s,f=1,s-La ba=f==s V[E]=ba else fa=s<=ba La=not fa na=La and 0x340 or 0x4af-na end elseif na<=0xd4 then ba,f=Fa[0x283c],0b10101 s,E,f=0b100,ba-f,Fa[0xb2e]s,ba=1,f-s La,s,f=-1,nil,ba-s na=f==La and 0x12454/na or na+0b1100011 else ba,La,s=ua[0b1000][0b10][ua[0b1000][1]],0b11110,Fa[0xb2e]f=s-La ba,E=Fa[0x283c],ba[f]s,La=E[0b10],E[1]f=s[La]V[ba]=f La,f,fa=Fa[0x3da3],ua[0b1000][0b10][ua[0b1000][1]],0x22 s=La-fa s,La,ba=Fa[0xc32],0b1101,f[s]fa,na,La,f=ba[1],0x69,ba[0b10],s-La s=La[fa]V[f]=s end elseif na>0xd7 then E=0xce na=da>E and 0x4f or 0xec else E,J,xa,I,ea=0x40,0xe9,0xf2,0b10000000,0b101100 na=da<E and 0b11111000 or 0x5d39/na end elseif na<0b11011101 then if na<=0xda then if na<=0b11011001 then f,ba=0b1111,Fa[0x283c]E,s,f=ba-f,Fa[0xce9b],ua[0b100][0b10][ua[0b100][1]]ba=f[s]V[E]=ba na=ka<=D and na+-0x70 or 0b10001100 else E=0x7b na=da<=E and 0xf0 or na+1 end else f,ba=0x1d,Fa[0x283c]E,s,La=ba-f,Fa[0xb2e],0b110 f=s-La na,ba=0x69,V[f]V[E]=ba s,La,ba=Fa[0x3da3],0b110,ua[0b1000][0b10][ua[0b1000][1]]f=s-La f,s,E=Fa[0xc32],1,ba[f]La,ba,s=E[1],f-s,E[0b10]f=s[La]V[ba]=f end elseif na>=0xdf then if na<=0xdf then La,s,ba=0x24,Fa[0xb2e],ua[0b1000][0b10][ua[0b1000][1]]f=s-La E=ba[f]fa,f,ba,v=Fa[0x283c],E[1],E[0b10],0b11110 La=fa-v s=V[La]ba[f]=s f,fa,La=ua[0b1000][0b10][ua[0b1000][1]],0b10000,Fa[0x3da3]s=La-fa La,ba,s=0b1100,f[s],Fa[0xc32]f,fa,La=s-La,ba[1],ba[0b10]s=La[fa]V[f]=s na=U>v and 0b101001000-na or 0x2acae/na else f[s]=Ca na=Ha>=Na and 0x8052/na or 0b100000010 end elseif na<=0b11011101 then ba,f=Fa[0x283c],0x1c ba,E=Fa[0xce9b],ba-f V[E]=ba f,ba=0b10,Fa[0xb2e]E,f=ba-f,{}ba=f V[E]=ba na=sa>Aa and 0x5aa5/na or 0x88 else Ia,T,E=0xe4,0x27,0b1111111 na=da<=E and 0b11101 or 0x8c end elseif na<=0x66 then if na<0b1000011 then if na>=0x1f then if na<=0x2e then if na<=0x24 then if na>=0b100010 then if na<=0x22 then E=0xb5 na=da>=E and 0x12dc/na or 0x68 else E=0b1100011 na=da>E and na+0x3e or 0b101100-na end elseif na>0b11111 then Da,E,m,pa=0b1001,0b1110,0b11100,0b11011111 na=da<=E and 0b10111 or na+0b1111110 else l,H,E=0xe5,0xb8,0x9c na=da<=E and 0x1360/na or 0xdce/na end elseif na<0x2c then E,aa=0x4a,0xae na=da<E and 0x108-na or 0b11000111-na elseif na>0x2c then E,F,_a=0x8f,0b11010100,0x86 na=da>E and 0xcd-na or 0x901c/na else f,ba=0b11101,Fa[0x283c]ba,E=nil,ba-f V[E]=ba f,ba=0b100011,Fa[0xb2e]E,s=ba-f,Fa[0xc32]f,fa,v=V[s],Fa[0x3da3],0b10011 La=fa-v na,s=0x69,V[La]ba=f~=s V[E]=ba end elseif na>=0x38 then if na<=0b111110 then if na<=0b111000 then ba,f=Fa[0x283c],0b101001 f,E,s=Fa[0xb2e],ba-f,0b110 f,na,ba=Fa[0xce9b],0x69,f-s s,fa=V[ba],1 La=E+fa V[La]=s La=s[f]V[E]=La else E=0xb7 na=da>=E and na+0x2ba or 0x2d4-na end else E,G=0b11000101,0b10001110 na=da<=E and 0x1e or 0xa5-na end elseif na<=0x35 then f,ba=0b1000,Fa[0x283c]La,E,fa=Fa[0xb2e],ba-f,0x28 na,s=0x9e-na,La-fa v,f,fa=0b1101,V[s],Fa[0xc32]La=fa-v s=V[La]ba=f<s V[E]=ba else E=0b11000011 na=da<=E and 0x30c or na+0b110110110 end elseif na>0x11 then if na<0b11000 then if na>0b10011 then E=0b1101 na=da>E and 0x52 or 0b11101111 else s,ba,La=Fa[0xb2e],ua[0b1000][0b10][ua[0b1000][1]],0b1001 na,f=0b1111100-na,s-La E=ba[f]ba,fa,f,v=E[0b10],Fa[0x283c],E[1],0b110000 La=fa-v s=V[La]ba[f]=s end elseif na>0b11101 then E=0b10111101 na=da<=E and 0x22 or 0x95 elseif na>0x18 then s,ba,La=Fa[0xb2e],ua[0b1000][0b10][ua[0b1000][1]],0b111110 f=s-La E,na,f,s=ba[f],0b1101001,Fa[0x283c],0x35 ba,s,La=f-s,E[0b10],E[1]f=s[La]V[ba]=f s,f=0x3e,Fa[0xc32]ba,fa,La=f-s,0b111001,Fa[0x3da3]s=La-fa f=V[s]V[ba]=f else ba,f=Fa[0x283c],0b101001 f,E,s=Fa[0xb2e],ba-f,0b10011 s,La,ba=Fa[0xf47a],0x31,f-s f,fa,La=s-La,0x32,Fa[0x221d]s,fa,La=La-fa,V[ba],V[E]na=La<fa and 0x29d or 0x36a end elseif na<0b111 then if na>0b11 then E=0b1000000 na=da>E and na+0xb6 or 0xf3 elseif na<=0b10 then E=0x4e na=da<E and na+0b11001101 or 0xf6-na else E=0x93 na=da<=E and 0b101110 or 0b1000110 end elseif na>0b1110 then k,ba,t,f=0xcd,Fa[0x283c],0xa7,0x30 na,E=0x29a-na,ba-f ba,s=V[E],ua[0b1011][0b10][ua[0b1011][1]]La=ba elseif na<0b1000 then E=0x3e na=da<=E and na+0xa8 or 0x6a-na elseif na<=0b1000 then E=0x60 na=da>=E and 0x5f0/na or 0x43 else E=1 na=da<=E and 0b11001010 or 0xa3a/na end elseif na>0x55 then if na<=0b1100000 then if na<=0b1011101 then if na<=0b1011011 then if na<0x58 then E=0b11100111 na=da<E and na+0b10011110 or na+0x57 elseif na>0x58 then f,ba=0b100110,Fa[0x283c]f,E={},ba-f ba=f V[E]=ba f,na,ba=0b110110,0x2553/na,Fa[0xb2e]ba,E=Fa[0xce9b],ba-f V[E]=ba else E=0x89 na=da<E and na+0x86 or 0x61 end else f,ba=0b111000,Fa[0x283c]E,La,s=ba-f,0b100001,Fa[0xb2e]f=s-La ba=V[f]V[E]=ba ba,f=Fa[0xc32],0x2e E,f=ba-f,{}na,ba=na+0b1100,f V[E]=ba end elseif na>0x5e then Ha,Na,E=0b1001,0x58,0b10001110 na=da<E and 0b1001101 or 0x1f else E=0x6b na=da>E and 0b101001110 or 0x41f-na end elseif na>0b1100011 then if na<=0b1100101 then E=0x23 na=da<=E and 0x5b or 0x394 else i,r,Sa,E=0b11110110,0x5a,0b11001010,0xdf na=da>=E and 0xbd-na or 0b11011000 end elseif na>=0b1100010 then if na<=0b1100010 then E=0x6c na=da>E and 0xc5 or 0x58d0/na else f,ba=0x25,Fa[0x283c]E,s,La=ba-f,Fa[0xb2e],0b1100 f,s=s-La,1 ba=f==s V[E]=ba f,ba=0b11011,Fa[0xc32]E,na,s,La=ba-f,0b1101001,Fa[0x3da3],0b10011 f,s=s-La,1 ba=f==s V[E]=ba end else Ja,E=0b10110110,0b10001010 na=da<E and 0x12f-na or 0x82 end elseif na<0x4c then if na<0x47 then if na<0b1000101 then E=0x5d na=da>E and 0x91 or 0x75 elseif na>0x45 then f,ba=0x37,Fa[0x283c]E,La,fa=ba-f,Fa[0xb2e],0b10100 s=La-fa f,fa,v=V[s],Fa[0xc32],0x1c La=fa-v s=V[La]ba=f==s V[E]=ba na=O<=v and na+0b111110111 or 0x69 else f,Ga,ma,ba=0x18,0xf3,0xcd,Fa[0x283c]E,s,f=ba-f,0x3b,Fa[0xb2e]na,ba,s=0x3fa-na,f-s,1 La,f=0b10,E+s Ka,s,o=V[E],E+La,1 Ca=E+o ia,Qa=V[Ca],0b10 o=E+Qa Qa,b,Ca=ua[0b1011][0b10][ua[0b1011][1]],Ka,V[o]end elseif na<0x49 then E=0b11100111 na=da>E and 0x2db or 0x321 elseif na>0x49 then f,ba=0b110100,Fa[0x283c]s,E,La=Fa[0xb2e],ba-f,0b10101 f=s-La ba=V[f]V[E]=ba La,s,ba=0x34,Fa[0x3da3],ua[0b1000][0b10][ua[0b1000][1]]f=s-La E=ba[f]f,ba,fa,v=E[1],E[0b10],Fa[0xc32],0x3c La=fa-v na,s=0x1e5a/na,V[La]ba[f]=s else ba,s,La=ua[0b1000][0b10][ua[0b1000][1]],Fa[0xb2e],0b110011 f=s-La s,E,f=0x3b,ba[f],Fa[0x283c]La,ba,s=E[1],f-s,E[0b10]f=s[La]V[ba]=f s,f=0b11111,Fa[0xc32]ba,fa,v=f-s,Fa[0x3da3],0b111100 La=fa-v s=V[La]f=#s V[ba]=f na=L>v and na+0x20 or 0x2bc end elseif na<0x50 then if na<0x4d then E=0b1001111 na=da<=E and na+0x4b or 0x3dc0/na elseif na>0b1001101 then sa,Aa,E=0xb8,0b10110110,0xd0 na=da>E and na+0b1110 or 0xdd else E=0b1111111 na=da>=E and 0b1011000 or 0x78 end elseif na>=0b1010010 then if na<=0x52 then ba,f=Fa[0x283c],0x18 fa,La,E=0x34,Fa[0xb2e],ba-f s=La-fa f,fa,v=V[s],Fa[0xc32],0b101 La=fa-v na,s=0x69,V[La]ba=f<=s V[E]=ba else f,ba=0b111000,Fa[0x283c]E,ba,s,f=ba-f,za,nil,nil ba,f,s=z.b(ba,f,s)La,fa=ba(f,s)s=La na=s==nil and 0x69 or 0x8bc9/na end elseif na>0b1010000 then za,u,Ba,K,Oa,X=ua[0b111][0b10][ua[0b111][1]],0x1e,{},1,-1,0x80 na,n,Ba=0x80,Ba,ua[0b1100][0b10][ua[0b1100][1]]else ba,f=Fa[0x283c],0b111111 s,E,f=0b101010,ba-f,Fa[0xb2e]ba,La,s=f-s,0b111100,Fa[0xf47a]La,fa,f=Fa[0x221d],0b111,s-La fa,La,s=V[ba],V[E],La-fa na=La~=fa and 0x32e or 0x7620/na end elseif na>=0x8e then if na<0b10011100 then if na<=0x96 then if na<0x92 then if na>=0b10010000 then if na>0x90 then f,ba=0b101110,Fa[0x283c]E,f=ba-f,{}ba=f V[E]=ba f,ba=0b11111,Fa[0xb2e]f,E={},ba-f na,ba=0x69,f V[E]=ba else E=0x74 na=da>E and 0x7230/na or 0xe0-na end else E=0xb9 na=da<=E and 0b111110 or 0x15f-na end elseif na>0b10010101 then na=0x1a838/na La(fa)elseif na<=0b10010010 then f,ba=0x10,Fa[0x283c]s,f,E=0b111010,Fa[0xb2e],ba-f s,ba,La=Fa[0xf47a],f-s,0x31 f,fa,La=s-La,0x1c,Fa[0x221d]La,s,fa=V[E],La-fa,V[ba]na=La==fa and na+0x182 or 0xb1 else E=0b11000010 na=da>=E and 0b11101010 or 0xfc-na end elseif na>=0x99 then if na<=0x9a then if na<=0b10011001 then v=fa[1]na=v>=E and 0x2088f/na or 0x16ef6/na else na,ba,f=0b1101001,Fa[0x283c],0b10101 E,La,fa=ba-f,Fa[0xb2e],0b111111 s=La-fa f=V[s]ba=#f V[E]=ba end else f,ba=0b1101,Fa[0x283c]La,E,fa=Fa[0xb2e],ba-f,0x29 s=La-fa fa,v,f=Fa[0xc32],0b1000,V[s]na,La=0b1101001,fa-v s=V[La]ba=f-s V[E]=ba end elseif na<=0b10010111 then x,E=0x1d,0b1001110 na=da>E and 0x31f or 0x3ee else E=0b10100001 na=da>E and 0b10011101 or na+0b1001010 end elseif na>0b10100010 then if na<0xa6 then if na>0xa4 then fa,v=fa(z.d(v))Ka=0 na=f==Ka and 0x3f0-na or na+0x171 else E=0b100101 na=da<=E and 0b100001001-na or 0b10111001 end elseif na>0b10101000 then f,ba=0x3d,Fa[0x283c]s,E,La=Fa[0xb2e],ba-f,0x34 s,na,f=1,na+-0b1000001,s-La ba=f==s V[E]=ba f,ba=0x34,Fa[0xc32]E,ba=ba-f,nil V[E]=ba elseif na>0xa6 then K=K+f na=ta>=p and 0b1101001 or 0b110011100-na else E=0b110101 na=da<=E and 0b101000010 or 0x19d0e/na end elseif na>0b10011111 then if na<0b10100001 then E,O,ga,ra=0b10010110,0xb5,0xd9,0b10001 na=da>E and 0b110000101-na or 0x1e0/na elseif na<=0xa1 then E=0x35 na=da<E and na+-0x57 or 0xa6 else E=0b1001010 na=da>E and 0xa854/na or 0x1aef2/na end elseif na<0x9e then if na>0x9c then na,f,ba=0b1101001,0x3f,Fa[0x283c]E,fa,La=ba-f,0b101,Fa[0xb2e]s=La-fa s,f=Fa[0xce9b],V[s]ba=f[s]V[E]=ba else E=0x19 na=da>E and 0b11011111 or 0xe5-na end elseif na>0b10011110 then f,na,ba=0b10110,0x69,Fa[0x283c]E,ba=ba-f,Fa[0xce9b]V[E]=ba else E=0b10000 na=da<=E and 0xe9 or na+-0x8d end elseif na>=0x7f then if na<=0b10001000 then if na<0x82 then if na>=0b10000000 then if na<=0b10000000 then za=za(n,Ba)na,Ba=0x3480/na,ua[0b1001][0b10][ua[0b1001][1]]Ua,n=ua[0b1001][0b10][ua[0b1001][1]],Ba[0xbf9f]Q,y=Ua[0x51f],ua[0b1001][0b10][ua[0b1001][1]]a,Fa,da=y[0x869a],nil,nil else f,ba=0x16,Fa[0x283c]E,La,s=ba-f,0b101101,Fa[0xb2e]na,f=0b1101001,s-La ba=V[f]V[E]=ba end else E=0x52 na=da>E and na+-0b111010 or 0x9b end elseif na<0x87 then if na>0x82 then ia,Ka=fa[1],fa[0b10]v=Ka[ia]fa[0b11]=v fa[0b10]=fa v=0b11 fa[1]=v v=nil za[La]=v na=j>ja and 0x6698/na or na+0b1110101 else E=0x8a na=da>E and 0x9e70/na or 0xf956/na end elseif na>0x87 then E=0b101 na=da>=E and na+0x5c or 0b1110 else ia,Ca=v[0b10],v[1]Ka=ia[Ca]v[0b11]=Ka v[0b10]=v Ka=0b11 na,v[1]=0x237,Ka Ka=nil za[fa]=Ka end elseif na<0b10001011 then if na<=0x89 then ba,s,La=ua[0b1000][0b10][ua[0b1000][1]],Fa[0xb2e],0b1110 f=s-La E,s,f=ba[f],0b100010,Fa[0x283c]ba,s,La=f-s,E[0b10],E[1]f=s[La]V[ba]=f f,s=Fa[0xc32],0b10 s,ba={},f-s f=s V[ba]=f na=w<C and na+0x210 or 0x69 else wa,h,E=0b10000101,0xf2,0xac na=da>E and na+0b11110100 or 0x5c2e/na end elseif na<=0b10001100 then if na<=0b10001011 then fa=fa(v)na,Ca,v,Ka,ia=0x2ab,".",0x1505,fa.gmatch,fa else f,s=Fa[0x3da3],0x10 ba=f-s E,s,f=n[ba],0b111111,Fa[0xb2e]ba,na,f=f-s,0x45b-na,ua[0b1010][0b10][ua[0b1010][1]]s=ba end else E=0b10101011 na=da<E and 0b11101101-na or 0b111111 end elseif na>0x72 then if na>0x78 then if na<=0x7c then E=0b1100000 na=da>E and 0x69 or na+0x1e3 else f,ba=0b1010,Fa[0x283c]na,s,La,E=0b1101001,Fa[0xb2e],0b101110,ba-f s,f=1,s-La ba=f==s V[E]=ba end elseif na>=0x76 then if na>0b1110110 then la,E=0xbd,0x78 na=da<E and 0x108-na or 0x6630/na else E=0x2e na=da<E and na+0x42 or 0xfc end else E=0b1010110 na=da<=E and 0x177 or na+0x18c end elseif na>0x6f then if na>0b1110000 then E=0xa3 na=da>E and 0xc0 or 0b10011000 else s,La,ba=Fa[0xb2e],0x3f,ua[0b1000][0b10][ua[0b1000][1]]f=s-La s,E,f=0b110000,ba[f],Fa[0x283c]ba,La,s=f-s,E[1],E[0b10]f=s[La]V[ba]=f s,f=0b110,Fa[0xc32]ba,fa,v=f-s,Fa[0x3da3],0x22 La=fa-v s=V[La]f=not s V[ba]=f na=N>=v and na+-0b111 or 0x1d2-na end elseif na>=0b1101001 then if na>0b1101001 then E=0b1010110 na=da<E and 0b10 or 0xf9c/na else w,C,P,L,Fa=0b11001000,0xaa,0x30,0x71,a[K]E,da=1,Fa[0xe09d]E,K=0x74,K+E na=da<E and 0xd7 or 0xf6-na end elseif na>0b1100111 then S,E,c=0b11111,0xac,0x75 na=da>=E and 0x8a or 0x18 else E=0b10111110 na=da<=E and 0b10011010 or na+0x1a end end end end,n=function(c)local l,e,i,h,f,d,j,b l=string f,b,l,e=l.unpack,l.byte,bit32,l.sub d,l,h=l.band,table,l.rshift l,j={},l.concat i=l f={[1]=0b11,[0b11]=f}f[0b10]=f e={[1]=0b11,[0b11]=e}e[0b10]=e b={[1]=0b11,[0b11]=b}b[0b10]=b h={[1]=0b11,[0b11]=h}h[0b10]=h d={[1]=0b11,[0b11]=d}d[0b10]=d j={[1]=0b11,[0b11]=j}j[0b10]=j i={[1]=0b11,[0b11]=i}i[0b10]=i l=c:o{f,e,j,b,h,d,i}return l end,J=function(a,b,c,d)a.H[d]=b/a.a(c,0x311b)return a.H[d]end,l=function(c,k)return function(f)local l,h,j,d,i,b,e,g g=0b10010010 repeat if g>=0b11010000 then if g<0b11101110 then if g<=0xd0 then g=j and 0b11110001 or 0x1be-g else l=0b101 i=l-e j,i=-i,1 g,j=0b11010000,j-i end elseif g<=0b11101110 then g,j=0b11110001,-1 else h,b=b,b.sub b=c.c(b(h,d,j))return c.d(b)end elseif g<=0x9a then if g>0b10010010 then j,b,h,d=c:m{k[0b100],k[1],k[0b10]},k[0b11][0b10][k[0b11][1]],f,"....."b=b(h,d,j)d,j=1,0 j=e>j g=j and 0b11010010 or 0b11010000 else b,h=#f,0b101 b,e=0,b%h g=e>b and 0xb4 or 0x9a end else g,b,d=0x6c48/g,"~",0b101 b,d,h=b.rep,d-e,b b=b(h,d)f=f..b end until false end end,I=function(a,b,c,d)a.H[d]=b-a.a(c,0x9d95)return a.H[d]end,o=function(o,k)return function(r)local h,a,p,i,u,j,q,d,t,f,m,b,n,l,_,g,s,e m=0xad while true do if m<=0x6f then if m<=0x3f then if m>0b1100 then if m<=0x1e then j=1 t,j=b+j,#r m=t<=j and 0b10111011 or m+0x62 else i=i+_ m=(_>0 and i>l or _<=0 and i<l or _~=_)and 0xb9-m or 0xbf end elseif m>0b1000 then p,b={},1 p,m,h="",0x7a,p elseif m>0b10 then i,n=h,k[0b11][0b10][k[0b11][1]]n=n(i)i=k[0b111][0b10][k[0b111][1]]i[r]=n return n else j,m,q,t,d=r,m+0x7e,b,k[0b10][0b10][k[0b10][1]],b t=t(j,q,d)a,t=t,1 b=b+t end elseif m>0b1100111 then i,n,l=r,k[0b100][0b10][k[0b100][1]],b n=n(i,l)i=1 b,i,l,_=b+i,1,0b1000,1 m=(l~=l or _>0 and i>l or(_<=0 or _~=_)and i<l)and 0x34e6/m or m+0b1010000 elseif m>0b1001110 then t=#r m=b<=t and m+-0b1100101 or 0x3380/m else return e end elseif m>=0b10101101 then if m<=0xbb then if m<=0xad then b=k[0b111][0b10][k[0b111][1]]e=b[r]m=e and 0b1001110 or 0b1100 else j,d,q,t=">I2",b,r,k[1][0b10][k[1][1]]t=t(j,q,d)j=0b10 f,u,q,b,d=0b101,t,#p,b+j,k[0b101][0b10][k[0b101][1]]d=d(u,f)f,d,u,j=0x1f,k[0b110][0b10][k[0b110][1]],t,q-d m,d=0x80,d(u,f)u=0b11 d,q,u,f=k[0b10][0b10][k[0b10][1]],d+u,p,j s,g=j+q,1 s=s-g d=d(u,f,s)a=d end else t,q,j,a=k[0b110][0b10][k[0b110][1]],1,n,nil t=t(j,q)j=0 m=t~=j and 0b1100111 or 0x1e end elseif m>=0x80 then if m<=0x80 then q,t,j=1,k[0b101][0b10][k[0b101][1]],n t=t(j,q)n=t m=a and 0xa9 or m+-0x41 else j,q=#h,1 t=j+q h[t]=a q,t,j=-0x800,k[0b10][0b10][k[0b10][1]],p..a t=t(j,q)m,p=0x2997/m,t end else n=#r m=b<=n and 0x6f or 0b1000 end end end end,k=function(c)local h,e,b,f,d b=string e,f=b.gsub,b.char f={[1]=0b11,[0b11]=f}f[0b10]=f e={[1]=0b11,[0b11]=e}e[0b10]=e d=bit32 h,b=d.band,d.rshift b={[1]=0b11,[0b11]=b}b[0b10]=b h={[1]=0b11,[0b11]=h}h[0b10]=h d=c:l{b,f,e,h}return d end,M=function(a,b,c,d)a.H[d]=a.i(b,c)return a.H[d]end,O=function(a,b,c,d)a.K[d]=a.g(b,c)return a.K[d]end,Q=function(a,...)a.k,a.z,a.i,a.g,a.n=a:k(),a:z(),a:i(),a:g(),a:n()return a:f()(...)end,C=function(c,_)return function(f,e)local b,d,j,h f={[1]=0b11,[0b11]=f}f[0b10]=f e={[1]=0b11,[0b11]=e}e[0b10]=e b={[1]=0b11,[0b11]=b}b[0b10]=b b[0b10][b[1]]=c:D{_[0b111]}h={[1]=0b11,[0b11]=h}h[0b10]=h h[0b10][h[1]]=c:E{h}d={[1]=0b11,[0b11]=d}d[0b10]=d d[0b10][d[1]]=c:F{h,_[0b1100],_[0b1001],_[0b1000],_[1],b,_[0b1011],e,f,_[0b11],_[0b10],_[0b1110],_[0b110],_[0b1101],_[0b100]}j=c:G{b,h,d,_[0b11],_[0b101],_[0b1101],_[0b1010],_[0b100],f}return j end end,d=(function()local function m(i,j,k)if j>k then return end return i[j],m(i,j+1,k)end return function(o)return m(o[1],1,o[0b10])end end)(),K={},N=function(a,b,c,d)a.K[d]=b-a.a(c,0x4313)return a.K[d]end,b=function(n,o,p)if type(n)~="function"then local k=getmetatable(n)if k~=nil and k.__iter~=nil then return k.__iter(n)elseif(k and k.__call)==nil and type(n)=="table"then return pairs(n)end end return n,o,p end,B=function(z,k)return function()local o,da,ja,T,X,D,x,ia,ga,_,na,Q,V,u,Y,R,ba,m,c,F,r,ca,L,a,l,ha,ma,S,C,M,v,aa,N,la,b,g,B,s,i,j,f,e,W,J,G,O,ea,fa,E,oa,ka,h,K,P,t,U,q,_a,w,I,n,d,y,p,A na=z.K[0x4ce3]or z:L(0x436d77,0x5455,0x4ce3)while true do if na>0x209 then if na<=0x315 then if na<=0x28d then if na>0x24f then if na<0x26d then if na<=0x263 then if na>=0x25d then if na>=0x25f then if na<0x262 then na=da~=da and 0x29a47/na or z.H[-0x7d47]or z:J(0x9b3886,0x6ba2,-0x7d47)elseif na>0x262 then na,y=z.K[-0x51e5]or z:L(0x2ca072,0x306b,-0x51e5),0x90 else f,ba=0,E[0x2147]na=ba~=f and(z.H[-0x1eaa]or z:J(0x11a739,0x3c72,-0x1eaa))or z.K[0x3d68]or z:N(0x5c96,0x19c7,0x3d68)end elseif na<=0x25d then j=0xa1 na=a<=j and(z.H[-0x1a73]or z:J(0x19936e3,0x4fe0,-0x1a73))or 0x34b-na else j=0b1101 na=a>j and 0x76104/na or na+0x35 end elseif na>=0x25a then if na>0x25a then na,y=z.K[-0x51e5]or z:L(0x575336,0x608f,-0x51e5),0x97 else ba=ba(f,s,g)s,f=1,k[0b1001][0b10][k[0b1001][1]]f=f+s k[0b1001][0b10][k[0b1001][1]],na,E=f,z.K[-0x6591]or z:N(0x243b,0x6191,-0x6591),ba end elseif na<=0x253 then na,y=z.H[0x6757]or z:I(0x1c5c,0x86fc,0x6757),y(j,da,E)j,da=k[0b1001][0b10][k[0b1001][1]],1 j=j+da a,k[0b1001][0b10][k[0b1001][1]]=y,j else y=0b10010111 na=ja>y and 0xc8e4/na or z.H[-0x32f0]or z:I(0xd43,0x91cf,-0x32f0)end elseif na>0x268 then if na>0x26a then na=_>0 and(z.H[-0x7f1e]or z:I(0x49a6,0xda6c,-0x7f1e))or na+0x24 elseif na<=0x269 then j[0x283c]=da s,na,ba,E,f=k[0b1001][0b10][k[0b1001][1]],na+0x524,"B",k[0b111][0b10][k[0b111][1]],k[0b100][0b10][k[0b100][1]]else na=f>s and 0x87f12/na or na+0b100001101 end elseif na<=0x266 then if na>0x265 then g=g(fa,v)na,fa=0x435-na,0b111 fa=y*fa elseif na<=0x264 then y=y(j,da,E)j,da=k[0b1001][0b10][k[0b1001][1]],1 na,j=na+-0b111110010,j+da a,k[0b1001][0b10][k[0b1001][1]]=y,j else na=s>g and 0x295-na or 0x139af/na end else na,y=na+-0x17f,0b11101110 end elseif na>0x279 then if na<0x282 then if na>0x27f then f=0 na=ba==f and 0x30e80/na or z.H[0x3f0e]or z:J(0x36c9c8,0x1a33,0x3f0e)elseif na>=0x27c then if na>0x27c then na,ba=0x97a34/na,z.c(ba(f,s))else na,da=z.H[0x7155]or z:J(0xfa4056,0xe25,0x7155),z.c(da(E,ba))end else na=K>_a and na+-0x20a or 0x59a-na end elseif na<=0x284 then if na<=0x283 then if na<=0x282 then na,_=z.H[0xbc5]or z:J(0xe6ea,0x426e,0xbc5),_(a,y,j)y,a=1,k[0b1001][0b10][k[0b1001][1]]a=a+y k[0b1001][0b10][k[0b1001][1]],Q=a,_ else da=da(E,ba,f)ba,E=1,k[0b1001][0b10][k[0b1001][1]]E=E+ba na,j,k[0b1001][0b10][k[0b1001][1]]=na+-0x20f,da,E end else y=0x38 na=m>=y and 0x8f640/na or z.H[-0x32f0]or z:J(0x1edc28,0x10f3,-0x32f0)end else na=i<Q and(z.H[-0x26d9]or z:J(0x1e0c9c,0xb5c,-0x26d9))or 0x427-na end elseif na>=0x274 then if na<=0x277 then if na<=0x276 then if na>0x274 then j=0x4e na=a>j and 0x63d-na or na+-0xa0 else Q=Q(_)a,_,y=i,1,1 na=a~=a and 0x7aa8/na or 0x620-na end else K=K(_a,n,i)n,_a=1,k[0b1001][0b10][k[0b1001][1]]_a=_a+n X,k[0b1001][0b10][k[0b1001][1]]=K,_a na=ga<=n and(z.H[-0x262d]or z:J(0xf84c53,0x6f68,-0x262d))or na+-0b111011111 end elseif na>0x278 then y=0b11011101 na=L<=y and(z.H[-0x32f0]or z:I(0x514b,0xcdf7,-0x32f0))or 0x297-na else na=i~=i and(z.H[-0x44fb]or z:I(0x3453,0xaf70,-0x44fb))or na+-0x6f end elseif na>=0x270 then if na<=0x270 then na=Q~=Q and(z.H[0x73d8]or z:J(0x36aa1,0x3db6,0x73d8))or z.H[0x7986]or z:J(0x23f587,0x1bca,0x7986)else na,y=z.H[-0x32f0]or z:J(0x3d2882,0x7229,-0x32f0),0xee end elseif na<=0x26d then na,y=z.H[-0x32f0]or z:J(0x742d2d,0x4ebe,-0x32f0),0x38 else na,y=z.H[-0x32f0]or z:J(0x24852,0x3399,-0x32f0),0b11101110 end elseif na<=0x22a then if na>0x21c then if na<=0x222 then if na<0x21f then if na>0x21d then na,y=na+-0x135,0b11011101 else na=da<E and na+0xa8 or z.K[0x354f]or z:L(0x10199c9,0x5bf2,0x354f)end elseif na<0x220 then da=0x28 na=y>da and(z.K[0x5c3]or z:N(0x3e67,0x79c4,0x5c3))or z.H[-0x6b75]or z:I(0x5263,0xccb1,-0x6b75)elseif na>0x220 then na,E=0x49e-na,E(ba,f)ba=0b111 ba=i*ba else na,y=z.H[-0x32f0]or z:I(0x2354,0xbffe,-0x32f0),0b11101110 end elseif na<=0x227 then if na>0x226 then j[0xb2e]=da f,s,ba,na,E=k[0b100][0b10][k[0b100][1]],k[0b1001][0b10][k[0b1001][1]],"B",z.K[0x7b4c]or z:L(0x5437671,0x5bd0,0x7b4c),k[0b111][0b10][k[0b111][1]]else E=E(ba,f,s)ba,f=k[0b1001][0b10][k[0b1001][1]],1 ba=ba+f da,na,k[0b1001][0b10][k[0b1001][1]]=E,z.K[0x5ee9]or z:L(0xa8ed59,0x7f84,0x5ee9),ba end else j,na,da=k[0b10][0b10][k[0b10][1]],z.H[0x2175]or z:J(0x4c2183,0x2d92,0x2175),y end elseif na<0x218 then if na>=0x210 then if na>=0x211 then if na>0x211 then na=_a>n and 0x29d-na or z.H[0x4911]or z:I(0x56c2,0xc8a2,0x4911)else E,s,na,ba,f=k[0b111][0b10][k[0b111][1]],k[0b1001][0b10][k[0b1001][1]],na+0x6b2,"B",k[0b100][0b10][k[0b100][1]]end else na=s>g and 0x6300/na or na+0b101010101 end elseif na>0x20e then na=da~=da and 0x1a3f4/na or z.K[0x24b4]or z:L(0xd397b,0x65e5,0x24b4)else na,j[0xc32]=z.K[0x1590]or z:N(0x481e,0x64d,0x1590),da end elseif na>=0x21a then if na<=0x21b then if na<=0x21a then s=s(g,fa,v)na,g,fa=na+0x169,k[0b1001][0b10][k[0b1001][1]],1 g=g+fa k[0b1001][0b10][k[0b1001][1]],f=g,s else na=_<=0 and 0x5bb-na or 0x272-na end else na=g>0 and(z.H[0x2bc1]or z:I(0x3a6e,0xa591,0x2bc1))or 0x74f04/na end elseif na<=0x218 then na=y<j and 0x1ab20/na or 0x23a-na else y=y+da na=da>0 and 0x4cf53/na or z.K[0x6a53]or z:L(0x16cb3c9,0x5dd8,0x6a53)end elseif na>=0x242 then if na<=0x249 then if na<0x246 then if na>0x242 then a=a(y)y,da,j=1,1,_ na=j~=j and 0x832e/na or z.H[0x77a]or z:I(0x4544,0xd98e,0x77a)else na,y=z.K[-0x51e5]or z:N(0x516d,0x1397,-0x51e5),0x3c end elseif na>0x247 then na,y=z.H[-0x32f0]or z:J(0x12ee95,0x25d6,-0x32f0),0b10010111 elseif na<=0x246 then da=0x90 na=y>=da and(z.K[0x753d]or z:N(0x519f,0xcbf,0x753d))or na+-0x1bf else ia=ia(P,o)G=not ia na=G and 0x6d50/na or 0x6953c/na end elseif na>0x24c then na,y=0x338-na,0b110010 elseif na<=0x24b then na=y>j and 0x84fe/na or z.K[0x6a53]or z:N(0x4f7,0x4205,0x6a53)else aa,c,da=0b10100101,0xea,0b10110100 na=y>da and 0x45d-na or z.H[-0x79a3]or z:I(0x6230,0xc2e2,-0x79a3)end elseif na>=0x233 then if na<0x23e then if na>0x233 then na,f=na+-0x13b,f()j[da]=f else na=K<_a and(z.H[-0x2d37]or z:J(0xeddd0,0x10e0,-0x2d37))or z.H[-0x23da]or z:J(0x578e17,0x6f88,-0x23da)end elseif na>0x23e then ba,s,na,f,E="B",k[0b1001][0b10][k[0b1001][1]],z.K[-0x1cdd]or z:N(0x27a4,0x614a,-0x1cdd),k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]]else E=E(ba,f)da=not E na=da and(z.H[0x3dec]or z:I(0x77cf,0xeb61,0x3dec))or z.H[-0x50ed]or z:I(0x14b9,0x89df,-0x50ed)end elseif na<=0x22f then if na>=0x22d then if na<=0x22d then s,ba,f,na,E=k[0b1001][0b10][k[0b1001][1]],"B",k[0b100][0b10][k[0b100][1]],na+0x726,k[0b111][0b10][k[0b111][1]]else na=ba~=ba and na+0x96 or 0x61b74/na end else na=n>i and 0x271-na or 0x5e5-na end else na,E=z.H[0x488c]or z:I(0x8168,0xe072,0x488c),E(ba,f,s)ba,f=k[0b1001][0b10][k[0b1001][1]],1 ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba end elseif na<=0x2db then if na<0x2ba then if na<=0x2a2 then if na<=0x29c then if na<=0x296 then if na<0x293 then na=_~=_ and na+0b100010001 or z.H[-0x53be]or z:I(0x5ba7,0xc419,-0x53be)elseif na<=0x293 then na,y=z.K[-0x51e5]or z:N(0x77aa,0x35d2,-0x51e5),0x90 else j=0b1000 na=a>j and 0x651-na or 0x36f38/na end elseif na>0x29b then na,g,f,s,ba=z.H[0x1995]or z:J(0x3c67e,0x3080,0x1995),k[0b1001][0b10][k[0b1001][1]],"B",k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]]else na=i<Q and 0x26eb5/na or z.K[0x4107]or z:N(0x37aa,0x6d9b,0x4107)end elseif na>=0x2a1 then if na>0x2a1 then da=0b111000 na=y>=da and 0x7fdb2/na or 0x5959e/na else j[0xc32]=da na,ba,E,s,f=0x1efb69/na,"B",k[0b111][0b10][k[0b111][1]],k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]]end elseif na>0x29e then na,y=z.H[-0x32f0]or z:J(0x3e315d,0x754e,-0x32f0),0xee else na,y=na+-0x1b5,0b10010111 end elseif na<0x2ab then if na>0x2a6 then na=_~=_ and(z.H[0x21c9]or z:J(0x86b6db,0x78c2,0x21c9))or z.H[0x19f0]or z:J(0x17429a0,0x6eb3,0x19f0)elseif na>0x2a3 then na=_>a and 0x2d8-na or 0x67e-na else na=y<=0 and(z.H[0x6be2]or z:I(0x6642,0xff14,0x6be2))or na+0b10110100 end elseif na>0x2b8 then ba,E,na,f,s="B",k[0b111][0b10][k[0b111][1]],z.K[-0x10be]or z:N(0x2803,0x6289,-0x10be),k[0b100][0b10][k[0b100][1]],k[0b1001][0b10][k[0b1001][1]]elseif na>0x2ae then j=0x78 na=a>j and na+0xfc or z.K[0x5caa]or z:N(0x6f26,0x2fa7,0x5caa)elseif na<=0x2ab then j=j(da)ba,E,da=1,y,1 na=E~=E and 0x586-na or z.K[0x541]or z:N(0x6152,0x1c58,0x541)else j=0x88 na=a>j and 0x16466/na or z.H[-0x6442]or z:J(0x1f30ec,0x237d,-0x6442)end elseif na<=0x2c7 then if na>0x2be then if na<0x2c5 then if na>0x2c0 then na=s<g and(z.K[0x40c7]or z:L(0xf8ed1,0x5154,0x40c7))or z.K[0x77f7]or z:L(0x91017d,0x2f64,0x77f7)else i=i+_ na=_>0 and(z.K[0x5330]or z:P(0xb844,0x55c,0x5330))or z.H[0x78b8]or z:J(0x2462898,0x630a,0x78b8)end elseif na>0x2c5 then na=Q>0 and(z.H[0x28f0]or z:J(0x16fdc8,0x3b8d,0x28f0))or z.H[-0x728c]or z:J(0x1d27ed0,0x4c4b,-0x728c)else y=j na=O>N and 0x5fe52/na or na+0b100000101 end elseif na>0x2bc then if na>0x2bd then da=0b111000 na=y>da and(z.K[0x6f71]or z:N(0x4829,0x7ba,0x6f71))or 0x4fd-na else _=_+y na=y>0 and na+-0x17 or na+0x11b end elseif na>=0x2bb then if na>0x2bb then na=y<j and na+-0x282 or na+-0b101110000 else na=K<_a and(z.H[-0x2d37]or z:I(0x4eab,0xd3ae,-0x2d37))or z.H[0xa2e]or z:I(0x5de0,0xc753,0xa2e)end else na=da<=0 and(z.K[-0x46d]or z:N(0xcb4,0x4bd3,-0x46d))or z.K[-0x4122]or z:L(0x189c0f,0x21d2,-0x4122)end elseif na>=0x2d4 then if na<=0x2da then if na<0x2d9 then na,E=z.K[0x4316]or z:L(0x11b09c8,0x4f35,0x4316),E(ba,f,s)ba,f=k[0b1001][0b10][k[0b1001][1]],0b10 ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba elseif na<=0x2d9 then na=Q<=0 and(z.H[0x4b0c]or z:I(0x1314,0x8c48,0x4b0c))or z.H[0x6a8d]or z:J(0x75b940,0b101010111,0x6a8d)else f=f(s,g)ba=not f na=ba and na+-0x20e or z.K[-0x28ea]or z:L(0x3269c9,0x3092,-0x28ea)end else E={}E[0x6011]=e E[0x4db7]=X E[0xb3c1]=K E[0x869a]=n E[0xbf9f]=j E[0x51f]=a ba=0 E[0x7a5f]=ba ba=0 E[0x74c4]=ba da=E return da end elseif na>=0x2cf then if na>0x2cf then G=G(ia,P,o)ia,P=k[0b1001][0b10][k[0b1001][1]],1 ia=ia+P k[0b1001][0b10][k[0b1001][1]],v=ia,G na=q<P and na+-0x250 or na+0xac else na=da<=0 and(z.H[-0x68e9]or z:J(0x67d210,0b10001101,-0x68e9))or z.H[-0x1afd]or z:J(0xdf42,0x378a,-0x1afd)end elseif na>0x2c9 then na,v,g,s,fa=z.H[-0x5179]or z:I(0x3453,0xafac,-0x5179),k[0b1001][0b10][k[0b1001][1]],"B",k[0b111][0b10][k[0b111][1]],k[0b100][0b10][k[0b100][1]]else na,da=z.H[-0x5dd7]or z:I(0x791a,0xea4f,-0x5dd7),0/0 end elseif na>=0x300 then if na<0x30c then if na>=0x307 then if na<=0x30a then if na<=0x309 then if na>0x307 then da,S=0b111100,0b10110 na=y>da and na+-0x22d or 0x5c7-na else j[0xb2e]=da E,na,ba,f,s=k[0b111][0b10][k[0b111][1]],z.H[0x6852]or z:I(0x522a,0xd2c3,0x6852),z.H[0x3937]or z:M(z.k"d<$>",z.k"LI",0x3937),k[0b100][0b10][k[0b100][1]],k[0b1001][0b10][k[0b1001][1]]end else na,y=z.K[-0x51e5]or z:N(0x49cb,0xbf1,-0x51e5),0b10010111 end else na,y=z.K[-0x51e5]or z:L(0x4984e1,0x5070,-0x51e5),0b10010000 end elseif na<0x302 then if na>0x300 then na=y>j and(z.H[-0x435f]or z:J(0x244848,0x6df9,-0x435f))or z.K[0b1000001]or z:N(0x7f16,0x3e8a,0x41)else na=ba~=ba and(z.H[-0x1d55]or z:J(0x2a19bc,0x22f7,-0x1d55))or 0x416-na end elseif na<=0x302 then Q=Q(_,a,y)na,a,_=z.H[0x35fe]or z:J(0x235ae0,0x7b2b,0x35fe),1,k[0b1001][0b10][k[0b1001][1]]_=_+a i,k[0b1001][0b10][k[0b1001][1]]=Q,_ else na=s<g and(z.H[0x6342]or z:I(0x1c5,0x9c00,0x6342))or z.H[-0x5d2a]or z:I(0x7524,0xe9f0,-0x5d2a)end elseif na<0x310 then if na<0x30e then if na<=0x30c then j=0b1100011 na=a>j and 0x5f6-na or 0x7641c/na else j=0b101010 na=a<=j and(z.H[0x2220]or z:I(0x2459,0xbfe9,0x2220))or 0xc157e/na end elseif na<=0x30e then na=i~=i and(z.H[-0x3d0d]or z:I(0x4b85,0xd76f,-0x3d0d))or 0xc38/na else na,j[0x283c]=z.H[-0x3199]or z:J(0xf931ec,0xa7d,-0x3199),da f,E,s,ba=k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]],k[0b1001][0b10][k[0b1001][1]],z.K[0x51ac]or z:O(z.k"awUE",z.k"Oa",0x51ac)end elseif na<=0x314 then if na<0x313 then j=1 na=a<=j and 0x460-na or 0x739c0/na elseif na>0x313 then na=_>0 and na+0b110011 or z.H[0x5bc0]or z:J(0x21d935,0x3dd8,0x5bc0)else na=fa~=fa and 0x343-na or z.K[0x7f68]or z:L(0x41b947,0x572a,0x7f68)end else na,ba,E,s,f=z.K[-0x1a05]or z:L(0x2415f69,0x3e2a,-0x1a05),"B",k[0b111][0b10][k[0b111][1]],k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]]end elseif na>0x2ea then if na<=0x2f5 then if na<=0x2f3 then if na<=0x2ef then if na>0x2ec then na=da>E and(z.K[0x622]or z:N(0x42a4,0x7ccc,0x622))or z.K[-0x4fa1]or z:N(0x6205,0x1c16,-0x4fa1)else j=0x6b na=a<=j and(z.K[0x4da0]or z:L(0x7d23bb,0x3eaa,0x4da0))or 0x5c8-na end else ba=0 na=E==ba and 0xa6d0b/na or 0x49b-na end else j=0x19 na=a>j and(z.H[-0x43dd]or z:J(0x21540a,0x21e4,-0x43dd))or 0x77054/na end elseif na<=0x2f8 then if na>0x2f6 then na,y=z.K[-0x51e5]or z:N(0x4948,0xb4c,-0x51e5),0b101000 else na,y=z.H[-0x32f0]or z:I(0x1fc1,0x834d,-0x32f0),0b111000 end else na=y~=y and 0x478-na or z.H[0x108b]or z:J(0xb7e584,0x99f,0x108b)end elseif na<0x2e0 then if na<=0x2de then if na>=0x2dd then if na>0x2dd then na,y=0x29c0e/na,0x90 else na,y=z.K[-0x51e5]or z:L(0x68508d,0x733c,-0x51e5),0x97 end else na,y=na+-0b111110011,0x28 end else P,ia,na,v,G=k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]],z.K[0x22fa]or z:L(0x29d18c,0x2331,0x22fa),k[0b111][0b10][k[0b111][1]],"B"end elseif na>0x2e3 then if na<=0x2e4 then s=s+fa na=fa>0 and 0x4f4-na or 0x9cff4/na else na,y=z.K[-0x51e5]or z:N(0x2ffc,0x6c00,-0x51e5),0b110010 end elseif na<=0x2e2 then if na<=0x2e0 then na,y=z.K[-0x51e5]or z:N(0x47e,0x4086,-0x51e5),0b101000 else ba=ba(f,s,g)s,f=1,k[0b1001][0b10][k[0b1001][1]]f=f+s na,E,k[0b1001][0b10][k[0b1001][1]]=z.H[-0x64b9]or z:I(0x697b,0xf49f,-0x64b9),ba,f end else na=n<=0 and na+-0x28 or z.H[0xa2e]or z:I(0x3066,0xb0d9,0xa2e)end elseif na<0x3b4 then if na<=0x362 then if na<=0x343 then if na>=0x329 then if na>0x339 then if na>0x341 then na=y<j and(z.H[-0x435f]or z:J(0x2a0ecc,0x5ab0,-0x435f))or z.K[-0x657b]or z:L(0x19652b3,0x7001,-0x657b)elseif na<=0x340 then if na>0x33e then y=0b10010111 na=R>=y and 0x9dd40/na or z.H[-0x32f0]or z:I(0x6ea4,0xf02e,-0x32f0)else na=ba<=0 and(z.H[0x20f6]or z:J(0xdfe4e5,0x2be2,0x20f6))or na+-0b100001111 end else na=y<=0 and(z.H[-0x4cf4]or z:J(0x79660,0x343b,-0x4cf4))or 0x3df-na end elseif na<=0x32e then if na<0x32d then na=_a<n and(z.H[-0x3d0d]or z:J(0x2d1442,0x621d,-0x3d0d))or na+-0x1b elseif na>0x32d then na,da=z.H[-0x1219]or z:J(0x7cb60,0x333b,-0x1219),da(E,ba)E=0b111 E=n*E else y=0x38 na=W>=y and 0xabe3a/na or na+-0x244 end elseif na<=0x330 then E=E(ba,f,s)na,f,ba=na+-0x1f0,0b1000,k[0b1001][0b10][k[0b1001][1]]ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E else na,y=0x2eee1/na,0xee end elseif na>0x31f then if na<=0x323 then if na>0x320 then na,j[0x283c]=z.K[0xd50]or z:L(0x1548495,0x3ff2,0xd50),da s,ba,f,E=k[0b1001][0b10][k[0b1001][1]],"B",k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]]else na=n~=n and(z.H[0x407a]or z:I(0x35e9,0xae23,0x407a))or z.H[0x2b35]or z:J(0x23b9f,0x332e,0x2b35)end else na,y=z.H[-0x32f0]or z:J(0x1d973b,0x1198,-0x32f0),0b1010011 end elseif na>0x31c then if na>0x31e then j=j(da,E)y=not j na=y and 0x19bfc/na or 0x371-na else na,y=z.H[-0x32f0]or z:I(0x7ea2,0xe02c,-0x32f0),0x97 end elseif na>=0x31a then if na<=0x31a then na=n~=n and 0x15b60/na or z.H[-0x23da]or z:I(0x3bd8,0xa77e,-0x23da)else na=da>E and(z.K[0x37eb]or z:L(0x612e01,0x2230,0x37eb))or na+-0x20c end else g=g(fa,v)s=not g na=s and(z.H[0x5218]or z:I(0x44c1,0xdc69,0x5218))or na+0x8f end elseif na>=0x356 then if na<0x35b then if na<=0x359 then if na<0x357 then na,fa=0xb2e3c/na,z.c(fa(v,G))elseif na>0x357 then ba=ba(f,z.d(s))s,na,a,g,f=E,z.H[-0x15cd]or z:J(0xb53aec,0xe95,-0x15cd),ba,0b10000000,k[0b11][0b10][k[0b11][1]]else na=y~=y and 0x2db6d/na or 0x426-na end else na,s=z.K[-0x28e1]or z:L(0xa6ced1,0x35c0,-0x28e1),s(g,z.d(fa))g,fa,j,v=k[0b11][0b10][k[0b11][1]],f,s,0b10000000 end elseif na<=0x35e then if na>=0x35d then if na<=0x35d then na,e=z.H[0x416b]or z:J(0x3e774,0x1c75,0x416b),e(X,K,_a)K,X=1,k[0b1001][0b10][k[0b1001][1]]X=X+K V,k[0b1001][0b10][k[0b1001][1]]=e,X else na=n>0 and 0x856cc/na or na+-0b111110 end else j=0x50 na=a>j and(z.K[0x17f4]or z:N(0x568a,0x1618,0x17f4))or 0x4351b/na end else na,y=z.K[-0x51e5]or z:N(0x6d31,0x2f5b,-0x51e5),0b10010000 end elseif na>0x350 then if na>0x353 then na,y=z.H[0xe3c]or z:I(0x26a0,0xb8e0,0xe3c),y(j,da)j=0b111 j=K*j elseif na>0x351 then na,y=z.H[-0x32f0]or z:J(0x3c0c8a,0x70e1,-0x32f0),0x28 else f=f(s,g,fa)s=k[0b1001][0b10][k[0b1001][1]]na,s=0x42540/na,s+E k[0b1001][0b10][k[0b1001][1]],da=s,f end elseif na>=0x349 then if na<0x34f then na,j[0x283c]=z.H[0x247a]or z:J(0x4462496,0x40de,0x247a),da f,s,ba,E=k[0b100][0b10][k[0b100][1]],k[0b1001][0b10][k[0b1001][1]],"B",k[0b111][0b10][k[0b111][1]]elseif na>0x34f then j=0xa9 na=a>j and 0x7f880/na or z.K[0x53a5]or z:N(0x5d4e,0x1963,0x53a5)else da=0xb4 na=y>=da and(z.K[0x3777]or z:N(0x7f16,0x3e5d,0x3777))or na+-0x109 end elseif na<=0x345 then o=o(J,b)J=0b111 na,J=0xb9577/na,s*J else na=i>Q and(z.H[-0x26d9]or z:I(0x3212,0xac1b,-0x26d9))or z.H[0x5bc0]or z:J(0x1399924,0x4727,0x5bc0)end elseif na<0x38b then if na<0x37e then if na<0x36f then if na>=0x368 then if na<=0x368 then na=n<i and 0xeb08/na or na+-0x291 else na,f=z.H[-0x5dd7]or z:I(0x68bc,0xfae9,-0x5dd7),f(s,g,fa)s=k[0b1001][0b10][k[0b1001][1]]s=s+E da,k[0b1001][0b10][k[0b1001][1]]=f,s end elseif na<=0x364 then j[0xf47a]=da f,E,ba,na,s=k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]],z.H[-0x6b18]or z:M(z.k"By%V",z.k"8U",-0x6b18),z.H[0x5aff]or z:J(0x444d2c1,0x5a7e,0x5aff),k[0b1001][0b10][k[0b1001][1]]else na=fa<=0 and(z.H[0x791]or z:I(0x1391,0x8d45,0x791))or z.K[0x77f7]or z:L(0x4a24e8,0x1843,0x77f7)end elseif na<0x377 then if na>0x36f then na,j[0x5a98]=0x97f00/na,da else na=y~=y and(z.K[0x78a6]or z:L(0x60bb9,0x2274,0x78a6))or z.H[-0x371a]or z:I(0x55c3,0xc8b0,-0x371a)end elseif na>0x377 then na,j[0x3da3]=z.H[0x5ce1]or z:J(0x454c40,0x2828,0x5ce1),da else na=g~=g and 0x720-na or z.H[0x50e4]or z:J(0x1e1f6d,0x3956,0x50e4)end elseif na>=0x385 then if na>0x389 then na=n>i and na+-0x345 or na+-0xb1 elseif na<0x386 then na,E=na+-0x92,ba elseif na>0x386 then na,da=0x4c9-na,""else na=i>0 and na+-0b110110001 or z.H[0x329f]or z:J(0x102df20,0x59c7,0x329f)end elseif na<=0x381 then if na>0x380 then j[0x283c]=da f,s,na,E,ba=k[0b100][0b10][k[0b100][1]],k[0b1001][0b10][k[0b1001][1]],0x119c-na,k[0b111][0b10][k[0b111][1]],z.K[-0xcaf]or z:O(z.k"bs~N",z.k"O8",-0xcaf)elseif na<=0x37e then na,P,G,J,ia,o,b=z.H[-0x5092]or z:I(0x3fa0,0xa1ce,-0x5092),k[1][0b10][k[1][1]],k[0b1000][0b10][k[0b1000][1]],v,f,k[0b1011][0b10][k[0b1011][1]],0b1111111 else f,E,ba,na,s=k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]],"B",0x1cd580/na,k[0b1001][0b10][k[0b1001][1]]end else na,ia,s,g,G,fa,v=z.K[0x5caf]or z:N(0x73b4,0x2cd7,0x5caf),0x7f,k[0b1000][0b10][k[0b1000][1]],j,f,k[1][0b10][k[1][1]],k[0b1011][0b10][k[0b1011][1]]end elseif na>=0x3a1 then if na>0x3ab then if na<=0x3b0 then if na<=0x3ac then na=y>0 and 0x3cd0c/na or 0xaf8fc/na else j=0x93 na=a<=j and(z.H[0x1d1e]or z:I(0x58c0,0xcbe4,0x1d1e))or z.K[0x298c]or z:N(0x7963,0x3530,0x298c)end else na=_>a and(z.H[0x3dec]or z:I(0x7dac,0xe144,0x3dec))or z.H[0x7e60]or z:J(0x4aaa4c,0xd66,0x7e60)end elseif na<0x3a8 then if na<=0x3a1 then na=g<=0 and 0x74a-na or z.K[-0x67c]or z:L(0x117246e,0x6161,-0x67c)else na=da~=da and 0x16b48/na or na+-0x2eb end elseif na<0x3a9 then da=da+ba na=ba>0 and(z.K[0x4941]or z:N(0x3936,0x7152,0x4941))or z.H[0x6fea]or z:I(0x6fb8,0xf1ef,0x6fea)elseif na>0x3a9 then na,j=0x5b0-na,z.c(j(da,E))else na=f<s and(z.K[-0x619e]or z:L(0xf19908,0x4485,-0x619e))or z.K[-0x67c]or z:N(0x15e9,0x5019,-0x67c)end elseif na<=0x395 then if na>0x390 then if na<=0x391 then f=E[0xce9b]ba=Q[f]E[0xce9b]=ba na=w>C and 0x87f82/na or na+-0x2e1 else na,j[0xce9b]=z.K[0x1590]or z:N(0x602b,0x1e78,0x1590),da end elseif na<=0x38c then if na>0x38b then na,y=0x33a6c/na,0b111000 else na,P=z.H[0x7b4e]or z:I(0x75a4,0xee28,0x7b4e),z.c(P(o,J))end else s,na,f,E,ba=k[0b1001][0b10][k[0b1001][1]],0x7a760/na,k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]],"B"end elseif na<=0x39d then if na>0x397 then na,_a=z.H[-0x4b4]or z:I(0x533c,0xce94,-0x4b4),_a(n,i,Q)i,n=1,k[0b1001][0b10][k[0b1001][1]]n=n+i k[0b1001][0b10][k[0b1001][1]],K=n,_a else na,y=z.K[-0x51e5]or z:N(0x60bc,0x1cc0,-0x51e5),0x97 end else na=i<Q and(z.H[-0x4647]or z:J(0x450087,0x78f2,-0x4647))or 0x13b60/na end elseif na<0x432 then if na<0x3df then if na<0x3c9 then if na>0x3c1 then if na>0x3c6 then na,y=na+-0x2de,0b1101111 elseif na<=0x3c4 then na,y=0x36d64/na,0b111000 else a=a(y,j,da)na,y,j=0x389a/na,k[0b1001][0b10][k[0b1001][1]],1 y=y+j k[0b1001][0b10][k[0b1001][1]],_=y,a end elseif na>=0x3ba then if na<0x3bb then na,y=z.H[-0x32f0]or z:I(0x94d,0x95f1,-0x32f0),0xdd elseif na<=0x3bb then na,y=0x4a4-na,0b10010000 else na=_<a and(z.H[0x3dec]or z:I(0x4369,0xdf1b,0x3dec))or 0xc8997/na end elseif na>0x3b4 then na=Q~=Q and 0xcae28/na or na+-0x209 else y=0b10010111 na=p<y and 0x742f8/na or z.H[-0x32f0]or z:J(0x245ee6,0x16ed,-0x32f0)end elseif na<0x3d7 then if na>=0x3cc then if na>0x3cc then y=0b10010111 na=U>y and(z.K[-0x2f83]or z:L(0x2d2235,0x3eba,-0x2f83))or 0x4bd-na else da=da(E,z.d(ba))Q,na,ba,f,E=da,z.H[-0x5c6b]or z:I(0x643,0x9990,-0x5c6b),j,0x80,k[0b11][0b10][k[0b11][1]]end elseif na<=0x3c9 then na,y=0x4b2-na,0x28 else j[0x283c]=da E,na,s,ba,f=k[0b111][0b10][k[0b111][1]],z.K[-0x1e37]or z:L(0x3545935,0x362e,-0x1e37),k[0b1001][0b10][k[0b1001][1]],"B",k[0b100][0b10][k[0b100][1]]end elseif na>=0x3d9 then if na>0x3d9 then j[0x3da3]=da na=c<aa and 0xe5e3e/na or z.K[0x1590]or z:N(0x4b92,0xbc1,0x1590)else na=fa<=0 and 0x6dc-na or na+-0x31a end elseif na>0x3d7 then na=y<=0 and(z.H[-0x2a2c]or z:J(0x560d1e,0xeb0,-0x2a2c))or z.H[0x5b7e]or z:I(0x2217,0x833d,0x5b7e)else na,y=z.K[-0x51e5]or z:N(0x13d9,0x51e3,-0x51e5),0b111000 end elseif na<=0x3f0 then if na<=0x3e7 then if na>0x3e4 then if na>0x3e5 then f=f(s,g)na,s=z.H[0x739d]or z:J(0x1c9e09,0x3a6c,0x739d),0b111 s=_*s else _a=_a(n,i,Q)n=k[0b1001][0b10][k[0b1001][1]]n=n+X na,k[0b1001][0b10][k[0b1001][1]],e=0x413-na,n,_a end elseif na<0x3e1 then na=y>j and(z.K[0x19d2]or z:L(0x5383f1,0x6868,0x19d2))or z.K[-0x3395]or z:N(0x64da,0x2060,-0x3395)elseif na<=0x3e1 then na=da<=0 and 0xa9b3c/na or z.K[-0x65bc]or z:N(0x51e9,0x138e,-0x65bc)else na=_<=0 and 0x5b7-na or 0x1f9c8/na end elseif na<=0x3ee then if na<0x3eb then na=y>j and 0x44c-na or na+-0x1e9 elseif na>0x3eb then na,y=na+-0x305,0x3c else na,y=0x390e3/na,0b10010000 end else na,v=z.K[-0x149e]or z:N(0x1bda,0x5b97,-0x149e),v(G,ia)G=0b111 G=da*G end elseif na<=0x3f6 then if na<=0x3f5 then if na<0x3f4 then y=0b10010000 na=ka<=y and(z.K[-0x291d]or z:L(0x34961e,0x600d,-0x291d))or 0x3982b/na elseif na>0x3f4 then y=y(j,z.d(da))da,na,n,j,E=a,z.H[-0x5888]or z:J(0x10b5d96,0x64b1,-0x5888),y,k[0b11][0b10][k[0b11][1]],0b10000000 else na=y<j and na+-0x390 or 0x4ab-na end else na,y=z.K[-0x51e5]or z:L(0x45fb18,0x4c21,-0x51e5),0b111000 end elseif na>=0x3fc then if na<=0x3fc then na=ba~=ba and(z.H[-0x1582]or z:J(0xc652f1,0x445a,-0x1582))or 0x52d-na else na,y=0x4e6-na,0b10010000 end else na,ia=z.H[-0x2886]or z:I(0x2216,0xbce0,-0x2886),z.c(ia(P,o))end elseif na>=0x953 then if na>=0xdb1 then if na<=0xe9d then if na<=0xddd then if na>=0xdcb then if na>0xdcb then E=E(ba,f,s)f,ba=1,k[0b1001][0b10][k[0b1001][1]]ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba na=la>f and na+-0xbb6 or 0xec6-na else na=g<=0 and na+-0x28f or z.K[0x2b3f]or z:L(0x18c7259,0x1ad4,0x2b3f)end else na,E=na+-0xc12,E(ba,f,s)ba,f=k[0b1001][0b10][k[0b1001][1]],0b10 ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba end elseif na<=0xe1b then E=E(ba,f,s)f,ba=0b101,k[0b1001][0b10][k[0b1001][1]]na,ba=z.H[-0x850]or z:J(0x2cb71c,0x3de8,-0x850),ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba else na=i>Q and 0xf8c-na or z.K[0x34a]or z:N(0x44f6,0x7ecd,0x34a)end elseif na>=0xf48 then if na>0xf48 then E=E(ba,f,s)na,f,ba=z.H[0x472d]or z:J(0x6640ec,0x777,0x472d),1,k[0b1001][0b10][k[0b1001][1]]ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba else E=E(ba,f,s)f,ba=0b10,k[0b1001][0b10][k[0b1001][1]]ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba na=l<=f and 0x11b1-na or z.K[0x3683]or z:L(0x58c4ed,0x1a17,0x3683)end elseif na<=0xeae then E=E(ba,f,s)f,ba=1,k[0b1001][0b10][k[0b1001][1]]na,ba=z.K[-0x3cf3]or z:N(0x38d8,0x75d9,-0x3cf3),ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E else na=g~=g and na+-0xb45 or 0x11a9-na end elseif na<0xb0c then if na<0xa2d then if na<=0x953 then E=E(ba,f,s)ba,f=k[0b1001][0b10][k[0b1001][1]],1 ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba na=t<f and na+-0x854 or z.K[-0x1d68]or z:N(0x34a6,0x73cf,-0x1d68)else E=E(ba,f,s)f,ba=1,k[0b1001][0b10][k[0b1001][1]]ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba na=ea>=f and na+-0x7d8 or 0xa4e-na end elseif na<=0xa2d then E=E(ba,f,s)f,ba=0b10,k[0b1001][0b10][k[0b1001][1]]ba=ba+f da,na,k[0b1001][0b10][k[0b1001][1]]=E,0xb44-na,ba else na,E=na+-0x6a7,E(ba,f,s)f,ba=1,k[0b1001][0b10][k[0b1001][1]]ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E end elseif na<0xbc9 then if na>0xb0c then na=f<s and 0x278a2c/na or 0x1a06-na else E=E(ba,f,s)ba,na,f=k[0b1001][0b10][k[0b1001][1]],0xd0f-na,1 ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E end elseif na<=0xbc9 then E=E(ba,f,s)f,ba=1,k[0b1001][0b10][k[0b1001][1]]ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E na=S>=f and na+-0x84f or z.H[0x4839]or z:J(0x660b55,0x6d54,0x4839)else E=E(ba,f,s)f,ba=0b10,k[0b1001][0b10][k[0b1001][1]]na,ba=z.H[0x7f7a]or z:J(0xe1192c,0x4789,0x7f7a),ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E end elseif na>0x718 then if na>0x8ad then if na<0x922 then na,E=0x984-na,E(ba,f,s)ba,f=k[0b1001][0b10][k[0b1001][1]],1 ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E elseif na<=0x922 then na=_~=_ and(z.H[-0x4647]or z:I(0x597a,0xc51e,-0x4647))or na+-0x8cb else E=E(ba,f,s)f,ba=1,k[0b1001][0b10][k[0b1001][1]]ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba na=ma>=f and(z.H[-0x625c]or z:J(0x3d148b,0x2262,-0x625c))or 0xf1234/na end elseif na>0x84d then na,E=na+-0x71f,E(ba,f,s)f,ba=0b10,k[0b1001][0b10][k[0b1001][1]]ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E elseif na>=0x83d then if na<=0x83d then E=E(ba,f,s)ba,na,f=k[0b1001][0b10][k[0b1001][1]],na+-0x52e,1 ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba else na=da<E and 0xb12-na or z.H[0x51d0]or z:I(0x789,0x98cf,0x51d0)end else na,E=0x8bb08/na,E(ba,f,s)f,ba=1,k[0b1001][0b10][k[0b1001][1]]ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E end elseif na<=0x646 then if na>=0x552 then if na>=0x615 then if na<=0x615 then E=E(ba,f,s)ba,f=k[0b1001][0b10][k[0b1001][1]],1 na,ba=z.H[-0x262d]or z:J(0xf6aa54,0x6ccf,-0x262d),ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba else na=f>s and na+-0x2c1 or z.K[-0x54ac]or z:N(0x570b,0xa53,-0x54ac)end else E=E(ba,f,s)f,ba=1,k[0b1001][0b10][k[0b1001][1]]ba=ba+f k[0b1001][0b10][k[0b1001][1]],na,da=ba,na+-0x24b,E end elseif na<=0x432 then E=E(ba,f,s)ba,na,f=k[0b1001][0b10][k[0b1001][1]],0x5a1-na,0b10 ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E else na,E=z.H[0x6b4a]or z:J(0x3ab96,0x30f8,0x6b4a),E(ba,f,s)ba,f=k[0b1001][0b10][k[0b1001][1]],1 ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E end elseif na>0x6f5 then na=_<=0 and na+-0x47d or z.K[0x4107]or z:L(0x4dd003,0x879,0x4107)elseif na<0x6a4 then E=E(ba,f,s)ba,f=k[0b1001][0b10][k[0b1001][1]],1 ba=ba+f da,k[0b1001][0b10][k[0b1001][1]]=E,ba na=x>f and(z.H[-0x2197]or z:J(0x3806d7,0x2624,-0x2197))or na+-0x598 elseif na<=0x6a4 then E=E(ba,f,s)na,f,ba=na+-0x53f,1,k[0b1001][0b10][k[0b1001][1]]ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E else na=da>E and(z.K[0x622]or z:L(0x205734,0xbe1,0x622))or z.K[-0x592a]or z:N(0x528d,0xc5c,-0x592a)end elseif na>0b11100000 then if na>=0b101100011 then if na<=0b111000001 then if na<0x196 then if na>=0x17a then if na<=0x17f then if na>=0x17d then if na>=0x17e then if na<=0b101111110 then y=0b111000 na=r>=y and(z.H[-0x32f0]or z:J(0xcd11d,0x3f0e,-0x32f0))or 0x269-na else na,y=z.H[-0x32f0]or z:J(0xb4b91,0x3d72,-0x32f0),0b10010111 end else na=da~=da and 0x571-na or z.K[-0x79e3]or z:N(0x5e9b,0x18f2,-0x79e3)end elseif na<=0b101111010 then na,y=0x263-na,0x97 else na=_<a and 0b110101101-na or 0xe9ea/na end elseif na>=0x18e then if na>0x18e then na,f=0x37866/na,k[0b101][0b10][k[0b101][1]]else na,j[0x221d]=z.H[0x5ce1]or z:I(0x37d4,0xa881,0x5ce1),da end elseif na<=0x184 then s=s(g,fa,v)g=k[0b1001][0b10][k[0b1001][1]]g=g+ba na,k[0b1001][0b10][k[0b1001][1]],E=z.K[0x3145]or z:L(0x858aad,0x6014,0x3145),g,s else na=i<=0 and(z.H[0x508]or z:J(0x14e0cfd,0x58ae,0x508))or z.H[0x3b57]or z:I(0x606b,0xc0c8,0x3b57)end elseif na<=0b101101000 then if na>0b101100110 then if na<=0x167 then na=da<=0 and na+0b10011011 or z.K[-0x7cac]or z:L(0xbc8472,0x5b6d,-0x7cac)else da(E,ba)da=0x6f na=y<da and 0x40a-na or z.H[-0x6266]or z:I(0x6cfe,0xf43a,-0x6266)end elseif na>=0b101100101 then if na>0x165 then na=ba~=ba and 0x3fe42/na or 0x22dfa/na else j[0x283c]=da ba,f,s,na,E="B",k[0b100][0b10][k[0b100][1]],k[0b1001][0b10][k[0b1001][1]],0xf42-na,k[0b111][0b10][k[0b111][1]]end else f=k[0b110][0b10][k[0b110][1]]ba=f[E]na,a[y]=0x2e8ab/na,ba end elseif na>=0x16e then if na>0x16e then na,j[0xf47a]=na+0x73e,da s,f,ba,E=k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]],z.H[-0x6b18]or z:M(z.k"T?$b",z.k"V*",-0x6b18),k[0b111][0b10][k[0b111][1]]else na=_a<n and 0xc6ba/na or z.H[0x3416]or z:I(0x5725,0xcab4,0x3416)end else y=y(j,da)a=not y na=a and na+-0b100100111 or na+-0x126 end elseif na<=0x1ac then if na>0x1a0 then if na>0x1a8 then na,y=z.H[-0x32f0]or z:I(0x3120,0xada2,-0x32f0),0b10010111 elseif na<0x1a4 then j=0xad na=a>j and(z.K[0x1a9a]or z:L(0xeedd77,0x709d,0x1a9a))or z.K[-0x687b]or z:L(0x1274969,0x7eb4,-0x687b)elseif na>0b110100100 then f="c"f,ba=k[0b111][0b10][k[0b111][1]],f..E na,g,s,fa=0x4f9-na,k[0b100][0b10][k[0b100][1]],ba,k[0b1001][0b10][k[0b1001][1]]else n=n(i,Q,_)i=k[0b1001][0b10][k[0b1001][1]]i=i+K k[0b1001][0b10][k[0b1001][1]],X=i,n na=d<=M and(z.H[0x5ccf]or z:I(0x6305,0xffb9,0x5ccf))or na+0x236 end elseif na>=0b110011101 then if na<0x19f then na=y>j and(z.H[0x3d9c]or z:I(0x5ebc,0xc065,0x3d9c))or z.H[0x5fbf]or z:I(0x6b1e,0xf7b9,0x5fbf)elseif na<=0b110011111 then na,j[0xce9b]=0x47540/na,da else na,y=z.H[-0x32f0]or z:J(0x3eb9e3,0x75f0,-0x32f0),0x28 end elseif na<=0b110010110 then Q=Q(_,z.d(a))na,_,a,y,X=z.H[0x6575]or z:J(0x2a3f38,0x635,0x6575),k[0b11][0b10][k[0b11][1]],i,0b10000000,Q else na=_~=_ and(z.H[-0x26d9]or z:J(0x38169c,0x5ddc,-0x26d9))or z.H[-0xabf]or z:I(0x6317,0xff00,-0xabf)end elseif na>0b110110100 then if na>0x1b9 then y=0b10010111 na=T>=y and(z.K[-0x51e5]or z:N(0x12d2,0x52fa,-0x51e5))or z.K[-0x65de]or z:L(0x23f43f,0x2aff,-0x65de)elseif na>0b110110110 then f=z.K[0xdd9]or z:O(z.k"l*0",z.k"ss",0xdd9)ba,f=f..E,k[0b111][0b10][k[0b111][1]]na,s,fa,g=0x5e19a/na,ba,k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]]else na=da<=0 and(z.H[-0x2855]or z:I(0x72f6,0xec48,-0x2855))or z.H[-0x60f5]or z:J(0x376284,0xe1f,-0x60f5)end elseif na>=0x1b1 then if na>0x1b2 then _=_(a,z.d(y))na,K,a,y,j=0x2de-na,_,k[0b11][0b10][k[0b11][1]],Q,0b10000000 elseif na<=0b110110001 then na=da<E and na+0b100101010 or 0x340-na else na,y=z.K[-0x51e5]or z:L(0x2dead7,0x31d6,-0x51e5),0xb4 end elseif na>0b110101101 then na=Q<=0 and(z.H[0x4e3d]or z:J(0x49e9b8,0x24a8,0x4e3d))or z.H[0x7986]or z:J(0x142d0a,0x291d,0x7986)else na=i>Q and na+-0b10111110 or na+0b11100010 end elseif na<=0b111100101 then if na>=0b111010011 then if na<=0x1dd then if na<0x1d6 then if na<=0b111010011 then na=i<Q and(z.H[-0x26d9]or z:J(0x187644,0x1e6a,-0x26d9))or z.H[-0xabf]or z:J(0x3efc10,0x4d13,-0xabf)else na=_a>n and(z.H[-0x3d0d]or z:I(0x5d73,0xc17d,-0x3d0d))or na+0xa3 end elseif na>=0x1da then if na<=0b111011010 then E=0b11 na=j==E and(z.K[-0x19d8]or z:L(0x118f8ea,0x64a3,-0x19d8))or z.K[-0xa40]or z:L(0x6dc3d1,0x578f,-0xa40)else y=0b111000 na=I>y and(z.H[-0x32f0]or z:J(0x3899b0,0xf2b,-0x32f0))or na+-0xed end else na,y=na+-0b11101101,0b10010111 end elseif na>=0b111100100 then if na>0b111100100 then y=0x3c na=B<y and(z.H[-0x7169]or z:J(0xbe880,0x3a7b,-0x7169))or z.K[-0x51e5]or z:L(0x417ef6,0x484f,-0x51e5)else na=_<a and na+-0b100001001 or z.H[0x4971]or z:J(0x19ef5d,0x1108,0x4971)end elseif na<=0b111100001 then na,j[0xb2e]=0x4a1-na,da else na=da<E and na+0b11111000 or 0x2a372/na end elseif na<=0b111001011 then if na<0x1c8 then if na<=0b111000010 then y=y+da na=da>0 and(z.H[0x3d17]or z:J(0x321838,0x3dc8,0x3d17))or 0x3c1-na else na,j[0xb2e]=0x110e-na,da f,ba,E,s=k[0b100][0b10][k[0b100][1]],z.K[0x51ac]or z:O(z.k"VK!|",z.k"Uj",0x51ac),k[0b111][0b10][k[0b111][1]],k[0b1001][0b10][k[0b1001][1]]end elseif na<0x1ca then da=0xdd na=y>da and 0x4dd-na or 0x414-na elseif na<=0x1ca then na,y=z.K[-0x51e5]or z:N(0x7dde,0x3fe6,-0x51e5),0b101000 else na=y>0 and(z.H[-0x6a64]or z:I(0x591b,0xc8fd,-0x6a64))or 0x23694/na end elseif na<0x1cf then na,y=z.H[-0x32f0]or z:I(0x5761,0xcbed,-0x32f0),0b10010111 elseif na>0b111001111 then na,y=z.H[-0x32f0]or z:J(0x38d307,0xf74,-0x32f0),0x38 else na,s=z.K[0x5223]or z:N(0x4529,0x2c3,0x5223),z.c(s(g,fa))end elseif na<=0x1ff then if na<=0x1f2 then if na<=0b111101000 then if na<=0x1e7 then if na<=0b111100110 then na,j[0xd917]=0x53880/na,da else G=G(ia,z.d(P))o,f,ia,na,P=0x80,G,k[0b11][0b10][k[0b11][1]],z.H[-0x6351]or z:J(0xae32f2,0x7d65,-0x6351),v end else na,y=0x33f20/na,z.c(y(j,da))end elseif na>0x1ee then j[0x283c]=da E,ba,f,na,s=k[0b111][0b10][k[0b111][1]],"B",k[0b100][0b10][k[0b100][1]],z.H[0xf51]or z:J(0xe182f8,0x2571,0xf51),k[0b1001][0b10][k[0b1001][1]]else na,y=0x2d7-na,0x38 end elseif na<0x1f6 then da=0b10010000 na=y<=da and 0x43db7/na or z.H[0x8c6]or z:I(0x637c,0xffd3,0x8c6)elseif na>0b111110110 then na=da<=0 and(z.H[-0x63e7]or z:J(0x16bb1c3,0x5e9a,-0x63e7))or 0x5a1-na else y=0x38 na=u<=y and 0x1c8e6/na or z.K[0x371a]or z:N(0x189e,0x5b72,0x371a)end elseif na>0x203 then if na>0x207 then na=i<=0 and na+-0x9b or 0x20d-na elseif na<=0x205 then na,a=na+-0b10011001,a(y,z.d(j))j,y,_a,da=_,k[0b11][0b10][k[0b11][1]],a,0b10000000 else na=ba>0 and 0x319-na or 0x813e4/na end elseif na>=0x202 then if na>0x202 then j[0xb2e]=da ba,na,s,E,f="B",z.K[0x29c7]or z:L(0x546c15,0xdf4,0x29c7),k[0b1001][0b10][k[0b1001][1]],k[0b111][0b10][k[0b111][1]],k[0b100][0b10][k[0b100][1]]else na=y<j and(z.K[0x19d2]or z:N(0x3713,0x7554,0x19d2))or 0x411-na end elseif na<=0x200 then y=0x97 na=Y>=y and 0x2cc-na or z.H[-0x32f0]or z:I(0x699d,0xf521,-0x32f0)else na,y=z.K[-0x51e5]or z:N(0x7e17,0x3e3d,-0x51e5),0b10010000 end elseif na>0b100011001 then if na<=0x13f then if na>=0b100101101 then if na<0x137 then if na>=0x131 then if na<=0b100110001 then na=ba<=0 and na+0x80 or z.H[-0x7cd7]or z:I(0x66fe,0xf8fa,-0x7cd7)else f,s,E,na,ba=k[0b100][0b10][k[0b100][1]],k[0b1001][0b10][k[0b1001][1]],k[0b111][0b10][k[0b111][1]],na+0x56e,"B"end elseif na>0x12d then na=fa>0 and(z.K[-0x4188]or z:L(0x73688,0x325,-0x4188))or z.H[0x6887]or z:J(0x3f0f31,0x4a20,0x6887)else v=v(G,ia,P)G,na,ia=k[0b1001][0b10][k[0b1001][1]],na+-0x7f,1 G=G+ia k[0b1001][0b10][k[0b1001][1]],fa=G,v end elseif na>=0x139 then if na>=0x13c then if na>0x13c then s,ba,na,f,E=k[0b1001][0b10][k[0b1001][1]],"B",z.K[0x6d98]or z:N(0x659a,0x27af,0x6d98),k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]]else na=y~=y and 0x320-na or z.H[0x76a1]or z:I(0x7bf9,0xe754,0x76a1)end else na,E=z.H[-0x7c77]or z:I(0x1bb8,0x87c0,-0x7c77),""end elseif na>0b100110111 then na=y<=0 and na+0xac or 0xfc48/na else na=n<i and na+-0b11110010 or z.H[0x6a8d]or z:J(0x61f020,0x1935,0x6a8d)end elseif na<0x128 then if na<=0x120 then if na<=0x11f then if na>0x11b then j=0b1001010 na=a<=j and(z.K[0x45e8]or z:L(0x47efc1,0x12f4,0x45e8))or z.K[0x2d18]or z:N(0x4b4a,0xa4f,0x2d18)else f=f+g na=g>0 and(z.K[-0x2b2d]or z:L(0x148bf93,0x344b,-0x2b2d))or z.H[0x2193]or z:J(0x5c462ee,0x5a11,0x2193)end else na=y>j and(z.H[0x72e9]or z:I(0x2fdd,0xb236,0x72e9))or na+0b100111111 end else j=0b1000000 na=a<=j and(z.K[0x5d1a]or z:N(0xe8a,0x48f9,0x5d1a))or z.K[0x1435]or z:L(0x23ee27,0xed2,0x1435)end elseif na>0x12a then na,a=0x1da32/na,z.c(a(y,j))elseif na>0b100101001 then a=a(y,j)_=not a na=_ and(z.H[-0x3d0d]or z:J(0x66a7b,0x3aca,-0x3d0d))or 0x1bd-na elseif na>0b100101000 then na=da>0 and(z.H[0xa8a]or z:J(0x1e5b80,0x2be7,0xa8a))or z.H[0x235d]or z:I(0x20e4,0x8310,0x235d)else na,j[0xb2e]=z.H[-0x1d49]or z:J(0x10a93e1,0x287a,-0x1d49),da s,E,f,ba=k[0b1001][0b10][k[0b1001][1]],k[0b111][0b10][k[0b111][1]],k[0b100][0b10][k[0b100][1]],"B"end elseif na<=0x152 then if na<0b101001100 then if na<=0x143 then if na<0x141 then na,Q[_]=0x36c40/na,da elseif na<=0b101000001 then na,y=z.H[-0x32f0]or z:I(0x45f8,0xd89a,-0x32f0),0x97 else na,y=na+-0b1011010,0b111000 end else s="c"na,s,f=0x2c9-na,k[0b111][0b10][k[0b111][1]],s..ba fa,g,v=k[0b100][0b10][k[0b100][1]],f,k[0b1001][0b10][k[0b1001][1]]end elseif na<0b101010001 then if na>0x14c then na,y=z.H[-0x32f0]or z:I(0x96e,0x9510,-0x32f0),0b11011101 else na=da~=da and(z.K[0xea]or z:N(0x678e,0x2447,0b11101010))or na+-0b1101011 end elseif na>0x151 then j[0x283c]=da E,s,f,na,ba=k[0b111][0b10][k[0b111][1]],k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]],0x1213b2/na,z.K[-0xcc1]or z:O(z.k"tK6p",z.k"l>",-0xcc1)else f=E[0x2147]na,ba=na+0b1110001,Q[f]E[0x2147]=ba end elseif na<=0b101010111 then if na<=0b101010110 then if na>=0x154 then if na>0b101010100 then na=da>0 and na+0x47 or z.H[0x5fbf]or z:I(0x25c,0x9cff,0x5fbf)else na,y=z.K[-0x51e5]or z:L(0x245e8c,0x2895,-0x51e5),0b10010111 end else y=0x97 na=D<=y and 0x1348b/na or 0x2d2-na end else da=da(E,ba,f)ba,E=1,k[0b1001][0b10][k[0b1001][1]]E=E+ba j,k[0b1001][0b10][k[0b1001][1]]=da,E na=F<ba and na+-0b10011010 or z.H[-0x1905]or z:J(0x2f72fa,0x2f2,-0x1905)end elseif na>0x160 then na,y=0x24a-na,0b111000 elseif na>0b101011010 then na,j=z.H[0x5453]or z:I(0x9a7,0x9a2a,0x5453),j(da,E)da=0b111 da=_a*da else na=_<a and(z.H[0x471c]or z:I(0x689b,0xf5fc,0x471c))or 0x4c9-na end elseif na>=0xf8 then if na<=0b100001000 then if na>0b11111111 then if na<=0b100000110 then if na<=0x105 then if na>0x103 then y=0b10010000 na=ha>=y and 0x1b0-na or z.H[-0x32f0]or z:I(0xd17,0x91bb,-0x32f0)else na=n<=0 and 0x336-na or 0xefc7/na end else na=da>0 and 0x407-na or z.K[0x41]or z:L(0x1fa54b,0x14e2,0x41)end else na=K>_a and 0b101111000-na or z.H[0x1575]or z:I(0x5662,0xceea,0x1575)end elseif na<=0xfc then if na>=0xfb then if na<=0xfb then j=0b11000011 na=a<j and(z.H[-0x2d93]or z:I(0x2a11,0xb4c1,-0x2d93))or 0b111010001-na else j=0xb7 na=a<=j and 0x5e8/na or na+-0b110110 end else j=0b10001110 na=a<=j and 0x1f000/na or z.K[0x4402]or z:L(0x4c456b,0x3cfe,0x4402)end elseif na>0b11111110 then da=da+ba na=ba>0 and(z.K[-0x5536]or z:L(0xf4c259,0x4e9e,-0x5536))or z.K[-0x78a]or z:N(0x3ed4,0x7ed7,-0x78a)else a,na,y=k[0b10][0b10][k[0b10][1]],na+0x145,_ end elseif na>0b100010011 then if na>0b100010111 then na=y<j and(z.H[0x72e9]or z:I(0x1270,0x8fa3,0x72e9))or 0b111111010-na elseif na>0b100010110 then na,j[0x221d]=z.K[0x1590]or z:L(0x62cd11,0x23d0,0x1590),da else na=ba<=0 and na+0b100000111 or na+0b110110110 end elseif na>=0x110 then if na<0x112 then na=ba<=0 and 0x20130/na or na+0b1010110 elseif na>0x112 then P=P(o,J)na,o=z.H[0x3ec7]or z:I(0x36d7,0xaf4b,0x3ec7),0b111 o=f*o else na=da>E and(z.H[-0x1749]or z:J(0x11ab1,0x3178,-0x1749))or na+0x2ea end elseif na>0b100001001 then y=y+da na=da>0 and 0x4eb-na or z.H[0x6946]or z:I(0x669a,0xf8a6,0x6946)else na=_>a and na+-0xd7 or 0x317e5/na end elseif na>=0xee then if na>0b11110011 then if na<=0b11110101 then if na>0xf4 then j=0b10001010 na=a<=j and(z.K[-0xfb2]or z:L(0x5be1e9,0x17c8,-0xfb2))or z.H[-0x5534]or z:J(0x2e1be3,0x702c,-0x5534)else j=0b1110 na=a<=j and(z.H[0x6d2d]or z:J(0x173249,0x1294,0x6d2d))or z.K[0x180f]or z:L(0x3803d8,0x4425,0x180f)end else j=0b1000 na=a>=j and 0x27c24/na or z.H[-0x2163]or z:I(0xe74,0x977d,-0x2163)end elseif na>0b11110000 then if na>0xf2 then D,R,j=0b101001,0x1e,0b1110100 na=a>j and na+-0b10111011 or 0x5d06/na else na=da~=da and(z.H[-0x68e9]or z:I(0x4b4a,0xd4a7,-0x68e9))or na+0x1dd end elseif na<=0xef then if na<=0b11101110 then na,y=na+-0b101,0xee else Q,_,a,y=0,0,0b100,1 na=a~=a and na+-0x14 or 0x1ac85/na end else e=""na=ca>A and na+-0xc2 or z.H[0x7b83]or z:I(0x914,0x95d2,0x7b83)end elseif na<0b11101010 then if na<0xe6 then if na>0xe1 then na,y=na+0b110,0x97 else g,fa,f,s=0b100,1,0,0 na=g~=g and 0x2a30/na or 0x210-na end elseif na<=0xe6 then j=0xf5 na=a>j and(z.K[0x47d6]or z:L(0x27071,0x582c,0x47d6))or z.K[-0xedc]or z:L(0xf4344,0x7bb5,-0xedc)else da={}da[0xe09d]=a E=0 da[0x283c]=E E=0 da[0xb2e]=E E=0 da[0xc32]=E E=0 da[0x3da3]=E E=0 da[0xce9b]=E E=0 da[0x2147]=E na,E=0x251-na,0 da[0x5a98]=E E=0 da[0xf47a]=E E=0 da[0x221d]=E E=0 da[0xd917]=E da,E,j=k[0b1010][0b10][k[0b1010][1]],n,da ba=j end elseif na<=0b11101100 then if na>=0b11101011 then if na<=0xeb then m,j=0,0b101110 na=a<=j and(z.H[-0x2870]or z:I(0x1fbc,0x8222,-0x2870))or z.H[-0x6fa0]or z:I(0xfc1,0x92b4,-0x6fa0)else na=_>a and(z.H[0x3dec]or z:I(0x6975,0xf50f,0x3dec))or z.H[-0x5631]or z:I(0x6f3d,0xf10f,-0x5631)end else E,da=0b10,nil na=j==E and(z.H[0x32d2]or z:I(0xde,0x9d81,0x32d2))or 0x150-na end else y,a,na,Q,_=k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]],0x3ef-na,k[0b111][0b10][k[0b111][1]],"B"end elseif na>=0x82 then if na<=0b10110101 then if na>0b10011011 then if na>=0xab then if na<0b10110000 then if na<0xae then if na>0b10101011 then j=0b1101101 na=a>j and na+-0b1010111 or na+-0b110000 else na,y=z.K[-0x51e5]or z:L(0x70c701,0x7b90,-0x51e5),0x97 end elseif na<=0xae then G,J,P,v,o,na,ia=ba,0x7f,k[0b1011][0b10][k[0b1011][1]],k[0b1000][0b10][k[0b1000][1]],fa,0b111000001-na,k[1][0b10][k[1][1]]else na,y=0b110011000-na,0b111000 end elseif na>0b10110100 then y=0b111000 na=h<=y and na+-0b10000100 or na+0b110100 elseif na>0xb2 then j,u=0b10011,0b111000 na=a>j and 0x19f-na or z.H[0x1ddf]or z:J(0x38600,0x343b,0x1ddf)elseif na<=0xb0 then j=0b1011 na=a<=j and 0x12c-na or na+0x44 else na=i>Q and(z.H[-0x26d9]or z:I(0x5e45,0xc054,-0x26d9))or 0x6e8e/na end elseif na<=0b10100001 then if na<0b10011111 then if na<=0b10011101 then j=0b1010110 na=a<=j and 0b111110000-na or na+0x130 else da,na,E,f,ba=k[0b111][0b10][k[0b111][1]],z.H[0b10010101]or z:J(0xa4b4e2,0x4bf5,0x95),"B",k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]]end elseif na<=0b10100000 then if na>0b10011111 then j=0x3e na=a>=j and 0x3a20/na or z.H[0x4043]or z:J(0x31f452,0x49be,0x4043)else na=_<=0 and(z.H[-0x15ce]or z:J(0x143a67a,0x4ff9,-0x15ce))or z.H[0x53ca]or z:I(0x398f,0xaa60,0x53ca)end else na,v=z.K[-0x48f5]or z:N(0x2fba,0x6de0,-0x48f5),v(G,z.d(ia))G,ba,ia,P=k[0b11][0b10][k[0b11][1]],v,fa,0b10000000 end elseif na<0b10100011 then j=0b1001110 na=a>=j and(z.K[0x2cf8]or z:N(0x7b2f,0x3baa,0x2cf8))or z.H[0x673d]or z:I(0x4b6d,0xd7db,0x673d)elseif na>0xa3 then j=0b1101 na=a<j and(z.K[-0x1adb]or z:N(0x1409,0x5278,-0x1adb))or z.H[0x51cc]or z:J(0xb290c2,0x7a74,0x51cc)else j=0b1111011 na=a<=j and(z.H[-0x5295]or z:J(0x59eafc,0x4b6a,-0x5295))or 0x26d7/na end elseif na>0x8d then if na<0x97 then if na<0b10010101 then if na<=0x8e then j=0b1100001 na=a>=j and(z.H[-0x5eaf]or z:J(0xae36f,0x5626,-0x5eaf))or na+0x52 else _a=_a+i na=i>0 and 0x13056/na or 0xe2d1/na end elseif na<=0x95 then na,X=0x7e4d/na,""else j=0x4f na=a>j and(z.H[0x1ce7]or z:J(0x2c3a7b,0x6c88,0x1ce7))or z.H[0x34bb]or z:I(0xc6a,0x9632,0x34bb)end elseif na<0b10011001 then if na<=0b10010111 then j=0x96 na=a<=j and(z.K[-0x5401]or z:N(0x6742,0x2081,-0x5401))or na+0x246 else na,O,T,_a,Q,N,n,i=z.H[0x55a7]or z:I(0x7fef,0xe1c7,0x55a7),0xa7,0xc8,k[0b111][0b10][k[0b111][1]],k[0b1001][0b10][k[0b1001][1]],0b1100,"B",k[0b100][0b10][k[0b100][1]]end elseif na<=0x99 then K=K+n na=n>0 and(z.H[0x3624]or z:J(0x50b200,0x7f5b,0x3624))or 0x1b9ab/na else j=0xa9 na=a<j and 0x2f8-na or z.H[0x2f3d]or z:I(0x510d,0xd028,0x2f3d)end elseif na>=0b10000111 then if na<0b10001011 then if na>0x87 then f,ba,s,g=0,0,0b100,1 na=s~=s and na+0x2fd or z.H[0x1c38]or z:I(0x8123,0xe292,0x1c38)else s,na,E,f,ba=k[0b1001][0b10][k[0b1001][1]],z.H[-0x1df4]or z:J(0x40b2bb0,0x7aba,-0x1df4),k[0b111][0b10][k[0b111][1]],k[0b100][0b10][k[0b100][1]],z.K[0x51ac]or z:O(z.k"qV=u",z.k"oB",0x51ac)end elseif na<=0x8c then if na>0x8b then j=0x8c na=a<=j and na+-0b1101100 or z.H[-0x150d]or z:J(0x5413b0,0x67d1,-0x150d)else na,X=0b11000111-na,K end else n=n(i)i,_,Q=1,1,_a na=Q~=Q and(z.H[-0x4647]or z:J(0x761d3c,0x4f9f,-0x4647))or z.H[0x724a]or z:I(0x573c,0xc944,0x724a)end elseif na>=0x84 then if na<0x85 then na,r,_a,x=z.H[-0x5971]or z:I(0x56e0,0xcb80,-0x5971),0xda,n,0xf9 elseif na<=0b10000101 then na,y=z.K[-0x51e5]or z:L(0x722939,0x7de8,-0x51e5),0b10010111 else na,y=z.H[-0x32f0]or z:I(0x735e,0xefe0,-0x32f0),0b101000 end elseif na>0x82 then na=fa~=fa and na+0x280 or z.H[-0x5362]or z:J(0x1452080,0x659b,-0x5362)else da,j,y,na,E=k[0b100][0b10][k[0b100][1]],"B",k[0b111][0b10][k[0b111][1]],0x136c8/na,k[0b1001][0b10][k[0b1001][1]]end elseif na<0xcb then if na>=0xc1 then if na<0b11000110 then if na>=0xc3 then if na>0xc3 then _=_(a,y)Q=not _ na=Q and 0x55c0/na or z.H[-0x2388]or z:J(0x22a07,0x3284,-0x2388)else j=0b1001010 na=a<j and 0xf4-na or na+-0b100001 end elseif na>0b11000001 then na=ba>0 and 0x2391e/na or 0x24600/na else na,j[0x283c]=z.K[0x1590]or z:L(0x12e6911,0x6e20,0x1590),da end elseif na<0b11001000 then if na<=0xc6 then na,y=z.K[-0x51e5]or z:L(0x397c43,0x3f82,-0x51e5),0x90 else G=G(ia,P)v=not G na=v and 0x44c-na or 0xdbfd/na end elseif na>0xc8 then na,E,ba,s,f=0x3fa-na,k[0b111][0b10][k[0b111][1]],z.H[0x307c]or z:M(z.k";ky",z.k"-v",0x307c),k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]]else j=0b10111001 na=a<=j and(z.H[-0x151b]or z:J(0x7577ac,0x464e,-0x151b))or z.H[-0x2c99]or z:J(0x2819f,0x40,-0x2c99)end elseif na>0b10111100 then if na<0xbf then j=0xbf na=a>j and 0x477-na or 0x4a8-na elseif na<=0xbf then P,G,ia,na,o=k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]],"B",0x391-na,k[0b1001][0b10][k[0b1001][1]]else na,y=0x1a9-na,0b111000 end elseif na>0xb9 then if na<=0b10111010 then j=0b11001110 na=a>j and(z.H[0x47e0]or z:I(0x3974,0xa563,0x47e0))or na+-0b10100000 else j=0b1111000 na=a>=j and(z.K[0x75e7]or z:N(0x8293,0x3cc8,0x75e7))or z.K[-0xed9]or z:N(0x720,0x4030,-0xed9)end elseif na<0xb8 then E=n[y]f,ba=0,E[0xce9b]na=ba~=f and(z.K[-0x383c]or z:L(0x44c9f2,0x1333,-0x383c))or 0x1b40e/na elseif na<=0xb8 then j=0xab na=a>j and 0x29d-na or z.K[0xd3c]or z:L(0x126f8e9,0x6321,0xd3c)else j,h=0x88,0x57 na=a>=j and na+-0x2d or 0b101011100-na end elseif na>0xd6 then if na>0xdc then if na<=0xdf then if na>0b11011110 then y=0xee na=oa>=y and na+-0b1000010 or z.H[-0x32f0]or z:I(0x5498,0xce3a,-0x32f0)else E=E(ba,f,s)na,ba,f=z.H[-0x76df]or z:I(0x726e,0xf2b0,-0x76df),k[0b1001][0b10][k[0b1001][1]],1 ba=ba+f k[0b1001][0b10][k[0b1001][1]],da=ba,E end else j=0b1011110 na=a>j and(z.K[0x1df4]or z:L(0x8ac3d7,0x3c96,0x1df4))or 0x374a0/na end elseif na<=0b11011011 then if na>=0xd9 then if na>0b11011001 then i,w,na,C,F=Q,0b10010110,z.H[-0x3dd8]or z:I(0x6942,0xf48d,-0x3dd8),0x60,0x9c else _a,n={},0 _a[0x6011]=n n=0 _a[0x4db7]=n n=0 _a[0xb3c1]=n i={}n=i _a[0x869a]=n i={}n=i _a[0xbf9f]=n i={}n=i _a[0x51f]=n _a[0x7a5f]=e _a[0x74c4]=X K=_a return K end else na,y,a,da,j=na+0x2ef,"B",k[0b111][0b10][k[0b111][1]],k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]]end else s,na,E,ba,f=k[0b1001][0b10][k[0b1001][1]],z.K[0x4cd9]or z:N(0x2ba9,0x6a64,0x4cd9),k[0b111][0b10][k[0b111][1]],"B",k[0b100][0b10][k[0b100][1]]end elseif na<=0xcf then if na>=0xcd then if na>=0b11001110 then if na>0xce then ba,E,f,na,da=k[0b100][0b10][k[0b100][1]],"B",k[0b1001][0b10][k[0b1001][1]],z.H[0x484e]or z:J(0x55e396,0x1329,0x484e),k[0b111][0b10][k[0b111][1]]else _a,X,e,ca,la,ga,A,na,K,oa=k[0b1001][0b10][k[0b1001][1]],"B",k[0b111][0b10][k[0b111][1]],0b10010011,0b10111100,0xe6,0b110000,z.H[-0x69e6]or z:I(0x4db2,0xd7c0,-0x69e6),k[0b100][0b10][k[0b100][1]],0b1010000 end else E=0b100 na=j==E and(z.H[-0x5f24]or z:J(0xc5ae38,0x7ad9,-0x5f24))or z.K[-0x28f8]or z:L(0x567249,0x2edc,-0x28f8)end elseif na>0xcb then na,_=0xca68/na,a else na,l,i,ea,n=z.H[0x4c8c]or z:J(0xbee15,0x24b2,0x4c8c),0b11111100,_a,0b10000100,k[0b10][0b10][k[0b10][1]]end elseif na>=0b11010101 then if na>0b11010101 then j=0xc3 na=a<=j and na+0b10100100 or z.K[0x6bb4]or z:L(0x109528f,0x6d42,0x6bb4)else j=0x10 na=a<=j and 0b101011011-na or 0x317-na end elseif na<=0b11010001 then j=0b10111110 na=a<=j and 0b110011001-na or z.H[0x3885]or z:J(0x6859da,0x5b75,0x3885)else j=0b11011111 na=a>j and(z.K[0x33f2]or z:L(0x2f4627,0x2025,0x33f2))or z.H[-0x5d70]or z:I(0x1a66,0x8ace,-0x5d70)end elseif na<0x3c then if na<0b11011 then if na<=0b1100 then if na<0b110 then if na<0b100 then if na>1 then na,j,a,y,E,_,da=0x162-na,k[0b1011][0b10][k[0b1011][1]],K,k[1][0b10][k[1][1]],0b1111111,k[0b1000][0b10][k[0b1000][1]],Q else i,K,_a,n=1,0,0,0b100 na=n~=n and(z.H[-0x3d0d]or z:J(0x3f7741,0x45f8,-0x3d0d))or 0x387-na end elseif na<=0b100 then j,_,a,na,y=k[0b1001][0b10][k[0b1001][1]],k[0b111][0b10][k[0b111][1]],"B",z.H[-0x7dc9]or z:I(0x61cd,0xc2de,-0x7dc9),k[0b100][0b10][k[0b100][1]]else j=0b100101 na=a<j and 0x54-na or na+0b111010 end elseif na<0b1000 then if na>0b110 then j=0xa1 na=a<j and(z.H[-0x57b6]or z:J(0xa0e24,0x64d5,-0x57b6))or 0b1100011-na else j=0xb5 na=a>j and 0x167-na or na+0x19d end elseif na<0b1010 then na,y=na+0b11100001,0x90 elseif na<=0b1010 then j=0b1010010 na=a>j and na+0x349 or 0x365-na else na,y=0xf5-na,0x97 end elseif na<=0x13 then if na<0x12 then if na<=0b1101 then j=0xbd na=a>j and 0x2bfa/na or z.K[-0x1457]or z:N(0x2ea0,0x681a,-0x1457)else na,da,ba,j,a,y,E=z.H[-0x5d3b]or z:J(0x1068f6a,0x6388,-0x5d3b),k[0b1011][0b10][k[0b1011][1]],0x7f,k[1][0b10][k[1][1]],k[0b1000][0b10][k[0b1000][1]],_a,_ end elseif na<=0b10010 then n="c"na,n,_a=z.H[0x79c9]or z:J(0x6fe550,0x752f,0x79c9),k[0b111][0b10][k[0b111][1]],n..K i,_,Q=_a,k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]]else _a="c"K,na,_a=_a..X,0x3f8-na,k[0b111][0b10][k[0b111][1]]Q,i,n=k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]],K end elseif na<=0b11001 then if na<=0x16 then U,e=0x1d,1 na=V==e and(z.H[0x3a60]or z:J(0x7e68a,0x15dd,0x3a60))or z.H[0x546b]or z:J(0x4f53,0x7e48,0x546b)else j=0x9c na=a>j and(z.K[-0x10d2]or z:N(0x7c19,0x3807,-0x10d2))or na+0xca end else j=0xcd na=a<j and(z.H[0x29e2]or z:I(0x7538,0xe918,0x29e2))or 0b10001111-na end elseif na>=0b101110 then if na<=0x33 then if na<=0b110001 then if na>0b110000 then j=0b1000001 na=a>j and na+0x16f or 0x157-na elseif na<=0x2e then n,Q,_a,i=0,1,0,0b100 na=i~=i and 0xc66/na or z.H[0x87d]or z:I(0x63e7,0xfcb5,0x87d)else na,ba=z.K[0x2976]or z:N(0x6ad8,0x2b4b,0x2976),f end elseif na<=0b110010 then da,j,y,q,a=1,0b100,0,0b10101110,0 na=j~=j and na+0x9a or z.H[0x17ff]or z:J(0x4c44ba,0x80c,0x17ff)else j=0xe5 na=a<=j and na+0b10011111 or z.K[-0x20e7]or z:L(0x800d9,0xcb8,-0x20e7)end elseif na>=0x3a then if na>0x3a then _,Q,W,n,i,B=1,0b100,0b11111,0,0,0b1001100 na=Q~=Q and na+0b1001001 or z.H[0x4ad2]or z:I(0x63dd,0xfd5c,0x4ad2)else j,da,y=_a,1,1 na=j~=j and na+0b101010 or 0x3b5c/na end elseif na>0x37 then j=0b10101100 na=a>j and(z.H[-0x2c12]or z:I(0x6a6e,0xf7b5,-0x2c12))or z.H[0x2ac1]or z:J(0xfd84,0x333d,0x2ac1)else _a,K,ka,n,X=0b100,0,0xe6,1,0 na=_a~=_a and(z.H[-0x2d37]or z:I(0x3774,0xaa91,-0x2d37))or na+0x327 end elseif na<0b100010 then if na<0x20 then if na<=0b11011 then j=0x63 na=a>=j and 0x327-na or z.K[-0x3345]or z:N(0x6ec5,0x2f5f,-0x3345)else j=0x98 na=a<=j and(z.H[-0x6d4f]or z:J(0x492e9e,0x4d09,-0x6d4f))or na+-0b101 end elseif na<=0x20 then j=0b10001010 na=a>=j and(z.H[-0x2bc3]or z:J(0x367513,0x9fc,-0x2bc3))or 0x55c0/na else na,y=0x10a-na,0x38 end elseif na<=0b101010 then if na>0x24 then _,na,Q=i,0x29e-na,k[0b10][0b10][k[0b10][1]]elseif na<=0x22 then na,s,ba,g,f=z.H[0x7193]or z:I(0x6a5c,0xfaef,0x7193),k[0b100][0b10][k[0b100][1]],k[0b111][0b10][k[0b111][1]],k[0b1001][0b10][k[0b1001][1]],"B"else _a=0 na=K==_a and 0x14f4/na or na+-0b10010 end else na,K,n,i,L,p,_a=z.H[-0x64d6]or z:I(0x26af,0xb9ad,-0x64d6),k[0b111][0b10][k[0b111][1]],k[0b100][0b10][k[0b100][1]],k[0b1001][0b10][k[0b1001][1]],0b10110101,0xd4,"B"end elseif na<=0x66 then if na<0b1001111 then if na>=0b1000110 then if na<=0b1001011 then if na<0x49 then n=n+Q na=Q>0 and(z.H[-0x309e]or z:I(0x29a1,0xbb82,-0x309e))or na+0x293 elseif na>0b1001001 then j=0b11011111 na=a>=j and(z.H[-0x1a1a]or z:J(0x183c25,0x65e6,-0x1a1a))or z.H[0x2658]or z:I(0x1ff1,0x82a2,0x2658)else j=0b11100111 na=a<=j and 0xe8b/na or z.H[-0x50de]or z:I(0x8eb,0x9590,-0x50de)end else j=0b11001100 na=a>=j and(z.H[0x1ccb]or z:J(0x27c54,0x3967,0x1ccb))or na+0b10000011 end elseif na<=0b111111 then if na<0b111101 then K=0 na=X==K and na+0xb4 or z.H[0x482b]or z:I(0x50fd,0xcd7f,0x482b)elseif na>0x3d then j=0b101010 na=a<j and 0b111101011-na or 0xc033/na else j=0b1111110 na=a<=j and(z.K[0x6785]or z:L(0x464a11,0x5ea4,0x6785))or z.H[-0x2f50]or z:I(0x619c,0xc25e,-0x2f50)end else M,na,d,K=0b11011000,z.H[0x267a]or z:I(0b11001101,0x9d3c,0x267a),0b10110010,_a end elseif na<0x5c then if na>0b1010110 then ha,y,ma,E,da,j,na,t,Y=0x80,k[0b111][0b10][k[0b111][1]],0x4d,k[0b1001][0b10][k[0b1001][1]],k[0b100][0b10][k[0b100][1]],"B",z.H[-0x42a6]or z:I(0x5cb5,0xc7f7,-0x42a6),0xf1,0b1001011 elseif na>0x52 then j=0x6f na=a<=j and(z.H[0x57ca]or z:J(0xc6bb92,0x5e0e,0x57ca))or 0x41f-na elseif na>0x4f then i=i+_ na=_>0 and(z.H[-0x5e]or z:I(0x5b8c,0xc74f,-0x5e))or 0x32ee/na else j=0x1b na=a>j and na+0b111010001 or z.K[-0x4b15]or z:N(0x35b8,0x71d0,-0x4b15)end elseif na<=0b1100010 then if na>=0x5d then if na<=0b1011101 then j=0b111110 na=a<=j and(z.K[-0x3fc4]or z:N(0x31cc,0x6dff,-0x3fc4))or na+0x2d0 else j=0x40 na=a<j and na+0x52 or z.H[-0x6b55]or z:J(0x10aa18,0x1296,-0x6b55)end else j=0xaa na=a>j and(z.H[-0x2c25]or z:J(0x4b0220,0x5947,-0x2c25))or na+0b111111 end elseif na>0b1100100 then E=1 na=j==E and na+0b100010 or z.K[-0x368f]or z:L(0x292aef,0x33f6,-0x368f)else E,ba,j,da=0b100,1,0,0 na=E~=E and(z.H[0x5218]or z:I(0x52e5,0xcdb5,0x5218))or z.H[-0xbc2]or z:I(0b110001000,0x9d53,-0xbc2)end elseif na>=0x76 then if na>0b1111100 then if na>0x7e then j=1 na=a>=j and 0x18b10/na or 0x38b-na elseif na>0b1111101 then j=0b11010000 na=a>j and(z.K[0x580a]or z:N(0x227d,0x6162,0x580a))or 0x15d-na else j=0x6c na=a>j and(z.K[-0x7dc5]or z:N(0x818a,0x3d87,-0x7dc5))or z.K[-0x5de]or z:N(0x4ed4,0x8fb,-0x5de)end elseif na>=0x79 then if na<=0b1111010 then if na>0x79 then da,na,y,_,Q,a,j=0b1111111,0x19608/na,k[0b1011][0b10][k[0b1011][1]],X,k[0b1000][0b10][k[0b1000][1]],k[1][0b10][k[1][1]],i else j=0b1010101 na=a<=j and(z.K[-0x40ad]or z:L(0x2bddf,0x347b,-0x40ad))or z.H[-0x11f4]or z:J(0x25f9bc,0xcf7,-0x11f4)end else j=0b101 na=a>=j and(z.H[-0x613e]or z:I(0x3a65,0xa4fa,-0x613e))or z.H[-0x56e8]or z:J(0x3b543d,0x44a6,-0x56e8)end elseif na<=0b1110110 then j=0x93 na=a<j and 0b100101111-na or 0x7d-na else j=0x5d na=a>j and(z.H[0xd92]or z:I(0x314a,0xad49,0xd92))or 0x10e-na end elseif na>=0x71 then if na>0x74 then j=0b11001101 na=a>j and 0x1705e/na or 0x236-na elseif na>0x72 then s,g,ba,f,na,da,E=j,0b1111111,k[1][0b10][k[1][1]],k[0b1011][0b10][k[0b1011][1]],z.H[-0x374c]or z:I(0x4a66,0xdbea,-0x374c),k[0b1000][0b10][k[0b1000][1]],Q elseif na<=0b1110001 then na,fa,g,s,v,f,ba=z.K[-0x617a]or z:N(0x6bff,0x2a8a,-0x617a),E,k[0b1011][0b10][k[0b1011][1]],k[1][0b10][k[1][1]],0b1111111,a,k[0b1000][0b10][k[0b1000][1]]else f,na,y,j,da,E,ba=0b1111111,z.H[0x55bd]or z:I(0x2241,0xbd8a,0x55bd),k[0b1000][0b10][k[0b1000][1]],n,k[1][0b10][k[1][1]],k[0b1011][0b10][k[0b1011][1]],a end elseif na<=0b1101111 then if na>=0b1101110 then if na<=0b1101110 then j=0b1101011 na=a>=j and(z.H[-0x1f31]or z:J(0x141966,0x2ca5,-0x1f31))or 0xfc-na else _=_+y na=y>0 and na+0b1111101 or z.H[-0x5631]or z:I(0x36bb,0xa98d,-0x5631)end else j=0x35 na=a>j and 0x1a08c/na or 0x43e-na end else I,e,na,ja=0x96,X,0x12d0/na,0b1111 end end end end,L=function(a,b,c,d)a.K[d]=a.a(b,0xb111)/c return a.K[d]end,z=function(z)local l,q,i,x,v,b,p,h,s,t,_,j,c,r,y,w,a,A,g,u,n,f,e r=z r={[1]=0b11,[0b11]=r}r[0b10]=r e=type e={[1]=0b11,[0b11]=e}e[0b10]=e x=pcall x={[1]=0b11,[0b11]=x}x[0b10]=x h=error h={[1]=0b11,[0b11]=h}h[0b10]=h p=tonumber p={[1]=0b11,[0b11]=p}p[0b10]=p n=select n={[1]=0b11,[0b11]=n}n[0b10]=n i=setmetatable i={[1]=0b11,[0b11]=i}i[0b10]=i l=getmetatable l={[1]=0b11,[0b11]=l}l[0b10]=l y,a="vs",{}a.__mode=y _=a _={[1]=0b11,[0b11]=_}_[0b10]=_ y=string a=y.unpack a={[1]=0b11,[0b11]=a}a[0b10]=a j=y q,y=j,j.byte A,j=table,q.char q=A.move q={[1]=0b11,[0b11]=q}q[0b10]=q u=A A=u.pack A={[1]=0b11,[0b11]=A}A[0b10]=A f=u u=f.create u={[1]=0b11,[0b11]=u}u[0b10]=u s=f f=s.insert f={[1]=0b11,[0b11]=f}f[0b10]=f s=getfenv s={[1]=0b11,[0b11]=s}s[0b10]=s c=bit32 g=c.bor g={[1]=0b11,[0b11]=g}g[0b10]=g v=c b,c=v,v.bxor v=b.band v={[1]=0b11,[0b11]=v}v[0b10]=v w=b b=w.btest b={[1]=0b11,[0b11]=b}b[0b10]=b t=w w=t.lshift w={[1]=0b11,[0b11]=w}w[0b10]=w t=z:A{a,i,f,q,x,l,p,r,b,n,g,u,h,s,_,v,w,A,e}return t end,a=bit32 .bxor,j=function(o,k)return function(r,e)local m,d,q,b,_,g,l,p,h,a,n,i,j m=0x44 repeat if m>0x98 then if m<=0xb6 then if m<0xa9 then if m<=0b10011001 then i,_,m,l,g,a=k[0b11][0b10][k[0b11][1]],k[1][0b10][k[1][1]],0x5ad8/m,k[0b10][0b10][k[0b10][1]],1,r g=h+g else m,a=0x73e2/m,o.c(a(g,j))end elseif m<=0b10110011 then if m>0xa9 then m=n~=n and 0xbd or 0b10011001 else m=h>p and 0x7cc5/m or 0b11010100 end else m,l=0x5e,o.c(l(_,o.d(a)))end elseif m<0b11000000 then return b elseif m<=0xc0 then m=n<=0 and 0x6a or m+-0x27 else m=n~=n and 0x6a or 0b11000000 end elseif m<=0x68 then if m<=0b1011110 then if m>=0b1000100 then if m<=0x44 then b,l,i,h="",1,#r,0 p,n=i-l,1 m=p~=p and 0b10111101 or 0b1101 else m,i=0b11000010-m,i(o.d(l))b=b..i end else m=n>0 and 0b10101001 or m+0xc7 end elseif m>0b1100100 then m=h<p and 0xbd or 0x11b-m else h=h+n m=n>0 and 0x3458/m or m+0b1000 end elseif m>=0x86 then if m>0x86 then _=_(a,g)d,a,j,g=#e,k[1][0b10][k[1][1]],#e,e q=h%d m,j=m+0b1011,j-q else m=h>p and 0xbd or 0x6c end elseif m>0x6a then m=n<=0 and m+-0b100 or m+0b1000111 else m=h<p and 0xbd or 0x99 end until false end end,c=function(...)return{[1]={...},[0b10]=select("#",...)}end,P=function(a,b,c,d)a.K[d]=a.a(b,0xb105)+c return a.K[d]end,G=function(o,k)return function(...)local l,h,b,n,i,_,e,a,d,m,f,g m=0b1111110 repeat if m<=0x7e then if m<0b111100 then if m<=0b1000 then if m>0 then m,d=0b10011011-m,o.c(d(n,i,l))else m,n,i=m+0xf8,h[0b10],k[0b110][0b10][k[0b110][1]]_,l=0,n end else f=f(o.d(e))e,b=k[0b100][0b10][k[0b100][1]],k[0b1001][0b10][k[0b1001][1]]m,b=0xf3,b[0x6011]end elseif m<=0x70 then if m<=0x47 then if m<=0x3c then m,i,_,n,l=0b10110100,h,d,k[0b10][0b10][k[0b10][1]],0b10 else n=k[0b1001][0b10][k[0b1001][1]]i,d=1,n[0x4db7]n,h,l=f.n,d+i,k[0b1001][0b10][k[0b1001][1]]i=l[0x4db7]d=n-i b[0xe4ad]=d i,n,a,g,m,l=f,k[0b1000][0b10][k[0b1000][1]],h+d,1,0x2bd2/m,h g,a,_=b[0x914a],1,a-g end else h(d,n,i,l,_)d=k[0b1001][0b10][k[0b1001][1]]n,h=f.n,d[0x4db7]m=h<n and 0b1000111 or 0xa5 end else e,m,f=o.c(...),0x38,k[0b111][0b10][k[0b111][1]]end elseif m>=0b10110100 then if m>=0xf3 then if m>0b11110011 then i=o.c(i(l,_))return o.d(i)else m,e=m+-0x83,e(b)n,h={},{}d=n h[0x914a]=d d=0 h[0xe4ad]=d d,h,n,b,l=f,k[0b1000][0b10][k[0b1000][1]],1,h,k[0b1001][0b10][k[0b1001][1]]l,i,_=1,l[0x4db7],e end else n=o.c(n(i,l,_))return o.d(n)end elseif m>0x9e then l,h,d,m,n,i=b,k[1][0b10][k[1][1]],k[0b101][0b10][k[0b101][1]],m+-0x9d,k[0b11][0b10][k[0b11][1]],e elseif m<=0x93 then h,d=h(o.d(d))n=h[1]m=n and m+-0x57 or 0b10010011-m else m=0b10100101 n(i,l,_,a,g)end until false end end,D=function(_,a)return function(...)return{...},a[1][0b10][a[1][1]]("#",...)end end,E=function(_,a)return function(i,j,k)if j>k then return end return i[j],a[1][0b10][a[1][1]](i,j+1,k)end end,A=function(c,k)return function(f,e)local d,i,b,j,h,g g=0b10001111 while true do if g>=0b10001111 then if g>0b10101010 then i=i()g,f=0x6820/g,i elseif g>0b10001111 then d[0b10][d[1]]=d[0b10][d[1]](j[0b10][j[1]],i)return d[0b10][d[1]]else b=f h=b h={[1]=0b11,[0b11]=h}h[0b10]=h d=1 d={[1]=0b11,[0b11]=d}d[0b10]=d j=nil j={[1]=0b11,[0b11]=j}j[0b10]=j j[0b10][j[1]]=c:B{k[0b10001],k[0b1100],k[0b1001],h,j,k[0b1000],k[1],k[0b1011],d,k[0b11],k[0x10]}g,i=0b11101110,j[0b10][j[1]]end elseif g<=0b1011110 then b=b()b={[1]=0b11,[0b11]=b}b[0b10]=b h[0b10][h[1]]={[1]=0b11,[0b11]=h[0b10][h[1]]}h[0b10][h[1]][0b10]=h[0b10][h[1]]h[0b10][h[1]]=c:C{k[0b110],k[0x13],k[0b1100],k[0b100],k[0b101],h,k[0b1010],b,k[0b10000],k[0x12],k[0b10],k[0b111],k[0b1101],k[0b1111]}d[0b10][d[1]],g,j[0b10][j[1]],i=h[0b10][h[1]],0b100001000-g,f,e else g,b=0x5e,k[0b1110][0b10][k[0b1110][1]]end end end end,H={}}):Q(...)
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
+
+local function GetService(Service)
+    local Service = game:GetService(Service)
+    return cloneref and cloneref(Service) or Service
+end
+
+local Hui = gethui and gethui() or GetService("CoreGui")
+local Workspace = GetService("Workspace")
+local HttpService = GetService("HttpService")
+local Players = GetService("Players")
+local Player = Players.LocalPlayer
+local UserInputService = GetService("UserInputService")
+local TweenService = GetService("TweenService")
+local StarterGui = GetService("StarterGui")
+local RunService = GetService("RunService")
+
+local WriteFile = writefile or function() end
+local ReadFile = readfile or function() end
+local DelFile = delfile or function() end
+local IsFile = isfile or function() end
+local IsFolder = isfolder or function() end
+local MakeFolder = makefolder or function() end
+local ListFiles = listfiles or function() end
+local LoadAsset = getcustomasset or getsynasset or function() end
+local SetClipboard = setclipboard or function() end
+local Wait = task.wait
+
+local GothamBold = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+local GothamMedium = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+local BuilderSans = Font.new("rbxasset://fonts/families/BuilderSans.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+local Inconsolata = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+
+local HighlightColors = {
+    Keyword = "#F86D7C",
+    Number = "#FFC66D",
+    String = "#A5E075",
+    Comment = "#7F8C98",
+    Global = "#84D6F7",
+    Function = "#F8D66D",
+    Property = "#D7BA7D",
+    Class = "#4EC9B0",
+    Enum = "#C586C0",
+    EnumItem = "#B8D7FF",
+    Operator = "#D4D4D4",
+    Identifier = "#E6E6E6",
+    Nil = "#569CD6",
+    Boolean = "#569CD6"
+}
+
+Shared.Lucid = {
+    UI = {},
+    Funcs = {},
+    Assets = {
+        ["Lucid/Assets/lucid_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/logo.png",
+        ["Lucid/Assets/lucid_home.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/home.png",
+        ["Lucid/Assets/lucid_executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/executor.png",
+        ["Lucid/Assets/lucid_search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/search.png",
+        ["Lucid/Assets/lucid_scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/scripts.png",
+        ["Lucid/Assets/lucid_music.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/music.png",
+        ["Lucid/Assets/lucid_settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/settings.png",
+        ["Lucid/Assets/lucid_close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Lucid/Assets/close.png",
+    },
+    Settings = {
+        Animations = true,
+        BackgroundColor = Color3.fromRGB(0, 0, 0),
+        SecondaryBackgroundColor = Color3.fromRGB(10, 10, 10),
+        AccentColor = Color3.fromRGB(0, 99, 255),
+        SecondaryAccentColor = Color3.fromRGB(0, 64, 180)
+    },
+    IsLoaded = false
+}
+
+local UI = Shared.Lucid.UI
+local Funcs = Shared.Lucid.Funcs
+local Assets = Shared.Lucid.Assets
+local Settings = Shared.Lucid.Settings
+local currentPage = 1
+local totalPages = 1
+local currentQuery = ""
+
+Funcs.Sources = {"RScripts", "ScriptBlox"}
+Funcs.CurrentSource = "RScripts"
+Funcs.Filters = {"All", "Key", "Keyless"}
+Funcs.CurrentFilter = "All"
+Funcs.CurrentScripts = {}
+
+local ExeTabs = {}
+local ExeTabCounter = 0
+local ExeActiveTab = nil
+
+local MusicSound = nil
+local MusicFiles = {}
+local MusicIndex = 1
+local MusicPlaying = false
+local MusicSliderDragging = false
+
+local Keywords = {
+    "local", "function", "if", "then", "else", "elseif", "end", "for", "while",
+    "repeat", "until", "do", "return", "break", "continue", "in", "not", "and",
+    "or", "nil", "true", "false", "type", "typeof", "export"
+}
+
+local Globals = {
+    "game", "workspace", "script", "Instance", "Enum", "Color3", "Vector2",
+    "Vector3", "UDim", "UDim2", "CFrame", "math", "string", "table", "task",
+    "coroutine", "os", "utf8", "ipairs", "pairs", "next", "pcall", "xpcall",
+    "tonumber", "tostring", "warn", "print", "require", "select", "rawequal",
+    "rawget", "rawset", "type", "unpack", "assert", "error", "getfenv",
+    "setfenv", "getmetatable", "setmetatable", "loadstring", "load", "collectgarbage",
+    "gcinfo", "newproxy", "delay", "spawn", "tick", "time", "date", "clock",
+    "BrickColor", "NumberSequence", "ColorSequence", "NumberRange", "Random",
+    "Rect", "Region3", "TweenService", "RunService", "Players", "ReplicatedStorage",
+    "ServerScriptService", "ServerStorage", "Lighting", "SoundService", "StarterGui",
+    "StarterPack", "StarterPlayer", "TeleportService", "DataStoreService",
+    "HttpService", "MarketplaceService", "UserInputService", "ContextActionService",
+    "CollectionService", "Debris", "PhysicsService"
+}
+
+local KeywordSet = {}
+for _, v in ipairs(Keywords) do KeywordSet[v] = true end
+local GlobalSet = {}
+for _, v in ipairs(Globals) do GlobalSet[v] = true end
+
+function Funcs.Highlight(code)
+    if type(code) ~= "string" then return "" end
+    local result = {}
+    local i = 1
+    local len = #code
+    while i <= len do
+        local char = code:sub(i, i)
+        if char == "\"" or char == "'" then
+            local start = i
+            local quote = char
+            i = i + 1
+            while i <= len do
+                if code:sub(i, i) == "\\" then
+                    i = i + 2
+                elseif code:sub(i, i) == quote then
+                    i = i + 1
+                    break
+                else
+                    i = i + 1
+                end
+            end
+            local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+            table.insert(result, "<font color=\"" .. HighlightColors.String .. "\">" .. str .. "</font>")
+        elseif char == "[" and code:sub(i, i + 1) == "[[" then
+            local start = i
+            local depth = 0
+            while i <= len do
+                if code:sub(i, i + 1) == "[[" then depth = depth + 1; i = i + 2
+                elseif code:sub(i, i + 1) == "]]" then depth = depth - 1; i = i + 2; if depth == 0 then break end
+                else i = i + 1 end
+            end
+            local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+            table.insert(result, "<font color=\"" .. HighlightColors.String .. "\">" .. str .. "</font>")
+        elseif char == "-" and code:sub(i, i + 1) == "--" then
+            if code:sub(i, i + 3) == "--[[" then
+                local start = i
+                i = i + 4
+                local depth = 0
+                while i <= len do
+                    if code:sub(i, i + 1) == "[[" then depth = depth + 1; i = i + 2
+                    elseif code:sub(i, i + 1) == "]]" then depth = depth - 1; i = i + 2; if depth == 0 then break end
+                    else i = i + 1 end
+                end
+                local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+                table.insert(result, "<font color=\"" .. HighlightColors.Comment .. "\">" .. str .. "</font>")
+            else
+                local start = i
+                while i <= len do
+                    local ch = code:sub(i, i)
+                    if ch == "\n" or ch == "\r" then break end
+                    i = i + 1
+                end
+                local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+                table.insert(result, "<font color=\"" .. HighlightColors.Comment .. "\">" .. str .. "</font>")
+            end
+        elseif char:match("%d") then
+            local start = i
+            while i <= len do
+                local ch = code:sub(i, i)
+                if not ch:match("%d") and ch ~= "." then break end
+                i = i + 1
+            end
+            local str = code:sub(start, i - 1):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+            table.insert(result, "<font color=\"" .. HighlightColors.Number .. "\">" .. str .. "</font>")
+        elseif char:match("%a") or char == "_" then
+            local start = i
+            while i <= len do
+                local ch = code:sub(i, i)
+                if not ch:match("%w") and ch ~= "_" then break end
+                i = i + 1
+            end
+            local word = code:sub(start, i - 1)
+            local safe = word:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+            if word == "nil" then
+                table.insert(result, "<font color=\"" .. HighlightColors.Nil .. "\">" .. safe .. "</font>")
+            elseif word == "true" or word == "false" then
+                table.insert(result, "<font color=\"" .. HighlightColors.Boolean .. "\">" .. safe .. "</font>")
+            elseif KeywordSet[word] then
+                table.insert(result, "<font color=\"" .. HighlightColors.Keyword .. "\">" .. safe .. "</font>")
+            elseif GlobalSet[word] then
+                table.insert(result, "<font color=\"" .. HighlightColors.Global .. "\">" .. safe .. "</font>")
+            else
+                local nextChar = code:sub(i, i)
+                if nextChar == "(" then
+                    table.insert(result, "<font color=\"" .. HighlightColors.Function .. "\">" .. safe .. "</font>")
+                else
+                    table.insert(result, "<font color=\"" .. HighlightColors.Identifier .. "\">" .. safe .. "</font>")
+                end
+            end
+        else
+            if char == "&" then table.insert(result, "&amp;")
+            elseif char == "<" then table.insert(result, "&lt;")
+            elseif char == ">" then table.insert(result, "&gt;")
+            else table.insert(result, char) end
+            i = i + 1
+        end
+    end
+    return table.concat(result)
+end
+
+function Funcs.HideExec()
+    local Safe = {
+        RobloxGui = true, PlayerList = true, ExperienceChat = true,
+        BubbleChat = true, DevConsole = true, SocialService = true,
+        PerformanceStats = true, ScreenShotTool = true, EmotesMenu = true,
+        CallDialogScreen = true, CaptureManager = true, CaptureOverlay = true,
+        Composer = true, ContactList = true, Chat = true,
+        HeadsetDisconnectedDialog = true, InExperienceInterventionApp = true,
+        PlayerMenuScreen = true, PurchasePromptApp = true, RobloxPromptGui = true,
+        ScreenshotsCarousel = true, TeleportEffectGui = true, TopBarApp = true,
+        ControlGui = true, VehicleGui = true, NotificationGui = true,
+        DescendantProtector = true, AppUpdaterGui = true, FaceTrackingGui = true,
+        ExperienceNotificationGui = true, VoiceChatGui = true, SafetyCheckGui = true,
+        ToastGui = true, InGameMenuV2 = true, RightClickMenu = true,
+        VoiceChatPromptGui = true, BottomBarGui = true, GuiService = true,
+        FullscreenTitleBar = true, TextureView = true, ChromeGui = true,
+        BlockingApp = true, HealthGui = true, StutterDetector = true,
+        AvatarContextMenuItem = true
+    }
+    local Whitelisted = {
+        ["CmdPlus"] = {
+            DisplayOrder = 100,
+            Children = {
+                "ImageButton",
+                "Frame",
+                "CanvasGroup"
+            }
+        }
+    }
+    local function IsWhitelisted(Gui)
+        for _, child in ipairs(Gui:GetChildren()) do
+            if child:IsA("Frame") and child.Name == "UI" then
+                return true
+            end
+        end
+        for name, data in pairs(Whitelisted) do
+            if Gui.Name == name then
+                if Gui.DisplayOrder == data.DisplayOrder then
+                    local hasAll = true
+                    for _, childType in ipairs(data.Children) do
+                        local found = false
+                        for _, child in ipairs(Gui:GetChildren()) do
+                            if child:IsA(childType) then
+                                found = true
+                                break
+                            end
+                        end
+                        if not found then
+                            hasAll = false
+                            break
+                        end
+                    end
+                    if hasAll then
+                        return true
+                    end
+                end
+            end
+        end
+        return false
+    end
+    local function IsSus(Name)
+        if #Name > 30 then return true end
+        if Name:match("[^%w%s%-%.]") then return true end
+        local Caps = select(2, Name:gsub("[A-Z]", ""))
+        if Caps >= 5 then return true end
+        return false
+    end
+    local function Scan(Parent)
+        if not Parent then return end
+        for _, Obj in ipairs(Parent:GetDescendants()) do
+            if Obj:IsA("ScreenGui")
+                and Obj ~= UI.ScreenGui
+                and not IsWhitelisted(Obj)
+                and not Safe[Obj.Name]
+                and IsSus(Obj.Name) then
+                pcall(function() Obj.Enabled = false end)
+            end
+        end
+    end
+    Scan(GetService("CoreGui"))
+    if Hui and Hui ~= GetService("CoreGui") then Scan(Hui) end
+end
+
+Funcs.HideExec()
+
+function Funcs.UID(Length)
+    Length = Length or 64
+
+    local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
+    local Id = table.create(Length)
+
+    for i = 1, Length do
+        local Rand = math.random(1, #Chars)
+        Id[i] = Chars:sub(Rand, Rand)
+    end
+
+    return table.concat(Id)
+end
+
+function Funcs.HttpGet(url)
+    local RequestFunc = (syn and syn.request) or request or http_request
+    if not RequestFunc then return nil end
+
+    local Success, Result = pcall(function()
+        return RequestFunc({
+            Url = url,
+            Method = "GET",
+            Headers = {
+                ["User-Agent"] = "Lucid-Executor/1.0",
+                ["Accept"] = "application/json"
+            }
+        })
+    end)
+
+    return Success and Result or nil
+end
+
+function Funcs.GetAsset(Path)
+    if not LoadAsset then return nil end
+    if not IsFolder("Lucid") then MakeFolder("Lucid") end
+    if not IsFolder("Lucid/Assets") then MakeFolder("Lucid/Assets") end
+    if Path:match("^rbxassetid://") then return Path end
+    if IsFile(Path) then return LoadAsset(Path) end
+    local url = Assets[Path]
+    if not url then return nil end
+    local Response = Funcs.HttpGet(url)
+    if not Response or not Response.Body then return nil end
+    WriteFile(Path, Response.Body)
+    return LoadAsset(Path)
+end
+
+function Funcs.PreloadAssets()
+    if not IsFolder("Lucid") then MakeFolder("Lucid") end
+    if not IsFolder("Lucid/Assets") then MakeFolder("Lucid/Assets") end
+    for path, url in pairs(Assets) do
+        if not IsFile(path) then
+            local Response = Funcs.HttpGet(url)
+            if Response and Response.Body then
+                WriteFile(path, Response.Body)
+            end
+        end
+    end
+end
+
+function Funcs.SanitizeName(name)
+    if not name then return "Script_" .. HttpService:GenerateGUID(false):sub(1, 8) end
+    local cleaned = ""
+    for char in name:gmatch(".") do
+        local byte = string.byte(char)
+        if (byte >= 65 and byte <= 90) or (byte >= 97 and byte <= 122) or (byte >= 48 and byte <= 57) then
+            cleaned = cleaned .. char
+        end
+    end
+    if cleaned == "" then cleaned = "Script_" .. HttpService:GenerateGUID(false):sub(1, 8) end
+    return cleaned
+end
+
+function Funcs.ClearCache()
+    if IsFolder("Lucid/Cache") then
+        local files = ListFiles("Lucid/Cache")
+        for _, file in ipairs(files) do
+            pcall(function() DelFile(file) end)
+        end
+    end
+end
+
+function Funcs.LoadSavedScripts()
+    if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts"); return {} end
+    local files = ListFiles("Lucid/Scripts")
+    local scripts = {}
+    for _, file in ipairs(files) do
+        local content = ReadFile(file)
+        local success, data = pcall(function() return HttpService:JSONDecode(content) end)
+        if success and data then table.insert(scripts, data) end
+    end
+    return scripts
+end
+
+function Funcs.SaveScript(scriptData)
+    if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") end
+    local fileName = "Lucid/Scripts/" .. scriptData.Name:gsub("[^%w]", "_") .. ".json"
+    WriteFile(fileName, HttpService:JSONEncode(scriptData))
+end
+
+function Funcs.DeleteScript(scriptName)
+    local fileName = "Lucid/Scripts/" .. scriptName:gsub("[^%w]", "_") .. ".json"
+    if IsFile(fileName) then DelFile(fileName) end
+end
+
+local BuiltInScripts = {
+    {
+        Name = "Dex++ (Built-In)",
+        Description = "A simple but powerful tool for exploring game instances.",
+        Code = [[loadstring(game:HttpGet("https://github.com/AZYsGithub/DexPlusPlus/releases/latest/download/out.lua"))()]]
+    },
+    {
+        Name = "Keyboard (Built-In)",
+        Description = "A virtual keyboard GUI made for mobile devices.",
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau"))()
+Init.DeltaKD()]]
+    }
+}
+
+function Funcs.InitDefaultScripts()
+    if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") end
+    for _, scriptData in ipairs(BuiltInScripts) do
+        local fileName = "Lucid/Scripts/" .. scriptData.Name:gsub("[^%w]", "_") .. ".json"
+        if not IsFile(fileName) then Funcs.SaveScript(scriptData) end
+    end
+end
+
+function Funcs.ParseColor(input)
+    if type(input) ~= "string" then return nil end
+    local r, g, b = input:match("(%d+)%s*,%s*(%d+)%s*,%s*(%d+)")
+    if r and g and b then return Color3.fromRGB(tonumber(r), tonumber(g), tonumber(b)) end
+    return nil
+end
+
+function Funcs.SaveSettings()
+    if not IsFolder("Lucid") then MakeFolder("Lucid") end
+    local data = {
+        Animations = Settings.Animations,
+        BackgroundColor = {R = math.floor(Settings.BackgroundColor.R * 255), G = math.floor(Settings.BackgroundColor.G * 255), B = math.floor(Settings.BackgroundColor.B * 255)},
+        SecondaryBackgroundColor = {R = math.floor(Settings.SecondaryBackgroundColor.R * 255), G = math.floor(Settings.SecondaryBackgroundColor.G * 255), B = math.floor(Settings.SecondaryBackgroundColor.B * 255)},
+        AccentColor = {R = math.floor(Settings.AccentColor.R * 255), G = math.floor(Settings.AccentColor.G * 255), B = math.floor(Settings.AccentColor.B * 255)},
+        SecondaryAccentColor = {R = math.floor(Settings.SecondaryAccentColor.R * 255), G = math.floor(Settings.SecondaryAccentColor.G * 255), B = math.floor(Settings.SecondaryAccentColor.B * 255)}
+    }
+    WriteFile("Lucid/Settings.json", HttpService:JSONEncode(data))
+end
+
+function Funcs.LoadSettings()
+    if not IsFile("Lucid/Settings.json") then return end
+    local content = ReadFile("Lucid/Settings.json")
+    if not content or content == "" then return end
+    local success, data = pcall(function() return HttpService:JSONDecode(content) end)
+    if success and data then
+        if data.Animations ~= nil then Settings.Animations = data.Animations end
+        if data.BackgroundColor then Settings.BackgroundColor = Color3.fromRGB(data.BackgroundColor.R or 10, data.BackgroundColor.G or 10, data.BackgroundColor.B or 10) end
+        if data.SecondaryBackgroundColor then Settings.SecondaryBackgroundColor = Color3.fromRGB(data.SecondaryBackgroundColor.R or 18, data.SecondaryBackgroundColor.G or 18, data.SecondaryBackgroundColor.B or 18) end
+        if data.AccentColor then Settings.AccentColor = Color3.fromRGB(data.AccentColor.R or 0, data.AccentColor.G or 99, data.AccentColor.B or 255) end
+        if data.SecondaryAccentColor then Settings.SecondaryAccentColor = Color3.fromRGB(data.SecondaryAccentColor.R or 0, data.SecondaryAccentColor.G or 64, data.SecondaryAccentColor.B or 180) end
+    end
+end
+
+function Funcs.ScriptRequiresKey(data)
+    local value = Funcs.CurrentSource == "ScriptBlox" and data.key or data.keySystem
+    if type(value) == "boolean" then return value end
+    if type(value) == "number" then return value ~= 0 end
+    if type(value) == "string" then
+        local normalized = value:lower()
+        if normalized == "" or normalized == "false" or normalized == "0" or normalized == "none" or normalized == "n/a" then return false end
+        if normalized:find("no key", 1, true) or normalized:find("keyless", 1, true) then return false end
+        return true
+    end
+    return value ~= nil and value ~= false
+end
+
+function Funcs.PassesFilter(data)
+    local requiresKey = Funcs.ScriptRequiresKey(data)
+    if Funcs.CurrentFilter == "Key" then return requiresKey
+    elseif Funcs.CurrentFilter == "Keyless" then return not requiresKey end
+    return true
+end
+
+function Funcs.ResolveImage(data)
+    local raw = data.image or data.imageUrl or data.thumbnail or (data.game and (data.game.imageUrl or data.game.image)) or ""
+    if raw == "" then return "" end
+    if raw:match("^https?://") then return raw end
+    if raw:sub(1, 2) == "//" then return "https:" .. raw end
+    local base = Funcs.CurrentSource == "ScriptBlox" and "https://scriptblox.com" or "https://rscripts.net"
+    if raw:sub(1, 1) == "/" then return base .. raw end
+    return base .. "/" .. raw
+end
+
+function Funcs.FetchScripts(query, page)
+    page = page or 1
+    local url
+    if Funcs.CurrentSource == "RScripts" then
+        url = "https://rscripts.net/api/v2/scripts?page=" .. page .. "&orderBy=date&sort=desc"
+        if query ~= "" then url = url .. "&q=" .. HttpService:UrlEncode(query) end
+    else
+        if query ~= "" then
+            url = "https://scriptblox.com/api/script/search?q=" .. HttpService:UrlEncode(query) .. "&page=" .. page
+        else
+            url = "https://scriptblox.com/api/script/fetch?page=" .. page
+        end
+    end
+    local Response = Funcs.HttpGet(url)
+    if not Response or not Response.Body then return nil, nil end
+    local success, decoded = pcall(function() return HttpService:JSONDecode(Response.Body) end)
+    if not success or not decoded then return nil, nil end
+    local scripts, pages
+    if Funcs.CurrentSource == "RScripts" then
+        scripts = decoded.scripts or {}
+        pages = decoded.info and decoded.info.maxPages or 1
+    else
+        local result = decoded.result or {}
+        scripts = result.scripts or {}
+        pages = result.totalPages or 1
+    end
+    return scripts, pages
+end
+
+function Funcs.CreateResultCard(data, parent)
+    local title = data.title or data.name or "Untitled Script"
+    local isScriptBlox = Funcs.CurrentSource == "ScriptBlox"
+    local rawScript = isScriptBlox and (data.script or "") or (data.rawScript or data.raw or "")
+
+    local clone = UI.SearchResultTemplate:Clone()
+    clone.Name = Funcs.SanitizeName(title)
+    clone.Visible = true
+    clone.Parent = parent
+
+    local cloneStroke = clone:FindFirstChildOfClass("UIStroke")
+    if cloneStroke then cloneStroke.Color = Settings.SecondaryAccentColor end
+
+    local scriptImage = clone:FindFirstChild("ScriptImage")
+    if scriptImage then scriptImage.Image = Funcs.ResolveImage(data) end
+
+    local container = clone:FindFirstChild("Container")
+    if container then
+        local scriptName = container:FindFirstChild("ScriptName")
+        if scriptName then
+            scriptName.Text = title
+            local nameStroke = scriptName:FindFirstChildOfClass("UIStroke")
+            if nameStroke then nameStroke.Color = Settings.AccentColor end
+        end
+    end
+
+    local actionsFrame = container and container:FindFirstChild("ScriptActions")
+    if actionsFrame then
+        local runBtn = actionsFrame:FindFirstChild("RunScript")
+        local copyBtn = actionsFrame:FindFirstChild("CopyScriptBtn")
+        local saveBtn = actionsFrame:FindFirstChild("SaveScriptBtn")
+
+        for _, btn in ipairs({runBtn, copyBtn, saveBtn}) do
+            if btn then
+                btn.BackgroundColor3 = Settings.AccentColor
+                local btnStroke = btn:FindFirstChildOfClass("UIStroke")
+                if btnStroke then btnStroke.Color = Settings.SecondaryAccentColor end
+            end
+        end
+
+        local function ResolveCode()
+            if rawScript == "" then return nil end
+            if isScriptBlox then return rawScript end
+            local success, content = pcall(function() return game:HttpGet(rawScript) end)
+            return success and content or nil
+        end
+
+        if runBtn then
+            runBtn.MouseButton1Click:Connect(function()
+                local fn, loadErr = loadstring(scriptData.Code or "")
+                if not fn then error(loadErr) end
+                local success, runErr = pcall(fn)
+                if not success then error(runErr) end
+            end)
+        end
+        if copyBtn then
+            copyBtn.MouseButton1Click:Connect(function()
+                local code = ResolveCode()
+                if code then
+                    SetClipboard(code)
+                    copyBtn.Text = "Copied!"
+                    task.delay(1, function() copyBtn.Text = "Copy" end)
+                end
+            end)
+        end
+        if saveBtn then
+            saveBtn.MouseButton1Click:Connect(function()
+                local code = ResolveCode()
+                if code then
+                    local scriptData = { Name = title, Description = data.description or "", Code = code }
+                    Funcs.SaveScript(scriptData)
+                    saveBtn.Text = "Saved!"
+                    task.delay(1, function() saveBtn.Text = "Save" end)
+                    Funcs.RefreshSavedScripts(UI.SearchBox2.Text)
+                end
+            end)
+        end
+    end
+end
+
+function Funcs.RenderSearchResults()
+    local results = UI.SearchResults
+    if not results then return end
+    for _, child in ipairs(results:GetChildren()) do
+        if child ~= UI.NoResultsLabel and child ~= UI.SearchResultsPadding and child ~= UI.SearchResultsLayout and child ~= UI.SearchResultTemplate then
+            child:Destroy()
+        end
+    end
+    local shown = 0
+    for _, data in ipairs(Funcs.CurrentScripts) do
+        if Funcs.PassesFilter(data) then
+            shown = shown + 1
+            Funcs.CreateResultCard(data, results)
+        end
+    end
+    if shown == 0 then
+        if UI.NoResultsLabel then
+            UI.NoResultsLabel.Visible = true
+            if #Funcs.CurrentScripts == 0 then
+                UI.NoResultsLabel.Text = (currentQuery ~= "") and "No scripts found matching your query." or "No scripts found."
+            else
+                UI.NoResultsLabel.Text = "No scripts match the current filter."
+            end
+        end
+    elseif UI.NoResultsLabel then
+        UI.NoResultsLabel.Visible = false
+    end
+end
+
+function Funcs.PerformSearch(query, page)
+    page = page or 1
+    currentQuery = query
+    currentPage = page
+    if UI.NoResultsLabel then UI.NoResultsLabel.Visible = false end
+    UI.PrevBtn.Visible = false
+    UI.NextBtn.Visible = false
+    local scripts, pages = Funcs.FetchScripts(query, page)
+    if not scripts then
+        Funcs.CurrentScripts = {}
+        Funcs.RenderSearchResults()
+        if UI.NoResultsLabel then
+            UI.NoResultsLabel.Visible = true
+            UI.NoResultsLabel.Text = "Failed to fetch scripts. Check your connection and try again."
+        end
+        return
+    end
+    totalPages = pages or 1
+    Funcs.CurrentScripts = scripts
+    UI.PrevBtn.Visible = page > 1
+    UI.NextBtn.Visible = page < totalPages
+    Funcs.RenderSearchResults()
+end
+
+function Funcs.CycleSource()
+    local index = table.find(Funcs.Sources, Funcs.CurrentSource) or 1
+    Funcs.CurrentSource = Funcs.Sources[index % #Funcs.Sources + 1]
+    if Funcs.CurrentSource == "RScripts" then
+        UI.SourceBtn.Text = "🟢 Source: RScripts"
+    else
+        UI.SourceBtn.Text = "⚠️ Source: ScriptBlox"
+    end
+    Funcs.PerformSearch(currentQuery, 1)
+end
+
+function Funcs.CycleFilter()
+    local index = table.find(Funcs.Filters, Funcs.CurrentFilter) or 1
+    Funcs.CurrentFilter = Funcs.Filters[index % #Funcs.Filters + 1]
+    UI.FilterBtn.Text = "Filter: " .. Funcs.CurrentFilter
+    Funcs.RenderSearchResults()
+end
+
+function Funcs.ApplyTheme()
+    UI.MainFrame.BackgroundColor3 = Settings.BackgroundColor
+    UI.HomeContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.ExeContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.SearchContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.ScriptsContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.SettingsContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.MusicContent.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.Sidebar.BackgroundColor3 = Settings.SecondaryBackgroundColor
+
+    UI.HomeContentStroke.Color = Settings.AccentColor
+    UI.ExeContentStroke.Color = Settings.AccentColor
+    UI.SearchContentStroke.Color = Settings.AccentColor
+    UI.ScriptsContentStroke.Color = Settings.AccentColor
+    UI.SettingsContentStroke.Color = Settings.AccentColor
+    UI.MusicContentStroke.Color = Settings.AccentColor
+    UI.SidebarStroke.Color = Settings.AccentColor
+    UI.NewScriptFrameStroke.Color = Settings.AccentColor
+
+    UI.Title.TextColor3 = Settings.AccentColor
+    UI.TitleStroke.Color = Settings.AccentColor
+    UI.Icon.ImageColor3 = Settings.AccentColor
+    UI.Logo.ImageColor3 = Settings.SecondaryAccentColor
+
+    UI.TabUnderline.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline2.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline3.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline4.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline5.BackgroundColor3 = Settings.AccentColor
+    UI.TabUnderline6Music.BackgroundColor3 = Settings.AccentColor
+
+    UI.NoResultsLabelStroke.Color = Settings.AccentColor
+    UI.NoSavedScriptsLabelStroke.Color = Settings.AccentColor
+    UI.SearchResultTemplateStroke.Color = Settings.SecondaryAccentColor
+    UI.ScriptNameStroke.Color = Settings.AccentColor
+    UI.SavedScriptTemplateStroke.Color = Settings.SecondaryAccentColor
+
+    UI.ExeBtn.BackgroundColor3 = Settings.AccentColor
+    UI.ClrBtn.BackgroundColor3 = Settings.AccentColor
+    UI.CopyBtn.BackgroundColor3 = Settings.AccentColor
+    UI.RunScript.BackgroundColor3 = Settings.AccentColor
+    UI.CopyScriptBtn.BackgroundColor3 = Settings.AccentColor
+    UI.SaveScriptBtn.BackgroundColor3 = Settings.AccentColor
+    UI.PrevBtn.BackgroundColor3 = Settings.AccentColor
+    UI.NextBtn.BackgroundColor3 = Settings.AccentColor
+    UI.Cancel.BackgroundColor3 = Settings.AccentColor
+    UI.Save.BackgroundColor3 = Settings.AccentColor
+    UI.RunSavedScript.BackgroundColor3 = Settings.AccentColor
+    UI.DeleteSavedScript.BackgroundColor3 = Settings.AccentColor
+    UI.SourceBtn.BackgroundColor3 = Settings.AccentColor
+    UI.FilterBtn.BackgroundColor3 = Settings.AccentColor
+    UI.AddExeTabBtn.BackgroundColor3 = Settings.AccentColor
+
+    UI.ExeBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.ClrBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.CopyBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.RunScriptStroke.Color = Settings.SecondaryAccentColor
+    UI.CopyScriptBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.SaveScriptBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.PrevBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.NextBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.CancelStroke.Color = Settings.SecondaryAccentColor
+    UI.SaveStroke.Color = Settings.SecondaryAccentColor
+    UI.RunSavedScriptStroke.Color = Settings.SecondaryAccentColor
+    UI.DeleteSavedScriptStroke.Color = Settings.SecondaryAccentColor
+    UI.SourceBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.FilterBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.AddExeTabBtnStroke.Color = Settings.SecondaryAccentColor
+
+    UI.WelcomeLabelStroke.Color = Settings.AccentColor
+    UI.InfoLabelStroke.Color = Settings.SecondaryAccentColor
+    UI.InfoLabel2Stroke.Color = Settings.SecondaryAccentColor
+    UI.PlayerHeadshotStroke.Color = Settings.SecondaryAccentColor
+
+    UI.MusicPlayBtn.BackgroundColor3 = Settings.AccentColor
+    UI.MusicPrevBtn.BackgroundColor3 = Settings.AccentColor
+    UI.MusicNextBtn.BackgroundColor3 = Settings.AccentColor
+    UI.MusicPlayBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.MusicPrevBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.MusicNextBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.MusicSliderBar.BackgroundColor3 = Settings.SecondaryBackgroundColor
+    UI.MusicSliderFill.BackgroundColor3 = Settings.AccentColor
+    UI.MusicSliderKnob.BackgroundColor3 = Settings.AccentColor
+
+    if not Settings.Animations then
+        UI.ToggleState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
+        if stroke then stroke.Color = Color3.fromRGB(255, 0, 0) end
+    else
+        UI.ToggleState.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
+        if stroke then stroke.Color = Color3.fromRGB(0, 255, 0) end
+    end
+
+    for _, tabData in ipairs(ExeTabs) do
+        if tabData.tabBtn then
+            local activeStroke = tabData.tabBtn:FindFirstChild("ActiveLine")
+            if activeStroke then
+                activeStroke.BackgroundColor3 = Settings.AccentColor
+            end
+        end
+    end
+
+    if UI.SearchResults then Funcs.RenderSearchResults() end
+    if UI.SavedScriptsScroll then Funcs.RefreshSavedScripts(UI.SearchBox2 and UI.SearchBox2.Text or "") end
+end
+
+function Funcs.UpdateStats()
+    local username = Player.Name or "Unknown"
+    local displayName = Player.DisplayName or "Unknown"
+    local userId = Player.UserId or 0
+    local fps = math.floor(workspace:GetRealPhysicsFPS() or 0)
+    local ping = Player:GetNetworkPing() and math.floor(Player:GetNetworkPing() * 1000) or 0
+    local memory = math.floor(collectgarbage("count") / 1024) or 0
+    local playerCount = #Players:GetPlayers() or 0
+    local maxPlayers = Players.MaxPlayers or 0
+    local serverAge = math.floor((os.time() - workspace.DistributedGameTime) / 60) or 0
+    local placeId = game.PlaceId or 0
+    local gameId = game.GameId or "Unknown"
+    local jobId = game.JobId or "Unknown"
+
+    local infoText = string.format([[Username: %s
+Display Name: %s
+User ID: %s
+
+FPS: %s
+Ping: %s ms
+Memory: %s MB
+
+Players: %s/%s
+Server Age: %s mins
+Job ID: %s
+
+Place ID: %s
+Game ID: %s]], username, displayName, userId, fps, ping, memory, playerCount, maxPlayers, serverAge, jobId, placeId, gameId)
+
+    if UI.InfoLabel then UI.InfoLabel.Text = infoText end
+    if UI.WelcomeLabel then UI.WelcomeLabel.Text = "Welcome to Lucid, " .. displayName .. "!" end
+    local avatarUrl = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=420&height=420&format=png"
+    if UI.PlayerHeadshot then UI.PlayerHeadshot.Image = avatarUrl end
+end
+
+function Funcs.RefreshSavedScripts(searchQuery)
+    local scroll = UI.SavedScriptsScroll
+    if not scroll then return end
+    for _, child in ipairs(scroll:GetChildren()) do
+        if child ~= UI.NoSavedScriptsLabel and child ~= UI.SavedScriptsScrollPadding and child ~= UI.SavedScriptsScrollLayout and child ~= UI.SavedScriptTemplate then
+            child:Destroy()
+        end
+    end
+    local scripts = Funcs.LoadSavedScripts()
+    if searchQuery and searchQuery ~= "" then
+        local filtered = {}
+        local query = searchQuery:lower()
+        for _, scriptData in ipairs(scripts) do
+            local name = (scriptData.Name or ""):lower()
+            local desc = (scriptData.Description or ""):lower()
+            if name:find(query) or desc:find(query) then table.insert(filtered, scriptData) end
+        end
+        scripts = filtered
+    end
+    if #scripts == 0 then
+        if UI.NoSavedScriptsLabel then
+            UI.NoSavedScriptsLabel.Visible = true
+            UI.NoSavedScriptsLabel.Text = (searchQuery and searchQuery ~= "") and "No saved scripts match your search." or "No Saved Scripts\n\nSave some scripts to see them here."
+        end
+        return
+    end
+    if UI.NoSavedScriptsLabel then UI.NoSavedScriptsLabel.Visible = false end
+    local builtInScripts = {}
+    local normalScripts = {}
+    for _, scriptData in ipairs(scripts) do
+        if scriptData.Name:find("%(Built%-In%)") then
+            table.insert(builtInScripts, scriptData)
+        else
+            table.insert(normalScripts, scriptData)
+        end
+    end
+    table.sort(builtInScripts, function(a, b) return (a.Name or ""):lower() < (b.Name or ""):lower() end)
+    table.sort(normalScripts, function(a, b) return (a.Name or ""):lower() < (b.Name or ""):lower() end)
+    local function MakeCard(scriptData)
+        local clone = UI.SavedScriptTemplate:Clone()
+        clone.Name = Funcs.SanitizeName(scriptData.Name)
+        clone.Visible = true
+        clone.Parent = scroll
+        local cloneStroke = clone:FindFirstChildOfClass("UIStroke")
+        if cloneStroke then cloneStroke.Color = Settings.SecondaryAccentColor end
+        local infoFrame = clone:FindFirstChild("SavedScriptInfo")
+        if infoFrame then
+            local titleLabel = infoFrame:FindFirstChild("SavedScriptTitle")
+            local descLabel = infoFrame:FindFirstChild("SavedScriptDesc")
+            if titleLabel then titleLabel.Text = scriptData.Name or "Unknown" end
+            if descLabel then descLabel.Text = scriptData.Description or "No description" end
+        end
+        local actionsFrame = clone:FindFirstChild("SavedScriptActions")
+        if actionsFrame then
+            local runBtn = actionsFrame:FindFirstChild("RunSavedScript")
+            local deleteBtn = actionsFrame:FindFirstChild("DeleteSavedScript")
+            for _, btn in ipairs({runBtn, deleteBtn}) do
+                if btn then
+                    btn.BackgroundColor3 = Settings.AccentColor
+                    local btnStroke = btn:FindFirstChildOfClass("UIStroke")
+                    if btnStroke then btnStroke.Color = Settings.SecondaryAccentColor end
+                end
+            end
+            if runBtn then
+                runBtn.MouseButton1Click:Connect(function()
+                    local fn, loadErr = loadstring(scriptData.Code or "")
+                    if not fn then error(loadErr) end
+                    local success, runErr = pcall(fn)
+                    if not success then error(runErr) end
+                end)
+            end
+            if deleteBtn then
+                deleteBtn.MouseButton1Click:Connect(function()
+                    Funcs.DeleteScript(scriptData.Name)
+                    Funcs.RefreshSavedScripts(UI.SearchBox2.Text)
+                end)
+            end
+        end
+    end
+    for _, scriptData in ipairs(builtInScripts) do MakeCard(scriptData) end
+    for _, scriptData in ipairs(normalScripts) do MakeCard(scriptData) end
+end
+
+function Funcs.SwitchTab(tabButton)
+    local contentMap = {
+        [UI.HomeTab] = UI.HomeContent,
+        [UI.ExeTab] = UI.ExeContent,
+        [UI.SearchTab] = UI.SearchContent,
+        [UI.ScriptsTab] = UI.ScriptsContent,
+        [UI.SettingsTab] = UI.SettingsContent,
+        [UI.MusicTab] = UI.MusicContent,
+    }
+    local newContent = contentMap[tabButton]
+    if not newContent then return end
+    local oldContent = nil
+    for tab, content in pairs(contentMap) do
+        if content and content ~= newContent and content.Visible then
+            oldContent = content
+            break
+        end
+    end
+    if oldContent == newContent then return end
+    if oldContent then oldContent.Visible = false end
+    newContent.Visible = true
+    if Settings.Animations then
+        newContent.Position = UDim2.new(-1, 0, 0, 0)
+        TweenService:Create(newContent, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+            Position = UDim2.new(0, 0, 0, 0)
+        }):Play()
+    else
+        newContent.Position = UDim2.new(0, 0, 0, 0)
+    end
+    if newContent == UI.HomeContent then Funcs.UpdateStats() end
+    if newContent == UI.ScriptsContent then Funcs.RefreshSavedScripts(UI.SearchBox2.Text) end
+    if newContent == UI.MusicContent then Funcs.RefreshMusicList() end
+end
+
+function Funcs.UpdateUnderline(tabButton, active)
+    local underline = tabButton:FindFirstChild("TabUnderline") or tabButton:FindFirstChild("TabUnderline2") or tabButton:FindFirstChild("TabUnderline3") or tabButton:FindFirstChild("TabUnderline4") or tabButton:FindFirstChild("TabUnderline5") or tabButton:FindFirstChild("TabUnderline6Music")
+    if not underline then return end
+    if active then
+        if Settings.Animations then
+            TweenService:Create(underline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(1, 0, 0, 1) }):Play()
+        else
+            underline.Size = UDim2.new(1, 0, 0, 1)
+        end
+    else
+        if Settings.Animations then
+            TweenService:Create(underline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 0, 0, 1) }):Play()
+        else
+            underline.Size = UDim2.new(0, 0, 0, 1)
+        end
+    end
+end
+
+function Funcs.SetAllUnderlines(activeTab)
+    local tabs = {UI.HomeTab, UI.ExeTab, UI.SearchTab, UI.ScriptsTab, UI.SettingsTab, UI.MusicTab}
+    for _, tab in ipairs(tabs) do
+        Funcs.UpdateUnderline(tab, tab == activeTab)
+    end
+end
+
+function Funcs.Dragify(Object)
+    local dragging = false
+    local dragInput
+    local dragStart
+    local startPos
+    local function ClampPosition(newX, newY)
+        local viewport = workspace.CurrentCamera.ViewportSize
+        local size = Object.AbsoluteSize
+        local paddingX = 16
+        local paddingY = 12
+        newX = math.clamp(newX, paddingX, viewport.X - size.X - paddingX)
+        newY = math.clamp(newY, paddingY, viewport.Y - size.Y - paddingY)
+        return newX, newY
+    end
+    Object.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = Object.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then dragging = false end
+            end)
+        end
+    end)
+    Object.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            local newX = startPos.X.Offset + delta.X
+            local newY = startPos.Y.Offset + delta.Y
+            newX, newY = ClampPosition(newX, newY)
+            Object.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
+        end
+    end)
+end
+
+function Funcs.GetActiveContent()
+    local contents = {UI.HomeContent, UI.ExeContent, UI.SearchContent, UI.ScriptsContent, UI.SettingsContent, UI.MusicContent}
+    for _, content in ipairs(contents) do
+        if content and content.Visible then return content end
+    end
+    return UI.HomeContent
+end
+
+function Funcs.OpenUI()
+    UI.MainFrame.Visible = true
+    UI.MainFrame.BackgroundTransparency = 1
+    local activeContent = Funcs.GetActiveContent()
+    activeContent.Position = UDim2.new(-1, 0, 0, 0)
+    UI.Sidebar.Position = UDim2.new(1.2, 8, 0.5, 0)
+    if Settings.Animations then
+        TweenService:Create(UI.MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0.35 }):Play()
+        TweenService:Create(activeContent, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 0, 0) }):Play()
+        TweenService:Create(UI.Sidebar, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.new(1, 8, 0.5, 0) }):Play()
+        TweenService:Create(UI.Show, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { ImageTransparency = 1, BackgroundTransparency = 1 }):Play()
+    else
+        UI.MainFrame.BackgroundTransparency = 0.35
+        activeContent.Position = UDim2.new(0, 0, 0, 0)
+        UI.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
+        UI.Show.ImageTransparency = 1
+        UI.Show.BackgroundTransparency = 1
+    end
+    UI.Show.Visible = false
+    Funcs.UpdateStats()
+end
+
+function Funcs.CloseUI()
+    local activeContent = Funcs.GetActiveContent()
+    if Settings.Animations then
+        local bgTween = TweenService:Create(UI.MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { BackgroundTransparency = 1 })
+        local contentTween = TweenService:Create(activeContent, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(-1, 0, 0, 0) })
+        local sidebarTween = TweenService:Create(UI.Sidebar, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.In), { Position = UDim2.new(1.2, 8, 0.5, 0) })
+        local showTween = TweenService:Create(UI.Show, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { ImageTransparency = 0, BackgroundTransparency = 0.08 })
+        bgTween:Play(); contentTween:Play(); sidebarTween:Play(); showTween:Play()
+        contentTween.Completed:Wait()
+        UI.MainFrame.Visible = false
+        UI.Show.Visible = true
+    else
+        UI.MainFrame.BackgroundTransparency = 1
+        UI.MainFrame.Visible = false
+        UI.Show.Visible = true
+        UI.Show.ImageTransparency = 0
+        UI.Show.BackgroundTransparency = 0.08
+        activeContent.Position = UDim2.new(0, 0, 0, 0)
+        UI.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
+    end
+end
+
+function Funcs.CreateTab(iconPath, labelText, content, layoutOrder, underlineKey)
+    local tab = Instance.new("TextButton")
+    tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    tab.BackgroundTransparency = 1
+    tab.BorderSizePixel = 0
+    tab.LayoutOrder = layoutOrder or 1
+    tab.Name = labelText .. "Tab"
+    tab.Size = UDim2.new(0, 30, 0, 58)
+    tab.Text = ""
+    tab.Parent = UI.Sidebar
+
+    local tabLayout = Instance.new("UIListLayout")
+    tabLayout.Padding = UDim.new(0, 4)
+    tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+    tabLayout.Parent = tab
+
+    local tabSizeCons = Instance.new("UISizeConstraint")
+    tabSizeCons.MaxSize = Vector2.new(2147483647, 34)
+    tabSizeCons.MinSize = Vector2.new(0, 28)
+    tabSizeCons.Parent = tab
+
+    local tabPadding = Instance.new("UIPadding")
+    tabPadding.PaddingBottom = UDim.new(0, 3)
+    tabPadding.PaddingTop = UDim.new(0, 3)
+    tabPadding.Parent = tab
+
+    local container = Instance.new("Frame")
+    container.BackgroundTransparency = 1
+    container.BorderSizePixel = 0
+    container.LayoutOrder = 1
+    container.Name = "TabContainer"
+    container.Size = UDim2.new(1, 0, 0, 22)
+    container.Parent = tab
+
+    local containerLayout = Instance.new("UIListLayout")
+    containerLayout.FillDirection = Enum.FillDirection.Horizontal
+    containerLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    containerLayout.Padding = UDim.new(0, 4)
+    containerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    containerLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+    containerLayout.Parent = container
+
+    local icon = Instance.new("ImageLabel")
+    icon.BackgroundTransparency = 1
+    icon.BorderSizePixel = 0
+    icon.Image = Funcs.GetAsset(iconPath) or ""
+    icon.LayoutOrder = 1
+    icon.Name = "TabIcon"
+    icon.Size = UDim2.new(0, 30, 0, 30)
+    icon.Parent = container
+
+    local iconRatio = Instance.new("UIAspectRatioConstraint")
+    iconRatio.Parent = icon
+
+    local label = Instance.new("TextLabel")
+    label.BackgroundTransparency = 1
+    label.BorderSizePixel = 0
+    label.FontFace = BuilderSans
+    label.LayoutOrder = 2
+    label.Name = "TabLabel"
+    label.Size = UDim2.new(0, 60, 0, 30)
+    label.Text = labelText
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextScaled = true
+    label.TextWrapped = true
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = container
+
+    local underline = Instance.new("Frame")
+    underline.BackgroundColor3 = Settings.AccentColor
+    underline.BorderSizePixel = 0
+    underline.LayoutOrder = 2
+    underline.Name = underlineKey or "TabUnderline"
+    underline.Size = UDim2.new(0, 0, 0, 1)
+    underline.Parent = tab
+
+    local underlineCorner = Instance.new("UICorner")
+    underlineCorner.CornerRadius = UDim.new(0, 6)
+    underlineCorner.Parent = underline
+
+    UI[labelText .. "Tab"] = tab
+    UI[underlineKey or "TabUnderline"] = underline
+
+    if content then content.Parent = UI.Pages end
+
+    tab.MouseButton1Click:Connect(function()
+        if content then
+            Funcs.SwitchTab(tab)
+            Funcs.SetAllUnderlines(tab)
+        end
+    end)
+
+    return tab
+end
+
+function Funcs.CreateSettingsInputbox(labelText, placeholderText, settingKey, layoutOrder)
+    local frame = Instance.new("Frame")
+    frame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+    frame.BorderSizePixel = 0
+    frame.LayoutOrder = layoutOrder or 2
+    frame.Name = labelText:gsub(" ", "")
+    frame.Size = UDim2.new(1, 0, 0, 38)
+    frame.Parent = UI.SettingsFrame
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = frame
+
+    local stroke = Instance.new("UIStroke")
+    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    stroke.Color = Color3.fromRGB(36, 36, 36)
+    stroke.Parent = frame
+
+    local layout = Instance.new("UIListLayout")
+    layout.FillDirection = Enum.FillDirection.Horizontal
+    layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    layout.Padding = UDim.new(0, 6)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.VerticalFlex = Enum.UIFlexAlignment.Fill
+    layout.Parent = frame
+
+    local padding = Instance.new("UIPadding")
+    padding.PaddingBottom = UDim.new(0, 8)
+    padding.PaddingLeft = UDim.new(0, 8)
+    padding.PaddingRight = UDim.new(0, 8)
+    padding.PaddingTop = UDim.new(0, 8)
+    padding.Parent = frame
+
+    local lbl = Instance.new("TextLabel")
+    lbl.BackgroundTransparency = 1
+    lbl.BorderSizePixel = 0
+    lbl.FontFace = GothamMedium
+    lbl.LayoutOrder = 1
+    lbl.Size = UDim2.new(0.8, 0, 1, 0)
+    lbl.Text = labelText
+    lbl.TextColor3 = Color3.fromRGB(255, 255, 255)
+    lbl.TextScaled = true
+    lbl.TextWrapped = true
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+    lbl.Parent = frame
+
+    local input = Instance.new("TextBox")
+    input.BackgroundTransparency = 1
+    input.BorderSizePixel = 0
+    input.FontFace = GothamMedium
+    input.LayoutOrder = 2
+    input.PlaceholderColor3 = Color3.fromRGB(221, 221, 221)
+    input.PlaceholderText = placeholderText
+    input.Size = UDim2.new(0.2, 0, 1, 0)
+    input.Text = ""
+    input.TextColor3 = Color3.fromRGB(255, 255, 255)
+    input.TextScaled = true
+    input.TextWrapped = true
+    input.Parent = frame
+
+    local inputCorner = Instance.new("UICorner")
+    inputCorner.CornerRadius = UDim.new(0, 6)
+    inputCorner.Parent = input
+
+    local inputStroke = Instance.new("UIStroke")
+    inputStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    inputStroke.Color = Color3.fromRGB(36, 36, 36)
+    inputStroke.Parent = input
+
+    local inputPadding = Instance.new("UIPadding")
+    inputPadding.PaddingBottom = UDim.new(0, 4)
+    inputPadding.PaddingLeft = UDim.new(0, 4)
+    inputPadding.PaddingRight = UDim.new(0, 4)
+    inputPadding.PaddingTop = UDim.new(0, 4)
+    inputPadding.Parent = input
+
+    if settingKey then
+        input.FocusLost:Connect(function(enterPressed)
+            if enterPressed then
+                local color = Funcs.ParseColor(input.Text)
+                if color then
+                    Settings[settingKey] = color
+                    Funcs.ApplyTheme()
+                    Funcs.SaveSettings()
+                end
+            end
+        end)
+    end
+
+    return input
+end
+
+function Funcs.GetNextTabName()
+    local existing = {}
+    for _, t in ipairs(ExeTabs) do
+        local num = tonumber(t.name:match("^Tab (%d+)$"))
+        if num then existing[num] = true end
+    end
+    local n = 1
+    while existing[n] do n = n + 1 end
+    return "Tab " .. n
+end
+
+function Funcs.SwitchExeTab(tabData)
+    if ExeActiveTab and ExeActiveTab ~= tabData then
+        ExeActiveTab.inputFrame.Visible = false
+        local activeBtn = ExeActiveTab.tabBtn
+        if activeBtn then
+            local activeLine = activeBtn:FindFirstChild("ActiveLine")
+            if activeLine then activeLine.BackgroundColor3 = Color3.fromRGB(40, 40, 40) end
+        end
+    end
+    ExeActiveTab = tabData
+    tabData.inputFrame.Visible = true
+    local tabBtn = tabData.tabBtn
+    if tabBtn then
+        local activeLine = tabBtn:FindFirstChild("ActiveLine")
+        if activeLine then activeLine.BackgroundColor3 = Settings.AccentColor end
+    end
+    UI.ExeBottomButtons.Visible = true
+end
+
+function Funcs.CreateExeTab(name)
+    local tabData = {}
+    tabData.name = name or Funcs.GetNextTabName()
+    tabData.code = ""
+
+    local tabBtn = Instance.new("Frame")
+    tabBtn.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+    tabBtn.BorderSizePixel = 0
+    tabBtn.Name = "ExeTabBtn_" .. tabData.name
+    tabBtn.Size = UDim2.new(0, 90, 1, 0)
+    tabBtn.Parent = UI.ExeTabBarScroll
+
+    local tabBtnCorner = Instance.new("UICorner")
+    tabBtnCorner.CornerRadius = UDim.new(0, 5)
+    tabBtnCorner.Parent = tabBtn
+
+    local tabBtnStroke = Instance.new("UIStroke")
+    tabBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    tabBtnStroke.Color = Color3.fromRGB(36, 36, 36)
+    tabBtnStroke.Parent = tabBtn
+
+    local activeLine = Instance.new("Frame")
+    activeLine.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    activeLine.BorderSizePixel = 0
+    activeLine.Name = "ActiveLine"
+    activeLine.Size = UDim2.new(1, 0, 0, 2)
+    activeLine.AnchorPoint = Vector2.new(0, 1)
+    activeLine.Position = UDim2.new(0, 0, 1, 0)
+    activeLine.Parent = tabBtn
+
+    local activeLineCorner = Instance.new("UICorner")
+    activeLineCorner.CornerRadius = UDim.new(0, 2)
+    activeLineCorner.Parent = activeLine
+
+    local tabInnerLayout = Instance.new("UIListLayout")
+    tabInnerLayout.FillDirection = Enum.FillDirection.Horizontal
+    tabInnerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    tabInnerLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    tabInnerLayout.Padding = UDim.new(0, 2)
+    tabInnerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabInnerLayout.Parent = tabBtn
+
+    local tabInnerPadding = Instance.new("UIPadding")
+    tabInnerPadding.PaddingLeft = UDim.new(0, 6)
+    tabInnerPadding.PaddingRight = UDim.new(0, 4)
+    tabInnerPadding.PaddingTop = UDim.new(0, 2)
+    tabInnerPadding.PaddingBottom = UDim.new(0, 4)
+    tabInnerPadding.Parent = tabBtn
+
+    local tabNameBtn = Instance.new("TextButton")
+    tabNameBtn.BackgroundTransparency = 1
+    tabNameBtn.BorderSizePixel = 0
+    tabNameBtn.FontFace = GothamMedium
+    tabNameBtn.LayoutOrder = 1
+    tabNameBtn.Name = "TabNameBtn"
+    tabNameBtn.Size = UDim2.new(1, -20, 1, 0)
+    tabNameBtn.Text = tabData.name
+    tabNameBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+    tabNameBtn.TextScaled = true
+    tabNameBtn.TextTruncate = Enum.TextTruncate.AtEnd
+    tabNameBtn.TextXAlignment = Enum.TextXAlignment.Left
+    tabNameBtn.Parent = tabBtn
+
+    local tabNameBox = Instance.new("TextBox")
+    tabNameBox.BackgroundTransparency = 1
+    tabNameBox.BorderSizePixel = 0
+    tabNameBox.FontFace = GothamMedium
+    tabNameBox.LayoutOrder = 1
+    tabNameBox.Name = "TabNameBox"
+    tabNameBox.Size = UDim2.new(1, -20, 1, 0)
+    tabNameBox.Text = tabData.name
+    tabNameBox.TextColor3 = Color3.fromRGB(200, 200, 200)
+    tabNameBox.TextScaled = true
+    tabNameBox.TextXAlignment = Enum.TextXAlignment.Left
+    tabNameBox.Visible = false
+    tabNameBox.ClearTextOnFocus = false
+    tabNameBox.Parent = tabBtn
+
+    local closeBtn = Instance.new("TextButton")
+    closeBtn.BackgroundTransparency = 1
+    closeBtn.BorderSizePixel = 0
+    closeBtn.FontFace = GothamBold
+    closeBtn.LayoutOrder = 2
+    closeBtn.Name = "CloseExeTab"
+    closeBtn.Size = UDim2.new(0, 16, 0, 16)
+    closeBtn.Text = "X"
+    closeBtn.TextColor3 = Color3.fromRGB(160, 160, 160)
+    closeBtn.TextScaled = true
+    closeBtn.Parent = tabBtn
+
+    local inputFrame = Instance.new("ScrollingFrame")
+    inputFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    inputFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+    inputFrame.BorderSizePixel = 0
+    inputFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+    inputFrame.Name = "ExeInputFrame_" .. tabData.name
+    inputFrame.ScrollingDirection = Enum.ScrollingDirection.Y
+    inputFrame.ScrollBarThickness = 6
+    inputFrame.Size = UDim2.new(1, 0, 1, 0)
+    inputFrame.Visible = false
+    inputFrame.Parent = UI.ExeEditorArea
+
+    local inputFramePadding = Instance.new("UIPadding")
+    inputFramePadding.PaddingBottom = UDim.new(0, 6)
+    inputFramePadding.PaddingLeft = UDim.new(0, 6)
+    inputFramePadding.PaddingRight = UDim.new(0, 6)
+    inputFramePadding.PaddingTop = UDim.new(0, 6)
+    inputFramePadding.Parent = inputFrame
+
+    local inputFrameStroke = Instance.new("UIStroke")
+    inputFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    inputFrameStroke.Color = Color3.fromRGB(36, 36, 36)
+    inputFrameStroke.Parent = inputFrame
+
+    local inputFrameCorner = Instance.new("UICorner")
+    inputFrameCorner.CornerRadius = UDim.new(0, 6)
+    inputFrameCorner.Parent = inputFrame
+
+    local highlight = Instance.new("TextLabel")
+    highlight.AutomaticSize = Enum.AutomaticSize.Y
+    highlight.BackgroundTransparency = 1
+    highlight.FontFace = Inconsolata
+    highlight.Name = "Highlight"
+    highlight.RichText = true
+    highlight.Size = UDim2.new(1, 0, 0, 0)
+    highlight.Text = ""
+    highlight.TextColor3 = Color3.fromRGB(255, 255, 255)
+    highlight.TextSize = 18
+    highlight.TextWrapped = true
+    highlight.TextXAlignment = Enum.TextXAlignment.Left
+    highlight.TextYAlignment = Enum.TextYAlignment.Top
+    highlight.Active = false
+    highlight.Selectable = false
+    highlight.Parent = inputFrame
+
+    local inputBox = Instance.new("TextBox")
+    inputBox.AutomaticSize = Enum.AutomaticSize.Y
+    inputBox.BackgroundTransparency = 1
+    inputBox.BorderSizePixel = 0
+    inputBox.ClearTextOnFocus = false
+    inputBox.FontFace = Inconsolata
+    inputBox.MultiLine = true
+    inputBox.Name = "InputBox"
+    inputBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+    inputBox.PlaceholderText = "Enter code here..."
+    inputBox.Size = UDim2.new(1, 0, 0, 0)
+    inputBox.Text = ""
+    inputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    inputBox.TextSize = 18
+    inputBox.TextTransparency = 1
+    inputBox.TextWrapped = true
+    inputBox.TextXAlignment = Enum.TextXAlignment.Left
+    inputBox.TextYAlignment = Enum.TextYAlignment.Top
+    inputBox.Parent = inputFrame
+
+    local inputBoxSizeCons = Instance.new("UISizeConstraint")
+    inputBoxSizeCons.MaxSize = Vector2.new(2147483647, 2147483647)
+    inputBoxSizeCons.MinSize = Vector2.new(0, 200)
+    inputBoxSizeCons.Parent = inputBox
+
+    inputBox:GetPropertyChangedSignal("Text"):Connect(function()
+        tabData.code = inputBox.Text
+        highlight.Text = Funcs.Highlight(inputBox.Text)
+    end)
+
+    tabData.tabBtn = tabBtn
+    tabData.inputFrame = inputFrame
+    tabData.inputBox = inputBox
+    tabData.highlight = highlight
+
+    tabNameBtn.MouseButton1Click:Connect(function()
+        Funcs.SwitchExeTab(tabData)
+    end)
+
+    tabNameBtn.MouseButton2Click:Connect(function()
+        tabNameBtn.Visible = false
+        tabNameBox.Visible = true
+        tabNameBox:CaptureFocus()
+    end)
+
+    tabNameBox.FocusLost:Connect(function()
+        local newName = tabNameBox.Text
+        if newName and newName ~= "" then
+            tabData.name = newName
+            tabNameBtn.Text = newName
+        end
+        tabNameBox.Visible = false
+        tabNameBtn.Visible = true
+    end)
+
+    closeBtn.MouseButton1Click:Connect(function()
+        if #ExeTabs <= 1 then return end
+        local idx = table.find(ExeTabs, tabData)
+        table.remove(ExeTabs, idx)
+        tabBtn:Destroy()
+        inputFrame:Destroy()
+        if ExeActiveTab == tabData then
+            local newIdx = math.min(idx, #ExeTabs)
+            if ExeTabs[newIdx] then
+                ExeActiveTab = nil
+                Funcs.SwitchExeTab(ExeTabs[newIdx])
+            end
+        end
+    end)
+
+    table.insert(ExeTabs, tabData)
+    Funcs.SwitchExeTab(tabData)
+    return tabData
+end
+
+function Funcs.GetMusicFiles()
+    if not IsFolder("Lucid/Music") then MakeFolder("Lucid/Music") end
+    local files = ListFiles("Lucid/Music") or {}
+    local musicFiles = {}
+    local supported = {mp3 = true, m4a = true, ogg = true, wav = true, flac = true, aiff = true}
+    for _, file in ipairs(files) do
+        local ext = file:match("%.([^%.]+)$")
+        if ext and supported[ext:lower()] then
+            table.insert(musicFiles, file)
+        end
+    end
+    return musicFiles
+end
+
+function Funcs.GetMusicDisplayName(path)
+    local name = path:match("([^/\\]+)$") or path
+    name = name:gsub("%.[^%.]+$", "")
+    return name
+end
+
+function Funcs.FormatTime(seconds)
+    if not seconds or seconds ~= seconds then return "0:00" end
+    seconds = math.floor(seconds)
+    local m = math.floor(seconds / 60)
+    local s = seconds % 60
+    return string.format("%d:%02d", m, s)
+end
+
+function Funcs.UpdateMusicSlider()
+    if not MusicSound or not MusicSound.Parent then return end
+    local duration = MusicSound.TimeLength
+    local position = MusicSound.TimePosition
+    if duration and duration > 0 and not MusicSliderDragging then
+        local frac = math.clamp(position / duration, 0, 1)
+        UI.MusicSliderFill.Size = UDim2.new(frac, 0, 1, 0)
+        UI.MusicSliderKnob.Position = UDim2.new(frac, -6, 0.5, -6)
+        UI.MusicTimeLabel.Text = Funcs.FormatTime(position) .. " / " .. Funcs.FormatTime(duration)
+    end
+end
+
+function Funcs.LoadAndPlayMusic(index)
+    if not MusicFiles or #MusicFiles == 0 then return end
+    index = ((index - 1) % #MusicFiles) + 1
+    MusicIndex = index
+    local filePath = MusicFiles[index]
+
+    if MusicSound then
+        MusicSound:Stop()
+        MusicSound:Destroy()
+        MusicSound = nil
+    end
+
+    local assetId = pcall(LoadAsset, filePath) and LoadAsset(filePath)
+    if not assetId then
+        UI.MusicNowPlaying.Text = "Failed to load: " .. Funcs.GetMusicDisplayName(filePath)
+        return
+    end
+
+    MusicSound = Instance.new("Sound")
+    MusicSound.SoundId = assetId
+    MusicSound.Volume = tonumber(UI.MusicVolumeBox.Text) or 1
+    MusicSound.PlaybackSpeed = tonumber(UI.MusicSpeedBox.Text) or 1
+    MusicSound.Looped = UI.MusicLoopToggle:FindFirstChild("LoopState") and UI.MusicLoopToggle.LoopState.BackgroundColor3 == Color3.fromRGB(0, 255, 0) or false
+    MusicSound.Parent = Workspace
+
+    MusicSound:Play()
+    MusicPlaying = true
+    UI.MusicPlayBtn.Text = "⏸"
+    UI.MusicNowPlaying.Text = Funcs.GetMusicDisplayName(filePath)
+
+    MusicSound.Ended:Connect(function()
+        if not MusicSound.Looped then
+            Funcs.LoadAndPlayMusic(MusicIndex + 1)
+        end
+    end)
+
+    Funcs.RefreshMusicList()
+end
+
+function Funcs.RefreshMusicList()
+    MusicFiles = Funcs.GetMusicFiles()
+    local scroll = UI.MusicListScroll
+    if not scroll then return end
+
+    for _, child in ipairs(scroll:GetChildren()) do
+        if child.Name ~= "MusicListLayout" and child.Name ~= "MusicListPadding" and child.Name ~= "NoMusicLabel" then
+            child:Destroy()
+        end
+    end
+
+    if #MusicFiles == 0 then
+        if UI.NoMusicLabel then
+            UI.NoMusicLabel.Visible = true
+        end
+        return
+    end
+
+    if UI.NoMusicLabel then UI.NoMusicLabel.Visible = false end
+
+    for i, filePath in ipairs(MusicFiles) do
+        local displayName = Funcs.GetMusicDisplayName(filePath)
+        local isActive = (i == MusicIndex and MusicPlaying)
+
+        local row = Instance.new("TextButton")
+        row.BackgroundColor3 = isActive and Settings.AccentColor or Color3.fromRGB(22, 22, 22)
+        row.BackgroundTransparency = isActive and 0.5 or 0
+        row.BorderSizePixel = 0
+        row.Name = "MusicRow_" .. i
+        row.Size = UDim2.new(1, 0, 0, 32)
+        row.Text = ""
+        row.Parent = scroll
+
+        local rowCorner = Instance.new("UICorner")
+        rowCorner.CornerRadius = UDim.new(0, 5)
+        rowCorner.Parent = row
+
+        local rowStroke = Instance.new("UIStroke")
+        rowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        rowStroke.Color = isActive and Settings.AccentColor or Color3.fromRGB(36, 36, 36)
+        rowStroke.Parent = row
+
+        local rowLayout = Instance.new("UIListLayout")
+        rowLayout.FillDirection = Enum.FillDirection.Horizontal
+        rowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+        rowLayout.Padding = UDim.new(0, 6)
+        rowLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        rowLayout.Parent = row
+
+        local rowPadding = Instance.new("UIPadding")
+        rowPadding.PaddingLeft = UDim.new(0, 10)
+        rowPadding.PaddingRight = UDim.new(0, 10)
+        rowPadding.Parent = row
+
+        local indexLabel = Instance.new("TextLabel")
+        indexLabel.BackgroundTransparency = 1
+        indexLabel.BorderSizePixel = 0
+        indexLabel.FontFace = GothamMedium
+        indexLabel.LayoutOrder = 1
+        indexLabel.Size = UDim2.new(0, 20, 1, 0)
+        indexLabel.Text = tostring(i)
+        indexLabel.TextColor3 = isActive and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(120, 120, 120)
+        indexLabel.TextScaled = true
+        indexLabel.Parent = row
+
+        local nameLabel = Instance.new("TextLabel")
+        nameLabel.BackgroundTransparency = 1
+        nameLabel.BorderSizePixel = 0
+        nameLabel.FontFace = GothamMedium
+        nameLabel.LayoutOrder = 2
+        nameLabel.Size = UDim2.new(1, -30, 1, 0)
+        nameLabel.Text = displayName
+        nameLabel.TextColor3 = isActive and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(200, 200, 200)
+        nameLabel.TextScaled = true
+        nameLabel.TextTruncate = Enum.TextTruncate.AtEnd
+        nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+        nameLabel.Parent = row
+
+        local capturedIndex = i
+        row.MouseButton1Click:Connect(function()
+            Funcs.LoadAndPlayMusic(capturedIndex)
+        end)
+    end
+end
+
+Funcs.PreloadAssets()
+
+if Shared.Lucid.IsLoaded then
+    StarterGui:SetCore("SendNotification", {
+        Title = "Lucid Executor",
+        Text = "Lucid is already running!",
+        Icon = Funcs.GetAsset("Lucid/Assets/lucid_logo.png"),
+        Duration = 4
+    })
+    return
+end
+
+Shared.Lucid.IsLoaded = true
+
+UI.ScreenGui = Instance.new("ScreenGui")
+UI.ScreenGui.DisplayOrder = 2147483647
+UI.ScreenGui.IgnoreGuiInset = true
+UI.ScreenGui.Name = Funcs.UID()
+UI.ScreenGui.ResetOnSpawn = false
+UI.ScreenGui.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+UI.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+UI.ScreenGui.Parent = Hui
+
+UI.Show = Instance.new("ImageButton")
+UI.Show.BackgroundColor3 = Color3.fromRGB(19, 19, 22)
+UI.Show.BackgroundTransparency = 0.08
+UI.Show.BorderSizePixel = 0
+UI.Show.Name = "Show"
+UI.Show.Position = UDim2.new(0, 16, 0, 60)
+UI.Show.Size = UDim2.new(0, 44, 0, 44)
+UI.Show.Visible = true
+UI.Show.ZIndex = 3
+UI.Show.Parent = UI.ScreenGui
+
+UI.ShowRatio = Instance.new("UIAspectRatioConstraint")
+UI.ShowRatio.Name = "ShowRatio"
+UI.ShowRatio.Parent = UI.Show
+
+UI.ShowCorner = Instance.new("UICorner")
+UI.ShowCorner.CornerRadius = UDim.new(1, 0)
+UI.ShowCorner.Parent = UI.Show
+
+UI.ShowIcon = Instance.new("ImageLabel")
+UI.ShowIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+UI.ShowIcon.BackgroundTransparency = 1
+UI.ShowIcon.BorderSizePixel = 0
+UI.ShowIcon.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
+UI.ShowIcon.Name = "ShowIcon"
+UI.ShowIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+UI.ShowIcon.Size = UDim2.new(0, 28, 0, 28)
+UI.ShowIcon.Parent = UI.Show
+
+UI.MainFrame = Instance.new("Frame")
+UI.MainFrame.AutoLocalize = false
+UI.MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+UI.MainFrame.BackgroundTransparency = 0.35
+UI.MainFrame.BorderSizePixel = 0
+UI.MainFrame.Name = "MainFrame"
+UI.MainFrame.Size = UDim2.new(1, 0, 1, 0)
+UI.MainFrame.Visible = false
+UI.MainFrame.Parent = UI.ScreenGui
+
+UI.MainFrameLayout = Instance.new("UIListLayout")
+UI.MainFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.MainFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MainFrameLayout.Name = "MainFrameLayout"
+UI.MainFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MainFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.MainFrameLayout.Parent = UI.MainFrame
+
+UI.Pages = Instance.new("Frame")
+UI.Pages.BackgroundTransparency = 1
+UI.Pages.BorderSizePixel = 0
+UI.Pages.LayoutOrder = 1
+UI.Pages.Name = "Pages"
+UI.Pages.Size = UDim2.new(0, 576, 0, 116)
+UI.Pages.Parent = UI.MainFrame
+
+UI.PagesPadding = Instance.new("UIPadding")
+UI.PagesPadding.Name = "PagesPadding"
+UI.PagesPadding.PaddingBottom = UDim.new(0, 8)
+UI.PagesPadding.PaddingLeft = UDim.new(0, 8)
+UI.PagesPadding.PaddingTop = UDim.new(0, 60)
+UI.PagesPadding.Parent = UI.Pages
+
+UI.HomeContent = Instance.new("CanvasGroup")
+UI.HomeContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.HomeContent.BorderSizePixel = 0
+UI.HomeContent.LayoutOrder = 1
+UI.HomeContent.Name = "HomeContent"
+UI.HomeContent.Size = UDim2.new(1, 0, 1, 0)
+UI.HomeContent.Visible = false
+UI.HomeContent.Parent = UI.Pages
+
+UI.HomeContentCorner = Instance.new("UICorner")
+UI.HomeContentCorner.CornerRadius = UDim.new(0, 6)
+UI.HomeContentCorner.Parent = UI.HomeContent
+
+UI.HomeContentStroke = Instance.new("UIStroke")
+UI.HomeContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.HomeContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.HomeContentStroke.Name = "HomeContentStroke"
+UI.HomeContentStroke.Parent = UI.HomeContent
+
+UI.HomeContentLayout = Instance.new("UIListLayout")
+UI.HomeContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.HomeContentLayout.Padding = UDim.new(0, 6)
+UI.HomeContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.HomeContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.HomeContentLayout.Parent = UI.HomeContent
+
+UI.HomeInfo = Instance.new("ScrollingFrame")
+UI.HomeInfo.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.HomeInfo.BackgroundTransparency = 1
+UI.HomeInfo.BorderSizePixel = 0
+UI.HomeInfo.CanvasSize = UDim2.new(0, 0, 0, 0)
+UI.HomeInfo.Name = "HomeInfo"
+UI.HomeInfo.ScrollBarThickness = 0
+UI.HomeInfo.ScrollingDirection = Enum.ScrollingDirection.Y
+UI.HomeInfo.Size = UDim2.new(1, 0, 1, 0)
+UI.HomeInfo.Parent = UI.HomeContent
+
+UI.HomeInfoPadding = Instance.new("UIPadding")
+UI.HomeInfoPadding.PaddingBottom = UDim.new(0, 5)
+UI.HomeInfoPadding.PaddingLeft = UDim.new(0, 5)
+UI.HomeInfoPadding.PaddingRight = UDim.new(0, 5)
+UI.HomeInfoPadding.PaddingTop = UDim.new(0, 5)
+UI.HomeInfoPadding.Parent = UI.HomeInfo
+
+UI.HomeInfoLayout = Instance.new("UIListLayout")
+UI.HomeInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.HomeInfoLayout.Padding = UDim.new(0, 6)
+UI.HomeInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.HomeInfoLayout.Parent = UI.HomeInfo
+
+UI.PlayerStats = Instance.new("Frame")
+UI.PlayerStats.BackgroundTransparency = 1
+UI.PlayerStats.BorderSizePixel = 0
+UI.PlayerStats.LayoutOrder = 1
+UI.PlayerStats.Name = "PlayerStats"
+UI.PlayerStats.Size = UDim2.new(1, 0, 0, 400)
+UI.PlayerStats.Parent = UI.HomeInfo
+
+UI.PlayerStatsLayout = Instance.new("UIListLayout")
+UI.PlayerStatsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.PlayerStatsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.PlayerStatsLayout.Padding = UDim.new(0, 6)
+UI.PlayerStatsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.PlayerStatsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.PlayerStatsLayout.Parent = UI.PlayerStats
+
+UI.Avatar = Instance.new("Frame")
+UI.Avatar.BackgroundTransparency = 1
+UI.Avatar.BorderSizePixel = 0
+UI.Avatar.LayoutOrder = 1
+UI.Avatar.Name = "Avatar"
+UI.Avatar.Size = UDim2.new(0, 0, 1, 0)
+UI.Avatar.Parent = UI.PlayerStats
+
+UI.PlayerHeadshot = Instance.new("ImageLabel")
+UI.PlayerHeadshot.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.PlayerHeadshot.BorderSizePixel = 0
+UI.PlayerHeadshot.Interactable = false
+UI.PlayerHeadshot.Name = "PlayerHeadshot"
+UI.PlayerHeadshot.ScaleType = Enum.ScaleType.Fit
+UI.PlayerHeadshot.Size = UDim2.new(1, 0, 1, 0)
+UI.PlayerHeadshot.Parent = UI.Avatar
+
+UI.PlayerHeadshotRatio = Instance.new("UIAspectRatioConstraint")
+UI.PlayerHeadshotRatio.Parent = UI.PlayerHeadshot
+
+UI.PlayerHeadshotCorner = Instance.new("UICorner")
+UI.PlayerHeadshotCorner.CornerRadius = UDim.new(0, 6)
+UI.PlayerHeadshotCorner.Parent = UI.PlayerHeadshot
+
+UI.PlayerHeadshotStroke = Instance.new("UIStroke")
+UI.PlayerHeadshotStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.PlayerHeadshotStroke.Name = "PlayerHeadshotStroke"
+UI.PlayerHeadshotStroke.Parent = UI.PlayerHeadshot
+
+UI.PlayerInfo = Instance.new("Frame")
+UI.PlayerInfo.BackgroundTransparency = 1
+UI.PlayerInfo.BorderSizePixel = 0
+UI.PlayerInfo.LayoutOrder = 2
+UI.PlayerInfo.Name = "PlayerInfo"
+UI.PlayerInfo.Size = UDim2.new(0.75, 0, 1, 0)
+UI.PlayerInfo.Parent = UI.PlayerStats
+
+UI.PlayerInfoLayout = Instance.new("UIListLayout")
+UI.PlayerInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.PlayerInfoLayout.Padding = UDim.new(0, 6)
+UI.PlayerInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.PlayerInfoLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.PlayerInfoLayout.Parent = UI.PlayerInfo
+
+UI.WelcomeLabel = Instance.new("TextLabel")
+UI.WelcomeLabel.BackgroundTransparency = 1
+UI.WelcomeLabel.BorderSizePixel = 0
+UI.WelcomeLabel.FontFace = GothamMedium
+UI.WelcomeLabel.Name = "WelcomeLabel"
+UI.WelcomeLabel.Size = UDim2.new(0, 432, 0, 0)
+UI.WelcomeLabel.Text = "Welcome to Lucid, DisplayName!"
+UI.WelcomeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.WelcomeLabel.TextScaled = true
+UI.WelcomeLabel.TextSize = 20
+UI.WelcomeLabel.TextWrapped = true
+UI.WelcomeLabel.Parent = UI.PlayerInfo
+
+UI.WelcomeLabelStroke = Instance.new("UIStroke")
+UI.WelcomeLabelStroke.Color = Color3.fromRGB(0, 94, 255)
+UI.WelcomeLabelStroke.Name = "WelcomeLabelStroke"
+UI.WelcomeLabelStroke.Parent = UI.WelcomeLabel
+
+UI.InfoLabel = Instance.new("TextLabel")
+UI.InfoLabel.BackgroundTransparency = 1
+UI.InfoLabel.BorderSizePixel = 0
+UI.InfoLabel.FontFace = GothamMedium
+UI.InfoLabel.Name = "InfoLabel"
+UI.InfoLabel.RichText = true
+UI.InfoLabel.Size = UDim2.new(1, 0, 0.75, 0)
+UI.InfoLabel.Text = "Loading..."
+UI.InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.InfoLabel.TextScaled = true
+UI.InfoLabel.TextWrapped = true
+UI.InfoLabel.TextXAlignment = Enum.TextXAlignment.Left
+UI.InfoLabel.TextYAlignment = Enum.TextYAlignment.Top
+UI.InfoLabel.Parent = UI.PlayerInfo
+
+UI.InfoLabelStroke = Instance.new("UIStroke")
+UI.InfoLabelStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.InfoLabelStroke.Name = "InfoLabelStroke"
+UI.InfoLabelStroke.Parent = UI.InfoLabel
+
+UI.InfoLabel2 = Instance.new("TextLabel")
+UI.InfoLabel2.AutomaticSize = Enum.AutomaticSize.Y
+UI.InfoLabel2.BackgroundTransparency = 1
+UI.InfoLabel2.BorderSizePixel = 0
+UI.InfoLabel2.LayoutOrder = 2
+UI.InfoLabel2.Name = "InfoLabel2"
+UI.InfoLabel2.RichText = true
+UI.InfoLabel2.Size = UDim2.new(1, 0, 0, 0)
+UI.InfoLabel2.Text = [[<p align="center"><font size="22"><b>About Lucid</b></font></p>
+
+<p align="left">
+Lucid is a modern interface that replaces your executor's UI while keeping its original functionality. It provides a cleaner design, smoother animations, and a more consistent experience.
+</p>
+
+<p align="center"><font size="22"><b>Features</b></font></p>
+
+<p align="left">
+- Search scripts directly from <b>RScripts.net</b> or <b>ScriptBlox.com</b>, switchable from the Search tab.<br/>
+- Save your favorite scripts for quick access in the <b>Scripts</b> tab.<br/>
+- Multi-tab code editor with renameable tabs.<br/>
+- Built-in music player from <b>Lucid/Music/</b> folder.<br/>
+- Customize Lucid's appearance with your own colors.<br/>
+- Automatically save your settings and preferences.
+</p>
+
+<p align="center"><font size="22"><b>Credits</b></font></p>
+
+<p align="left">
+Created and maintained by <b>JustAGuest</b>.
+</p>
+
+<p align="center"><i>Thank you for using Lucid!</i></p>]]
+UI.InfoLabel2.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.InfoLabel2.TextSize = 14
+UI.InfoLabel2.TextWrapped = true
+UI.InfoLabel2.Parent = UI.HomeInfo
+
+UI.InfoLabel2Stroke = Instance.new("UIStroke")
+UI.InfoLabel2Stroke.Color = Color3.fromRGB(0, 64, 180)
+UI.InfoLabel2Stroke.Name = "InfoLabel2Stroke"
+UI.InfoLabel2Stroke.Parent = UI.InfoLabel2
+
+UI.ExeContent = Instance.new("CanvasGroup")
+UI.ExeContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.ExeContent.BorderSizePixel = 0
+UI.ExeContent.LayoutOrder = 1
+UI.ExeContent.Name = "ExeContent"
+UI.ExeContent.Size = UDim2.new(1, 0, 1, 0)
+UI.ExeContent.Visible = false
+UI.ExeContent.Parent = UI.Pages
+
+UI.ExeContentCorner = Instance.new("UICorner")
+UI.ExeContentCorner.CornerRadius = UDim.new(0, 6)
+UI.ExeContentCorner.Parent = UI.ExeContent
+
+UI.ExeContentStroke = Instance.new("UIStroke")
+UI.ExeContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ExeContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.ExeContentStroke.Name = "ExeContentStroke"
+UI.ExeContentStroke.Parent = UI.ExeContent
+
+UI.ExeContentLayout = Instance.new("UIListLayout")
+UI.ExeContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeContentLayout.Padding = UDim.new(0, 4)
+UI.ExeContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ExeContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeContentLayout.Parent = UI.ExeContent
+
+UI.ExeContentPadding = Instance.new("UIPadding")
+UI.ExeContentPadding.PaddingBottom = UDim.new(0, 5)
+UI.ExeContentPadding.PaddingLeft = UDim.new(0, 5)
+UI.ExeContentPadding.PaddingRight = UDim.new(0, 5)
+UI.ExeContentPadding.PaddingTop = UDim.new(0, 5)
+UI.ExeContentPadding.Parent = UI.ExeContent
+
+UI.ExeTabBarWrapper = Instance.new("Frame")
+UI.ExeTabBarWrapper.BackgroundTransparency = 1
+UI.ExeTabBarWrapper.BorderSizePixel = 0
+UI.ExeTabBarWrapper.LayoutOrder = 1
+UI.ExeTabBarWrapper.Name = "ExeTabBarWrapper"
+UI.ExeTabBarWrapper.Size = UDim2.new(1, 0, 0, 30)
+UI.ExeTabBarWrapper.Parent = UI.ExeContent
+
+UI.ExeTabBarWrapperLayout = Instance.new("UIListLayout")
+UI.ExeTabBarWrapperLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ExeTabBarWrapperLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeTabBarWrapperLayout.Padding = UDim.new(0, 4)
+UI.ExeTabBarWrapperLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ExeTabBarWrapperLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeTabBarWrapperLayout.Parent = UI.ExeTabBarWrapper
+
+UI.ExeTabBarSizeCons = Instance.new("UISizeConstraint")
+UI.ExeTabBarSizeCons.MaxSize = Vector2.new(2147483647, 30)
+UI.ExeTabBarSizeCons.MinSize = Vector2.new(0, 30)
+UI.ExeTabBarSizeCons.Parent = UI.ExeTabBarWrapper
+
+UI.ExeTabBarScroll = Instance.new("ScrollingFrame")
+UI.ExeTabBarScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
+UI.ExeTabBarScroll.BackgroundTransparency = 1
+UI.ExeTabBarScroll.BorderSizePixel = 0
+UI.ExeTabBarScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+UI.ExeTabBarScroll.LayoutOrder = 1
+UI.ExeTabBarScroll.Name = "ExeTabBarScroll"
+UI.ExeTabBarScroll.ScrollBarThickness = 3
+UI.ExeTabBarScroll.ScrollingDirection = Enum.ScrollingDirection.X
+UI.ExeTabBarScroll.Size = UDim2.new(1, -38, 1, 0)
+UI.ExeTabBarScroll.Parent = UI.ExeTabBarWrapper
+
+UI.ExeTabBarScrollLayout = Instance.new("UIListLayout")
+UI.ExeTabBarScrollLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ExeTabBarScrollLayout.Padding = UDim.new(0, 4)
+UI.ExeTabBarScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ExeTabBarScrollLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+UI.ExeTabBarScrollLayout.Parent = UI.ExeTabBarScroll
+
+UI.ExeTabBarScrollPadding = Instance.new("UIPadding")
+UI.ExeTabBarScrollPadding.PaddingLeft = UDim.new(0, 2)
+UI.ExeTabBarScrollPadding.Parent = UI.ExeTabBarScroll
+
+UI.AddExeTabBtn = Instance.new("TextButton")
+UI.AddExeTabBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.AddExeTabBtn.BorderSizePixel = 0
+UI.AddExeTabBtn.FontFace = GothamBold
+UI.AddExeTabBtn.LayoutOrder = 2
+UI.AddExeTabBtn.Name = "AddExeTabBtn"
+UI.AddExeTabBtn.Size = UDim2.new(0, 30, 1, 0)
+UI.AddExeTabBtn.Text = "+"
+UI.AddExeTabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.AddExeTabBtn.TextScaled = true
+UI.AddExeTabBtn.Parent = UI.ExeTabBarWrapper
+
+UI.AddExeTabBtnCorner = Instance.new("UICorner")
+UI.AddExeTabBtnCorner.CornerRadius = UDim.new(0, 5)
+UI.AddExeTabBtnCorner.Parent = UI.AddExeTabBtn
+
+UI.AddExeTabBtnStroke = Instance.new("UIStroke")
+UI.AddExeTabBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.AddExeTabBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.AddExeTabBtnStroke.Name = "AddExeTabBtnStroke"
+UI.AddExeTabBtnStroke.Parent = UI.AddExeTabBtn
+
+UI.AddExeTabBtnRatio = Instance.new("UIAspectRatioConstraint")
+UI.AddExeTabBtnRatio.Parent = UI.AddExeTabBtn
+  
+UI.ExeEditorArea = Instance.new("Frame")
+UI.ExeEditorArea.BackgroundTransparency = 1
+UI.ExeEditorArea.BorderSizePixel = 0
+UI.ExeEditorArea.LayoutOrder = 2
+UI.ExeEditorArea.Name = "ExeEditorArea"
+UI.ExeEditorArea.Size = UDim2.new(1, 0, 1, 0)
+UI.ExeEditorArea.Parent = UI.ExeContent
+
+UI.ExeBottomButtons = Instance.new("Frame")
+UI.ExeBottomButtons.BackgroundTransparency = 1
+UI.ExeBottomButtons.BorderSizePixel = 0
+UI.ExeBottomButtons.LayoutOrder = 3
+UI.ExeBottomButtons.Name = "ExeBottomButtons"
+UI.ExeBottomButtons.Size = UDim2.new(1, 0, 0, 38)
+UI.ExeBottomButtons.Visible = false
+UI.ExeBottomButtons.Parent = UI.ExeContent
+
+UI.ExeBottomButtonsSizeCons = Instance.new("UISizeConstraint")
+UI.ExeBottomButtonsSizeCons.MaxSize = Vector2.new(2147483647, 38)
+UI.ExeBottomButtonsSizeCons.Parent = UI.ExeBottomButtons
+
+UI.ExeBottomButtonsLayout = Instance.new("UIListLayout")
+UI.ExeBottomButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ExeBottomButtonsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeBottomButtonsLayout.Padding = UDim.new(0, 6)
+UI.ExeBottomButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ExeBottomButtonsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ExeBottomButtonsLayout.Parent = UI.ExeBottomButtons
+
+UI.ExeBtn = Instance.new("TextButton")
+UI.ExeBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.ExeBtn.BorderSizePixel = 0
+UI.ExeBtn.FontFace = BuilderSans
+UI.ExeBtn.LayoutOrder = 1
+UI.ExeBtn.Name = "ExeBtn"
+UI.ExeBtn.Size = UDim2.new(0.2, 0, 1, 0)
+UI.ExeBtn.Text = "Execute"
+UI.ExeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ExeBtn.TextScaled = true
+UI.ExeBtn.TextWrapped = true
+UI.ExeBtn.Parent = UI.ExeBottomButtons
+
+UI.ExeBtnCorner = Instance.new("UICorner")
+UI.ExeBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.ExeBtnCorner.Parent = UI.ExeBtn
+
+UI.ExeBtnStroke = Instance.new("UIStroke")
+UI.ExeBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ExeBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.ExeBtnStroke.Name = "ExeBtnStroke"
+UI.ExeBtnStroke.Parent = UI.ExeBtn
+
+UI.ExeBtnPadding = Instance.new("UIPadding")
+UI.ExeBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.ExeBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.ExeBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.ExeBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.ExeBtnPadding.Parent = UI.ExeBtn
+
+UI.ClrBtn = Instance.new("TextButton")
+UI.ClrBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.ClrBtn.BorderSizePixel = 0
+UI.ClrBtn.FontFace = BuilderSans
+UI.ClrBtn.LayoutOrder = 2
+UI.ClrBtn.Name = "ClrBtn"
+UI.ClrBtn.Size = UDim2.new(0.2, 0, 1, 0)
+UI.ClrBtn.Text = "Clear"
+UI.ClrBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ClrBtn.TextScaled = true
+UI.ClrBtn.TextWrapped = true
+UI.ClrBtn.Parent = UI.ExeBottomButtons
+
+UI.ClrBtnCorner = Instance.new("UICorner")
+UI.ClrBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.ClrBtnCorner.Parent = UI.ClrBtn
+
+UI.ClrBtnStroke = Instance.new("UIStroke")
+UI.ClrBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ClrBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.ClrBtnStroke.Name = "ClrBtnStroke"
+UI.ClrBtnStroke.Parent = UI.ClrBtn
+
+UI.ClrBtnPadding = Instance.new("UIPadding")
+UI.ClrBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.ClrBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.ClrBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.ClrBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.ClrBtnPadding.Parent = UI.ClrBtn
+
+UI.CopyBtn = Instance.new("TextButton")
+UI.CopyBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.CopyBtn.BorderSizePixel = 0
+UI.CopyBtn.FontFace = BuilderSans
+UI.CopyBtn.LayoutOrder = 3
+UI.CopyBtn.Name = "CopyBtn"
+UI.CopyBtn.Size = UDim2.new(0.2, 0, 1, 0)
+UI.CopyBtn.Text = "Copy"
+UI.CopyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.CopyBtn.TextScaled = true
+UI.CopyBtn.TextWrapped = true
+UI.CopyBtn.Parent = UI.ExeBottomButtons
+
+UI.CopyBtnCorner = Instance.new("UICorner")
+UI.CopyBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.CopyBtnCorner.Parent = UI.CopyBtn
+
+UI.CopyBtnStroke = Instance.new("UIStroke")
+UI.CopyBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.CopyBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.CopyBtnStroke.Name = "CopyBtnStroke"
+UI.CopyBtnStroke.Parent = UI.CopyBtn
+
+UI.CopyBtnPadding = Instance.new("UIPadding")
+UI.CopyBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.CopyBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.CopyBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.CopyBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.CopyBtnPadding.Parent = UI.CopyBtn
+
+UI.SearchContent = Instance.new("CanvasGroup")
+UI.SearchContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.SearchContent.BorderSizePixel = 0
+UI.SearchContent.LayoutOrder = 2
+UI.SearchContent.Name = "SearchContent"
+UI.SearchContent.Size = UDim2.new(1, 0, 1, 0)
+UI.SearchContent.Visible = false
+UI.SearchContent.Parent = UI.Pages
+
+UI.SearchContentPadding = Instance.new("UIPadding")
+UI.SearchContentPadding.PaddingBottom = UDim.new(0, 6)
+UI.SearchContentPadding.PaddingLeft = UDim.new(0, 6)
+UI.SearchContentPadding.PaddingRight = UDim.new(0, 6)
+UI.SearchContentPadding.PaddingTop = UDim.new(0, 6)
+UI.SearchContentPadding.Parent = UI.SearchContent
+
+UI.SearchContentLayout = Instance.new("UIListLayout")
+UI.SearchContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchContentLayout.Padding = UDim.new(0, 6)
+UI.SearchContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SearchContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchContentLayout.Parent = UI.SearchContent
+
+UI.SearchContentCorner = Instance.new("UICorner")
+UI.SearchContentCorner.CornerRadius = UDim.new(0, 6)
+UI.SearchContentCorner.Parent = UI.SearchContent
+
+UI.SearchContentStroke = Instance.new("UIStroke")
+UI.SearchContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SearchContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.SearchContentStroke.Name = "SearchContentStroke"
+UI.SearchContentStroke.Parent = UI.SearchContent
+
+UI.SearchFrame = Instance.new("Frame")
+UI.SearchFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.SearchFrame.BorderSizePixel = 0
+UI.SearchFrame.LayoutOrder = 1
+UI.SearchFrame.Name = "SearchFrame"
+UI.SearchFrame.Size = UDim2.new(1, 0, 0, 30)
+UI.SearchFrame.Parent = UI.SearchContent
+
+UI.SearchFrameLayout = Instance.new("UIListLayout")
+UI.SearchFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.SearchFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchFrameLayout.Padding = UDim.new(0, 2)
+UI.SearchFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SearchFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchFrameLayout.Parent = UI.SearchFrame
+
+UI.SearchFrameSizeCons = Instance.new("UISizeConstraint")
+UI.SearchFrameSizeCons.MaxSize = Vector2.new(2147483647, 30)
+UI.SearchFrameSizeCons.MinSize = Vector2.new(0, 30)
+UI.SearchFrameSizeCons.Parent = UI.SearchFrame
+
+UI.SearchFrameCorner = Instance.new("UICorner")
+UI.SearchFrameCorner.CornerRadius = UDim.new(0, 6)
+UI.SearchFrameCorner.Parent = UI.SearchFrame
+
+UI.SearchFrameStroke = Instance.new("UIStroke")
+UI.SearchFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SearchFrameStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.SearchFrameStroke.Parent = UI.SearchFrame
+
+UI.SourceBtn = Instance.new("TextButton")
+UI.SourceBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.SourceBtn.BorderSizePixel = 0
+UI.SourceBtn.FontFace = BuilderSans
+UI.SourceBtn.LayoutOrder = 1
+UI.SourceBtn.Name = "SourceBtn"
+UI.SourceBtn.Size = UDim2.new(0.24, 0, 1, 0)
+UI.SourceBtn.Text = "🟢 Source: RScripts"
+UI.SourceBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SourceBtn.TextScaled = true
+UI.SourceBtn.TextWrapped = true
+UI.SourceBtn.Parent = UI.SearchFrame
+
+UI.SourceBtnCorner = Instance.new("UICorner")
+UI.SourceBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.SourceBtnCorner.Parent = UI.SourceBtn
+
+UI.SourceBtnStroke = Instance.new("UIStroke")
+UI.SourceBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SourceBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SourceBtnStroke.Name = "SourceBtnStroke"
+UI.SourceBtnStroke.Parent = UI.SourceBtn
+
+UI.SourceBtnPadding = Instance.new("UIPadding")
+UI.SourceBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.SourceBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.SourceBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.SourceBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.SourceBtnPadding.Parent = UI.SourceBtn
+
+UI.SearchBox = Instance.new("TextBox")
+UI.SearchBox.BackgroundTransparency = 1
+UI.SearchBox.BorderSizePixel = 0
+UI.SearchBox.FontFace = GothamMedium
+UI.SearchBox.LayoutOrder = 2
+UI.SearchBox.Name = "SearchBox"
+UI.SearchBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+UI.SearchBox.PlaceholderText = "Search for scripts..."
+UI.SearchBox.Size = UDim2.new(0.52, 0, 1, 0)
+UI.SearchBox.Text = ""
+UI.SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SearchBox.TextScaled = true
+UI.SearchBox.TextWrapped = true
+UI.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
+UI.SearchBox.Parent = UI.SearchFrame
+
+UI.SearchBoxPadding = Instance.new("UIPadding")
+UI.SearchBoxPadding.PaddingBottom = UDim.new(0, 6)
+UI.SearchBoxPadding.PaddingLeft = UDim.new(0, 6)
+UI.SearchBoxPadding.PaddingRight = UDim.new(0, 6)
+UI.SearchBoxPadding.PaddingTop = UDim.new(0, 6)
+UI.SearchBoxPadding.Parent = UI.SearchBox
+
+UI.FilterBtn = Instance.new("TextButton")
+UI.FilterBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.FilterBtn.BorderSizePixel = 0
+UI.FilterBtn.FontFace = BuilderSans
+UI.FilterBtn.LayoutOrder = 3
+UI.FilterBtn.Name = "FilterBtn"
+UI.FilterBtn.Size = UDim2.new(0.24, 0, 1, 0)
+UI.FilterBtn.Text = "Filter: All"
+UI.FilterBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.FilterBtn.TextScaled = true
+UI.FilterBtn.TextWrapped = true
+UI.FilterBtn.Parent = UI.SearchFrame
+
+UI.FilterBtnCorner = Instance.new("UICorner")
+UI.FilterBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.FilterBtnCorner.Parent = UI.FilterBtn
+
+UI.FilterBtnStroke = Instance.new("UIStroke")
+UI.FilterBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.FilterBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.FilterBtnStroke.Name = "FilterBtnStroke"
+UI.FilterBtnStroke.Parent = UI.FilterBtn
+
+UI.FilterBtnPadding = Instance.new("UIPadding")
+UI.FilterBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.FilterBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.FilterBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.FilterBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.FilterBtnPadding.Parent = UI.FilterBtn
+
+UI.SearchResults = Instance.new("ScrollingFrame")
+UI.SearchResults.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.SearchResults.BackgroundTransparency = 1
+UI.SearchResults.BorderSizePixel = 0
+UI.SearchResults.LayoutOrder = 2
+UI.SearchResults.Name = "SearchResults"
+UI.SearchResults.ScrollBarThickness = 0
+UI.SearchResults.ScrollingDirection = Enum.ScrollingDirection.Y
+UI.SearchResults.Size = UDim2.new(1, 0, 1, 0)
+UI.SearchResults.Parent = UI.SearchContent
+
+UI.SearchResultsPadding = Instance.new("UIPadding")
+UI.SearchResultsPadding.PaddingBottom = UDim.new(0, 2)
+UI.SearchResultsPadding.PaddingLeft = UDim.new(0, 2)
+UI.SearchResultsPadding.PaddingRight = UDim.new(0, 2)
+UI.SearchResultsPadding.PaddingTop = UDim.new(0, 2)
+UI.SearchResultsPadding.Parent = UI.SearchResults
+
+UI.SearchResultsLayout = Instance.new("UIListLayout")
+UI.SearchResultsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SearchResultsLayout.Padding = UDim.new(0, 8)
+UI.SearchResultsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SearchResultsLayout.Parent = UI.SearchResults
+
+UI.NoResultsLabel = Instance.new("TextLabel")
+UI.NoResultsLabel.BackgroundTransparency = 1
+UI.NoResultsLabel.BorderSizePixel = 0
+UI.NoResultsLabel.FontFace = GothamMedium
+UI.NoResultsLabel.Name = "NoResultsLabel"
+UI.NoResultsLabel.Size = UDim2.new(1, 0, 0, 30)
+UI.NoResultsLabel.Text = "No scripts found matching your query."
+UI.NoResultsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NoResultsLabel.TextScaled = true
+UI.NoResultsLabel.TextWrapped = true
+UI.NoResultsLabel.Visible = false
+UI.NoResultsLabel.Parent = UI.SearchResults
+
+UI.NoResultsLabelStroke = Instance.new("UIStroke")
+UI.NoResultsLabelStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.NoResultsLabelStroke.Name = "NoResultsLabelStroke"
+UI.NoResultsLabelStroke.Parent = UI.NoResultsLabel
+
+UI.SearchResultTemplate = Instance.new("CanvasGroup")
+UI.SearchResultTemplate.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.SearchResultTemplate.BorderSizePixel = 0
+UI.SearchResultTemplate.Name = "SearchResultTemplate"
+UI.SearchResultTemplate.Size = UDim2.new(0, 358, 0, 132)
+UI.SearchResultTemplate.Visible = false
+UI.SearchResultTemplate.Parent = UI.SearchResults
+
+UI.SearchResultTemplateCorner = Instance.new("UICorner")
+UI.SearchResultTemplateCorner.CornerRadius = UDim.new(0, 6)
+UI.SearchResultTemplateCorner.Parent = UI.SearchResultTemplate
+
+UI.SearchResultTemplateStroke = Instance.new("UIStroke")
+UI.SearchResultTemplateStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SearchResultTemplateStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SearchResultTemplateStroke.Name = "SearchResultTemplateStroke"
+UI.SearchResultTemplateStroke.Parent = UI.SearchResultTemplate
+
+UI.ScriptImage = Instance.new("ImageLabel")
+UI.ScriptImage.BackgroundTransparency = 1
+UI.ScriptImage.BorderSizePixel = 0
+UI.ScriptImage.LayoutOrder = 1
+UI.ScriptImage.Name = "ScriptImage"
+UI.ScriptImage.ScaleType = Enum.ScaleType.Crop
+UI.ScriptImage.Size = UDim2.new(1, 0, 0.7, -2)
+UI.ScriptImage.Parent = UI.SearchResultTemplate
+
+UI.Container = Instance.new("Frame")
+UI.Container.BackgroundTransparency = 1
+UI.Container.BorderSizePixel = 0
+UI.Container.LayoutOrder = 2
+UI.Container.Name = "Container"
+UI.Container.Size = UDim2.new(1, 0, 1, 0)
+UI.Container.Parent = UI.SearchResultTemplate
+
+UI.ScriptName = Instance.new("TextLabel")
+UI.ScriptName.BackgroundTransparency = 1
+UI.ScriptName.BorderSizePixel = 0
+UI.ScriptName.FontFace = GothamMedium
+UI.ScriptName.Name = "ScriptName"
+UI.ScriptName.Position = UDim2.new(0, 4, 0, 0)
+UI.ScriptName.Size = UDim2.new(0, 350, 0, 30)
+UI.ScriptName.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ScriptName.TextScaled = true
+UI.ScriptName.TextWrapped = true
+UI.ScriptName.TextXAlignment = Enum.TextXAlignment.Left
+UI.ScriptName.Parent = UI.Container
+
+UI.ScriptNameStroke = Instance.new("UIStroke")
+UI.ScriptNameStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.ScriptNameStroke.Name = "ScriptNameStroke"
+UI.ScriptNameStroke.Parent = UI.ScriptName
+
+UI.ScriptNameCorner = Instance.new("UICorner")
+UI.ScriptNameCorner.CornerRadius = UDim.new(0, 6)
+UI.ScriptNameCorner.Parent = UI.ScriptName
+
+UI.ScriptActions = Instance.new("Frame")
+UI.ScriptActions.BackgroundTransparency = 1
+UI.ScriptActions.BorderSizePixel = 0
+UI.ScriptActions.Name = "ScriptActions"
+UI.ScriptActions.Position = UDim2.new(0, 0, 0, 92)
+UI.ScriptActions.Size = UDim2.new(1, 0, 0.3, 0)
+UI.ScriptActions.Parent = UI.Container
+
+UI.ScriptActionsPadding = Instance.new("UIPadding")
+UI.ScriptActionsPadding.PaddingBottom = UDim.new(0, 6)
+UI.ScriptActionsPadding.PaddingLeft = UDim.new(0, 6)
+UI.ScriptActionsPadding.PaddingRight = UDim.new(0, 6)
+UI.ScriptActionsPadding.PaddingTop = UDim.new(0, 4)
+UI.ScriptActionsPadding.Parent = UI.ScriptActions
+
+UI.ScriptActionsLayout = Instance.new("UIListLayout")
+UI.ScriptActionsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ScriptActionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ScriptActionsLayout.Padding = UDim.new(0, 6)
+UI.ScriptActionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ScriptActionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ScriptActionsLayout.Parent = UI.ScriptActions
+
+UI.RunScript = Instance.new("TextButton")
+UI.RunScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.RunScript.BorderSizePixel = 0
+UI.RunScript.FontFace = GothamMedium
+UI.RunScript.LayoutOrder = 1
+UI.RunScript.Name = "RunScript"
+UI.RunScript.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.RunScript.Text = "Run"
+UI.RunScript.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.RunScript.TextScaled = true
+UI.RunScript.TextWrapped = true
+UI.RunScript.Parent = UI.ScriptActions
+
+UI.RunScriptStroke = Instance.new("UIStroke")
+UI.RunScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.RunScriptStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.RunScriptStroke.Name = "RunScriptStroke"
+UI.RunScriptStroke.Parent = UI.RunScript
+
+UI.RunScriptCorner = Instance.new("UICorner")
+UI.RunScriptCorner.CornerRadius = UDim.new(0, 6)
+UI.RunScriptCorner.Parent = UI.RunScript
+
+UI.RunScriptPadding = Instance.new("UIPadding")
+UI.RunScriptPadding.PaddingBottom = UDim.new(0, 2)
+UI.RunScriptPadding.PaddingLeft = UDim.new(0, 2)
+UI.RunScriptPadding.PaddingRight = UDim.new(0, 2)
+UI.RunScriptPadding.PaddingTop = UDim.new(0, 2)
+UI.RunScriptPadding.Parent = UI.RunScript
+
+UI.CopyScriptBtn = Instance.new("TextButton")
+UI.CopyScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.CopyScriptBtn.BorderSizePixel = 0
+UI.CopyScriptBtn.FontFace = GothamMedium
+UI.CopyScriptBtn.LayoutOrder = 2
+UI.CopyScriptBtn.Name = "CopyScriptBtn"
+UI.CopyScriptBtn.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.CopyScriptBtn.Text = "Copy"
+UI.CopyScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.CopyScriptBtn.TextScaled = true
+UI.CopyScriptBtn.TextWrapped = true
+UI.CopyScriptBtn.Parent = UI.ScriptActions
+
+UI.CopyScriptBtnCorner = Instance.new("UICorner")
+UI.CopyScriptBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.CopyScriptBtnCorner.Parent = UI.CopyScriptBtn
+
+UI.CopyScriptBtnStroke = Instance.new("UIStroke")
+UI.CopyScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.CopyScriptBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.CopyScriptBtnStroke.Name = "CopyScriptBtnStroke"
+UI.CopyScriptBtnStroke.Parent = UI.CopyScriptBtn
+
+UI.CopyScriptBtnPadding = Instance.new("UIPadding")
+UI.CopyScriptBtnPadding.PaddingBottom = UDim.new(0, 2)
+UI.CopyScriptBtnPadding.PaddingLeft = UDim.new(0, 2)
+UI.CopyScriptBtnPadding.PaddingRight = UDim.new(0, 2)
+UI.CopyScriptBtnPadding.PaddingTop = UDim.new(0, 2)
+UI.CopyScriptBtnPadding.Parent = UI.CopyScriptBtn
+
+UI.SaveScriptBtn = Instance.new("TextButton")
+UI.SaveScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.SaveScriptBtn.BorderSizePixel = 0
+UI.SaveScriptBtn.FontFace = GothamMedium
+UI.SaveScriptBtn.LayoutOrder = 3
+UI.SaveScriptBtn.Name = "SaveScriptBtn"
+UI.SaveScriptBtn.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.SaveScriptBtn.Text = "Save"
+UI.SaveScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SaveScriptBtn.TextScaled = true
+UI.SaveScriptBtn.TextWrapped = true
+UI.SaveScriptBtn.Parent = UI.ScriptActions
+
+UI.SaveScriptBtnCorner = Instance.new("UICorner")
+UI.SaveScriptBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.SaveScriptBtnCorner.Parent = UI.SaveScriptBtn
+
+UI.SaveScriptBtnPadding = Instance.new("UIPadding")
+UI.SaveScriptBtnPadding.PaddingBottom = UDim.new(0, 2)
+UI.SaveScriptBtnPadding.PaddingLeft = UDim.new(0, 2)
+UI.SaveScriptBtnPadding.PaddingRight = UDim.new(0, 2)
+UI.SaveScriptBtnPadding.PaddingTop = UDim.new(0, 2)
+UI.SaveScriptBtnPadding.Parent = UI.SaveScriptBtn
+
+UI.SaveScriptBtnStroke = Instance.new("UIStroke")
+UI.SaveScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SaveScriptBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SaveScriptBtnStroke.Name = "SaveScriptBtnStroke"
+UI.SaveScriptBtnStroke.Parent = UI.SaveScriptBtn
+
+UI.PageButtons = Instance.new("Frame")
+UI.PageButtons.BackgroundTransparency = 1
+UI.PageButtons.BorderSizePixel = 0
+UI.PageButtons.LayoutOrder = 3
+UI.PageButtons.Name = "PageButtons"
+UI.PageButtons.Size = UDim2.new(1, 0, 0, 38)
+UI.PageButtons.Parent = UI.SearchContent
+
+UI.PageButtonsLayout = Instance.new("UIListLayout")
+UI.PageButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.PageButtonsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.PageButtonsLayout.Padding = UDim.new(0, 6)
+UI.PageButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.PageButtonsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.PageButtonsLayout.Parent = UI.PageButtons
+
+UI.PageButtonsSizeCons = Instance.new("UISizeConstraint")
+UI.PageButtonsSizeCons.MaxSize = Vector2.new(2147483647, 38)
+UI.PageButtonsSizeCons.Parent = UI.PageButtons
+
+UI.PrevBtn = Instance.new("TextButton")
+UI.PrevBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.PrevBtn.BorderSizePixel = 0
+UI.PrevBtn.FontFace = BuilderSans
+UI.PrevBtn.LayoutOrder = 1
+UI.PrevBtn.Name = "PrevBtn"
+UI.PrevBtn.Size = UDim2.new(0.25, 0, 1, 0)
+UI.PrevBtn.Text = "Previous"
+UI.PrevBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.PrevBtn.TextScaled = true
+UI.PrevBtn.TextWrapped = true
+UI.PrevBtn.Parent = UI.PageButtons
+
+UI.PrevBtnCorner = Instance.new("UICorner")
+UI.PrevBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.PrevBtnCorner.Parent = UI.PrevBtn
+
+UI.PrevBtnStroke = Instance.new("UIStroke")
+UI.PrevBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.PrevBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.PrevBtnStroke.Name = "PrevBtnStroke"
+UI.PrevBtnStroke.Parent = UI.PrevBtn
+
+UI.PrevBtnPadding = Instance.new("UIPadding")
+UI.PrevBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.PrevBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.PrevBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.PrevBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.PrevBtnPadding.Parent = UI.PrevBtn
+
+UI.PageFiller = Instance.new("Frame")
+UI.PageFiller.BackgroundTransparency = 1
+UI.PageFiller.BorderSizePixel = 0
+UI.PageFiller.LayoutOrder = 2
+UI.PageFiller.Name = "PageFiller"
+UI.PageFiller.Size = UDim2.new(0.5, 0, 1, 0)
+UI.PageFiller.Parent = UI.PageButtons
+
+UI.NextBtn = Instance.new("TextButton")
+UI.NextBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.NextBtn.BorderSizePixel = 0
+UI.NextBtn.FontFace = BuilderSans
+UI.NextBtn.LayoutOrder = 3
+UI.NextBtn.Name = "NextBtn"
+UI.NextBtn.Size = UDim2.new(0.25, 0, 1, 0)
+UI.NextBtn.Text = "Next"
+UI.NextBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NextBtn.TextScaled = true
+UI.NextBtn.TextWrapped = true
+UI.NextBtn.Parent = UI.PageButtons
+
+UI.NextBtnCorner = Instance.new("UICorner")
+UI.NextBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.NextBtnCorner.Parent = UI.NextBtn
+
+UI.NextBtnStroke = Instance.new("UIStroke")
+UI.NextBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.NextBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.NextBtnStroke.Name = "NextBtnStroke"
+UI.NextBtnStroke.Parent = UI.NextBtn
+
+UI.NextBtnPadding = Instance.new("UIPadding")
+UI.NextBtnPadding.PaddingBottom = UDim.new(0, 4)
+UI.NextBtnPadding.PaddingLeft = UDim.new(0, 4)
+UI.NextBtnPadding.PaddingRight = UDim.new(0, 4)
+UI.NextBtnPadding.PaddingTop = UDim.new(0, 4)
+UI.NextBtnPadding.Parent = UI.NextBtn
+
+UI.ScriptsContent = Instance.new("CanvasGroup")
+UI.ScriptsContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.ScriptsContent.BorderSizePixel = 0
+UI.ScriptsContent.LayoutOrder = 3
+UI.ScriptsContent.Name = "ScriptsContent"
+UI.ScriptsContent.Size = UDim2.new(1, 0, 1, 0)
+UI.ScriptsContent.Visible = false
+UI.ScriptsContent.Parent = UI.Pages
+
+UI.ScriptsContentCorner = Instance.new("UICorner")
+UI.ScriptsContentCorner.CornerRadius = UDim.new(0, 6)
+UI.ScriptsContentCorner.Parent = UI.ScriptsContent
+
+UI.ScriptsContentStroke = Instance.new("UIStroke")
+UI.ScriptsContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ScriptsContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.ScriptsContentStroke.Name = "ScriptsContentStroke"
+UI.ScriptsContentStroke.Parent = UI.ScriptsContent
+
+UI.ScriptsContentLayout = Instance.new("UIListLayout")
+UI.ScriptsContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ScriptsContentLayout.Padding = UDim.new(0, 6)
+UI.ScriptsContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ScriptsContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ScriptsContentLayout.Parent = UI.ScriptsContent
+
+UI.ScriptsContentPadding = Instance.new("UIPadding")
+UI.ScriptsContentPadding.PaddingBottom = UDim.new(0, 6)
+UI.ScriptsContentPadding.PaddingLeft = UDim.new(0, 6)
+UI.ScriptsContentPadding.PaddingRight = UDim.new(0, 6)
+UI.ScriptsContentPadding.PaddingTop = UDim.new(0, 6)
+UI.ScriptsContentPadding.Parent = UI.ScriptsContent
+
+UI.SavedScriptsSearchFrame = Instance.new("Frame")
+UI.SavedScriptsSearchFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.SavedScriptsSearchFrame.BorderSizePixel = 0
+UI.SavedScriptsSearchFrame.LayoutOrder = 1
+UI.SavedScriptsSearchFrame.Name = "SavedScriptsSearchFrame"
+UI.SavedScriptsSearchFrame.Size = UDim2.new(1, 0, 0, 30)
+UI.SavedScriptsSearchFrame.Parent = UI.ScriptsContent
+
+UI.SavedScriptsSearchFrameLayout = Instance.new("UIListLayout")
+UI.SavedScriptsSearchFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.SavedScriptsSearchFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptsSearchFrameLayout.Padding = UDim.new(0, 2)
+UI.SavedScriptsSearchFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptsSearchFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptsSearchFrameLayout.Parent = UI.SavedScriptsSearchFrame
+
+UI.SavedScriptsSearchFrameSizeCons = Instance.new("UISizeConstraint")
+UI.SavedScriptsSearchFrameSizeCons.MaxSize = Vector2.new(2147483647, 30)
+UI.SavedScriptsSearchFrameSizeCons.MinSize = Vector2.new(0, 30)
+UI.SavedScriptsSearchFrameSizeCons.Parent = UI.SavedScriptsSearchFrame
+
+UI.SavedScriptsSearchFrameCorner = Instance.new("UICorner")
+UI.SavedScriptsSearchFrameCorner.CornerRadius = UDim.new(0, 6)
+UI.SavedScriptsSearchFrameCorner.Parent = UI.SavedScriptsSearchFrame
+
+UI.SavedScriptsSearchFrameStroke = Instance.new("UIStroke")
+UI.SavedScriptsSearchFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SavedScriptsSearchFrameStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.SavedScriptsSearchFrameStroke.Parent = UI.SavedScriptsSearchFrame
+
+UI.SearchBox2 = Instance.new("TextBox")
+UI.SearchBox2.BackgroundTransparency = 1
+UI.SearchBox2.BorderSizePixel = 0
+UI.SearchBox2.FontFace = GothamMedium
+UI.SearchBox2.LayoutOrder = 1
+UI.SearchBox2.Name = "SearchBox2"
+UI.SearchBox2.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+UI.SearchBox2.PlaceholderText = "Search saved scripts..."
+UI.SearchBox2.Size = UDim2.new(0.95, 0, 1, 0)
+UI.SearchBox2.Text = ""
+UI.SearchBox2.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SearchBox2.TextScaled = true
+UI.SearchBox2.TextWrapped = true
+UI.SearchBox2.TextXAlignment = Enum.TextXAlignment.Left
+UI.SearchBox2.Parent = UI.SavedScriptsSearchFrame
+
+UI.SearchBox2Padding = Instance.new("UIPadding")
+UI.SearchBox2Padding.PaddingBottom = UDim.new(0, 6)
+UI.SearchBox2Padding.PaddingLeft = UDim.new(0, 6)
+UI.SearchBox2Padding.PaddingRight = UDim.new(0, 6)
+UI.SearchBox2Padding.PaddingTop = UDim.new(0, 6)
+UI.SearchBox2Padding.Parent = UI.SearchBox2
+
+UI.NewScriptBtn = Instance.new("TextButton")
+UI.NewScriptBtn.BackgroundTransparency = 1
+UI.NewScriptBtn.BorderSizePixel = 0
+UI.NewScriptBtn.FontFace = GothamMedium
+UI.NewScriptBtn.LayoutOrder = 2
+UI.NewScriptBtn.Name = "NewScriptBtn"
+UI.NewScriptBtn.Size = UDim2.new(0.05, 0, 1, 0)
+UI.NewScriptBtn.Text = "+"
+UI.NewScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NewScriptBtn.TextScaled = true
+UI.NewScriptBtn.TextWrapped = true
+UI.NewScriptBtn.Parent = UI.SavedScriptsSearchFrame
+
+UI.NewScriptBtnStroke = Instance.new("UIStroke")
+UI.NewScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.NewScriptBtnStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.NewScriptBtnStroke.Parent = UI.NewScriptBtn
+
+UI.NewScriptBtnRatio = Instance.new("UIAspectRatioConstraint")
+UI.NewScriptBtnRatio.Parent = UI.NewScriptBtn
+
+UI.NewScriptBtnCorner = Instance.new("UICorner")
+UI.NewScriptBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.NewScriptBtnCorner.Parent = UI.NewScriptBtn
+
+UI.SavedScriptsScroll = Instance.new("ScrollingFrame")
+UI.SavedScriptsScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.SavedScriptsScroll.BackgroundTransparency = 1
+UI.SavedScriptsScroll.BorderSizePixel = 0
+UI.SavedScriptsScroll.LayoutOrder = 2
+UI.SavedScriptsScroll.Name = "SavedScriptsScroll"
+UI.SavedScriptsScroll.ScrollBarThickness = 0
+UI.SavedScriptsScroll.ScrollingDirection = Enum.ScrollingDirection.Y
+UI.SavedScriptsScroll.Size = UDim2.new(1, 0, 1, 0)
+UI.SavedScriptsScroll.Parent = UI.ScriptsContent
+
+UI.SavedScriptsScrollPadding = Instance.new("UIPadding")
+UI.SavedScriptsScrollPadding.PaddingBottom = UDim.new(0, 2)
+UI.SavedScriptsScrollPadding.PaddingLeft = UDim.new(0, 2)
+UI.SavedScriptsScrollPadding.PaddingRight = UDim.new(0, 2)
+UI.SavedScriptsScrollPadding.PaddingTop = UDim.new(0, 2)
+UI.SavedScriptsScrollPadding.Parent = UI.SavedScriptsScroll
+
+UI.SavedScriptsScrollLayout = Instance.new("UIListLayout")
+UI.SavedScriptsScrollLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptsScrollLayout.Padding = UDim.new(0, 8)
+UI.SavedScriptsScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptsScrollLayout.Parent = UI.SavedScriptsScroll
+
+UI.NoSavedScriptsLabel = Instance.new("TextLabel")
+UI.NoSavedScriptsLabel.BackgroundTransparency = 1
+UI.NoSavedScriptsLabel.BorderSizePixel = 0
+UI.NoSavedScriptsLabel.FontFace = GothamMedium
+UI.NoSavedScriptsLabel.Name = "NoSavedScriptsLabel"
+UI.NoSavedScriptsLabel.Size = UDim2.new(1, 0, 0, 60)
+UI.NoSavedScriptsLabel.Text = "No Saved Scripts\n\nSave some scripts to see them here."
+UI.NoSavedScriptsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NoSavedScriptsLabel.TextScaled = true
+UI.NoSavedScriptsLabel.TextWrapped = true
+UI.NoSavedScriptsLabel.Visible = false
+UI.NoSavedScriptsLabel.Parent = UI.SavedScriptsScroll
+
+UI.NoSavedScriptsLabelStroke = Instance.new("UIStroke")
+UI.NoSavedScriptsLabelStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.NoSavedScriptsLabelStroke.Name = "NoSavedScriptsLabelStroke"
+UI.NoSavedScriptsLabelStroke.Parent = UI.NoSavedScriptsLabel
+
+UI.SavedScriptTemplate = Instance.new("Frame")
+UI.SavedScriptTemplate.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.SavedScriptTemplate.BorderSizePixel = 0
+UI.SavedScriptTemplate.Name = "SavedScriptTemplate"
+UI.SavedScriptTemplate.Size = UDim2.new(0, 166, 0, 64)
+UI.SavedScriptTemplate.Visible = false
+UI.SavedScriptTemplate.Parent = UI.SavedScriptsScroll
+
+UI.SavedScriptTemplateCorner = Instance.new("UICorner")
+UI.SavedScriptTemplateCorner.CornerRadius = UDim.new(0, 6)
+UI.SavedScriptTemplateCorner.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptTemplateStroke = Instance.new("UIStroke")
+UI.SavedScriptTemplateStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SavedScriptTemplateStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SavedScriptTemplateStroke.Name = "SavedScriptTemplateStroke"
+UI.SavedScriptTemplateStroke.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptTemplateLayout = Instance.new("UIListLayout")
+UI.SavedScriptTemplateLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.SavedScriptTemplateLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptTemplateLayout.Padding = UDim.new(0, 2)
+UI.SavedScriptTemplateLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptTemplateLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptTemplateLayout.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptInfo = Instance.new("Frame")
+UI.SavedScriptInfo.BackgroundTransparency = 1
+UI.SavedScriptInfo.BorderSizePixel = 0
+UI.SavedScriptInfo.LayoutOrder = 1
+UI.SavedScriptInfo.Name = "SavedScriptInfo"
+UI.SavedScriptInfo.Size = UDim2.new(0, 380, 0, 12)
+UI.SavedScriptInfo.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptInfoPadding = Instance.new("UIPadding")
+UI.SavedScriptInfoPadding.PaddingBottom = UDim.new(0, 6)
+UI.SavedScriptInfoPadding.PaddingLeft = UDim.new(0, 6)
+UI.SavedScriptInfoPadding.PaddingRight = UDim.new(0, 6)
+UI.SavedScriptInfoPadding.PaddingTop = UDim.new(0, 6)
+UI.SavedScriptInfoPadding.Parent = UI.SavedScriptInfo
+
+UI.SavedScriptInfoLayout = Instance.new("UIListLayout")
+UI.SavedScriptInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptInfoLayout.Padding = UDim.new(0, 2)
+UI.SavedScriptInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptInfoLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptInfoLayout.Parent = UI.SavedScriptInfo
+
+UI.SavedScriptTitle = Instance.new("TextLabel")
+UI.SavedScriptTitle.BackgroundTransparency = 1
+UI.SavedScriptTitle.BorderSizePixel = 0
+UI.SavedScriptTitle.FontFace = GothamBold
+UI.SavedScriptTitle.LayoutOrder = 1
+UI.SavedScriptTitle.Name = "SavedScriptTitle"
+UI.SavedScriptTitle.Size = UDim2.new(1, 0, 0.6, 0)
+UI.SavedScriptTitle.Text = "Script name"
+UI.SavedScriptTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SavedScriptTitle.TextScaled = true
+UI.SavedScriptTitle.TextWrapped = true
+UI.SavedScriptTitle.TextXAlignment = Enum.TextXAlignment.Left
+UI.SavedScriptTitle.Parent = UI.SavedScriptInfo
+
+UI.SavedScriptDesc = Instance.new("TextLabel")
+UI.SavedScriptDesc.BackgroundTransparency = 1
+UI.SavedScriptDesc.BorderSizePixel = 0
+UI.SavedScriptDesc.FontFace = GothamMedium
+UI.SavedScriptDesc.LayoutOrder = 2
+UI.SavedScriptDesc.Name = "SavedScriptDesc"
+UI.SavedScriptDesc.Size = UDim2.new(1, 0, 0.4, 0)
+UI.SavedScriptDesc.Text = "Script description"
+UI.SavedScriptDesc.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.SavedScriptDesc.TextScaled = true
+UI.SavedScriptDesc.TextWrapped = true
+UI.SavedScriptDesc.TextXAlignment = Enum.TextXAlignment.Left
+UI.SavedScriptDesc.Parent = UI.SavedScriptInfo
+
+UI.SavedScriptActions = Instance.new("Frame")
+UI.SavedScriptActions.BackgroundTransparency = 1
+UI.SavedScriptActions.BorderSizePixel = 0
+UI.SavedScriptActions.LayoutOrder = 2
+UI.SavedScriptActions.Name = "SavedScriptActions"
+UI.SavedScriptActions.Size = UDim2.new(0, 0, 0, 12)
+UI.SavedScriptActions.Parent = UI.SavedScriptTemplate
+
+UI.SavedScriptActionsPadding = Instance.new("UIPadding")
+UI.SavedScriptActionsPadding.PaddingBottom = UDim.new(0, 4)
+UI.SavedScriptActionsPadding.PaddingLeft = UDim.new(0, 4)
+UI.SavedScriptActionsPadding.PaddingRight = UDim.new(0, 4)
+UI.SavedScriptActionsPadding.PaddingTop = UDim.new(0, 4)
+UI.SavedScriptActionsPadding.Parent = UI.SavedScriptActions
+
+UI.SavedScriptActionsLayout = Instance.new("UIListLayout")
+UI.SavedScriptActionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptActionsLayout.Padding = UDim.new(0, 6)
+UI.SavedScriptActionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SavedScriptActionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SavedScriptActionsLayout.Parent = UI.SavedScriptActions
+
+UI.RunSavedScript = Instance.new("TextButton")
+UI.RunSavedScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.RunSavedScript.BorderSizePixel = 0
+UI.RunSavedScript.FontFace = GothamMedium
+UI.RunSavedScript.LayoutOrder = 1
+UI.RunSavedScript.Name = "RunSavedScript"
+UI.RunSavedScript.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.RunSavedScript.Text = "Run"
+UI.RunSavedScript.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.RunSavedScript.TextScaled = true
+UI.RunSavedScript.TextWrapped = true
+UI.RunSavedScript.Parent = UI.SavedScriptActions
+
+UI.RunSavedScriptStroke = Instance.new("UIStroke")
+UI.RunSavedScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.RunSavedScriptStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.RunSavedScriptStroke.Name = "RunSavedScriptStroke"
+UI.RunSavedScriptStroke.Parent = UI.RunSavedScript
+
+UI.RunSavedScriptCorner = Instance.new("UICorner")
+UI.RunSavedScriptCorner.CornerRadius = UDim.new(0, 6)
+UI.RunSavedScriptCorner.Parent = UI.RunSavedScript
+
+UI.RunSavedScriptPadding = Instance.new("UIPadding")
+UI.RunSavedScriptPadding.PaddingBottom = UDim.new(0, 2)
+UI.RunSavedScriptPadding.PaddingLeft = UDim.new(0, 2)
+UI.RunSavedScriptPadding.PaddingRight = UDim.new(0, 2)
+UI.RunSavedScriptPadding.PaddingTop = UDim.new(0, 2)
+UI.RunSavedScriptPadding.Parent = UI.RunSavedScript
+
+UI.DeleteSavedScript = Instance.new("TextButton")
+UI.DeleteSavedScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.DeleteSavedScript.BorderSizePixel = 0
+UI.DeleteSavedScript.FontFace = GothamMedium
+UI.DeleteSavedScript.LayoutOrder = 2
+UI.DeleteSavedScript.Name = "DeleteSavedScript"
+UI.DeleteSavedScript.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.DeleteSavedScript.Text = "Delete"
+UI.DeleteSavedScript.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.DeleteSavedScript.TextScaled = true
+UI.DeleteSavedScript.TextWrapped = true
+UI.DeleteSavedScript.Parent = UI.SavedScriptActions
+
+UI.DeleteSavedScriptCorner = Instance.new("UICorner")
+UI.DeleteSavedScriptCorner.CornerRadius = UDim.new(0, 6)
+UI.DeleteSavedScriptCorner.Parent = UI.DeleteSavedScript
+
+UI.DeleteSavedScriptStroke = Instance.new("UIStroke")
+UI.DeleteSavedScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.DeleteSavedScriptStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.DeleteSavedScriptStroke.Name = "DeleteSavedScriptStroke"
+UI.DeleteSavedScriptStroke.Parent = UI.DeleteSavedScript
+
+UI.DeleteSavedScriptPadding = Instance.new("UIPadding")
+UI.DeleteSavedScriptPadding.PaddingBottom = UDim.new(0, 2)
+UI.DeleteSavedScriptPadding.PaddingLeft = UDim.new(0, 2)
+UI.DeleteSavedScriptPadding.PaddingRight = UDim.new(0, 2)
+UI.DeleteSavedScriptPadding.PaddingTop = UDim.new(0, 2)
+UI.DeleteSavedScriptPadding.Parent = UI.DeleteSavedScript
+
+UI.MusicContent = Instance.new("CanvasGroup")
+UI.MusicContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.MusicContent.BorderSizePixel = 0
+UI.MusicContent.LayoutOrder = 5
+UI.MusicContent.Name = "MusicContent"
+UI.MusicContent.Size = UDim2.new(1, 0, 1, 0)
+UI.MusicContent.Visible = false
+UI.MusicContent.Parent = UI.Pages
+
+UI.MusicContentCorner = Instance.new("UICorner")
+UI.MusicContentCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicContentCorner.Parent = UI.MusicContent
+
+UI.MusicContentStroke = Instance.new("UIStroke")
+UI.MusicContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.MusicContentStroke.Name = "MusicContentStroke"
+UI.MusicContentStroke.Parent = UI.MusicContent
+
+UI.MusicContentLayout = Instance.new("UIListLayout")
+UI.MusicContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicContentLayout.Padding = UDim.new(0, 6)
+UI.MusicContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicContentLayout.Parent = UI.MusicContent
+
+UI.MusicContentPadding = Instance.new("UIPadding")
+UI.MusicContentPadding.PaddingBottom = UDim.new(0, 8)
+UI.MusicContentPadding.PaddingLeft = UDim.new(0, 8)
+UI.MusicContentPadding.PaddingRight = UDim.new(0, 8)
+UI.MusicContentPadding.PaddingTop = UDim.new(0, 8)
+UI.MusicContentPadding.Parent = UI.MusicContent
+
+UI.MusicNowPlaying = Instance.new("TextLabel")
+UI.MusicNowPlaying.AutomaticSize = Enum.AutomaticSize.Y
+UI.MusicNowPlaying.BackgroundTransparency = 1
+UI.MusicNowPlaying.BorderSizePixel = 0
+UI.MusicNowPlaying.FontFace = GothamBold
+UI.MusicNowPlaying.LayoutOrder = 1
+UI.MusicNowPlaying.Name = "MusicNowPlaying"
+UI.MusicNowPlaying.Size = UDim2.new(1, 0, 0, 24)
+UI.MusicNowPlaying.Text = "No song playing"
+UI.MusicNowPlaying.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.MusicNowPlaying.TextScaled = false
+UI.MusicNowPlaying.TextSize = 24
+UI.MusicNowPlaying.TextWrapped = true
+UI.MusicNowPlaying.TextXAlignment = Enum.TextXAlignment.Center
+UI.MusicNowPlaying.Parent = UI.MusicContent
+
+UI.MusicNowPlayingStroke = Instance.new("UIStroke")
+UI.MusicNowPlayingStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.MusicNowPlayingStroke.Parent = UI.MusicNowPlaying
+
+UI.MusicSliderArea = Instance.new("Frame")
+UI.MusicSliderArea.BackgroundTransparency = 1
+UI.MusicSliderArea.BorderSizePixel = 0
+UI.MusicSliderArea.LayoutOrder = 2
+UI.MusicSliderArea.Name = "MusicSliderArea"
+UI.MusicSliderArea.Size = UDim2.new(1, 0, 0, 20)
+UI.MusicSliderArea.Parent = UI.MusicContent
+
+UI.MusicSliderAreaSizeCons = Instance.new("UISizeConstraint")
+UI.MusicSliderAreaSizeCons.MaxSize = Vector2.new(2147483647, 20)
+UI.MusicSliderAreaSizeCons.Parent = UI.MusicSliderArea
+
+UI.MusicSliderBar = Instance.new("Frame")
+UI.MusicSliderBar.AnchorPoint = Vector2.new(0, 0.5)
+UI.MusicSliderBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+UI.MusicSliderBar.BorderSizePixel = 0
+UI.MusicSliderBar.Name = "MusicSliderBar"
+UI.MusicSliderBar.Position = UDim2.new(0, 0, 0.5, 0)
+UI.MusicSliderBar.Size = UDim2.new(1, 0, 0, 6)
+UI.MusicSliderBar.Parent = UI.MusicSliderArea
+
+UI.MusicSliderBarCorner = Instance.new("UICorner")
+UI.MusicSliderBarCorner.CornerRadius = UDim.new(0, 3)
+UI.MusicSliderBarCorner.Parent = UI.MusicSliderBar
+
+UI.MusicSliderFill = Instance.new("Frame")
+UI.MusicSliderFill.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicSliderFill.BorderSizePixel = 0
+UI.MusicSliderFill.Name = "MusicSliderFill"
+UI.MusicSliderFill.Size = UDim2.new(0, 0, 1, 0)
+UI.MusicSliderFill.Parent = UI.MusicSliderBar
+
+UI.MusicSliderFillCorner = Instance.new("UICorner")
+UI.MusicSliderFillCorner.CornerRadius = UDim.new(0, 3)
+UI.MusicSliderFillCorner.Parent = UI.MusicSliderFill
+
+UI.MusicSliderKnob = Instance.new("Frame")
+UI.MusicSliderKnob.AnchorPoint = Vector2.new(0, 0)
+UI.MusicSliderKnob.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicSliderKnob.BorderSizePixel = 0
+UI.MusicSliderKnob.Name = "MusicSliderKnob"
+UI.MusicSliderKnob.Position = UDim2.new(0, -6, 0.5, -6)
+UI.MusicSliderKnob.Size = UDim2.new(0, 12, 0, 12)
+UI.MusicSliderKnob.Parent = UI.MusicSliderBar
+
+UI.MusicSliderKnobCorner = Instance.new("UICorner")
+UI.MusicSliderKnobCorner.CornerRadius = UDim.new(1, 0)
+UI.MusicSliderKnobCorner.Parent = UI.MusicSliderKnob
+
+UI.MusicTimeLabel = Instance.new("TextLabel")
+UI.MusicTimeLabel.BackgroundTransparency = 1
+UI.MusicTimeLabel.BorderSizePixel = 0
+UI.MusicTimeLabel.FontFace = GothamMedium
+UI.MusicTimeLabel.LayoutOrder = 3
+UI.MusicTimeLabel.Name = "MusicTimeLabel"
+UI.MusicTimeLabel.Size = UDim2.new(1, 0, 0, 16)
+UI.MusicTimeLabel.Text = "0:00 / 0:00"
+UI.MusicTimeLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
+UI.MusicTimeLabel.TextScaled = true
+UI.MusicTimeLabel.TextXAlignment = Enum.TextXAlignment.Center
+UI.MusicTimeLabel.Parent = UI.MusicContent
+
+UI.MusicTimeLabelSizeCons = Instance.new("UISizeConstraint")
+UI.MusicTimeLabelSizeCons.MaxSize = Vector2.new(2147483647, 16)
+UI.MusicTimeLabelSizeCons.Parent = UI.MusicTimeLabel
+
+UI.MusicControls = Instance.new("Frame")
+UI.MusicControls.BackgroundTransparency = 1
+UI.MusicControls.BorderSizePixel = 0
+UI.MusicControls.LayoutOrder = 4
+UI.MusicControls.Name = "MusicControls"
+UI.MusicControls.Size = UDim2.new(1, 0, 0, 36)
+UI.MusicControls.Parent = UI.MusicContent
+
+UI.MusicControlsSizeCons = Instance.new("UISizeConstraint")
+UI.MusicControlsSizeCons.MaxSize = Vector2.new(2147483647, 36)
+UI.MusicControlsSizeCons.Parent = UI.MusicControls
+
+UI.MusicControlsLayout = Instance.new("UIListLayout")
+UI.MusicControlsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.MusicControlsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UI.MusicControlsLayout.Padding = UDim.new(0, 8)
+UI.MusicControlsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicControlsLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+UI.MusicControlsLayout.Parent = UI.MusicControls
+
+UI.MusicPrevBtn = Instance.new("TextButton")
+UI.MusicPrevBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicPrevBtn.BorderSizePixel = 0
+UI.MusicPrevBtn.FontFace = GothamBold
+UI.MusicPrevBtn.LayoutOrder = 1
+UI.MusicPrevBtn.Name = "MusicPrevBtn"
+UI.MusicPrevBtn.Size = UDim2.new(0, 60, 1, 0)
+UI.MusicPrevBtn.Text = "⏮"
+UI.MusicPrevBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.MusicPrevBtn.TextScaled = true
+UI.MusicPrevBtn.Parent = UI.MusicControls
+
+UI.MusicPrevBtnCorner = Instance.new("UICorner")
+UI.MusicPrevBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicPrevBtnCorner.Parent = UI.MusicPrevBtn
+
+UI.MusicPrevBtnStroke = Instance.new("UIStroke")
+UI.MusicPrevBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicPrevBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.MusicPrevBtnStroke.Name = "MusicPrevBtnStroke"
+UI.MusicPrevBtnStroke.Parent = UI.MusicPrevBtn
+
+UI.MusicPlayBtn = Instance.new("TextButton")
+UI.MusicPlayBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicPlayBtn.BorderSizePixel = 0
+UI.MusicPlayBtn.FontFace = GothamBold
+UI.MusicPlayBtn.LayoutOrder = 2
+UI.MusicPlayBtn.Name = "MusicPlayBtn"
+UI.MusicPlayBtn.Size = UDim2.new(0, 80, 1, 0)
+UI.MusicPlayBtn.Text = "▶"
+UI.MusicPlayBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.MusicPlayBtn.TextScaled = true
+UI.MusicPlayBtn.Parent = UI.MusicControls
+
+UI.MusicPlayBtnCorner = Instance.new("UICorner")
+UI.MusicPlayBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicPlayBtnCorner.Parent = UI.MusicPlayBtn
+
+UI.MusicPlayBtnStroke = Instance.new("UIStroke")
+UI.MusicPlayBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicPlayBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.MusicPlayBtnStroke.Name = "MusicPlayBtnStroke"
+UI.MusicPlayBtnStroke.Parent = UI.MusicPlayBtn
+
+UI.MusicNextBtn = Instance.new("TextButton")
+UI.MusicNextBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.MusicNextBtn.BorderSizePixel = 0
+UI.MusicNextBtn.FontFace = GothamBold
+UI.MusicNextBtn.LayoutOrder = 3
+UI.MusicNextBtn.Name = "MusicNextBtn"
+UI.MusicNextBtn.Size = UDim2.new(0, 60, 1, 0)
+UI.MusicNextBtn.Text = "⏭"
+UI.MusicNextBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.MusicNextBtn.TextScaled = true
+UI.MusicNextBtn.Parent = UI.MusicControls
+
+UI.MusicNextBtnCorner = Instance.new("UICorner")
+UI.MusicNextBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicNextBtnCorner.Parent = UI.MusicNextBtn
+
+UI.MusicNextBtnStroke = Instance.new("UIStroke")
+UI.MusicNextBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicNextBtnStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.MusicNextBtnStroke.Name = "MusicNextBtnStroke"
+UI.MusicNextBtnStroke.Parent = UI.MusicNextBtn
+
+UI.MusicSettingsFrame = Instance.new("Frame")
+UI.MusicSettingsFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.MusicSettingsFrame.BorderSizePixel = 0
+UI.MusicSettingsFrame.LayoutOrder = 5
+UI.MusicSettingsFrame.Name = "MusicSettingsFrame"
+UI.MusicSettingsFrame.Size = UDim2.new(1, 0, 0, 70)
+UI.MusicSettingsFrame.Parent = UI.MusicContent
+
+UI.MusicSettingsFrameSizeCons = Instance.new("UISizeConstraint")
+UI.MusicSettingsFrameSizeCons.MaxSize = Vector2.new(2147483647, 70)
+UI.MusicSettingsFrameSizeCons.Parent = UI.MusicSettingsFrame
+
+UI.MusicSettingsFrameCorner = Instance.new("UICorner")
+UI.MusicSettingsFrameCorner.CornerRadius = UDim.new(0, 6)
+UI.MusicSettingsFrameCorner.Parent = UI.MusicSettingsFrame
+
+UI.MusicSettingsFrameStroke = Instance.new("UIStroke")
+UI.MusicSettingsFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.MusicSettingsFrameStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.MusicSettingsFrameStroke.Parent = UI.MusicSettingsFrame
+
+UI.MusicSettingsFrameLayout = Instance.new("UIListLayout")
+UI.MusicSettingsFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.MusicSettingsFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicSettingsFrameLayout.Padding = UDim.new(0, 8)
+UI.MusicSettingsFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicSettingsFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicSettingsFrameLayout.Parent = UI.MusicSettingsFrame
+
+UI.MusicSettingsFramePadding = Instance.new("UIPadding")
+UI.MusicSettingsFramePadding.PaddingBottom = UDim.new(0, 6)
+UI.MusicSettingsFramePadding.PaddingLeft = UDim.new(0, 10)
+UI.MusicSettingsFramePadding.PaddingRight = UDim.new(0, 10)
+UI.MusicSettingsFramePadding.PaddingTop = UDim.new(0, 6)
+UI.MusicSettingsFramePadding.Parent = UI.MusicSettingsFrame
+
+local function MakeMusicSetting(labelText, defaultVal, layoutOrder, name)
+    local col = Instance.new("Frame")
+    col.BackgroundTransparency = 1
+    col.BorderSizePixel = 0
+    col.LayoutOrder = layoutOrder
+    col.Name = name .. "Col"
+    col.Size = UDim2.new(0.28, 0, 1, 0)
+    col.Parent = UI.MusicSettingsFrame
+
+    local colLayout = Instance.new("UIListLayout")
+    colLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+    colLayout.Padding = UDim.new(0, 2)
+    colLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    colLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+    colLayout.Parent = col
+
+    local lbl = Instance.new("TextLabel")
+    lbl.BackgroundTransparency = 1
+    lbl.BorderSizePixel = 0
+    lbl.FontFace = GothamMedium
+    lbl.LayoutOrder = 1
+    lbl.Size = UDim2.new(1, 0, 0.5, 0)
+    lbl.Text = labelText
+    lbl.TextColor3 = Color3.fromRGB(180, 180, 180)
+    lbl.TextScaled = true
+    lbl.Parent = col
+
+    local box = Instance.new("TextBox")
+    box.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+    box.BorderSizePixel = 0
+    box.FontFace = GothamMedium
+    box.LayoutOrder = 2
+    box.Name = name .. "Box"
+    box.Size = UDim2.new(1, 0, 0.5, 0)
+    box.Text = defaultVal
+    box.TextColor3 = Color3.fromRGB(255, 255, 255)
+    box.TextScaled = true
+    box.Parent = col
+
+    local boxCorner = Instance.new("UICorner")
+    boxCorner.CornerRadius = UDim.new(0, 4)
+    boxCorner.Parent = box
+
+    local boxStroke = Instance.new("UIStroke")
+    boxStroke.Color = Color3.fromRGB(36, 36, 36)
+    boxStroke.Parent = box
+
+    UI[name .. "Box"] = box
+    return box
+end
+
+MakeMusicSetting("Volume", "1", 1, "MusicVolume")
+MakeMusicSetting("Speed", "1", 2, "MusicSpeed")
+
+UI.MusicLoopCol = Instance.new("Frame")
+UI.MusicLoopCol.BackgroundTransparency = 1
+UI.MusicLoopCol.BorderSizePixel = 0
+UI.MusicLoopCol.LayoutOrder = 3
+UI.MusicLoopCol.Name = "MusicLoopCol"
+UI.MusicLoopCol.Size = UDim2.new(0.28, 0, 1, 0)
+UI.MusicLoopCol.Parent = UI.MusicSettingsFrame
+
+UI.MusicLoopColLayout = Instance.new("UIListLayout")
+UI.MusicLoopColLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicLoopColLayout.Padding = UDim.new(0, 2)
+UI.MusicLoopColLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicLoopColLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicLoopColLayout.Parent = UI.MusicLoopCol
+
+UI.MusicLoopLabel = Instance.new("TextLabel")
+UI.MusicLoopLabel.BackgroundTransparency = 1
+UI.MusicLoopLabel.BorderSizePixel = 0
+UI.MusicLoopLabel.FontFace = GothamMedium
+UI.MusicLoopLabel.LayoutOrder = 1
+UI.MusicLoopLabel.Size = UDim2.new(1, 0, 0.5, 0)
+UI.MusicLoopLabel.Text = "Loop"
+UI.MusicLoopLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+UI.MusicLoopLabel.TextScaled = true
+UI.MusicLoopLabel.Parent = UI.MusicLoopCol
+
+UI.MusicLoopToggle = Instance.new("TextButton")
+UI.MusicLoopToggle.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+UI.MusicLoopToggle.BorderSizePixel = 0
+UI.MusicLoopToggle.FontFace = GothamMedium
+UI.MusicLoopToggle.LayoutOrder = 2
+UI.MusicLoopToggle.Name = "MusicLoopToggle"
+UI.MusicLoopToggle.Size = UDim2.new(1, 0, 0.5, 0)
+UI.MusicLoopToggle.Text = ""
+UI.MusicLoopToggle.Parent = UI.MusicLoopCol
+
+UI.MusicLoopToggleCorner = Instance.new("UICorner")
+UI.MusicLoopToggleCorner.CornerRadius = UDim.new(0, 4)
+UI.MusicLoopToggleCorner.Parent = UI.MusicLoopToggle
+
+UI.MusicLoopToggleStroke = Instance.new("UIStroke")
+UI.MusicLoopToggleStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.MusicLoopToggleStroke.Parent = UI.MusicLoopToggle
+
+UI.MusicLoopState = Instance.new("Frame")
+UI.MusicLoopState.AnchorPoint = Vector2.new(0.5, 0.5)
+UI.MusicLoopState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+UI.MusicLoopState.BorderSizePixel = 0
+UI.MusicLoopState.Name = "LoopState"
+UI.MusicLoopState.Position = UDim2.new(0.5, 0, 0.5, 0)
+UI.MusicLoopState.Size = UDim2.new(0.7, 0, 0.6, 0)
+UI.MusicLoopState.Parent = UI.MusicLoopToggle
+
+UI.MusicLoopStateCorner = Instance.new("UICorner")
+UI.MusicLoopStateCorner.CornerRadius = UDim.new(0, 4)
+UI.MusicLoopStateCorner.Parent = UI.MusicLoopState
+
+UI.MusicListScroll = Instance.new("ScrollingFrame")
+UI.MusicListScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.MusicListScroll.BackgroundTransparency = 1
+UI.MusicListScroll.BorderSizePixel = 0
+UI.MusicListScroll.LayoutOrder = 6
+UI.MusicListScroll.Name = "MusicListScroll"
+UI.MusicListScroll.ScrollBarThickness = 4
+UI.MusicListScroll.ScrollingDirection = Enum.ScrollingDirection.Y
+UI.MusicListScroll.Size = UDim2.new(1, 0, 1, 0)
+UI.MusicListScroll.Parent = UI.MusicContent
+
+UI.MusicListLayout = Instance.new("UIListLayout")
+UI.MusicListLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.MusicListLayout.Name = "MusicListLayout"
+UI.MusicListLayout.Padding = UDim.new(0, 4)
+UI.MusicListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.MusicListLayout.Parent = UI.MusicListScroll
+
+UI.MusicListPadding = Instance.new("UIPadding")
+UI.MusicListPadding.Name = "MusicListPadding"
+UI.MusicListPadding.PaddingBottom = UDim.new(0, 4)
+UI.MusicListPadding.PaddingTop = UDim.new(0, 4)
+UI.MusicListPadding.Parent = UI.MusicListScroll
+
+UI.NoMusicLabel = Instance.new("TextLabel")
+UI.NoMusicLabel.BackgroundTransparency = 1
+UI.NoMusicLabel.BorderSizePixel = 0
+UI.NoMusicLabel.FontFace = GothamMedium
+UI.NoMusicLabel.Name = "NoMusicLabel"
+UI.NoMusicLabel.Size = UDim2.new(1, 0, 0, 60)
+UI.NoMusicLabel.Text = "No music found.\n\nPlace audio files in Lucid/Music/"
+UI.NoMusicLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
+UI.NoMusicLabel.TextScaled = true
+UI.NoMusicLabel.TextWrapped = true
+UI.NoMusicLabel.Visible = false
+UI.NoMusicLabel.Parent = UI.MusicListScroll
+
+UI.SettingsContent = Instance.new("CanvasGroup")
+UI.SettingsContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.SettingsContent.BorderSizePixel = 0
+UI.SettingsContent.LayoutOrder = 1
+UI.SettingsContent.Name = "SettingsContent"
+UI.SettingsContent.Size = UDim2.new(1, 0, 1, 0)
+UI.SettingsContent.Visible = false
+UI.SettingsContent.Parent = UI.Pages
+
+UI.SettingsContentCorner = Instance.new("UICorner")
+UI.SettingsContentCorner.CornerRadius = UDim.new(0, 6)
+UI.SettingsContentCorner.Parent = UI.SettingsContent
+
+UI.SettingsContentStroke = Instance.new("UIStroke")
+UI.SettingsContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SettingsContentStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.SettingsContentStroke.Name = "SettingsContentStroke"
+UI.SettingsContentStroke.Parent = UI.SettingsContent
+
+UI.SettingsFrame = Instance.new("ScrollingFrame")
+UI.SettingsFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+UI.SettingsFrame.BackgroundTransparency = 1
+UI.SettingsFrame.BorderSizePixel = 0
+UI.SettingsFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+UI.SettingsFrame.Name = "SettingsFrame"
+UI.SettingsFrame.Size = UDim2.new(1, 0, 1, 0)
+UI.SettingsFrame.Parent = UI.SettingsContent
+
+UI.SettingsFramePadding = Instance.new("UIPadding")
+UI.SettingsFramePadding.PaddingBottom = UDim.new(0, 5)
+UI.SettingsFramePadding.PaddingLeft = UDim.new(0, 5)
+UI.SettingsFramePadding.PaddingRight = UDim.new(0, 5)
+UI.SettingsFramePadding.PaddingTop = UDim.new(0, 5)
+UI.SettingsFramePadding.Parent = UI.SettingsFrame
+
+UI.SettingsFrameLayout = Instance.new("UIListLayout")
+UI.SettingsFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SettingsFrameLayout.Padding = UDim.new(0, 6)
+UI.SettingsFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SettingsFrameLayout.Parent = UI.SettingsFrame
+
+UI.AnimsToggle = Instance.new("TextButton")
+UI.AnimsToggle.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.AnimsToggle.BorderSizePixel = 0
+UI.AnimsToggle.LayoutOrder = 1
+UI.AnimsToggle.Name = "AnimsToggle"
+UI.AnimsToggle.Size = UDim2.new(1, 0, 0, 38)
+UI.AnimsToggle.Text = ""
+UI.AnimsToggle.Parent = UI.SettingsFrame
+
+UI.AnimsToggleCorner = Instance.new("UICorner")
+UI.AnimsToggleCorner.CornerRadius = UDim.new(0, 6)
+UI.AnimsToggleCorner.Parent = UI.AnimsToggle
+
+UI.AnimsToggleStroke = Instance.new("UIStroke")
+UI.AnimsToggleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.AnimsToggleStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.AnimsToggleStroke.Parent = UI.AnimsToggle
+
+UI.AnimsTogglePadding = Instance.new("UIPadding")
+UI.AnimsTogglePadding.PaddingBottom = UDim.new(0, 8)
+UI.AnimsTogglePadding.PaddingLeft = UDim.new(0, 8)
+UI.AnimsTogglePadding.PaddingRight = UDim.new(0, 8)
+UI.AnimsTogglePadding.PaddingTop = UDim.new(0, 8)
+UI.AnimsTogglePadding.Parent = UI.AnimsToggle
+
+UI.AnimsToggleLayout = Instance.new("UIListLayout")
+UI.AnimsToggleLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.AnimsToggleLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.AnimsToggleLayout.Padding = UDim.new(0, 6)
+UI.AnimsToggleLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.AnimsToggleLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.AnimsToggleLayout.Parent = UI.AnimsToggle
+
+UI.AnimsToggleLabel = Instance.new("TextLabel")
+UI.AnimsToggleLabel.BackgroundTransparency = 1
+UI.AnimsToggleLabel.BorderSizePixel = 0
+UI.AnimsToggleLabel.FontFace = GothamMedium
+UI.AnimsToggleLabel.LayoutOrder = 1
+UI.AnimsToggleLabel.Name = "AnimsToggleLabel"
+UI.AnimsToggleLabel.Size = UDim2.new(0.8, 0, 1, 0)
+UI.AnimsToggleLabel.Text = "Animations"
+UI.AnimsToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.AnimsToggleLabel.TextScaled = true
+UI.AnimsToggleLabel.TextWrapped = true
+UI.AnimsToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+UI.AnimsToggleLabel.Parent = UI.AnimsToggle
+
+UI.ToggleState = Instance.new("Frame")
+UI.ToggleState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+UI.ToggleState.BorderSizePixel = 0
+UI.ToggleState.LayoutOrder = 2
+UI.ToggleState.Name = "ToggleState"
+UI.ToggleState.Size = UDim2.new(0.2, 0, 0.6, 0)
+UI.ToggleState.Parent = UI.AnimsToggle
+
+UI.ToggleStateCorner = Instance.new("UICorner")
+UI.ToggleStateCorner.CornerRadius = UDim.new(0, 6)
+UI.ToggleStateCorner.Parent = UI.ToggleState
+
+UI.ToggleStateRatio = Instance.new("UIAspectRatioConstraint")
+UI.ToggleStateRatio.Parent = UI.ToggleState
+
+UI.ToggleStateStroke = Instance.new("UIStroke")
+UI.ToggleStateStroke.Color = Color3.fromRGB(255, 0, 0)
+UI.ToggleStateStroke.Transparency = 0.5
+UI.ToggleStateStroke.Parent = UI.ToggleState
+
+UI.SidebarContainer = Instance.new("Frame")
+UI.SidebarContainer.BackgroundTransparency = 1
+UI.SidebarContainer.BorderSizePixel = 0
+UI.SidebarContainer.LayoutOrder = 2
+UI.SidebarContainer.Name = "SidebarContainer"
+UI.SidebarContainer.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.SidebarContainer.Parent = UI.MainFrame
+
+UI.Sidebar = Instance.new("Frame")
+UI.Sidebar.AnchorPoint = Vector2.new(1, 0.5)
+UI.Sidebar.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+UI.Sidebar.BorderSizePixel = 0
+UI.Sidebar.Name = "Sidebar"
+UI.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
+UI.Sidebar.Size = UDim2.new(1, 0, 1, -10)
+UI.Sidebar.Parent = UI.SidebarContainer
+
+UI.SidebarCorner = Instance.new("UICorner")
+UI.SidebarCorner.CornerRadius = UDim.new(0, 6)
+UI.SidebarCorner.Parent = UI.Sidebar
+
+UI.SidebarStroke = Instance.new("UIStroke")
+UI.SidebarStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.SidebarStroke.Name = "SidebarStroke"
+UI.SidebarStroke.Parent = UI.Sidebar
+
+UI.SidebarPadding = Instance.new("UIPadding")
+UI.SidebarPadding.PaddingBottom = UDim.new(0, 8)
+UI.SidebarPadding.PaddingLeft = UDim.new(0, 8)
+UI.SidebarPadding.PaddingRight = UDim.new(0, 18)
+UI.SidebarPadding.PaddingTop = UDim.new(0, 8)
+UI.SidebarPadding.Parent = UI.Sidebar
+
+UI.SidebarLayout = Instance.new("UIListLayout")
+UI.SidebarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.SidebarLayout.Padding = UDim.new(0, 3)
+UI.SidebarLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.SidebarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.SidebarLayout.Parent = UI.Sidebar
+
+UI.Topbar = Instance.new("Frame")
+UI.Topbar.BackgroundTransparency = 1
+UI.Topbar.BorderSizePixel = 0
+UI.Topbar.Name = "Topbar"
+UI.Topbar.Size = UDim2.new(1, 0, 0, 30)
+UI.Topbar.Parent = UI.Sidebar
+
+UI.TopbarSizeCons = Instance.new("UISizeConstraint")
+UI.TopbarSizeCons.MaxSize = Vector2.new(2147483647, 30)
+UI.TopbarSizeCons.MinSize = Vector2.new(0, 28)
+UI.TopbarSizeCons.Parent = UI.Topbar
+
+UI.TopbarLayout = Instance.new("UIListLayout")
+UI.TopbarLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.TopbarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.TopbarLayout.Padding = UDim.new(0, 4)
+UI.TopbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.TopbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.TopbarLayout.Parent = UI.Topbar
+
+UI.Logo = Instance.new("ImageLabel")
+UI.Logo.BackgroundTransparency = 1
+UI.Logo.BorderSizePixel = 0
+UI.Logo.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
+UI.Logo.ImageColor3 = Color3.fromRGB(0, 64, 180)
+UI.Logo.LayoutOrder = 1
+UI.Logo.Name = "Logo"
+UI.Logo.Size = UDim2.new(0, 30, 0, 30)
+UI.Logo.Parent = UI.Topbar
+
+UI.LogoRatio = Instance.new("UIAspectRatioConstraint")
+UI.LogoRatio.Parent = UI.Logo
+
+UI.Icon = Instance.new("ImageLabel")
+UI.Icon.AnchorPoint = Vector2.new(0.5, 0.5)
+UI.Icon.BackgroundTransparency = 1
+UI.Icon.BorderSizePixel = 0
+UI.Icon.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
+UI.Icon.ImageColor3 = Color3.fromRGB(0, 99, 255)
+UI.Icon.LayoutOrder = 1
+UI.Icon.Name = "Icon"
+UI.Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
+UI.Icon.Size = UDim2.new(1, -2, 1, -2)
+UI.Icon.Parent = UI.Logo
+
+UI.Title = Instance.new("TextLabel")
+UI.Title.BackgroundTransparency = 1
+UI.Title.BorderSizePixel = 0
+UI.Title.FontFace = BuilderSans
+UI.Title.LayoutOrder = 2
+UI.Title.Name = "Title"
+UI.Title.Size = UDim2.new(0, 60, 0, 30)
+UI.Title.Text = "Lucid"
+UI.Title.TextColor3 = Color3.fromRGB(0, 99, 255)
+UI.Title.TextScaled = true
+UI.Title.TextWrapped = true
+UI.Title.TextXAlignment = Enum.TextXAlignment.Left
+UI.Title.Parent = UI.Topbar
+
+UI.TitleStroke = Instance.new("UIStroke")
+UI.TitleStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.TitleStroke.Transparency = 0.6
+UI.TitleStroke.Name = "TitleStroke"
+UI.TitleStroke.Parent = UI.Title
+
+UI.TitlePadding = Instance.new("UIPadding")
+UI.TitlePadding.PaddingBottom = UDim.new(0, 2)
+UI.TitlePadding.PaddingTop = UDim.new(0, 2)
+UI.TitlePadding.Parent = UI.Title
+
+UI.CloseTab = Instance.new("TextButton")
+UI.CloseTab.BackgroundTransparency = 1
+UI.CloseTab.BorderSizePixel = 0
+UI.CloseTab.LayoutOrder = 100
+UI.CloseTab.Name = "CloseTab"
+UI.CloseTab.Size = UDim2.new(0, 30, 0, 58)
+UI.CloseTab.Text = ""
+UI.CloseTab.Parent = UI.Sidebar
+
+UI.CloseTabLayout = Instance.new("UIListLayout")
+UI.CloseTabLayout.Padding = UDim.new(0, 4)
+UI.CloseTabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.CloseTabLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.CloseTabLayout.Parent = UI.CloseTab
+
+UI.CloseTabSizeCons = Instance.new("UISizeConstraint")
+UI.CloseTabSizeCons.MaxSize = Vector2.new(2147483647, 34)
+UI.CloseTabSizeCons.MinSize = Vector2.new(0, 28)
+UI.CloseTabSizeCons.Parent = UI.CloseTab
+
+UI.CloseTabPadding = Instance.new("UIPadding")
+UI.CloseTabPadding.PaddingBottom = UDim.new(0, 3)
+UI.CloseTabPadding.PaddingTop = UDim.new(0, 3)
+UI.CloseTabPadding.Parent = UI.CloseTab
+
+UI.TabContainer6 = Instance.new("Frame")
+UI.TabContainer6.BackgroundTransparency = 1
+UI.TabContainer6.BorderSizePixel = 0
+UI.TabContainer6.LayoutOrder = 1
+UI.TabContainer6.Name = "TabContainer6"
+UI.TabContainer6.Size = UDim2.new(1, 0, 0, 22)
+UI.TabContainer6.Parent = UI.CloseTab
+
+UI.TabContainer6Layout = Instance.new("UIListLayout")
+UI.TabContainer6Layout.FillDirection = Enum.FillDirection.Horizontal
+UI.TabContainer6Layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.TabContainer6Layout.Padding = UDim.new(0, 4)
+UI.TabContainer6Layout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.TabContainer6Layout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.TabContainer6Layout.Parent = UI.TabContainer6
+
+UI.TabIcon6 = Instance.new("ImageLabel")
+UI.TabIcon6.BackgroundTransparency = 1
+UI.TabIcon6.BorderSizePixel = 0
+UI.TabIcon6.Image = Funcs.GetAsset("Lucid/Assets/lucid_close.png")
+UI.TabIcon6.LayoutOrder = 1
+UI.TabIcon6.Name = "TabIcon6"
+UI.TabIcon6.Size = UDim2.new(0, 30, 0, 30)
+UI.TabIcon6.Parent = UI.TabContainer6
+
+UI.TabIcon6Ratio = Instance.new("UIAspectRatioConstraint")
+UI.TabIcon6Ratio.Parent = UI.TabIcon6
+
+UI.TabLabel6 = Instance.new("TextLabel")
+UI.TabLabel6.BackgroundTransparency = 1
+UI.TabLabel6.BorderSizePixel = 0
+UI.TabLabel6.FontFace = BuilderSans
+UI.TabLabel6.LayoutOrder = 2
+UI.TabLabel6.Name = "TabLabel6"
+UI.TabLabel6.Size = UDim2.new(0, 60, 0, 30)
+UI.TabLabel6.Text = "Close"
+UI.TabLabel6.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.TabLabel6.TextScaled = true
+UI.TabLabel6.TextWrapped = true
+UI.TabLabel6.TextXAlignment = Enum.TextXAlignment.Left
+UI.TabLabel6.Parent = UI.TabContainer6
+
+UI.TabUnderline6Close = Instance.new("Frame")
+UI.TabUnderline6Close.BackgroundTransparency = 1
+UI.TabUnderline6Close.BorderSizePixel = 0
+UI.TabUnderline6Close.LayoutOrder = 2
+UI.TabUnderline6Close.Name = "TabUnderline6Close"
+UI.TabUnderline6Close.Size = UDim2.new(0, 0, 0, 1)
+UI.TabUnderline6Close.Parent = UI.CloseTab
+
+UI.NewScriptFrame = Instance.new("Frame")
+UI.NewScriptFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+UI.NewScriptFrame.BackgroundColor3 = Color3.fromRGB(11, 11, 11)
+UI.NewScriptFrame.BorderSizePixel = 0
+UI.NewScriptFrame.Name = "NewScriptFrame"
+UI.NewScriptFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+UI.NewScriptFrame.Size = UDim2.new(0, 408, 0, 214)
+UI.NewScriptFrame.Visible = false
+UI.NewScriptFrame.ZIndex = 2
+UI.NewScriptFrame.Parent = UI.ScreenGui
+
+UI.NewScriptFrameStroke = Instance.new("UIStroke")
+UI.NewScriptFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.NewScriptFrameStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.NewScriptFrameStroke.Name = "NewScriptFrameStroke"
+UI.NewScriptFrameStroke.Parent = UI.NewScriptFrame
+
+UI.NewScriptFramePadding = Instance.new("UIPadding")
+UI.NewScriptFramePadding.PaddingBottom = UDim.new(0, 6)
+UI.NewScriptFramePadding.PaddingLeft = UDim.new(0, 6)
+UI.NewScriptFramePadding.PaddingRight = UDim.new(0, 6)
+UI.NewScriptFramePadding.PaddingTop = UDim.new(0, 6)
+UI.NewScriptFramePadding.Parent = UI.NewScriptFrame
+
+UI.NewScriptFrameLayout = Instance.new("UIListLayout")
+UI.NewScriptFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.NewScriptFrameLayout.Padding = UDim.new(0, 8)
+UI.NewScriptFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.NewScriptFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.NewScriptFrameLayout.Parent = UI.NewScriptFrame
+
+UI.NewScriptFrameCorner = Instance.new("UICorner")
+UI.NewScriptFrameCorner.CornerRadius = UDim.new(0, 6)
+UI.NewScriptFrameCorner.Parent = UI.NewScriptFrame
+
+UI.NameBox = Instance.new("TextBox")
+UI.NameBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.NameBox.BorderSizePixel = 0
+UI.NameBox.FontFace = GothamMedium
+UI.NameBox.LayoutOrder = 1
+UI.NameBox.Name = "NameBox"
+UI.NameBox.PlaceholderText = "Enter script name..."
+UI.NameBox.Size = UDim2.new(0, 76, 0, 30)
+UI.NameBox.Text = ""
+UI.NameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.NameBox.TextScaled = true
+UI.NameBox.TextWrapped = true
+UI.NameBox.TextXAlignment = Enum.TextXAlignment.Left
+UI.NameBox.Parent = UI.NewScriptFrame
+
+UI.NameBoxPadding = Instance.new("UIPadding")
+UI.NameBoxPadding.PaddingBottom = UDim.new(0, 4)
+UI.NameBoxPadding.PaddingLeft = UDim.new(0, 4)
+UI.NameBoxPadding.PaddingRight = UDim.new(0, 4)
+UI.NameBoxPadding.PaddingTop = UDim.new(0, 4)
+UI.NameBoxPadding.Parent = UI.NameBox
+
+UI.NameBoxStroke = Instance.new("UIStroke")
+UI.NameBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.NameBoxStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.NameBoxStroke.Parent = UI.NameBox
+
+UI.NameBoxCorner = Instance.new("UICorner")
+UI.NameBoxCorner.CornerRadius = UDim.new(0, 6)
+UI.NameBoxCorner.Parent = UI.NameBox
+
+UI.DescBox = Instance.new("TextBox")
+UI.DescBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.DescBox.BorderSizePixel = 0
+UI.DescBox.FontFace = GothamMedium
+UI.DescBox.LayoutOrder = 2
+UI.DescBox.Name = "DescBox"
+UI.DescBox.PlaceholderText = "Enter script description..."
+UI.DescBox.Size = UDim2.new(0, 76, 0, 30)
+UI.DescBox.Text = ""
+UI.DescBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.DescBox.TextScaled = true
+UI.DescBox.TextWrapped = true
+UI.DescBox.TextXAlignment = Enum.TextXAlignment.Left
+UI.DescBox.Parent = UI.NewScriptFrame
+
+UI.DescBoxCorner = Instance.new("UICorner")
+UI.DescBoxCorner.CornerRadius = UDim.new(0, 6)
+UI.DescBoxCorner.Parent = UI.DescBox
+
+UI.DescBoxPadding = Instance.new("UIPadding")
+UI.DescBoxPadding.PaddingBottom = UDim.new(0, 4)
+UI.DescBoxPadding.PaddingLeft = UDim.new(0, 4)
+UI.DescBoxPadding.PaddingRight = UDim.new(0, 4)
+UI.DescBoxPadding.PaddingTop = UDim.new(0, 4)
+UI.DescBoxPadding.Parent = UI.DescBox
+
+UI.DescBoxStroke = Instance.new("UIStroke")
+UI.DescBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.DescBoxStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.DescBoxStroke.Parent = UI.DescBox
+
+UI.ScriptBox = Instance.new("TextBox")
+UI.ScriptBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.ScriptBox.BorderSizePixel = 0
+UI.ScriptBox.FontFace = Inconsolata
+UI.ScriptBox.LayoutOrder = 3
+UI.ScriptBox.Name = "ScriptBox"
+UI.ScriptBox.PlaceholderText = "Enter script..."
+UI.ScriptBox.Size = UDim2.new(0, 76, 0, 80)
+UI.ScriptBox.Text = ""
+UI.ScriptBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ScriptBox.TextSize = 20
+UI.ScriptBox.TextWrapped = true
+UI.ScriptBox.TextXAlignment = Enum.TextXAlignment.Left
+UI.ScriptBox.TextYAlignment = Enum.TextYAlignment.Top
+UI.ScriptBox.Parent = UI.NewScriptFrame
+
+UI.ScriptBoxPadding = Instance.new("UIPadding")
+UI.ScriptBoxPadding.PaddingBottom = UDim.new(0, 4)
+UI.ScriptBoxPadding.PaddingLeft = UDim.new(0, 4)
+UI.ScriptBoxPadding.PaddingRight = UDim.new(0, 4)
+UI.ScriptBoxPadding.PaddingTop = UDim.new(0, 4)
+UI.ScriptBoxPadding.Parent = UI.ScriptBox
+
+UI.ScriptBoxCorner = Instance.new("UICorner")
+UI.ScriptBoxCorner.CornerRadius = UDim.new(0, 6)
+UI.ScriptBoxCorner.Parent = UI.ScriptBox
+
+UI.ScriptBoxStroke = Instance.new("UIStroke")
+UI.ScriptBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ScriptBoxStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.ScriptBoxStroke.Parent = UI.ScriptBox
+
+UI.Options = Instance.new("Frame")
+UI.Options.BackgroundTransparency = 1
+UI.Options.BorderSizePixel = 0
+UI.Options.LayoutOrder = 4
+UI.Options.Name = "Options"
+UI.Options.Size = UDim2.new(0, 76, 0, 34)
+UI.Options.Parent = UI.NewScriptFrame
+
+UI.OptionsCorner = Instance.new("UICorner")
+UI.OptionsCorner.CornerRadius = UDim.new(0, 6)
+UI.OptionsCorner.Parent = UI.Options
+
+UI.OptionsLayout = Instance.new("UIListLayout")
+UI.OptionsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.OptionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.OptionsLayout.Padding = UDim.new(0, 8)
+UI.OptionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.OptionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.OptionsLayout.Parent = UI.Options
+
+UI.Save = Instance.new("TextButton")
+UI.Save.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.Save.BorderSizePixel = 0
+UI.Save.FontFace = GothamMedium
+UI.Save.LayoutOrder = 1
+UI.Save.Name = "Save"
+UI.Save.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.Save.Text = "Save"
+UI.Save.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.Save.TextScaled = true
+UI.Save.TextWrapped = true
+UI.Save.Parent = UI.Options
+
+UI.SaveStroke = Instance.new("UIStroke")
+UI.SaveStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.SaveStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.SaveStroke.Name = "SaveStroke"
+UI.SaveStroke.Parent = UI.Save
+
+UI.SaveCorner = Instance.new("UICorner")
+UI.SaveCorner.CornerRadius = UDim.new(0, 6)
+UI.SaveCorner.Parent = UI.Save
+
+UI.Cancel = Instance.new("TextButton")
+UI.Cancel.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
+UI.Cancel.BorderSizePixel = 0
+UI.Cancel.FontFace = GothamMedium
+UI.Cancel.LayoutOrder = 2
+UI.Cancel.Name = "Cancel"
+UI.Cancel.Size = UDim2.new(0.2, 0, 0.3, 0)
+UI.Cancel.Text = "Cancel"
+UI.Cancel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.Cancel.TextScaled = true
+UI.Cancel.TextWrapped = true
+UI.Cancel.Parent = UI.Options
+
+UI.CancelCorner = Instance.new("UICorner")
+UI.CancelCorner.CornerRadius = UDim.new(0, 6)
+UI.CancelCorner.Parent = UI.Cancel
+
+UI.CancelStroke = Instance.new("UIStroke")
+UI.CancelStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.CancelStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.CancelStroke.Name = "CancelStroke"
+UI.CancelStroke.Parent = UI.Cancel
+
+UI.ResetThemeBtn = Instance.new("TextButton")
+UI.ResetThemeBtn.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+UI.ResetThemeBtn.BorderSizePixel = 0
+UI.ResetThemeBtn.LayoutOrder = 6
+UI.ResetThemeBtn.Name = "ResetThemeBtn"
+UI.ResetThemeBtn.Size = UDim2.new(1, 0, 0, 38)
+UI.ResetThemeBtn.Text = ""
+UI.ResetThemeBtn.Parent = UI.SettingsFrame
+
+UI.ResetThemeBtnCorner = Instance.new("UICorner")
+UI.ResetThemeBtnCorner.CornerRadius = UDim.new(0, 6)
+UI.ResetThemeBtnCorner.Parent = UI.ResetThemeBtn
+
+UI.ResetThemeBtnStroke = Instance.new("UIStroke")
+UI.ResetThemeBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UI.ResetThemeBtnStroke.Color = Color3.fromRGB(36, 36, 36)
+UI.ResetThemeBtnStroke.Parent = UI.ResetThemeBtn
+
+UI.ResetThemeBtnLayout = Instance.new("UIListLayout")
+UI.ResetThemeBtnLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ResetThemeBtnLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+UI.ResetThemeBtnLayout.Padding = UDim.new(0, 6)
+UI.ResetThemeBtnLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ResetThemeBtnLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+UI.ResetThemeBtnLayout.Parent = UI.ResetThemeBtn
+
+UI.ResetThemeBtnPadding = Instance.new("UIPadding")
+UI.ResetThemeBtnPadding.PaddingBottom = UDim.new(0, 8)
+UI.ResetThemeBtnPadding.PaddingLeft = UDim.new(0, 8)
+UI.ResetThemeBtnPadding.PaddingRight = UDim.new(0, 8)
+UI.ResetThemeBtnPadding.PaddingTop = UDim.new(0, 8)
+UI.ResetThemeBtnPadding.Parent = UI.ResetThemeBtn
+
+UI.ResetThemeBtnLabel = Instance.new("TextLabel")
+UI.ResetThemeBtnLabel.BackgroundTransparency = 1
+UI.ResetThemeBtnLabel.BorderSizePixel = 0
+UI.ResetThemeBtnLabel.FontFace = GothamMedium
+UI.ResetThemeBtnLabel.LayoutOrder = 1
+UI.ResetThemeBtnLabel.Size = UDim2.new(0.8, 0, 1, 0)
+UI.ResetThemeBtnLabel.Text = "Reset Theme"
+UI.ResetThemeBtnLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+UI.ResetThemeBtnLabel.TextScaled = true
+UI.ResetThemeBtnLabel.TextWrapped = true
+UI.ResetThemeBtnLabel.TextXAlignment = Enum.TextXAlignment.Left
+UI.ResetThemeBtnLabel.Parent = UI.ResetThemeBtn
+
+UI.HomeTab = Funcs.CreateTab("Lucid/Assets/lucid_home.png", "Home", UI.HomeContent, 1, "TabUnderline")
+UI.ExeTab = Funcs.CreateTab("Lucid/Assets/lucid_executor.png", "Executor", UI.ExeContent, 2, "TabUnderline2")
+UI.SearchTab = Funcs.CreateTab("Lucid/Assets/lucid_search.png", "Search", UI.SearchContent, 3, "TabUnderline3")
+UI.ScriptsTab = Funcs.CreateTab("Lucid/Assets/lucid_scripts.png", "Scripts", UI.ScriptsContent, 4, "TabUnderline4")
+UI.MusicTab = Funcs.CreateTab("Lucid/Assets/lucid_music.png", "Music", UI.MusicContent, 5, "TabUnderline6Music")
+UI.SettingsTab = Funcs.CreateTab("Lucid/Assets/lucid_settings.png", "Settings", UI.SettingsContent, 6, "TabUnderline5")
+
+Funcs.CreateSettingsInputbox("Background Color (RGB)", "10, 10, 10", "BackgroundColor", 2)
+Funcs.CreateSettingsInputbox("Secondary Background Color (RGB)", "18, 18, 18", "SecondaryBackgroundColor", 3)
+Funcs.CreateSettingsInputbox("Accent Color (RGB)", "0, 98, 255", "AccentColor", 4)
+Funcs.CreateSettingsInputbox("Secondary Accent Color (RGB)", "0, 63, 179", "SecondaryAccentColor", 5)
+
+Funcs.LoadSettings()
+Funcs.ApplyTheme()
+Funcs.InitDefaultScripts()
+
+Funcs.Dragify(UI.Show)
+
+Funcs.CreateExeTab("Tab 1")
+
+UI.AddExeTabBtn.MouseButton1Click:Connect(function()
+    Funcs.CreateExeTab()
+end)
+
+UI.Show.MouseButton1Click:Connect(function()
+    Funcs.OpenUI()
+end)
+
+UI.CloseTab.MouseButton1Click:Connect(function()
+    Funcs.CloseUI()
+end)
+
+UI.Save.MouseButton1Click:Connect(function()
+    local scriptName = UI.NameBox.Text
+    local scriptDesc = UI.DescBox.Text
+    local scriptCode = UI.ScriptBox.Text
+    if scriptName == "" then return end
+    Funcs.SaveScript({ Name = scriptName, Description = scriptDesc, Code = scriptCode })
+    UI.NewScriptFrame.Visible = false
+    UI.NameBox.Text = ""
+    UI.DescBox.Text = ""
+    UI.ScriptBox.Text = ""
+    Funcs.RefreshSavedScripts(UI.SearchBox2.Text)
+end)
+
+UI.Cancel.MouseButton1Click:Connect(function()
+    UI.NewScriptFrame.Visible = false
+    UI.NameBox.Text = ""
+    UI.DescBox.Text = ""
+    UI.ScriptBox.Text = ""
+end)
+
+UI.NewScriptBtn.MouseButton1Click:Connect(function()
+    UI.NewScriptFrame.Visible = true
+    UI.NameBox.Text = ""
+    UI.DescBox.Text = ""
+    UI.ScriptBox.Text = ""
+end)
+
+UI.SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+    local query = UI.SearchBox.Text
+    UI.PrevBtn.Visible = false
+    UI.NextBtn.Visible = false
+    if query ~= "" then
+        Funcs.PerformSearch(query, 1)
+    elseif Funcs.CurrentSource == "ScriptBlox" then
+        Funcs.PerformSearch("", 1)
+    else
+        if UI.NoResultsLabel then UI.NoResultsLabel.Visible = false end
+        Funcs.CurrentScripts = {}
+        Funcs.RenderSearchResults()
+    end
+end)
+
+UI.PrevBtn.MouseButton1Click:Connect(function()
+    if currentPage > 1 then Funcs.PerformSearch(currentQuery, currentPage - 1) end
+end)
+
+UI.NextBtn.MouseButton1Click:Connect(function()
+    if currentPage < totalPages then Funcs.PerformSearch(currentQuery, currentPage + 1) end
+end)
+
+UI.SourceBtn.MouseButton1Click:Connect(function()
+    Funcs.CycleSource()
+end)
+
+UI.FilterBtn.MouseButton1Click:Connect(function()
+    Funcs.CycleFilter()
+end)
+
+UI.SearchBox2:GetPropertyChangedSignal("Text"):Connect(function()
+    Funcs.RefreshSavedScripts(UI.SearchBox2.Text)
+end)
+
+UI.ExeBtn.MouseButton1Click:Connect(function()
+    if ExeActiveTab then
+        local code = ExeActiveTab.inputBox.Text
+        if code and code ~= "" then
+            loadstring(code)()
+        end
+    end
+end)
+
+UI.ClrBtn.MouseButton1Click:Connect(function()
+    if ExeActiveTab then ExeActiveTab.inputBox.Text = "" end
+end)
+
+UI.CopyBtn.MouseButton1Click:Connect(function()
+    if ExeActiveTab then SetClipboard(ExeActiveTab.inputBox.Text) end
+end)
+
+UI.AnimsToggle.MouseButton1Click:Connect(function()
+    Settings.Animations = not Settings.Animations
+    if UI.ToggleState then
+        local col = Settings.Animations and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+        if Settings.Animations then
+            TweenService:Create(UI.ToggleState, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = col }):Play()
+            local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.3), { Color = col }):Play() end
+        else
+            TweenService:Create(UI.ToggleState, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = col }):Play()
+            local stroke = UI.ToggleState:FindFirstChildOfClass("UIStroke")
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.3), { Color = col }):Play() end
+        end
+    end
+    Funcs.SaveSettings()
+end)
+
+UI.ResetThemeBtn.MouseButton1Click:Connect(function()
+    Settings.BackgroundColor = Color3.fromRGB(0, 0, 0)
+    Settings.SecondaryBackgroundColor = Color3.fromRGB(10, 10, 10)
+    Settings.AccentColor = Color3.fromRGB(0, 99, 255)
+    Settings.SecondaryAccentColor = Color3.fromRGB(0, 64, 180)
+    Funcs.ApplyTheme()
+    Funcs.SaveSettings()
+end)
+
+UI.MusicPlayBtn.MouseButton1Click:Connect(function()
+    if not MusicSound or not MusicSound.Parent then
+        MusicFiles = Funcs.GetMusicFiles()
+        if #MusicFiles > 0 then
+            Funcs.LoadAndPlayMusic(MusicIndex)
+        end
+        return
+    end
+    if MusicPlaying then
+        MusicSound:Pause()
+        MusicPlaying = false
+        UI.MusicPlayBtn.Text = "▶"
+    else
+        MusicSound:Resume()
+        MusicPlaying = true
+        UI.MusicPlayBtn.Text = "⏸"
+    end
+end)
+
+UI.MusicPrevBtn.MouseButton1Click:Connect(function()
+    MusicFiles = Funcs.GetMusicFiles()
+    if #MusicFiles > 0 then
+        Funcs.LoadAndPlayMusic(MusicIndex - 1)
+    end
+end)
+
+UI.MusicNextBtn.MouseButton1Click:Connect(function()
+    MusicFiles = Funcs.GetMusicFiles()
+    if #MusicFiles > 0 then
+        Funcs.LoadAndPlayMusic(MusicIndex + 1)
+    end
+end)
+
+UI.MusicLoopToggle.MouseButton1Click:Connect(function()
+    local isLooped = UI.MusicLoopState.BackgroundColor3 == Color3.fromRGB(0, 255, 0)
+    local newColor = isLooped and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(0, 255, 0)
+    UI.MusicLoopState.BackgroundColor3 = newColor
+    if MusicSound then MusicSound.Looped = not isLooped end
+end)
+
+UI.MusicVolumeBox:GetPropertyChangedSignal("Text"):Connect(function()
+    local vol = tonumber(UI.MusicVolumeBox.Text)
+    if vol and MusicSound then
+        MusicSound.Volume = math.clamp(vol, 0, 10)
+    end
+end)
+
+UI.MusicSpeedBox:GetPropertyChangedSignal("Text"):Connect(function()
+    local speed = tonumber(UI.MusicSpeedBox.Text)
+    if speed and MusicSound then
+        MusicSound.PlaybackSpeed = math.clamp(speed, 0.1, 10)
+    end
+end)
+
+local sliderDragging = false
+local sliderInputConn
+
+UI.MusicSliderBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        sliderDragging = true
+        MusicSliderDragging = true
+        local function UpdateFromInput(inp)
+            local barPos = UI.MusicSliderBar.AbsolutePosition.X
+            local barSize = UI.MusicSliderBar.AbsoluteSize.X
+            local frac = math.clamp((inp.Position.X - barPos) / barSize, 0, 1)
+            UI.MusicSliderFill.Size = UDim2.new(frac, 0, 1, 0)
+            UI.MusicSliderKnob.Position = UDim2.new(frac, -6, 0.5, -6)
+            if MusicSound and MusicSound.TimeLength and MusicSound.TimeLength > 0 then
+                MusicSound.TimePosition = frac * MusicSound.TimeLength
+                UI.MusicTimeLabel.Text = Funcs.FormatTime(MusicSound.TimePosition) .. " / " .. Funcs.FormatTime(MusicSound.TimeLength)
+            end
+        end
+        UpdateFromInput(input)
+        if sliderInputConn then sliderInputConn:Disconnect() end
+        sliderInputConn = UserInputService.InputChanged:Connect(function(inp)
+            if sliderDragging and (inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch) then
+                UpdateFromInput(inp)
+            end
+        end)
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                sliderDragging = false
+                MusicSliderDragging = false
+                if sliderInputConn then sliderInputConn:Disconnect() end
+            end
+        end)
+    end
+end)
+
+Funcs.SwitchTab(UI.HomeTab)
+Funcs.SetAllUnderlines(UI.HomeTab)
+
+UI.Show.Visible = true
+UI.MainFrame.Visible = false
+
+coroutine.wrap(function()
+    while UI.ScreenGui and UI.ScreenGui.Parent do
+        Funcs.UpdateStats()
+        Funcs.UpdateMusicSlider()
+        Wait(0.5)
+    end
+end)()
+
+Players.PlayerRemoving:Connect(function(player)
+    if player == Player then
+        Funcs.ClearCache()
+        if MusicSound then MusicSound:Stop(); MusicSound:Destroy() end
+    end
+end)
