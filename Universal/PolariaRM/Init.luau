@@ -208,6 +208,21 @@ UI["MainFrame"]["Size"] = UDim2.new(0.7, 0, 0.9, 0)
 UI["MainFrame"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
 UI["MainFrame"]["Parent"] = UI["ScreenGui"]
 
+UI.Shadow = Instance.new("UIShadow")
+UI.Shadow.BlurRadius = 8
+UI.Shadow.Color = Color3.fromRGB(255, 255, 255)
+UI.Shadow.Name = "Shadow"
+UI.Shadow.Transparency = 0.5
+UI.Shadow.Parent = UI.MainFrame
+
+UI.ShadowGradient = Instance.new("UIGradient")
+UI.ShadowGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0.000, Color3.fromRGB(83, 0, 255)),
+    ColorSequenceKeypoint.new(1.000, Color3.fromRGB(160, 0, 255))
+}
+UI.ShadowGradient.Name = "ShadowGradient"
+UI.ShadowGradient.Parent = UI.Shadow
+
 UI["MainFramePadding"] = Instance.new("UIPadding")
 UI["MainFramePadding"]["Name"] = "MainFramePadding"
 UI["MainFramePadding"]["PaddingTop"] = UDim.new(0, 4)
