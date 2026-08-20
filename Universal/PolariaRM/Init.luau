@@ -2,74 +2,35 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (function()
-    local Success, Env = pcall(getgenv)
-    return (Success and Env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
-end)()
+local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local function expect(ExpectedType, Value, Fallback)
-    if type(Value) == ExpectedType then
-        return Value
-    end
-
-    if Fallback ~= nil then
-        if type(Fallback) == "function" then
-            return function(...)
-                warn("[Expect]: Missing executor functionality. Using fallback function.")
-                return Fallback(...)
-            end
-        end
-
-        warn("[Expect]: Value has unexpected type. Using fallback value.")
-    end
-
-    return Fallback
+local function GetService(Service)
+    local Service = game:GetService(Service)
+    return cloneref and cloneref(Service) or Service
 end
 
-local cloneref = expect("function", cloneref, function(...) return ... end)
-
-local Services = setmetatable({}, {
-    __index = function(Self, Name)
-        local Success, Cache = pcall(function()
-            return cloneref(game:GetService(Name))
-        end)
-
-        if Success then
-            rawset(Self, Name, Cache)
-            return Cache
-        else
-            error("Invalid Service: " .. tostring(Name))
-        end
-    end
-})
-
-local Hui = (gethui and gethui()) or Services.CoreGui
-local TweenService = Services.TweenService
-local Players = Services.Players
+local Hui = gethui and gethui() or GetService("CoreGui")
+local TweenService = GetService("TweenService")
+local Players = GetService("Players")
 local Player = Players.LocalPlayer
-local RunService = Services.RunService
-local HttpService = Services.HttpService
-local UserInputService = Services.UserInputService
-local Stats = Services.Stats
-local MarketplaceService = Services.MarketplaceService
-local StarterGui = Services.StarterGui
+local RunService = GetService("RunService")
+local HttpService = GetService("HttpService")
+local UserInputService = GetService("UserInputService")
+local Stats = GetService("Stats")
+local ReplicatedStorage = GetService("ReplicatedStorage")
+local MarketplaceService = GetService("MarketplaceService")
+local StarterGui = GetService("StarterGui")
 
-local function Tween(Object, Speed, Properties, EasingStyle, EasingDirection)
-    if EasingStyle == nil then
-        EasingStyle = "Quad"
-    end
-
-    if EasingDirection == nil then
-        EasingDirection = "Out"
-    end
-
-    local TweenInformation = TweenInfo.new(
-        Speed,
-        Enum.EasingStyle[EasingStyle],
-        Enum.EasingDirection[EasingDirection]
+local function Tween(Object, Speed, Props, Style, Dir)
+    return TweenService:Create(
+        Object,
+        TweenInfo.new(
+            Speed,
+            Enum.EasingStyle[Style or "Quad"],
+            Enum.EasingDirection[Dir or "Out"]
+        ),
+        Props
     )
-
-    return TweenService:Create(Object, TweenInformation, Properties)
 end
 
 local WriteFile = expect("function", writefile, function() return end)
@@ -79,7 +40,7 @@ local MakeFolder = expect("function", makefolder, function() return end)
 local LoadAsset = expect("function", getcustomasset, expect("function", getsynasset, nil))
 
 local Assets = {
-    ["PolariaRM/Assets/polaria_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/PolariaRM/Assets/logo.png",
+    ["PolariaRM/Assets/polaria_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/PolariaRM/Assets/logo.png",
     ["PolariaRM/Assets/polaria_dev.png"] = "https://avatars.githubusercontent.com/u/279942568",
     ["PolariaRM/Assets/polaria_shadow.png"] = "rbxassetid://15298624572",
 }
@@ -1566,7 +1527,6 @@ local function findRemote()
     local userId = Player.UserId
     local accountAge = Player.AccountAge
     
-    local ReplicatedStorage = Services.ReplicatedStorage
     if ReplicatedStorage then
         local protected_backdoor = ReplicatedStorage:FindFirstChild('lh'..game.PlaceId/6666*1337*game.PlaceId)
         if protected_backdoor and protected_backdoor:IsA('RemoteFunction') then
