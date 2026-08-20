@@ -111,7 +111,7 @@ end
 
 Shared.PolariaRM = Shared.PolariaRM or {}
 
-if Shared.PolariaRM.isLoaded then
+if Shared.PolariaRM.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "PolariaRM",
         Text = "Polaria Remastered is already running!",
@@ -121,7 +121,7 @@ if Shared.PolariaRM.isLoaded then
     return
 end
 
-Shared.PolariaRM.isLoaded = true
+Shared.PolariaRM.IsLoaded = true
 
 local backdoorRemote = nil
 local currentContent = nil
@@ -1350,7 +1350,7 @@ UI["Close"].MouseButton1Click:Connect(function()
     hideTween:Play()
     hideTween.Completed:Wait()
     UI["ScreenGui"]:Destroy()
-    Shared.PolariaRM.isLoaded = false
+    Shared.PolariaRM.IsLoaded = false
 end)
 
 UI["Hide"].MouseButton1Click:Connect(function()
@@ -1444,11 +1444,11 @@ local function updateStats()
     
     local executorChecks = {
         {cond = Expect("boolean", syn and syn.request, false), name = "Synapse X"},
-        {cond = Expect("boolean", KRNL_isLoaded, false), name = "KRNL"},
+        {cond = Expect("boolean", KRNL_IsLoaded, false), name = "KRNL"},
         {cond = Expect("boolean", fluxus, false), name = "Fluxus"},
         {cond = Expect("boolean", is_sirhurt_closure, false), name = "SirHurt"},
-        {cond = Expect("boolean", PROTOSMASHER_isLoaded, false), name = "ProtoSmasher"},
-        {cond = Expect("boolean", ELECTRON_isLoaded, false), name = "Electron"},
+        {cond = Expect("boolean", PROTOSMASHER_IsLoaded, false), name = "ProtoSmasher"},
+        {cond = Expect("boolean", ELECTRON_IsLoaded, false), name = "Electron"},
         {cond = Expect("boolean", is_synapse_function, false), name = "Synapse X"},
         {cond = Expect("function", identifyexecutor, nil), name = identifyexecutor and identifyexecutor() or nil},
         {cond = Expect("function", getexecutorname, nil), name = getexecutorname and getexecutorname() or nil}
