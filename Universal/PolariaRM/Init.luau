@@ -41,6 +41,20 @@ local function Tween(Object, Speed, Props, Style, Dir)
     )
 end
 
+local function UID(Length)
+    Length = Length or 64
+
+    local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
+    local Id = table.create(Length)
+
+    for i = 1, Length do
+        local Rand = math.random(1, #Chars)
+        Id[i] = Chars:sub(Rand, Rand)
+    end
+
+    return table.concat(Id)
+end
+
 local WriteFile = Expect("function", writefile, function() return end)
 local IsFile = Expect("function", isfile, function() return end)
 local IsFolder = Expect("function", isfolder, function() return end)
@@ -130,7 +144,7 @@ local serverStartTime = workspace:GetServerTimeNow()
 
 local UI = {}
 UI["ScreenGui"] = Instance.new("ScreenGui")
-UI["ScreenGui"]["Name"] = "PolariaRM"
+UI["ScreenGui"]["Name"] = UID()
 UI["ScreenGui"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
 UI["ScreenGui"]["ResetOnSpawn"] = false
 UI["ScreenGui"]["Parent"] = Hui
