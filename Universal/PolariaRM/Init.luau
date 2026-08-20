@@ -63,8 +63,7 @@ local LoadAsset = Expect("function", getcustomasset, Expect("function", getsynas
 
 local Assets = {
     ["PolariaRM/Assets/polaria_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/PolariaRM/Assets/logo.png",
-    ["PolariaRM/Assets/polaria_dev.png"] = "https://avatars.githubusercontent.com/u/279942568",
-    ["PolariaRM/Assets/polaria_shadow.png"] = "rbxassetid://15298624572",
+    ["PolariaRM/Assets/polaria_dev.png"] = "https://avatars.githubusercontent.com/u/279942568"
 }
 
 local function HttpGet(url)
@@ -200,37 +199,14 @@ UI["ShowPadding"]["PaddingLeft"] = UDim.new(0, 5)
 UI["ShowPadding"]["PaddingBottom"] = UDim.new(0, 5)
 UI["ShowPadding"]["Parent"] = UI["Show"]
 
-UI["Container"] = Instance.new("Frame")
-UI["Container"]["Name"] = "Container"
-UI["Container"]["BorderSizePixel"] = 0
-UI["Container"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-UI["Container"]["Size"] = UDim2.new(0.7, 0, 0.9, 0)
-UI["Container"]["Position"] = UDim2.new(0.5, -UI["Container"]["Size"].X.Offset/2, 0.5, -UI["Container"]["Size"].Y.Offset/2)
-UI["Container"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
-UI["Container"]["BackgroundTransparency"] = 1
-UI["Container"]["Visible"] = false
-UI["Container"]["Parent"] = UI["ScreenGui"]
-
-UI["Shadow"] = Instance.new("ImageLabel")
-UI["Shadow"]["Name"] = "Shadow"
-UI["Shadow"]["BorderSizePixel"] = 0
-UI["Shadow"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
-UI["Shadow"]["ImageTransparency"] = 0.2
-UI["Shadow"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
-UI["Shadow"]["Image"] = GetAsset("PolariaRM/Assets/polaria_shadow.png")
-UI["Shadow"]["Size"] = UDim2.new(1.059, 0, 1.088, 0)
-UI["Shadow"]["BackgroundTransparency"] = 1
-UI["Shadow"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
-UI["Shadow"]["Parent"] = UI["Container"]
-
 UI["MainFrame"] = Instance.new("Frame")
 UI["MainFrame"]["Name"] = "MainFrame"
 UI["MainFrame"]["BorderSizePixel"] = 0
 UI["MainFrame"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
 UI["MainFrame"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
-UI["MainFrame"]["Size"] = UDim2.new(1, 0, 1, 0)
+UI["MainFrame"]["Size"] = UDim2.new(0.7, 0, 0.9, 0)
 UI["MainFrame"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
-UI["MainFrame"]["Parent"] = UI["Container"]
+UI["MainFrame"]["Parent"] = UI["ScreenGui"]
 
 UI["MainFramePadding"] = Instance.new("UIPadding")
 UI["MainFramePadding"]["Name"] = "MainFramePadding"
