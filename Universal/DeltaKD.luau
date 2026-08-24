@@ -3,7 +3,7 @@ if not game:IsLoaded() then
 end
 
 local function GetService(Name)
-    local Svc = game:GetService(Name)
+    local Svc = GetService(Name)
     return cloneref and cloneref(Svc) or Svc
 end
 
@@ -2295,7 +2295,7 @@ task.spawn(C_56);
 local function C_e7()
 	local script = UI["e7"];
 	pcall(function()
-		local TweenService = game:GetService("TweenService")
+		local TweenService = GetService("TweenService")
 		local bool = true
 
 		script.Parent.Parent.ToggleRGB.MouseButton1Up:Connect(function()
@@ -2364,7 +2364,7 @@ local function C_136()
 		function updateInput(input)
 			Delta = input.Position - dragStart
 			Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
-			game:GetService("TweenService"):Create(Frame, TweenInfo.new(.25), {Position = Position}):Play()
+			GetService("TweenService"):Create(Frame, TweenInfo.new(.25), {Position = Position}):Play()
 		end
 
 		Frame.InputBegan:Connect(function(input)
@@ -2386,7 +2386,7 @@ local function C_136()
 			end
 		end)
 
-		game:GetService("UserInputService").InputChanged:Connect(function(input)
+		GetService("UserInputService").InputChanged:Connect(function(input)
 			if (input == dragInput and dragToggle) then
 				updateInput(input)
 			end
