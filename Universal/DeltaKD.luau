@@ -3,7 +3,7 @@ if not game:IsLoaded() then
 end
 
 local function GetService(Name)
-    local Svc = GetService(Name)
+    local Svc = game:GetService(Name)
     return cloneref and cloneref(Svc) or Svc
 end
 
