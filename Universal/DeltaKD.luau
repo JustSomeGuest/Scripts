@@ -1,7 +1,32 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+local function GetService(Name)
+    local Svc = game:GetService(Name)
+    return cloneref and cloneref(Svc) or Svc
+end
+
+local Hui = gethui and gethui() or GetService("CoreGui")
+
+local function UID(Length)
+    Length = Length or 64
+
+    local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
+    local Id = table.create(Length)
+
+    for i = 1, Length do
+        local Rand = math.random(1, #Chars)
+        Id[i] = Chars:sub(Rand, Rand)
+    end
+
+    return table.concat(Id)
+end
+
 local UI = {};
 
-UI["1"] = Instance.new("ScreenGui", gethui());
-UI["1"]["Name"] = [[DeltaKeyboard]];
+UI["1"] = Instance.new("ScreenGui", Hui);
+UI["1"]["Name"] = UID();
 UI["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
 UI["1"]["ResetOnSpawn"] = false;
 
