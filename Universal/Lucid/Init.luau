@@ -56,14 +56,14 @@ Shared.Lucid = {
     UI = {},
     Funcs = {},
     Assets = {
-        ["Lucid/Assets/lucid_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/logo.png",
-        ["Lucid/Assets/lucid_home.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/home.png",
-        ["Lucid/Assets/lucid_executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/executor.png",
-        ["Lucid/Assets/lucid_search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/search.png",
-        ["Lucid/Assets/lucid_scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/scripts.png",
-        ["Lucid/Assets/lucid_music.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/music.png",
-        ["Lucid/Assets/lucid_settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/settings.png",
-        ["Lucid/Assets/lucid_close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/close.png",
+        ["Lucid/Assets/Lucid_Logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Logo.png",
+        ["Lucid/Assets/Lucid_Home.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Home.png",
+        ["Lucid/Assets/Lucid_Executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Executor.png",
+        ["Lucid/Assets/Lucid_Search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Search.png",
+        ["Lucid/Assets/Lucid_Scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Scripts.png",
+        ["Lucid/Assets/Lucid_Music.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Music.png",
+        ["Lucid/Assets/Lucid_Settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Settings.png",
+        ["Lucid/Assets/Lucid_Close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Close.png",
     },
     Settings = {
         Animations = true,
@@ -1102,7 +1102,7 @@ function Funcs.CreateTab(iconPath, labelText, content, layoutOrder, underlineKey
     local icon = Instance.new("ImageLabel")
     icon.BackgroundTransparency = 1
     icon.BorderSizePixel = 0
-    icon.Image = Funcs.GetAsset(iconPath) or ""
+    icon.Image = Funcs.GetAsset(iconPath)
     icon.LayoutOrder = 1
     icon.Name = "TabIcon"
     icon.Size = UDim2.new(0, 30, 0, 30)
@@ -1654,7 +1654,7 @@ if Shared.Lucid.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "Lucid Executor",
         Text = "Lucid is already running!",
-        Icon = Funcs.GetAsset("Lucid/Assets/lucid_logo.png"),
+        Icon = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png"),
         Duration = 4
     })
     return
@@ -1694,7 +1694,7 @@ UI.ShowIcon = Instance.new("ImageLabel")
 UI.ShowIcon.AnchorPoint = Vector2.new(0.5, 0.5)
 UI.ShowIcon.BackgroundTransparency = 1
 UI.ShowIcon.BorderSizePixel = 0
-UI.ShowIcon.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
+UI.ShowIcon.Image = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png")
 UI.ShowIcon.Name = "ShowIcon"
 UI.ShowIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 UI.ShowIcon.Size = UDim2.new(0, 28, 0, 28)
@@ -3461,7 +3461,7 @@ UI.TopbarLayout.Parent = UI.Topbar
 UI.Logo = Instance.new("ImageLabel")
 UI.Logo.BackgroundTransparency = 1
 UI.Logo.BorderSizePixel = 0
-UI.Logo.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
+UI.Logo.Image = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png")
 UI.Logo.ImageColor3 = Color3.fromRGB(0, 64, 180)
 UI.Logo.LayoutOrder = 1
 UI.Logo.Name = "Logo"
@@ -3475,7 +3475,7 @@ UI.Icon = Instance.new("ImageLabel")
 UI.Icon.AnchorPoint = Vector2.new(0.5, 0.5)
 UI.Icon.BackgroundTransparency = 1
 UI.Icon.BorderSizePixel = 0
-UI.Icon.Image = Funcs.GetAsset("Lucid/Assets/lucid_logo.png")
+UI.Icon.Image = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png")
 UI.Icon.ImageColor3 = Color3.fromRGB(0, 99, 255)
 UI.Icon.LayoutOrder = 1
 UI.Icon.Name = "Icon"
@@ -3552,7 +3552,7 @@ UI.TabContainer6Layout.Parent = UI.TabContainer6
 UI.TabIcon6 = Instance.new("ImageLabel")
 UI.TabIcon6.BackgroundTransparency = 1
 UI.TabIcon6.BorderSizePixel = 0
-UI.TabIcon6.Image = Funcs.GetAsset("Lucid/Assets/lucid_close.png")
+UI.TabIcon6.Image = Funcs.GetAsset("Lucid/Assets/Lucid_Close.png")
 UI.TabIcon6.LayoutOrder = 1
 UI.TabIcon6.Name = "TabIcon6"
 UI.TabIcon6.Size = UDim2.new(0, 30, 0, 30)
@@ -3824,12 +3824,12 @@ UI.ResetThemeBtnLabel.TextWrapped = true
 UI.ResetThemeBtnLabel.TextXAlignment = Enum.TextXAlignment.Left
 UI.ResetThemeBtnLabel.Parent = UI.ResetThemeBtn
 
-UI.HomeTab = Funcs.CreateTab("Lucid/Assets/lucid_home.png", "Home", UI.HomeContent, 1, "TabUnderline")
-UI.ExeTab = Funcs.CreateTab("Lucid/Assets/lucid_executor.png", "Executor", UI.ExeContent, 2, "TabUnderline2")
-UI.SearchTab = Funcs.CreateTab("Lucid/Assets/lucid_search.png", "Search", UI.SearchContent, 3, "TabUnderline3")
-UI.ScriptsTab = Funcs.CreateTab("Lucid/Assets/lucid_scripts.png", "Scripts", UI.ScriptsContent, 4, "TabUnderline4")
-UI.MusicTab = Funcs.CreateTab("Lucid/Assets/lucid_music.png", "Music", UI.MusicContent, 5, "TabUnderline6Music")
-UI.SettingsTab = Funcs.CreateTab("Lucid/Assets/lucid_settings.png", "Settings", UI.SettingsContent, 6, "TabUnderline5")
+UI.HomeTab = Funcs.CreateTab("Lucid/Assets/Lucid_Home.png", "Home", UI.HomeContent, 1, "TabUnderline")
+UI.ExeTab = Funcs.CreateTab("Lucid/Assets/Lucid_Executor.png", "Executor", UI.ExeContent, 2, "TabUnderline2")
+UI.SearchTab = Funcs.CreateTab("Lucid/Assets/Lucid_Search.png", "Search", UI.SearchContent, 3, "TabUnderline3")
+UI.ScriptsTab = Funcs.CreateTab("Lucid/Assets/Lucid_Scripts.png", "Scripts", UI.ScriptsContent, 4, "TabUnderline4")
+UI.MusicTab = Funcs.CreateTab("Lucid/Assets/Lucid_Music.png", "Music", UI.MusicContent, 5, "TabUnderline6Music")
+UI.SettingsTab = Funcs.CreateTab("Lucid/Assets/Lucid_Settings.png", "Settings", UI.SettingsContent, 6, "TabUnderline5")
 
 Funcs.CreateSettingsInputbox("Background Color (RGB)", "10, 10, 10", "BackgroundColor", 2)
 Funcs.CreateSettingsInputbox("Secondary Background Color (RGB)", "18, 18, 18", "SecondaryBackgroundColor", 3)
