@@ -2,11 +2,11 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
+local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local function GetService(Service)
-    local Service = game:GetService(Service)
-    return cloneref and cloneref(Service) or Service
+local function GetService(Name)
+    local Svc = game:GetService(Name)
+    return cloneref and cloneref(Svc) or Svc
 end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
@@ -46,15 +46,15 @@ local function HttpGet(url)
 end
 
 if not IsFile("Shiftlock.png") then
-    local Response = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Universal/Shiftlock/Assets/lock.png")
+    local Response = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Shiftlock/Lock.png")
     if Response and Response.Success and Response.Body then
         WriteFile("Shiftlock.png", Response.Body)
     end
 end
 
-Shared.Shiftlock = Shared.Shiftlock or {}
+Env.Shiftlock = Env.Shiftlock or {}
 
-if Shared.Shiftlock.IsLoaded then
+if Env.Shiftlock.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "Shiftlock",
         Text = "Shiftlock is already running!",
@@ -64,7 +64,7 @@ if Shared.Shiftlock.IsLoaded then
     return
 end
 
-Shared.Shiftlock.IsLoaded = true
+Env.Shiftlock.IsLoaded = true
 
 local UI = {}
 
@@ -229,7 +229,7 @@ end)
 UI.Close.MouseButton1Click:Connect(function()
     Disable()
     UI.ScreenGui:Destroy()
-    Shared.Shiftlock.IsLoaded = false
+    Env.Shiftlock.IsLoaded = false
 end)
 
 Player.CharacterAdded:Connect(function(NewChar)
