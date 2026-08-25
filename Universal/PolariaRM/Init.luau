@@ -62,7 +62,7 @@ local MakeFolder = Expect("function", makefolder, function() return end)
 local LoadAsset = Expect("function", getcustomasset, Expect("function", getsynasset, nil))
 
 local Assets = {
-    ["PolariaRM/Assets/Polaria_Logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/PolariaRM/Assets/Logo.png",
+    ["PolariaRM/Assets/Polaria_Logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/PolariaRM/Logo.png",
     ["PolariaRM/Assets/Polaria_Dev.png"] = "https://avatars.githubusercontent.com/u/279942568"
 }
 
