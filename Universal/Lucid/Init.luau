@@ -52,7 +52,7 @@ local HighlightColors = {
     Boolean = "#569CD6"
 }
 
-Shared.Lucid = {
+Env.Lucid = {
     UI = {},
     Funcs = {},
     Assets = {
@@ -75,10 +75,10 @@ Shared.Lucid = {
     IsLoaded = false
 }
 
-local UI = Shared.Lucid.UI
-local Funcs = Shared.Lucid.Funcs
-local Assets = Shared.Lucid.Assets
-local Settings = Shared.Lucid.Settings
+local UI = Env.Lucid.UI
+local Funcs = Env.Lucid.Funcs
+local Assets = Env.Lucid.Assets
+local Settings = Env.Lucid.Settings
 local currentPage = 1
 local totalPages = 1
 local currentQuery = ""
@@ -1650,7 +1650,7 @@ end
 
 Funcs.PreloadAssets()
 
-if Shared.Lucid.IsLoaded then
+if Env.Lucid.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "Lucid Executor",
         Text = "Lucid is already running!",
@@ -1660,7 +1660,7 @@ if Shared.Lucid.IsLoaded then
     return
 end
 
-Shared.Lucid.IsLoaded = true
+Env.Lucid.IsLoaded = true
 
 UI.ScreenGui = Instance.new("ScreenGui")
 UI.ScreenGui.DisplayOrder = 2147483647
