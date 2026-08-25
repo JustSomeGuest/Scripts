@@ -2,11 +2,11 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
+local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local function GetService(Service)
-    local Service = game:GetService(Service)
-    return cloneref and cloneref(Service) or Service
+local function GetService(Name)
+    local Svc = game:GetService(Name)
+    return cloneref and cloneref(Svc) or Svc
 end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
@@ -122,9 +122,9 @@ local function GetAsset(Path)
     return LoadAsset(Path)
 end
 
-Shared.PolariaRM = Shared.PolariaRM or {}
+Env.PolariaRM = Env.PolariaRM or {}
 
-if Shared.PolariaRM.IsLoaded then
+if Env.PolariaRM.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "PolariaRM",
         Text = "Polaria Remastered is already running!",
@@ -134,7 +134,7 @@ if Shared.PolariaRM.IsLoaded then
     return
 end
 
-Shared.PolariaRM.IsLoaded = true
+Env.PolariaRM.IsLoaded = true
 
 local backdoorRemote = nil
 local currentContent = nil
@@ -1355,7 +1355,7 @@ UI["Close"].MouseButton1Click:Connect(function()
     hideTween:Play()
     hideTween.Completed:Wait()
     UI["ScreenGui"]:Destroy()
-    Shared.PolariaRM.IsLoaded = false
+    Env.PolariaRM.IsLoaded = false
 end)
 
 UI["Hide"].MouseButton1Click:Connect(function()
