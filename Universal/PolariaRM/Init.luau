@@ -62,8 +62,8 @@ local MakeFolder = Expect("function", makefolder, function() return end)
 local LoadAsset = Expect("function", getcustomasset, Expect("function", getsynasset, nil))
 
 local Assets = {
-    ["PolariaRM/Assets/polaria_logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/PolariaRM/Assets/logo.png",
-    ["PolariaRM/Assets/polaria_dev.png"] = "https://avatars.githubusercontent.com/u/279942568"
+    ["PolariaRM/Assets/Polaria_Logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/PolariaRM/Assets/Logo.png",
+    ["PolariaRM/Assets/Polaria_Dev.png"] = "https://avatars.githubusercontent.com/u/279942568"
 }
 
 local function HttpGet(url)
@@ -128,7 +128,7 @@ if Shared.PolariaRM.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "PolariaRM",
         Text = "Polaria Remastered is already running!",
-        Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
+        Icon = GetAsset("PolariaRM/Assets/Polaria_Logo.png"),
         Duration = 4
     })
     return
@@ -158,7 +158,7 @@ UI["Show"]["Position"] = UDim2.new(0, 20, 0, 6)
 UI["Show"]["Parent"] = UI["ScreenGui"]
 
 UI["ShowIcon"] = Instance.new("ImageLabel")
-UI["ShowIcon"]["Image"] = GetAsset("PolariaRM/Assets/polaria_logo.png")
+UI["ShowIcon"]["Image"] = GetAsset("PolariaRM/Assets/Polaria_Logo.png")
 UI["ShowIcon"]["ImageColor3"] = Color3.fromRGB(255, 255, 255)
 UI["ShowIcon"]["BackgroundTransparency"] = 1
 UI["ShowIcon"]["Size"] = UDim2.new(1, 0, 1, 0)
@@ -1195,7 +1195,7 @@ UI["CreditsContentList"]["Parent"] = UI["CreditsContent"]
 
 UI["DevHeadshot"] = Instance.new("ImageLabel")
 UI["DevHeadshot"]["Name"] = "DevHeadshot"
-UI["DevHeadshot"]["Image"] = GetAsset("PolariaRM/Assets/polaria_dev.png")
+UI["DevHeadshot"]["Image"] = GetAsset("PolariaRM/Assets/Polaria_Dev.png")
 UI["DevHeadshot"]["BorderSizePixel"] = 0
 UI["DevHeadshot"]["ScaleType"] = Enum.ScaleType.Fit
 UI["DevHeadshot"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0)
@@ -1640,7 +1640,7 @@ local function CreateButton(name, code)
                 SetCore(StarterGui, "SendNotification", {
                     Title = "PolariaRM (Error)",
                     Text = "No backdoor found! Scan first.",
-                    Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
+                    Icon = GetAsset("PolariaRM/Assets/Polaria_Logo.png"),
                     Duration = 3
                 })
             end
@@ -1720,7 +1720,7 @@ UI["Exe"].MouseButton1Click:Connect(function()
         SetCore(StarterGui, "SendNotification", {
             Title = "PolariaRM (Error)",
             Text = "No backdoor found! Scan first.",
-            Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
+            Icon = GetAsset("PolariaRM/Assets/Polaria_Logo.png"),
             Duration = 3
         })
     end
@@ -1775,7 +1775,7 @@ UI["Re"].MouseButton1Click:Connect(function()
             SetCore(StarterGui, "SendNotification", {
                 Title = "PolariaRM (Error)",
                 Text = "No backdoor found! Scan first.",
-                Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
+                Icon = GetAsset("PolariaRM/Assets/Polaria_Logo.png"),
                 Duration = 3
             })
         end
@@ -1785,7 +1785,7 @@ UI["Re"].MouseButton1Click:Connect(function()
         SetCore(StarterGui, "SendNotification", {
             Title = "PolariaRM (Error)",
             Text = "Failed to execute: " .. tostring(errorMsg),
-            Icon = GetAsset("PolariaRM/Assets/polaria_logo.png"),
+            Icon = GetAsset("PolariaRM/Assets/Polaria_Logo.png"),
             Duration = 3
         })
     end
