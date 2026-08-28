@@ -1909,7 +1909,7 @@ Lucid is a modern interface that replaces your executor's UI while keeping its o
 <p align="center"><font size="22"><b>Credits</b></font></p>
 
 <p align="left">
-Created and maintained by <b>JustAGuest</b>.
+Created and maintained by <b>JustSomeGuest</b>.
 </p>
 
 <p align="center"><i>Thank you for using Lucid!</i></p>]]
