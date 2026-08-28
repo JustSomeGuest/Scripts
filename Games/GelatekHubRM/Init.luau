@@ -492,7 +492,7 @@ VoidUI:New("Label", {
 })
 
 VoidUI:New("Label", {
-    Text = "Remastered By: JustAGuest",
+    Text = "Remastered By: JustSomeGuest",
     Parent = CreditsTab
 })
 
