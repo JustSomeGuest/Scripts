@@ -2,22 +2,22 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
+local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local function GetService(Service)
-    local Service = game:GetService(Service)
-    return cloneref and cloneref(Service) or Service
+local function GetService(Name)
+    local Svc = game:GetService(Name)
+    return cloneref and cloneref(Svc) or Svc
 end
 
-local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/GelatekHubRM/"
+local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/GelatekHubRM/"
 local Scripts = Base .. "Scripts"
 local FreeScripts = Base .. "Scripts/Free"
 local HatScripts = Base .. "Scripts/Hat"
 local Modules = Base .. "Modules"
 
-Shared.GelatekHubRM = Shared.GelatekHubRM or {}
+Env.GelatekHubRM = Env.GelatekHubRM or {}
 
-if Shared.GelatekHubRM.IsLoaded then
+if Env.GelatekHubRM.IsLoaded then
     GetService("StarterGui"):SetCore("SendNotification", {
         Title = "Gelatek Hub Remastered",
         Text = "Gelatek Hub Remastered is already running!",
@@ -26,7 +26,7 @@ if Shared.GelatekHubRM.IsLoaded then
     return
 end
 
-Shared.GelatekHubRM.IsLoaded = true
+Env.GelatekHubRM.IsLoaded = true
 
 local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
 
@@ -89,7 +89,7 @@ local function IsGame(gameName)
     return game.PlaceId == placeId
 end
 
-Shared.GelatekHubConfig = {
+Env.GelatekHubConfig = {
     PermanentDeath = false,
     TorsoFling = false,
     BulletFling = false,
@@ -241,13 +241,13 @@ VoidUI:New("Button", {
         if IsGame("JaB") then
             local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
             
-            if Shared.GelatekHubConfig.PermanentDeath then
+            if Env.GelatekHubConfig.PermanentDeath then
                 CmdEvent:FireServer("cmd", "-pd")
             end
 
             Wait(2)
 
-            if Shared.GelatekHubConfig.KeepHatsAttached then
+            if Env.GelatekHubConfig.KeepHatsAttached then
                 CmdEvent:FireServer("cmd", "-net")
             end
 
@@ -258,7 +258,7 @@ VoidUI:New("Button", {
             WaitForDeath()
             Wait(0.1)
 
-            if Shared.GelatekHubConfig.KeepHatsAttached then
+            if Env.GelatekHubConfig.KeepHatsAttached then
                 CmdEvent:FireServer("cmd", "-net")
             end
         else
@@ -288,7 +288,7 @@ VoidUI:New("Toggle", {
     Parent = ReanimationTab,
     Default = false,
     Callback = function(state)
-        Shared.GelatekHubConfig.PermanentDeath = state
+        Env.GelatekHubConfig.PermanentDeath = state
     end
 })
 
@@ -297,7 +297,7 @@ VoidUI:New("Toggle", {
     Parent = ReanimationTab,
     Default = false,
     Callback = function(state)
-        Shared.GelatekHubConfig.TorsoFling = state
+        Env.GelatekHubConfig.TorsoFling = state
     end
 })
 
@@ -306,7 +306,7 @@ VoidUI:New("Toggle", {
     Parent = ReanimationTab,
     Default = false,
     Callback = function(state)
-        Shared.GelatekHubConfig.BulletFling = state
+        Env.GelatekHubConfig.BulletFling = state
     end
 })
 
@@ -315,7 +315,7 @@ VoidUI:New("Toggle", {
     Parent = ReanimationTab,
     Default = false,
     Callback = function(state)
-        Shared.GelatekHubConfig.EnableCollisions = state
+        Env.GelatekHubConfig.EnableCollisions = state
     end
 })
 
@@ -324,7 +324,7 @@ VoidUI:New("Toggle", {
     Parent = ReanimationTab,
     Default = false,
     Callback = function(state)
-        Shared.GelatekHubConfig.KeepHatsAttached = state
+        Env.GelatekHubConfig.KeepHatsAttached = state
     end
 })
 
@@ -333,7 +333,7 @@ VoidUI:New("Toggle", {
     Parent = ReanimationTab,
     Default = false,
     Callback = function(state)
-        Shared.GelatekHubConfig.HeadlessOnPerma = state
+        Env.GelatekHubConfig.HeadlessOnPerma = state
     end
 })
 
@@ -342,7 +342,7 @@ VoidUI:New("Toggle", {
     Parent = ReanimationTab,
     Default = false,
     Callback = function(state)
-        Shared.GelatekHubConfig.DisableAnims = state
+        Env.GelatekHubConfig.DisableAnims = state
     end
 })
 
@@ -351,7 +351,7 @@ VoidUI:New("Toggle", {
     Parent = ReanimationTab,
     Default = false,
     Callback = function(state)
-        Shared.GelatekHubConfig.Antivoid = state
+        Env.GelatekHubConfig.Antivoid = state
     end
 })
 
@@ -453,10 +453,7 @@ VoidUI:New("Button", {
     Text = "Shiftlock",
     Parent = ExtraTab,
     Callback = function()
-        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau")
-        SafeCall(function()
-            Init.Shiftlock()
-        end)
+        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Shiftlock/Init.luau")
     end
 })
 
@@ -464,10 +461,7 @@ VoidUI:New("Button", {
     Text = "TouchGui (Uses Keyboard Keys)",
     Parent = ExtraTab,
     Callback = function()
-        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau")
-        SafeCall(function()
-            Init.TouchGui()
-        end)
+        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/TouchGui.luau")
     end
 })
 
@@ -475,10 +469,7 @@ VoidUI:New("Button", {
     Text = "Mobile Keyboard",
     Parent = ExtraTab,
     Callback = function()
-        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Init.luau")
-        SafeCall(function()
-            Init.DeltaKD()
-        end)
+        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/DeltaKD.luau")
     end
 })
 
