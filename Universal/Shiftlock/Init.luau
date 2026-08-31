@@ -10,7 +10,12 @@ local function GetService(Name)
 end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
-local Players, RunService, UIS, Workspace, StarterGui = GetService("Players"), GetService("RunService"), GetService("UserInputService"), GetService("Workspace"), GetService("StarterGui")
+
+local Players = GetService("Players")
+local RunService = GetService("RunService")
+local UIS = GetService("UserInputService")
+local Workspace = GetService("Workspace")
+local StarterGui = GetService("StarterGui")
 
 local function UID(Length)
     Length = Length or 64
@@ -31,7 +36,6 @@ local IsFile = isfile or function() return end
 local GetAsset = getcustomasset or getsynasset or function() return end
 
 local Player = Players.LocalPlayer
-local ScreenSize = Workspace.CurrentCamera.ViewportSize
 local Enabled = false
 local Active = false
 local RenderConn = nil
@@ -70,6 +74,7 @@ local UI = {}
 
 UI.ScreenGui = Instance.new("ScreenGui")
 UI.ScreenGui.DisplayOrder = 1
+UI.ScreenGui.IgnoreGuiInset = true
 UI.ScreenGui.Name = UID()
 UI.ScreenGui.ResetOnSpawn = false
 UI.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -166,55 +171,57 @@ local function Disable()
     UI.Button.ImageColor3 = Color3.fromRGB(255, 255, 255)
 end
 
-local dragging = false
-local dragInput
-local dragStart
-local startPos
+local Dragging = false
+local DragInput
+local DragStart
+local StartPos
 
-local function Clamp(newX, newY)
-    local viewport = Workspace.CurrentCamera.ViewportSize
-    local size = UI.Button.AbsoluteSize
-    local padding = 3
-    local maxX = viewport.X - size.X - padding
-    local maxY = viewport.Y - size.Y - padding
-    local minX = padding
-    local minY = padding
-    newX = math.clamp(newX, minX, maxX)
-    newY = math.clamp(newY, minY, maxY)
-    return newX, newY
+local function Clamp(NewX, NewY)
+    local Camera = Workspace.CurrentCamera
+    if not Camera then
+        return NewX, NewY
+    end
+
+    local ViewportSize = Camera.ViewportSize
+    local Size = UI.Button.AbsoluteSize
+    local Padding = 12
+
+    local MaxX = ViewportSize.X - Size.X - Padding
+    local MaxY = ViewportSize.Y - Size.Y - Padding
+
+    NewX = math.clamp(NewX, Padding, MaxX)
+    NewY = math.clamp(NewY, Padding, MaxY)
+
+    return NewX, NewY
 end
 
-UI.Button.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = true
-        dragStart = input.Position
-        startPos = UI.Button.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
+UI.Button.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+        Dragging = true
+        DragStart = Input.Position
+        StartPos = UI.Button.Position
+        Input.Changed:Connect(function()
+            if Input.UserInputState == Enum.UserInputState.End then
+                Dragging = false
             end
         end)
     end
 end)
 
-UI.Button.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        dragInput = input
+UI.Button.InputChanged:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
+        DragInput = Input
     end
 end)
 
-UIS.InputChanged:Connect(function(input)
-    if input == dragInput and dragging then
-        local delta = input.Position - dragStart
-        local newX = startPos.X.Offset + delta.X
-        local newY = startPos.Y.Offset + delta.Y
-        newX, newY = Clamp(newX, newY)
-        UI.Button.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
+UIS.InputChanged:Connect(function(Input)
+    if Input == DragInput and Dragging then
+        local Delta = Input.Position - DragStart
+        local NewX = StartPos.X.Offset + Delta.X
+        local NewY = StartPos.Y.Offset + Delta.Y
+        NewX, NewY = Clamp(NewX, NewY)
+        UI.Button.Position = UDim2.new(StartPos.X.Scale, NewX, StartPos.Y.Scale, NewY)
     end
-end)
-
-Workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
-    ScreenSize = Workspace.CurrentCamera.ViewportSize
 end)
 
 UI.Button.MouseButton1Click:Connect(function()
