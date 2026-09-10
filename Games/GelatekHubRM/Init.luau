@@ -28,7 +28,7 @@ end
 
 Env.GelatekHubRM.IsLoaded = true
 
-local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
+local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.luau"))()
 
 VoidUI:SetTitle("Gelatek Hub Remastered")
 
@@ -128,13 +128,13 @@ local Tab = VoidUI:New("Tab", {
 })
 
 VoidUI:New("Section", {
-    Text = "Welcome",
-    Parent = Tab
+    Parent = Tab,
+    Text = "Welcome"
 })
 
 VoidUI:New("Label", {
-    Text = "Hello! Thanks for using our hub. We hope you enjoy it!",
-    Parent = Tab
+    Parent = Tab,
+    Text = "Hello! Thanks for using our hub. We hope you enjoy it!"
 })
 
 VoidUI:New("Divider", {
@@ -142,53 +142,53 @@ VoidUI:New("Divider", {
 })
 
 VoidUI:New("Label", {
-    Text = "Current Version: 1.2",
-    Parent = Tab
+    Parent = Tab,
+    Text = "Current Version: 1.2"
 })
 
 VoidUI:New("Section", {
-    Text = "How To Use Hat Scripts",
-    Parent = Tab
+    Parent = Tab,
+    Text = "How To Use Hat Scripts"
 })
 
 VoidUI:New("Label", {
-    Text = "1. Go to the Hats tab and click the hat(s) for your desired script",
-    Parent = Tab
+    Parent = Tab,
+    Text = "1. Go to the Hats tab and click the hat(s) for your desired script"
 })
 
 VoidUI:New("Label", {
-    Text = "2. Go to Reanimation tab and enable:",
-    Parent = Tab
+    Parent = Tab,
+    Text = "2. Go to Reanimation tab and enable:"
 })
 
 VoidUI:New("Label", {
-    Text = "   • Permanent Death (Required)",
-    Parent = Tab
+    Parent = Tab,
+    Text = "    • Permanent Death (Required)"
 })
 
 VoidUI:New("Label", {
-    Text = "   • Torso Fling or Bullet Fling (Optional)",
-    Parent = Tab
+    Parent = Tab,
+    Text = "    • Torso Fling or Bullet Fling (Optional)"
 })
 
 VoidUI:New("Label", {
-    Text = "   • Keep Hats Attached (Required)",
-    Parent = Tab
+    Parent = Tab,
+    Text = "    • Keep Hats Attached (Required)"
 })
 
 VoidUI:New("Label", {
-    Text = "   • Disable Animations (Required)",
-    Parent = Tab
+    Parent = Tab,
+    Text = "    • Disable Animations (Required)"
 })
 
 VoidUI:New("Label", {
-    Text = "3. Click Reanimate and wait until you have 0 health",
-    Parent = Tab
+    Parent = Tab,
+    Text = "3. Click Reanimate and wait until you have 0 health"
 })
 
 VoidUI:New("Label", {
-    Text = "4. Go to Scripts tab and click your desired hat script",
-    Parent = Tab
+    Parent = Tab,
+    Text = "4. Go to Scripts tab and click your desired hat script"
 })
 
 VoidUI:New("Divider", {
@@ -196,38 +196,38 @@ VoidUI:New("Divider", {
 })
 
 VoidUI:New("Section", {
-    Text = "How To Use Free Scripts",
-    Parent = Tab
+    Parent = Tab,
+    Text = "How To Use Free Scripts"
 })
 
 VoidUI:New("Label", {
-    Text = "1. Go to Reanimation tab and enable:",
-    Parent = Tab
+    Parent = Tab,
+    Text = "1. Go to Reanimation tab and enable:"
 })
 
 VoidUI:New("Label", {
-    Text = "   • Permanent Death (Required)",
-    Parent = Tab
+    Parent = Tab,
+    Text = "    • Permanent Death (Required)"
 })
 
 VoidUI:New("Label", {
-    Text = "   • Torso Fling or Bullet Fling (Optional)",
-    Parent = Tab
+    Parent = Tab,
+    Text = "    • Torso Fling or Bullet Fling (Optional)"
 })
 
 VoidUI:New("Label", {
-    Text = "   • Disable Animations (Required)",
-    Parent = Tab
+    Parent = Tab,
+    Text = "    • Disable Animations (Required)"
 })
 
 VoidUI:New("Label", {
-    Text = "2. Click Reanimate and wait until you have 0 health",
-    Parent = Tab
+    Parent = Tab,
+    Text = "2. Click Reanimate and wait until you have 0 health"
 })
 
 VoidUI:New("Label", {
-    Text = "3. Go to Scripts tab and click your desired free script",
-    Parent = Tab
+    Parent = Tab,
+    Text = "3. Go to Scripts tab and click your desired free script"
 })
 
 local ReanimationTab = VoidUI:New("Tab", {
@@ -235,8 +235,8 @@ local ReanimationTab = VoidUI:New("Tab", {
 })
 
 VoidUI:New("Button", {
-    Text = "Reanimate",
     Parent = ReanimationTab,
+    Text = "Reanimate",
     Callback = function()
         if IsGame("JaB") then
             local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
@@ -268,8 +268,8 @@ VoidUI:New("Button", {
 })
 
 VoidUI:New("Button", {
-    Text = "Deanimate",
     Parent = ReanimationTab,
+    Text = "Deanimate",
     Callback = function()
         SafeCall(function()
             StopScript()
@@ -284,8 +284,8 @@ VoidUI:New("Divider", {
 })
 
 VoidUI:New("Toggle", {
-    Text = "Permanent Death",
     Parent = ReanimationTab,
+    Text = "Permanent Death",
     Default = false,
     Callback = function(state)
         Env.GelatekHubConfig.PermanentDeath = state
@@ -293,8 +293,8 @@ VoidUI:New("Toggle", {
 })
 
 VoidUI:New("Toggle", {
-    Text = "Torso Fling",
     Parent = ReanimationTab,
+    Text = "Torso Fling",
     Default = false,
     Callback = function(state)
         Env.GelatekHubConfig.TorsoFling = state
@@ -302,8 +302,8 @@ VoidUI:New("Toggle", {
 })
 
 VoidUI:New("Toggle", {
-    Text = "Bullet Fling",
     Parent = ReanimationTab,
+    Text = "Bullet Fling",
     Default = false,
     Callback = function(state)
         Env.GelatekHubConfig.BulletFling = state
@@ -311,8 +311,8 @@ VoidUI:New("Toggle", {
 })
 
 VoidUI:New("Toggle", {
-    Text = "Collisions",
     Parent = ReanimationTab,
+    Text = "Collisions",
     Default = false,
     Callback = function(state)
         Env.GelatekHubConfig.EnableCollisions = state
@@ -320,8 +320,8 @@ VoidUI:New("Toggle", {
 })
 
 VoidUI:New("Toggle", {
-    Text = "Keep Hats Attached",
     Parent = ReanimationTab,
+    Text = "Keep Hats Attached",
     Default = false,
     Callback = function(state)
         Env.GelatekHubConfig.KeepHatsAttached = state
@@ -329,8 +329,8 @@ VoidUI:New("Toggle", {
 })
 
 VoidUI:New("Toggle", {
-    Text = "Headless On Permadeath",
     Parent = ReanimationTab,
+    Text = "Headless On Permadeath",
     Default = false,
     Callback = function(state)
         Env.GelatekHubConfig.HeadlessOnPerma = state
@@ -338,8 +338,8 @@ VoidUI:New("Toggle", {
 })
 
 VoidUI:New("Toggle", {
-    Text = "Disable Animations",
     Parent = ReanimationTab,
+    Text = "Disable Animations",
     Default = false,
     Callback = function(state)
         Env.GelatekHubConfig.DisableAnims = state
@@ -347,8 +347,8 @@ VoidUI:New("Toggle", {
 })
 
 VoidUI:New("Toggle", {
-    Text = "Antivoid",
     Parent = ReanimationTab,
+    Text = "Antivoid",
     Default = false,
     Callback = function(state)
         Env.GelatekHubConfig.Antivoid = state
@@ -360,14 +360,14 @@ local ScriptsTab = VoidUI:New("Tab", {
 })
 
 VoidUI:New("Section", {
-    Text = "Free Scripts",
-    Parent = ScriptsTab
+    Parent = ScriptsTab,
+    Text = "Free Scripts"
 })
 
 local function MakeScriptButton(text, path)
     VoidUI:New("Button", {
-        Text = text,
         Parent = ScriptsTab,
+        Text = text,
         Callback = function()
             HttpGet(path)
         end
@@ -379,8 +379,8 @@ MakeScriptButton("Ender", FreeScripts .. "/Ender.luau")
 MakeScriptButton("Caducus", FreeScripts .. "/Caducus.luau")
 
 VoidUI:New("Section", {
-    Text = "Hat Scripts",
-    Parent = ScriptsTab
+    Parent = ScriptsTab,
+    Text = "Hat Scripts"
 })
 
 MakeScriptButton("Dual Ultima", HatScripts .. "/DualUltima.luau")
@@ -420,8 +420,8 @@ end
 
 local function MakeHatButton(text, ids)
     VoidUI:New("Button", {
-        Text = text:gsub("^Copy", "Get"):gsub("Hat Id%(s%)", "Hat(s)"),
         Parent = HatsTab,
+        Text = text:gsub("^Copy", "Get"):gsub("Hat Id%(s%)", "Hat(s)"),
         Callback = function()
             if IsGame("JaB") then
                 local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
@@ -450,24 +450,24 @@ local ExtraTab = VoidUI:New("Tab", {
 })
 
 VoidUI:New("Button", {
-    Text = "Shiftlock",
     Parent = ExtraTab,
+    Text = "Shiftlock",
     Callback = function()
         HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Shiftlock/Init.luau")
     end
 })
 
 VoidUI:New("Button", {
-    Text = "TouchGui (Uses Keyboard Keys)",
     Parent = ExtraTab,
+    Text = "TouchGui (Uses Keyboard Keys)",
     Callback = function()
         HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/TouchGui.luau")
     end
 })
 
 VoidUI:New("Button", {
-    Text = "Mobile Keyboard",
     Parent = ExtraTab,
+    Text = "Mobile Keyboard",
     Callback = function()
         HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/DeltaKD.luau")
     end
@@ -478,13 +478,13 @@ local CreditsTab = VoidUI:New("Tab", {
 })
 
 VoidUI:New("Label", {
-    Text = "Original Creator: Gelatekussy",
-    Parent = CreditsTab
+    Parent = CreditsTab,
+    Text = "Original Creator: Gelatekussy"
 })
 
 VoidUI:New("Label", {
-    Text = "Remastered By: JustSomeGuest",
-    Parent = CreditsTab
+    Parent = CreditsTab,
+    Text = "Remastered By: JustSomeGuest"
 })
 
 VoidUI:New("Divider", {
@@ -492,8 +492,8 @@ VoidUI:New("Divider", {
 })
 
 VoidUI:New("Label", {
-    Text = "Special Thanks: Everyone who supported Gelatek Hub.",
-    Parent = CreditsTab
+    Parent = CreditsTab,
+    Text = "Special Thanks: Everyone who supported Gelatek Hub."
 })
 
 VoidUI:New("Divider", {
@@ -501,11 +501,11 @@ VoidUI:New("Divider", {
 })
 
 VoidUI:New("Label", {
-    Text = "This remaster is based on the original Gelatek Hub.",
-    Parent = CreditsTab
+    Parent = CreditsTab,
+    Text = "This remaster is based on the original Gelatek Hub."
 })
 
 VoidUI:New("Label", {
-    Text = "Full credit for the original project and its foundation belongs to Gelatekussy.",
-    Parent = CreditsTab
+    Parent = CreditsTab,
+    Text = "Full credit for the original project and its foundation belongs to Gelatekussy."
 })
