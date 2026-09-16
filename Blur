@@ -1,1 +1,1164 @@
--- Placeholder Text
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
+
+local function GetService(Name)
+    local Svc = game:GetService(Name)
+    return cloneref and cloneref(Svc) or Svc
+end
+
+local Hui = gethui and gethui() or GetService("CoreGui")
+local TweenService = GetService("TweenService")
+
+local function Tween(Object, Speed, Props, Style, Dir)
+    return TweenService:Create(
+        Object,
+        TweenInfo.new(
+            Speed,
+            Enum.EasingStyle[Style or "Quad"],
+            Enum.EasingDirection[Dir or "Out"]
+        ),
+        Props
+    )
+end
+
+local function UID(Length)
+    Length = Length or 64
+
+    local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
+    local Id = table.create(Length)
+
+    for i = 1, Length do
+        local Rand = math.random(1, #Chars)
+        Id[i] = Chars:sub(Rand, Rand)
+    end
+
+    return table.concat(Id)
+end
+
+local function HttpGet(Url)
+    local Get = game.HttpGetAsync or game.HttpGet
+    return loadstring(Get(game, Url))()
+end
+
+local LuauKeywords = {
+    ["and"] = true, ["break"] = true, ["do"] = true, ["else"] = true,
+    ["elseif"] = true, ["end"] = true, ["false"] = true, ["for"] = true,
+    ["function"] = true, ["if"] = true, ["in"] = true, ["local"] = true,
+    ["nil"] = true, ["not"] = true, ["or"] = true, ["repeat"] = true,
+    ["return"] = true, ["then"] = true, ["true"] = true, ["until"] = true,
+    ["while"] = true, ["continue"] = true,
+}
+
+local LuauBuiltins = {
+    "print", "warn", "error", "assert", "pcall", "xpcall", "ipairs", "pairs",
+    "next", "select", "tonumber", "tostring", "type", "unpack", "rawget",
+    "rawset", "rawequal", "rawlen", "setmetatable", "getmetatable", "require",
+    "loadstring", "load", "dofile", "loadfile", "coroutine", "math", "string",
+    "table", "os", "io", "bit32", "utf8", "task", "game", "workspace",
+    "script", "plugin", "shared", "_G", "_ENV", "Enum", "Instance", "Vector2",
+    "Vector3", "CFrame", "Color3", "BrickColor", "UDim", "UDim2", "Rect",
+    "NumberSequence", "ColorSequence", "NumberRange", "Ray", "RaycastParams",
+    "TweenInfo", "Random", "DateTime", "tick", "time", "wait", "spawn",
+    "delay", "typeof", "gcinfo", "newproxy", "collectgarbage",
+}
+
+local LuauBuiltinsSet = {}
+for _, v in ipairs(LuauBuiltins) do
+    LuauBuiltinsSet[v] = true
+end
+
+local function RandomName(Length)
+    Length = Length or math.random(8, 16)
+    local Consonants = "bcdfghjklmnpqrstvwxyz"
+    local Vowels = "aeiou"
+    local Name = {}
+    local UseVowel = math.random(0, 1) == 0
+    for i = 1, Length do
+        if UseVowel then
+            local Idx = math.random(1, #Vowels)
+            Name[i] = Vowels:sub(Idx, Idx)
+        else
+            local Idx = math.random(1, #Consonants)
+            Name[i] = Consonants:sub(Idx, Idx)
+        end
+        UseVowel = not UseVowel
+    end
+    if math.random(0, 1) == 0 then
+        Name[1] = Name[1]:upper()
+    end
+    return table.concat(Name)
+end
+
+local function ObfuscatorUsed()
+    local Used = {}
+    return {
+        New = function(self, Base)
+            local Name
+            repeat
+                Name = (Base or "") .. RandomName(math.random(6, 14))
+            until not Used[Name] and not LuauKeywords[Name] and not LuauBuiltinsSet[Name]
+            Used[Name] = true
+            return Name
+        end
+    }
+end
+
+local TokenType = {
+    Name       = "Name",
+    String     = "String",
+    Number     = "Number",
+    Op         = "Op",
+    Punct      = "Punct",
+    Keyword    = "Keyword",
+    Newline    = "Newline",
+    Space      = "Space",
+    Comment    = "Comment",
+    LongString = "LongString",
+    Eof        = "Eof",
+}
+
+local function Tokenize(Source)
+    local Tokens = {}
+    local Pos = 1
+    local Len = #Source
+
+    local function Peek(Offset)
+        Offset = Offset or 0
+        return Source:sub(Pos + Offset, Pos + Offset)
+    end
+
+    local function Advance(N)
+        N = N or 1
+        local Ch = Source:sub(Pos, Pos + N - 1)
+        Pos = Pos + N
+        return Ch
+    end
+
+    local function MatchLongBracket()
+        if Peek() ~= "[" then return nil end
+        local Level = 0
+        local Start = Pos
+        local I = Pos + 1
+        while Source:sub(I, I) == "=" do
+            Level = Level + 1
+            I = I + 1
+        end
+        if Source:sub(I, I) ~= "[" then return nil end
+        local OpenLen = Level + 2
+        Pos = Pos + OpenLen
+        local Close = "]" .. ("="):rep(Level) .. "]"
+        local ClosePos = Source:find(Close, Pos, true)
+        if not ClosePos then
+            local Remaining = Source:sub(Pos)
+            Pos = Len + 1
+            return Source:sub(Start, Start + OpenLen - 1) .. Remaining
+        end
+        local Content = Source:sub(Start, ClosePos + #Close - 1)
+        Pos = ClosePos + #Close
+        return Content
+    end
+
+    while Pos <= Len do
+        local Ch = Peek()
+
+        if Ch == "\n" then
+            Advance()
+            table.insert(Tokens, { Type = TokenType.Newline, Value = "\n" })
+
+        elseif Ch == " " or Ch == "\t" or Ch == "\r" then
+            local Start = Pos
+            while Pos <= Len and (Peek() == " " or Peek() == "\t" or Peek() == "\r") do
+                Advance()
+            end
+            table.insert(Tokens, { Type = TokenType.Space, Value = Source:sub(Start, Pos - 1) })
+
+        elseif Ch == "-" and Peek(1) == "-" then
+            Advance(2)
+            local Long = MatchLongBracket()
+            if Long then
+                table.insert(Tokens, { Type = TokenType.Comment, Value = "--" .. Long, IsLong = true })
+            else
+                local Start = Pos
+                while Pos <= Len and Peek() ~= "\n" do
+                    Advance()
+                end
+                table.insert(Tokens, { Type = TokenType.Comment, Value = "--" .. Source:sub(Start, Pos - 1) })
+            end
+
+        elseif Ch == "[" then
+            local SavePos = Pos
+            local Long = MatchLongBracket()
+            if Long then
+                table.insert(Tokens, { Type = TokenType.LongString, Value = Long })
+            else
+                Pos = SavePos
+                Advance()
+                table.insert(Tokens, { Type = TokenType.Punct, Value = "[" })
+            end
+
+        elseif Ch == '"' or Ch == "'" then
+            local Quote = Advance()
+            local Parts = { Quote }
+            while Pos <= Len do
+                local C = Peek()
+                if C == "\\" then
+                    Parts[#Parts + 1] = Advance()
+                    if Pos <= Len then
+                        Parts[#Parts + 1] = Advance()
+                    end
+                elseif C == Quote then
+                    Parts[#Parts + 1] = Advance()
+                    break
+                elseif C == "\n" then
+                    break
+                else
+                    Parts[#Parts + 1] = Advance()
+                end
+            end
+            table.insert(Tokens, { Type = TokenType.String, Value = table.concat(Parts) })
+
+        elseif Ch:match("%d") or (Ch == "." and Peek(1):match("%d")) then
+            local Start = Pos
+            if Ch == "0" and (Peek(1) == "x" or Peek(1) == "X") then
+                Advance(2)
+                while Pos <= Len and Peek():match("[%x_]") do Advance() end
+            elseif Ch == "0" and (Peek(1) == "b" or Peek(1) == "B") then
+                Advance(2)
+                while Pos <= Len and (Peek() == "0" or Peek() == "1" or Peek() == "_") do Advance() end
+            else
+                while Pos <= Len and Peek():match("[%d_]") do Advance() end
+                if Pos <= Len and Peek() == "." and Peek(1):match("%d") then
+                    Advance()
+                    while Pos <= Len and Peek():match("[%d_]") do Advance() end
+                end
+                if Pos <= Len and (Peek() == "e" or Peek() == "E") then
+                    Advance()
+                    if Pos <= Len and (Peek() == "+" or Peek() == "-") then Advance() end
+                    while Pos <= Len and Peek():match("%d") do Advance() end
+                end
+            end
+            table.insert(Tokens, { Type = TokenType.Number, Value = Source:sub(Start, Pos - 1) })
+
+        elseif Ch:match("[%a_]") then
+            local Start = Pos
+            while Pos <= Len and Peek():match("[%w_]") do Advance() end
+            local Word = Source:sub(Start, Pos - 1)
+            if LuauKeywords[Word] then
+                table.insert(Tokens, { Type = TokenType.Keyword, Value = Word })
+            else
+                table.insert(Tokens, { Type = TokenType.Name, Value = Word })
+            end
+
+        elseif Ch == "." then
+            if Peek(1) == "." and Peek(2) == "." then
+                Advance(3)
+                table.insert(Tokens, { Type = TokenType.Op, Value = "..." })
+            elseif Peek(1) == "." then
+                Advance(2)
+                table.insert(Tokens, { Type = TokenType.Op, Value = ".." })
+            else
+                Advance()
+                table.insert(Tokens, { Type = TokenType.Punct, Value = "." })
+            end
+
+        elseif Ch == "=" then
+            if Peek(1) == "=" then
+                Advance(2)
+                table.insert(Tokens, { Type = TokenType.Op, Value = "==" })
+            else
+                Advance()
+                table.insert(Tokens, { Type = TokenType.Op, Value = "=" })
+            end
+
+        elseif Ch == "~" and Peek(1) == "=" then
+            Advance(2)
+            table.insert(Tokens, { Type = TokenType.Op, Value = "~=" })
+
+        elseif Ch == "<" then
+            if Peek(1) == "=" then
+                Advance(2)
+                table.insert(Tokens, { Type = TokenType.Op, Value = "<=" })
+            elseif Peek(1) == "<" then
+                Advance(2)
+                table.insert(Tokens, { Type = TokenType.Op, Value = "<<" })
+            else
+                Advance()
+                table.insert(Tokens, { Type = TokenType.Op, Value = "<" })
+            end
+
+        elseif Ch == ">" then
+            if Peek(1) == "=" then
+                Advance(2)
+                table.insert(Tokens, { Type = TokenType.Op, Value = ">=" })
+            elseif Peek(1) == ">" then
+                Advance(2)
+                table.insert(Tokens, { Type = TokenType.Op, Value = ">>" })
+            else
+                Advance()
+                table.insert(Tokens, { Type = TokenType.Op, Value = ">" })
+            end
+
+        elseif Ch == "/" then
+            if Peek(1) == "/" then
+                Advance(2)
+                table.insert(Tokens, { Type = TokenType.Op, Value = "//" })
+            else
+                Advance()
+                table.insert(Tokens, { Type = TokenType.Op, Value = "/" })
+            end
+
+        else
+            Advance()
+            table.insert(Tokens, { Type = TokenType.Punct, Value = Ch })
+        end
+    end
+
+    table.insert(Tokens, { Type = TokenType.Eof, Value = "" })
+    return Tokens
+end
+
+local function CollectLocals(Tokens)
+    local Locals = {}
+    local I = 1
+    while I <= #Tokens do
+        local Tok = Tokens[I]
+        if Tok.Type == TokenType.Keyword and Tok.Value == "local" then
+            local J = I + 1
+            while J <= #Tokens and (Tokens[J].Type == TokenType.Space or Tokens[J].Type == TokenType.Newline) do
+                J = J + 1
+            end
+            if J <= #Tokens and Tokens[J].Type == TokenType.Keyword and Tokens[J].Value == "function" then
+                local K = J + 1
+                while K <= #Tokens and (Tokens[K].Type == TokenType.Space or Tokens[K].Type == TokenType.Newline) do
+                    K = K + 1
+                end
+                if K <= #Tokens and Tokens[K].Type == TokenType.Name then
+                    Locals[Tokens[K].Value] = true
+                end
+            elseif J <= #Tokens and Tokens[J].Type == TokenType.Name then
+                local K = J
+                while K <= #Tokens do
+                    local T2 = Tokens[K]
+                    if T2.Type == TokenType.Name then
+                        Locals[T2.Value] = true
+                    elseif T2.Type == TokenType.Punct and T2.Value == "," then
+                    elseif T2.Type == TokenType.Space then
+                    else
+                        break
+                    end
+                    K = K + 1
+                end
+            end
+        end
+        I = I + 1
+    end
+    return Locals
+end
+
+local function IsAfterDot(Tokens, Index)
+    local I = Index - 1
+    while I >= 1 and (Tokens[I].Type == TokenType.Space) do
+        I = I - 1
+    end
+    if I >= 1 and Tokens[I].Type == TokenType.Punct and Tokens[I].Value == "." then
+        return true
+    end
+    if I >= 1 and Tokens[I].Type == TokenType.Punct and Tokens[I].Value == ":" then
+        return true
+    end
+    return false
+end
+
+local function IsBeforeParen(Tokens, Index)
+    local I = Index + 1
+    while I <= #Tokens and Tokens[I].Type == TokenType.Space do
+        I = I + 1
+    end
+    return false
+end
+
+local function BuildRenameMap(Tokens, LocalSet, Names)
+    local Map = {}
+    for Name, _ in pairs(LocalSet) do
+        if not LuauKeywords[Name] and not LuauBuiltinsSet[Name] then
+            Map[Name] = Names:New()
+        end
+    end
+    return Map
+end
+
+local function EncodeString(Str)
+    local Inner = Str:sub(2, -2)
+    local Quote = Str:sub(1, 1)
+    local Parts = {}
+    local I = 1
+    while I <= #Inner do
+        local C = Inner:sub(I, I)
+        if C == "\\" and I < #Inner then
+            Parts[#Parts + 1] = C .. Inner:sub(I + 1, I + 1)
+            I = I + 2
+        else
+            local Byte = C:byte()
+            Parts[#Parts + 1] = "\\x" .. string.format("%02x", Byte)
+            I = I + 1
+        end
+    end
+    return Quote .. table.concat(Parts) .. Quote
+end
+
+local function ObfuscateNumber(NumStr)
+    local N = tonumber(NumStr)
+    if not N then return NumStr end
+    if N ~= math.floor(N) then return NumStr end
+    if N < 0 or N > 1000000 then return NumStr end
+    local A = math.random(1, 300)
+    local B = math.random(1, 300)
+    local C = math.floor(N) - A - B
+    return "(" .. tostring(A) .. "+" .. tostring(B) .. "+" .. tostring(C) .. ")"
+end
+
+local JunkTemplates = {
+    function(Names)
+        local N = Names:New("_j")
+        local V = math.random(100, 9999)
+        return "local " .. N .. "=" .. tostring(V) .. "+" .. tostring(math.random(1, 100))
+    end,
+    function(Names)
+        local N = Names:New("_j")
+        return "local " .. N .. '=string.rep("' .. RandomName(3) .. '",' .. tostring(math.random(1, 3)) .. ")"
+    end,
+    function(Names)
+        local N = Names:New("_j")
+        local A = math.random(1, 50)
+        local B = math.random(1, 50)
+        return "local " .. N .. "=" .. tostring(A) .. "*" .. tostring(B)
+    end,
+    function(Names)
+        local N = Names:New("_j")
+        return "local " .. N .. '=type(nil)'
+    end,
+    function(Names)
+        local N = Names:New("_j")
+        return "local " .. N .. '=math.floor(' .. tostring(math.random(10, 999)) .. ")"
+    end,
+    function(Names)
+        local N = Names:New("_j")
+        local Iter = Names:New("_i")
+        local Acc = Names:New("_a")
+        local Lim = math.random(1, 3)
+        return "local " .. Acc .. "=0;for " .. Iter .. "=1," .. tostring(Lim) .. " do " .. Acc .. "=" .. Acc .. "+1 end;local " .. N .. "=" .. Acc
+    end,
+    function(Names)
+        local N = Names:New("_j")
+        return "local " .. N .. '=#{' .. tostring(math.random(1, 9)) .. "," .. tostring(math.random(1, 9)) .. "}"
+    end,
+}
+
+local function GetJunkLine(Names)
+    local T = JunkTemplates[math.random(1, #JunkTemplates)]
+    return T(Names)
+end
+
+local function Obfuscate(Source, Options)
+    Options = Options or {}
+    local RenameLocals  = Options.RenameLocals  ~= false
+    local EncodeStrings = Options.EncodeStrings ~= false
+    local ObfuscateNums = Options.ObfuscateNums ~= false
+    local InsertJunk    = Options.InsertJunk    ~= false
+    local StripComments = Options.StripComments ~= false
+    local Minify        = Options.Minify        == true
+
+    local Ok, Tokens = pcall(Tokenize, Source)
+    if not Ok then
+        return nil, "Tokenizer error: " .. tostring(Tokens)
+    end
+
+    local Names = ObfuscatorUsed()
+
+    local LocalSet = {}
+    if RenameLocals then
+        LocalSet = CollectLocals(Tokens)
+    end
+
+    local RenameMap = {}
+    if RenameLocals then
+        RenameMap = BuildRenameMap(Tokens, LocalSet, Names)
+    end
+
+    local InStringContext = {}
+    for I, Tok in ipairs(Tokens) do
+        if Tok.Type == TokenType.String or Tok.Type == TokenType.LongString then
+            InStringContext[I] = true
+        end
+    end
+
+    local Output = {}
+    local PrevWasAlnum = false
+    local LineCount = 0
+    local JunkEvery = math.random(4, 8)
+    local LinesSinceJunk = 0
+
+    for I, Tok in ipairs(Tokens) do
+        if Tok.Type == TokenType.Eof then
+            break
+        end
+
+        if Tok.Type == TokenType.Comment then
+            if not StripComments then
+                Output[#Output + 1] = Tok.Value
+            end
+
+        elseif Tok.Type == TokenType.LongString then
+            Output[#Output + 1] = Tok.Value
+
+        elseif Tok.Type == TokenType.String then
+            if EncodeStrings then
+                local Quote = Tok.Value:sub(1, 1)
+                if Quote == '"' or Quote == "'" then
+                    Output[#Output + 1] = EncodeString(Tok.Value)
+                else
+                    Output[#Output + 1] = Tok.Value
+                end
+            else
+                Output[#Output + 1] = Tok.Value
+            end
+
+        elseif Tok.Type == TokenType.Number then
+            if ObfuscateNums and not Tok.Value:match("[xXbBoO]") and not Tok.Value:match("[eE]") and not Tok.Value:match("%.") then
+                Output[#Output + 1] = ObfuscateNumber(Tok.Value)
+            else
+                Output[#Output + 1] = Tok.Value
+            end
+
+        elseif Tok.Type == TokenType.Name then
+            local Val = Tok.Value
+            if RenameLocals and RenameMap[Val] and not IsAfterDot(Tokens, I) then
+                Val = RenameMap[Val]
+            end
+            if PrevWasAlnum then
+                Output[#Output + 1] = " "
+            end
+            Output[#Output + 1] = Val
+            PrevWasAlnum = true
+
+        elseif Tok.Type == TokenType.Keyword then
+            if PrevWasAlnum then
+                Output[#Output + 1] = " "
+            end
+            Output[#Output + 1] = Tok.Value
+            PrevWasAlnum = true
+
+        elseif Tok.Type == TokenType.Space then
+            if Minify then
+                PrevWasAlnum = false
+            else
+                Output[#Output + 1] = Tok.Value
+                PrevWasAlnum = false
+            end
+
+        elseif Tok.Type == TokenType.Newline then
+            LineCount = LineCount + 1
+            LinesSinceJunk = LinesSinceJunk + 1
+
+            if Minify then
+                Output[#Output + 1] = ";"
+                PrevWasAlnum = false
+            else
+                if InsertJunk and LinesSinceJunk >= JunkEvery and math.random(0, 2) ~= 0 then
+                    local JunkCount = math.random(1, 2)
+                    for _ = 1, JunkCount do
+                        Output[#Output + 1] = "\n" .. GetJunkLine(Names)
+                    end
+                    LinesSinceJunk = 0
+                    JunkEvery = math.random(4, 9)
+                end
+                Output[#Output + 1] = "\n"
+                PrevWasAlnum = false
+            end
+
+        else
+            local Val = Tok.Value
+            local IsAlnum = Val:match("[%w_]")
+            if IsAlnum and PrevWasAlnum then
+                Output[#Output + 1] = " "
+            end
+            Output[#Output + 1] = Val
+            PrevWasAlnum = IsAlnum ~= nil
+        end
+    end
+
+    local Result = table.concat(Output)
+
+    if InsertJunk and not Minify then
+        local HeaderLines = {}
+        local JunkCountHeader = math.random(3, 6)
+        for _ = 1, JunkCountHeader do
+            HeaderLines[#HeaderLines + 1] = GetJunkLine(Names)
+        end
+        Result = table.concat(HeaderLines, "\n") .. "\n" .. Result
+    end
+
+    return Result, nil
+end
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = UID()
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Parent = Hui
+
+local function Lerp(A, B, T)
+    return A + (B - A) * T
+end
+
+local function ClampedSize(Gui)
+    local VP = workspace.CurrentCamera.ViewportSize
+    local W = math.clamp(VP.X * 0.78, 520, 980)
+    local H = math.clamp(VP.Y * 0.82, 440, 720)
+    return UDim2.new(0, W, 0, H)
+end
+
+local VP = workspace.CurrentCamera.ViewportSize
+local WinW = math.clamp(VP.X * 0.78, 520, 980)
+local WinH = math.clamp(VP.Y * 0.82, 440, 720)
+
+local Bg = Instance.new("Frame")
+Bg.Name = "Bg"
+Bg.Size = UDim2.new(0, WinW, 0, WinH)
+Bg.Position = UDim2.new(0.5, -WinW / 2, 0.5, -WinH / 2)
+Bg.BackgroundColor3 = Color3.fromRGB(10, 10, 12)
+Bg.BorderSizePixel = 0
+Bg.Active = true
+Bg.Parent = ScreenGui
+
+do
+    local C = Instance.new("UICorner")
+    C.CornerRadius = UDim.new(0, 10)
+    C.Parent = Bg
+    local S = Instance.new("UIStroke")
+    S.Color = Color3.fromRGB(38, 38, 45)
+    S.Thickness = 1
+    S.Parent = Bg
+end
+
+local Shadow = Instance.new("Frame")
+Shadow.Size = UDim2.new(1, 24, 1, 24)
+Shadow.Position = UDim2.new(0, -12, 0, -12)
+Shadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Shadow.BackgroundTransparency = 0.55
+Shadow.BorderSizePixel = 0
+Shadow.ZIndex = Bg.ZIndex - 1
+Shadow.Parent = Bg
+do
+    local C = Instance.new("UICorner")
+    C.CornerRadius = UDim.new(0, 16)
+    C.Parent = Shadow
+end
+
+local TitleBar = Instance.new("Frame")
+TitleBar.Name = "TitleBar"
+TitleBar.Size = UDim2.new(1, 0, 0, 44)
+TitleBar.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+TitleBar.BorderSizePixel = 0
+TitleBar.Parent = Bg
+do
+    local C = Instance.new("UICorner")
+    C.CornerRadius = UDim.new(0, 10)
+    C.Parent = TitleBar
+    local Bottom = Instance.new("Frame")
+    Bottom.Size = UDim2.new(1, 0, 0, 10)
+    Bottom.Position = UDim2.new(0, 0, 1, -10)
+    Bottom.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+    Bottom.BorderSizePixel = 0
+    Bottom.Parent = TitleBar
+    local Div = Instance.new("Frame")
+    Div.Size = UDim2.new(1, 0, 0, 1)
+    Div.Position = UDim2.new(0, 0, 1, -1)
+    Div.BackgroundColor3 = Color3.fromRGB(28, 28, 35)
+    Div.BorderSizePixel = 0
+    Div.Parent = TitleBar
+end
+
+local TitleDot = Instance.new("Frame")
+TitleDot.Size = UDim2.new(0, 6, 0, 6)
+TitleDot.Position = UDim2.new(0, 16, 0.5, -3)
+TitleDot.BackgroundColor3 = Color3.fromRGB(180, 80, 255)
+TitleDot.BorderSizePixel = 0
+TitleDot.Parent = TitleBar
+do
+    local C = Instance.new("UICorner")
+    C.CornerRadius = UDim.new(1, 0)
+    C.Parent = TitleDot
+end
+
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(1, -120, 1, 0)
+TitleLabel.Position = UDim2.new(0, 30, 0, 0)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text = "Obfuscator"
+TitleLabel.TextColor3 = Color3.fromRGB(220, 220, 228)
+TitleLabel.TextSize = 13
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.Parent = TitleBar
+
+local SubLabel = Instance.new("TextLabel")
+SubLabel.Size = UDim2.new(0, 200, 1, 0)
+SubLabel.Position = UDim2.new(0, 110, 0, 0)
+SubLabel.BackgroundTransparency = 1
+SubLabel.Text = "free non-vm"
+SubLabel.TextColor3 = Color3.fromRGB(80, 80, 95)
+SubLabel.TextSize = 11
+SubLabel.Font = Enum.Font.Gotham
+SubLabel.TextXAlignment = Enum.TextXAlignment.Left
+SubLabel.Parent = TitleBar
+
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Size = UDim2.new(0, 28, 0, 28)
+CloseBtn.Position = UDim2.new(1, -38, 0.5, -14)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(28, 28, 35)
+CloseBtn.BorderSizePixel = 0
+CloseBtn.Text = "×"
+CloseBtn.TextColor3 = Color3.fromRGB(100, 100, 115)
+CloseBtn.TextSize = 16
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.Parent = TitleBar
+do
+    local C = Instance.new("UICorner")
+    C.CornerRadius = UDim.new(0, 6)
+    C.Parent = CloseBtn
+end
+
+CloseBtn.MouseEnter:Connect(function()
+    Tween(CloseBtn, 0.12, { BackgroundColor3 = Color3.fromRGB(200, 50, 50), TextColor3 = Color3.fromRGB(255, 255, 255) }):Play()
+end)
+CloseBtn.MouseLeave:Connect(function()
+    Tween(CloseBtn, 0.12, { BackgroundColor3 = Color3.fromRGB(28, 28, 35), TextColor3 = Color3.fromRGB(100, 100, 115) }):Play()
+end)
+CloseBtn.MouseButton1Click:Connect(function()
+    Tween(ScreenGui:FindFirstChildWhichIsA("Frame"), 0.18, { BackgroundTransparency = 1 }):Play()
+    Tween(Bg, 0.18, { BackgroundTransparency = 1 }):Play()
+    task.delay(0.2, function()
+        ScreenGui:Destroy()
+    end)
+end)
+
+local Dragging = false
+local DragStart = Vector2.new()
+local StartPos = UDim2.new()
+
+TitleBar.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+        Dragging = true
+        DragStart = Input.Position
+        StartPos = Bg.Position
+    end
+end)
+TitleBar.InputEnded:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+        Dragging = false
+    end
+end)
+game:GetService("UserInputService").InputChanged:Connect(function(Input)
+    if Dragging and (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch) then
+        local Delta = Input.Position - DragStart
+        Bg.Position = UDim2.new(
+            StartPos.X.Scale, StartPos.X.Offset + Delta.X,
+            StartPos.Y.Scale, StartPos.Y.Offset + Delta.Y
+        )
+    end
+end)
+
+local Body = Instance.new("Frame")
+Body.Name = "Body"
+Body.Size = UDim2.new(1, 0, 1, -44)
+Body.Position = UDim2.new(0, 0, 0, 44)
+Body.BackgroundTransparency = 1
+Body.Parent = Bg
+
+local LeftPane = Instance.new("Frame")
+LeftPane.Name = "LeftPane"
+LeftPane.Size = UDim2.new(0.5, -1, 1, 0)
+LeftPane.BackgroundTransparency = 1
+LeftPane.Parent = Body
+
+local Divider = Instance.new("Frame")
+Divider.Size = UDim2.new(0, 1, 1, 0)
+Divider.Position = UDim2.new(0.5, 0, 0, 0)
+Divider.BackgroundColor3 = Color3.fromRGB(28, 28, 35)
+Divider.BorderSizePixel = 0
+Divider.Parent = Body
+
+local RightPane = Instance.new("Frame")
+RightPane.Name = "RightPane"
+RightPane.Size = UDim2.new(0.5, -1, 1, 0)
+RightPane.Position = UDim2.new(0.5, 1, 0, 0)
+RightPane.BackgroundTransparency = 1
+RightPane.Parent = Body
+
+local function PaneLabel(Parent, Text)
+    local F = Instance.new("Frame")
+    F.Size = UDim2.new(1, 0, 0, 32)
+    F.BackgroundColor3 = Color3.fromRGB(13, 13, 16)
+    F.BorderSizePixel = 0
+    F.Parent = Parent
+    local Div = Instance.new("Frame")
+    Div.Size = UDim2.new(1, 0, 0, 1)
+    Div.Position = UDim2.new(0, 0, 1, -1)
+    Div.BackgroundColor3 = Color3.fromRGB(28, 28, 35)
+    Div.BorderSizePixel = 0
+    Div.Parent = F
+    local Lbl = Instance.new("TextLabel")
+    Lbl.Size = UDim2.new(1, -16, 1, 0)
+    Lbl.Position = UDim2.new(0, 16, 0, 0)
+    Lbl.BackgroundTransparency = 1
+    Lbl.Text = Text
+    Lbl.TextColor3 = Color3.fromRGB(80, 80, 95)
+    Lbl.TextSize = 10
+    Lbl.Font = Enum.Font.GothamBold
+    Lbl.TextXAlignment = Enum.TextXAlignment.Left
+    Lbl.Parent = F
+    return F
+end
+
+PaneLabel(LeftPane, "INPUT")
+PaneLabel(RightPane, "OUTPUT")
+
+local function MakeEditor(Parent, TopOffset, HeightOffset)
+    local Container = Instance.new("Frame")
+    Container.Size = UDim2.new(1, 0, 1, HeightOffset)
+    Container.Position = UDim2.new(0, 0, 0, TopOffset)
+    Container.BackgroundColor3 = Color3.fromRGB(8, 8, 10)
+    Container.BorderSizePixel = 0
+    Container.ClipsDescendants = true
+    Container.Parent = Parent
+    local Box = Instance.new("TextBox")
+    Box.Size = UDim2.new(1, -16, 1, -12)
+    Box.Position = UDim2.new(0, 8, 0, 6)
+    Box.BackgroundTransparency = 1
+    Box.TextColor3 = Color3.fromRGB(185, 185, 200)
+    Box.TextSize = 12
+    Box.Font = Enum.Font.Code
+    Box.MultiLine = true
+    Box.TextXAlignment = Enum.TextXAlignment.Left
+    Box.TextYAlignment = Enum.TextYAlignment.Top
+    Box.ClearTextOnFocus = false
+    Box.TextWrapped = false
+    Box.PlaceholderText = ""
+    Box.Text = ""
+    Box.Parent = Container
+    return Box, Container
+end
+
+local OptionsHeight = 112
+local InputBox,  InputContainer  = MakeEditor(LeftPane,  32, -32 - OptionsHeight)
+local OutputBox, OutputContainer = MakeEditor(RightPane, 32, -32)
+OutputBox.TextEditable = false
+OutputBox.TextColor3 = Color3.fromRGB(140, 200, 140)
+
+InputBox.PlaceholderText = "-- Paste your Luau source here..."
+
+local OptionsBar = Instance.new("Frame")
+OptionsBar.Name = "OptionsBar"
+OptionsBar.Size = UDim2.new(1, 0, 0, OptionsHeight)
+OptionsBar.Position = UDim2.new(0, 0, 1, -OptionsHeight)
+OptionsBar.BackgroundColor3 = Color3.fromRGB(11, 11, 14)
+OptionsBar.BorderSizePixel = 0
+OptionsBar.Parent = LeftPane
+do
+    local Div = Instance.new("Frame")
+    Div.Size = UDim2.new(1, 0, 0, 1)
+    Div.BackgroundColor3 = Color3.fromRGB(28, 28, 35)
+    Div.BorderSizePixel = 0
+    Div.Parent = OptionsBar
+end
+
+local function Toggle(Parent, Label, Default, X, Y)
+    local F = Instance.new("Frame")
+    F.Size = UDim2.new(0, 140, 0, 22)
+    F.Position = UDim2.new(0, X, 0, Y)
+    F.BackgroundTransparency = 1
+    F.Parent = Parent
+
+    local Track = Instance.new("Frame")
+    Track.Size = UDim2.new(0, 28, 0, 14)
+    Track.Position = UDim2.new(0, 0, 0.5, -7)
+    Track.BackgroundColor3 = Default and Color3.fromRGB(130, 60, 200) or Color3.fromRGB(35, 35, 42)
+    Track.BorderSizePixel = 0
+    Track.Parent = F
+    do
+        local C = Instance.new("UICorner")
+        C.CornerRadius = UDim.new(1, 0)
+        C.Parent = Track
+    end
+
+    local Knob = Instance.new("Frame")
+    Knob.Size = UDim2.new(0, 10, 0, 10)
+    Knob.Position = UDim2.new(0, Default and 16 or 2, 0.5, -5)
+    Knob.BackgroundColor3 = Color3.fromRGB(220, 220, 228)
+    Knob.BorderSizePixel = 0
+    Knob.Parent = Track
+    do
+        local C = Instance.new("UICorner")
+        C.CornerRadius = UDim.new(1, 0)
+        C.Parent = Knob
+    end
+
+    local Lbl = Instance.new("TextLabel")
+    Lbl.Size = UDim2.new(0, 108, 1, 0)
+    Lbl.Position = UDim2.new(0, 34, 0, 0)
+    Lbl.BackgroundTransparency = 1
+    Lbl.Text = Label
+    Lbl.TextColor3 = Color3.fromRGB(150, 150, 165)
+    Lbl.TextSize = 11
+    Lbl.Font = Enum.Font.Gotham
+    Lbl.TextXAlignment = Enum.TextXAlignment.Left
+    Lbl.Parent = F
+
+    local State = { Value = Default }
+
+    local Btn = Instance.new("TextButton")
+    Btn.Size = UDim2.new(1, 0, 1, 0)
+    Btn.BackgroundTransparency = 1
+    Btn.Text = ""
+    Btn.Parent = F
+
+    Btn.MouseButton1Click:Connect(function()
+        State.Value = not State.Value
+        if State.Value then
+            Tween(Track, 0.15, { BackgroundColor3 = Color3.fromRGB(130, 60, 200) }):Play()
+            Tween(Knob, 0.15, { Position = UDim2.new(0, 16, 0.5, -5) }):Play()
+        else
+            Tween(Track, 0.15, { BackgroundColor3 = Color3.fromRGB(35, 35, 42) }):Play()
+            Tween(Knob, 0.15, { Position = UDim2.new(0, 2, 0.5, -5) }):Play()
+        end
+    end)
+
+    return State
+end
+
+local OptRenameLocals  = Toggle(OptionsBar, "Rename Locals",   true,  12, 14)
+local OptEncodeStrings = Toggle(OptionsBar, "Encode Strings",  true,  12, 42)
+local OptInsertJunk    = Toggle(OptionsBar, "Insert Junk",     true,  12, 70)
+local OptObfNums       = Toggle(OptionsBar, "Obfuscate Numbers", true, 160, 14)
+local OptStripComments = Toggle(OptionsBar, "Strip Comments",  true,  160, 42)
+local OptMinify        = Toggle(OptionsBar, "Minify Output",   false, 160, 70)
+
+local ActionBar = Instance.new("Frame")
+ActionBar.Size = UDim2.new(1, 0, 0, 44)
+ActionBar.Position = UDim2.new(0, 0, 1, -44)
+ActionBar.BackgroundColor3 = Color3.fromRGB(11, 11, 14)
+ActionBar.BorderSizePixel = 0
+ActionBar.Parent = RightPane
+do
+    local Div = Instance.new("Frame")
+    Div.Size = UDim2.new(1, 0, 0, 1)
+    Div.BackgroundColor3 = Color3.fromRGB(28, 28, 35)
+    Div.BorderSizePixel = 0
+    Div.Parent = ActionBar
+end
+
+OutputContainer.Size = UDim2.new(1, 0, 1, -32 - 44)
+
+local function MakeButton(Parent, Text, X, W, Accent)
+    local Btn = Instance.new("TextButton")
+    Btn.Size = UDim2.new(0, W, 0, 28)
+    Btn.Position = UDim2.new(0, X, 0.5, -14)
+    Btn.BackgroundColor3 = Accent and Color3.fromRGB(120, 50, 195) or Color3.fromRGB(22, 22, 28)
+    Btn.BorderSizePixel = 0
+    Btn.Text = Text
+    Btn.TextColor3 = Accent and Color3.fromRGB(220, 200, 255) or Color3.fromRGB(150, 150, 165)
+    Btn.TextSize = 12
+    Btn.Font = Enum.Font.GothamBold
+    Btn.AutoButtonColor = false
+    Btn.Parent = Parent
+    do
+        local C = Instance.new("UICorner")
+        C.CornerRadius = UDim.new(0, 6)
+        C.Parent = Btn
+        local S = Instance.new("UIStroke")
+        S.Color = Accent and Color3.fromRGB(100, 40, 165) or Color3.fromRGB(32, 32, 40)
+        S.Thickness = 1
+        S.Parent = Btn
+    end
+    local NormalBg = Btn.BackgroundColor3
+    local HoverBg  = Accent and Color3.fromRGB(145, 65, 225) or Color3.fromRGB(28, 28, 36)
+    Btn.MouseEnter:Connect(function()
+        Tween(Btn, 0.12, { BackgroundColor3 = HoverBg }):Play()
+    end)
+    Btn.MouseLeave:Connect(function()
+        Tween(Btn, 0.12, { BackgroundColor3 = NormalBg }):Play()
+    end)
+    return Btn
+end
+
+local CopyBtn  = MakeButton(ActionBar, "Copy Output",  8,  110, false)
+local ClearBtn = MakeButton(ActionBar, "Clear All",    126, 90, false)
+
+local ObfBtn = Instance.new("TextButton")
+ObfBtn.Size = UDim2.new(0, 0, 0, OptionsHeight - 8)
+ObfBtn.Position = UDim2.new(1, 0, 0, 4)
+ObfBtn.AnchorPoint = Vector2.new(1, 0)
+ObfBtn.BackgroundColor3 = Color3.fromRGB(110, 45, 185)
+ObfBtn.BorderSizePixel = 0
+ObfBtn.Text = "OBFUSCATE"
+ObfBtn.TextColor3 = Color3.fromRGB(230, 210, 255)
+ObfBtn.TextSize = 13
+ObfBtn.Font = Enum.Font.GothamBold
+ObfBtn.AutoButtonColor = false
+ObfBtn.Parent = OptionsBar
+
+task.defer(function()
+    ObfBtn.Size = UDim2.new(0, OptionsBar.AbsoluteSize.X - 320, 0, OptionsHeight - 8)
+    ObfBtn.Position = UDim2.new(0, 308, 0, 4)
+end)
+
+do
+    local C = Instance.new("UICorner")
+    C.CornerRadius = UDim.new(0, 7)
+    C.Parent = ObfBtn
+    local S = Instance.new("UIStroke")
+    S.Color = Color3.fromRGB(85, 30, 150)
+    S.Thickness = 1
+    S.Parent = ObfBtn
+end
+
+ObfBtn.MouseEnter:Connect(function()
+    Tween(ObfBtn, 0.14, { BackgroundColor3 = Color3.fromRGB(135, 60, 215) }):Play()
+end)
+ObfBtn.MouseLeave:Connect(function()
+    Tween(ObfBtn, 0.14, { BackgroundColor3 = Color3.fromRGB(110, 45, 185) }):Play()
+end)
+
+local StatusBar = Instance.new("Frame")
+StatusBar.Size = UDim2.new(1, 0, 0, 24)
+StatusBar.Position = UDim2.new(0, 0, 1, -24)
+StatusBar.BackgroundColor3 = Color3.fromRGB(9, 9, 11)
+StatusBar.BorderSizePixel = 0
+StatusBar.Parent = Bg
+do
+    local Div = Instance.new("Frame")
+    Div.Size = UDim2.new(1, 0, 0, 1)
+    Div.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+    Div.BorderSizePixel = 0
+    Div.Parent = StatusBar
+    local Rnd = Instance.new("Frame")
+    Rnd.Size = UDim2.new(1, 0, 0.5, 0)
+    Rnd.Position = UDim2.new(0, 0, 0.5, 0)
+    Rnd.BackgroundColor3 = Color3.fromRGB(9, 9, 11)
+    Rnd.BorderSizePixel = 0
+    Rnd.Parent = StatusBar
+    local BotC = Instance.new("UICorner")
+    BotC.CornerRadius = UDim.new(0, 10)
+    BotC.Parent = StatusBar
+end
+
+local StatusLabel = Instance.new("TextLabel")
+StatusLabel.Size = UDim2.new(1, -16, 1, 0)
+StatusLabel.Position = UDim2.new(0, 16, 0, 0)
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.Text = "Ready"
+StatusLabel.TextColor3 = Color3.fromRGB(65, 65, 80)
+StatusLabel.TextSize = 10
+StatusLabel.Font = Enum.Font.Gotham
+StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
+StatusLabel.Parent = StatusBar
+
+local function SetStatus(Text, Color)
+    StatusLabel.Text = Text
+    StatusLabel.TextColor3 = Color or Color3.fromRGB(65, 65, 80)
+end
+
+local function SetStatusOk(Text)
+    SetStatus(Text, Color3.fromRGB(80, 180, 100))
+end
+
+local function SetStatusErr(Text)
+    SetStatus(Text, Color3.fromRGB(200, 70, 70))
+end
+
+local function SetStatusBusy(Text)
+    SetStatus(Text, Color3.fromRGB(150, 100, 220))
+end
+
+local Busy = false
+
+ObfBtn.MouseButton1Click:Connect(function()
+    if Busy then return end
+    local Src = InputBox.Text
+    if Src == "" then
+        SetStatusErr("No input source.")
+        return
+    end
+    Busy = true
+    SetStatusBusy("Obfuscating...")
+    Tween(ObfBtn, 0.12, { BackgroundColor3 = Color3.fromRGB(80, 30, 135) }):Play()
+    task.defer(function()
+        local Result, Err = Obfuscate(Src, {
+            RenameLocals  = OptRenameLocals.Value,
+            EncodeStrings = OptEncodeStrings.Value,
+            InsertJunk    = OptInsertJunk.Value,
+            ObfuscateNums = OptObfNums.Value,
+            StripComments = OptStripComments.Value,
+            Minify        = OptMinify.Value,
+        })
+        if Err then
+            OutputBox.Text = ""
+            SetStatusErr("Error: " .. tostring(Err))
+        else
+            OutputBox.Text = Result
+            local InLen  = #Src
+            local OutLen = #Result
+            local Ratio  = math.floor((OutLen / math.max(InLen, 1)) * 100)
+            SetStatusOk(
+                "Done — " .. tostring(InLen) .. " → " .. tostring(OutLen) .. " chars (" .. tostring(Ratio) .. "% size)"
+            )
+        end
+        Tween(ObfBtn, 0.12, { BackgroundColor3 = Color3.fromRGB(110, 45, 185) }):Play()
+        Busy = false
+    end)
+end)
+
+CopyBtn.MouseButton1Click:Connect(function()
+    local Text = OutputBox.Text
+    if Text == "" then
+        SetStatusErr("Nothing to copy.")
+        return
+    end
+    local Copied = false
+    if type(setclipboard) == "function" then
+        pcall(setclipboard, Text)
+        Copied = true
+    elseif type(toclipboard) == "function" then
+        pcall(toclipboard, Text)
+        Copied = true
+    elseif type(Clipboard) == "table" and type(Clipboard.set) == "function" then
+        pcall(Clipboard.set, Text)
+        Copied = true
+    end
+    if Copied then
+        local PrevColor = CopyBtn.TextColor3
+        local PrevText  = CopyBtn.Text
+        CopyBtn.Text = "Copied!"
+        Tween(CopyBtn, 0.12, { TextColor3 = Color3.fromRGB(100, 210, 120) }):Play()
+        task.delay(1.4, function()
+            CopyBtn.Text = PrevText
+            Tween(CopyBtn, 0.12, { TextColor3 = PrevColor }):Play()
+        end)
+        SetStatusOk("Output copied to clipboard.")
+    else
+        SetStatusErr("Clipboard API not available in this executor.")
+    end
+end)
+
+ClearBtn.MouseButton1Click:Connect(function()
+    InputBox.Text  = ""
+    OutputBox.Text = ""
+    SetStatus("Cleared.")
+end)
+
+Bg.BackgroundTransparency = 1
+Tween(Bg, 0.22, { BackgroundTransparency = 0 }):Play()
