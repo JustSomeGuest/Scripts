@@ -18,20 +18,23 @@ local version = env.Lucid.Version
 local valid
 
 for _, allowed in versions do
-    if version == allowed then
+    if string.lower(version) == string.lower(allowed) then
+        version = allowed
         valid = true
         break
     end
 end
 
 if not valid then
-    error(("Invalid Lucid version: %s"):format(tostring(version)))
+    error(("Invalid Lucid version: %s"):format(tostring(env.Lucid.Version)))
 end
+
+env.Lucid.Version = version
 
 local startergui = game.StarterGui
 local httpget = game.HttpGetAsync or game.HttpGet
 
-local success, err = pcall(function()
+local success = pcall(function()
     local source = httpget(game, "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/" .. version .. ".luau")
     loadstring(source)()
 end)
