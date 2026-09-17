@@ -28,7 +28,7 @@ if not valid then
     error(("Invalid Lucid version: %s"):format(tostring(version)))
 end
 
-local CoreGui = game.StarterGui
+local startergui = game.StarterGui
 local httpget = game.HttpGetAsync or game.HttpGet
 
 local success, err = pcall(function()
@@ -37,7 +37,7 @@ local success, err = pcall(function()
 end)
 
 if not success then
-    CoreGui:SetCore("SendNotification", {
+    startergui:SetCore("SendNotification", {
         Title = "Lucid",
         Text = "Failed to load " .. version .. " version.",
         Duration = 5
