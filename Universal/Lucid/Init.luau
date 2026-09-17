@@ -12,7 +12,7 @@ local versions = {
 }
 
 env.Lucid.Versions = versions
-env.Lucid.Version = env.Lucid.Version or "Modern"
+env.Lucid.Version = env.Lucid.Version or "Legacy"
 
 local version = env.Lucid.Version
 local valid
