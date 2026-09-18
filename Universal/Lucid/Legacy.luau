@@ -250,68 +250,39 @@ function Funcs.HideExec()
         BlockingApp = true, HealthGui = true, StutterDetector = true,
         AvatarContextMenuItem = true
     }
-    local Whitelisted = {
-        ["CmdPlus"] = {
-            DisplayOrder = 100,
-            Children = {
-                "ImageButton",
-                "Frame",
-                "CanvasGroup"
-            }
-        }
-    }
-    local function IsWhitelisted(Gui)
-        for _, child in ipairs(Gui:GetChildren()) do
-            if child:IsA("Frame") and child.Name == "UI" then
-                return true
-            end
-        end
-        for name, data in pairs(Whitelisted) do
-            if Gui.Name == name then
-                if Gui.DisplayOrder == data.DisplayOrder then
-                    local hasAll = true
-                    for _, childType in ipairs(data.Children) do
-                        local found = false
-                        for _, child in ipairs(Gui:GetChildren()) do
-                            if child:IsA(childType) then
-                                found = true
-                                break
-                            end
-                        end
-                        if not found then
-                            hasAll = false
-                            break
-                        end
-                    end
-                    if hasAll then
-                        return true
-                    end
-                end
-            end
-        end
-        return false
-    end
+
     local function IsSus(Name)
-        if #Name > 30 then return true end
-        if Name:match("[^%w%s%-%.]") then return true end
+        if #Name > 30 then
+            return true
+        end
+
+        if Name:match("[^%w%s%-%.]") then
+            return true
+        end
+
         local Caps = select(2, Name:gsub("[A-Z]", ""))
-        if Caps >= 5 then return true end
-        return false
+
+        return Caps >= 5
     end
+
     local function Scan(Parent)
-        if not Parent then return end
+        if not Parent then
+            return
+        end
+
         for _, Obj in ipairs(Parent:GetDescendants()) do
             if Obj:IsA("ScreenGui")
                 and Obj ~= UI.ScreenGui
-                and not IsWhitelisted(Obj)
                 and not Safe[Obj.Name]
                 and IsSus(Obj.Name) then
-                pcall(function() Obj.Enabled = false end)
+                pcall(function()
+                    Obj.Enabled = false
+                end)
             end
         end
     end
-    Scan(GetService("CoreGui"))
-    if Hui and Hui ~= GetService("CoreGui") then Scan(Hui) end
+
+    Scan(gethui())
 end
 
 Funcs.HideExec()
