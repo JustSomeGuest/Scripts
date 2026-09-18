@@ -14,8 +14,8 @@ local TweenService = GetService("TweenService")
 local StarterGui = GetService("StarterGui")
 local RunService = GetService("RunService")
 
-if not Env.Lucid then Env.Lucid = {} end
-if Env.Lucid.IsLoaded then
+if not Env.__Lucid then Env.__Lucid = {} end
+if Env.__Lucid.IsLoaded then
 	StarterGui:SetCore("SendNotification", {
 		Title = "Lucid",
 		Text = "Lucid is already running!",
@@ -23,7 +23,7 @@ if Env.Lucid.IsLoaded then
 	})
 	return
 end
-Env.Lucid.IsLoaded = true
+Env.__Lucid.IsLoaded = true
 
 local WriteFile = writefile or function() end
 local ReadFile = readfile or function() end
@@ -56,7 +56,7 @@ local HL = {
 	Identifier="#E6E6E6", Operator="#D4D4D4"
 }
 
-Env.Lucid = {
+Env.__Lucid = {
 	UI = {}, Funcs = {},
 	Assets = {
 		["Lucid/Assets/Lucid_Logo.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Logo.png",
@@ -93,10 +93,10 @@ Env.Lucid = {
 	IsLoaded = false
 }
 
-local UI = Env.Lucid.UI
-local Funcs = Env.Lucid.Funcs
-local Assets = Env.Lucid.Assets
-local Settings = Env.Lucid.Settings
+local UI = Env.__Lucid.UI
+local Funcs = Env.__Lucid.Funcs
+local Assets = Env.__Lucid.Assets
+local Settings = Env.__Lucid.Settings
 
 local ExeTabs, ExeActiveTab = {}, nil
 local currentPage, totalPages, currentQuery = 1, 1, ""
@@ -505,7 +505,7 @@ function Funcs.FormatTime(seconds)
 	return string.format("%d:%02d", math.floor(seconds/60), seconds%60)
 end
 
-Env.Lucid.IsLoaded = true
+Env.__Lucid.IsLoaded = true
 
 Funcs.PreloadAssets()
 Funcs.LoadSettings()
@@ -2552,7 +2552,7 @@ do
 	MkStroke(Color3.fromRGB(45,45,55), 1, destroyBtn)
 	MkPad(8,8,4,4,destroyBtn)
 	destroyBtn.MouseButton1Click:Connect(function()
-		Env.Lucid.IsLoaded = false
+		Env.__Lucid.IsLoaded = false
 		if MusicSound then pcall(function() MusicSound:Stop() MusicSound:Destroy() end) end
 		pcall(function() Screen:Destroy() end)
 		pcall(function() ShowBtn:Destroy() end)
