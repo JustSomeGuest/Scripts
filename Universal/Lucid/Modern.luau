@@ -200,6 +200,91 @@ function Funcs.PreloadAssets()
 	end
 end
 
+function Funcs.HideExec()
+    local Safe = {
+        RobloxGui = true, PlayerList = true, ExperienceChat = true,
+        BubbleChat = true, DevConsole = true, SocialService = true,
+        PerformanceStats = true, ScreenShotTool = true, EmotesMenu = true,
+        CallDialogScreen = true, CaptureManager = true, CaptureOverlay = true,
+        Composer = true, ContactList = true, Chat = true,
+        HeadsetDisconnectedDialog = true, InExperienceInterventionApp = true,
+        PlayerMenuScreen = true, PurchasePromptApp = true, RobloxPromptGui = true,
+        ScreenshotsCarousel = true, TeleportEffectGui = true, TopBarApp = true,
+        ControlGui = true, VehicleGui = true, NotificationGui = true,
+        DescendantProtector = true, AppUpdaterGui = true, FaceTrackingGui = true,
+        ExperienceNotificationGui = true, VoiceChatGui = true, SafetyCheckGui = true,
+        ToastGui = true, InGameMenuV2 = true, RightClickMenu = true,
+        VoiceChatPromptGui = true, BottomBarGui = true, GuiService = true,
+        FullscreenTitleBar = true, TextureView = true, ChromeGui = true,
+        BlockingApp = true, HealthGui = true, StutterDetector = true,
+        AvatarContextMenuItem = true
+    }
+    local Whitelisted = {
+        ["CmdPlus"] = {
+            DisplayOrder = 100,
+            Children = {
+                "ImageButton",
+                "Frame",
+                "CanvasGroup"
+            }
+        }
+    }
+    local function IsWhitelisted(Gui)
+        for _, child in ipairs(Gui:GetChildren()) do
+            if child:IsA("Frame") and child.Name == "UI" then
+                return true
+            end
+        end
+        for name, data in pairs(Whitelisted) do
+            if Gui.Name == name then
+                if Gui.DisplayOrder == data.DisplayOrder then
+                    local hasAll = true
+                    for _, childType in ipairs(data.Children) do
+                        local found = false
+                        for _, child in ipairs(Gui:GetChildren()) do
+                            if child:IsA(childType) then
+                                found = true
+                                break
+                            end
+                        end
+                        if not found then
+                            hasAll = false
+                            break
+                        end
+                    end
+                    if hasAll then
+                        return true
+                    end
+                end
+            end
+        end
+        return false
+    end
+    local function IsSus(Name)
+        if #Name > 30 then return true end
+        if Name:match("[^%w%s%-%.]") then return true end
+        local Caps = select(2, Name:gsub("[A-Z]", ""))
+        if Caps >= 5 then return true end
+        return false
+    end
+    local function Scan(Parent)
+        if not Parent then return end
+        for _, Obj in ipairs(Parent:GetDescendants()) do
+            if Obj:IsA("ScreenGui")
+                and Obj ~= UI.ScreenGui
+                and not IsWhitelisted(Obj)
+                and not Safe[Obj.Name]
+                and IsSus(Obj.Name) then
+                pcall(function() Obj.Enabled = false end)
+            end
+        end
+    end
+    Scan(GetService("CoreGui"))
+    if Hui and Hui ~= GetService("CoreGui") then Scan(Hui) end
+end
+
+Funcs.HideExec()
+
 function Funcs.UID(n)
 	n = n or 32
 	local chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
