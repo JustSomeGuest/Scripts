@@ -3,7 +3,6 @@ if not game:IsLoaded() then
 end
 
 local env = (type(getgenv) == "function" and getgenv()) or shared or _G
-env.Lucid = env.Lucid or {}
 
 local versions = {
     "Classic",
@@ -11,10 +10,7 @@ local versions = {
     "Modern"
 }
 
-env.Lucid.Versions = versions
-env.Lucid.Version = env.Lucid.Version or "Legacy"
-
-local version = env.Lucid.Version
+local version = env.__Lucid_Version or "Modern"
 local valid
 
 for _, allowed in versions do
@@ -26,10 +22,8 @@ for _, allowed in versions do
 end
 
 if not valid then
-    error(("Invalid Lucid version: %s"):format(tostring(env.Lucid.Version)))
+    error(("Invalid Lucid version: %s"):format(tostring(env.__Lucid_Version)))
 end
-
-env.Lucid.Version = version
 
 local startergui = game.StarterGui
 local httpget = game.HttpGetAsync or game.HttpGet
