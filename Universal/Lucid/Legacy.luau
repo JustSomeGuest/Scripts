@@ -58,12 +58,17 @@ Env.Lucid = {
     Assets = {
         ["Lucid/Assets/Lucid_Logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Logo.png",
         ["Lucid/Assets/Lucid_Home.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Home.png",
-        ["Lucid/Assets/Lucid_Executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Executor.png",
+        ["Lucid/Assets/Lucid_Executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Controller.png",
         ["Lucid/Assets/Lucid_Search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Search.png",
-        ["Lucid/Assets/Lucid_Scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Scripts.png",
+        ["Lucid/Assets/Lucid_Scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/LocalFile.png",
         ["Lucid/Assets/Lucid_Music.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Music.png",
         ["Lucid/Assets/Lucid_Settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Settings.png",
         ["Lucid/Assets/Lucid_Close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Close.png",
+        ["Lucid/Assets/Lucid_Execute.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Execute.png",
+        ["Lucid/Assets/Lucid_Clear.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clear.png",
+        ["Lucid/Assets/Lucid_Clipboard.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clipboard.png",
+        ["Lucid/Assets/Lucid_Star.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Star.png",
+        ["Lucid/Assets/Lucid_Discord.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Discord.png",
     },
     Settings = {
         Animations = true,
@@ -1888,30 +1893,76 @@ UI.InfoLabel2.LayoutOrder = 2
 UI.InfoLabel2.Name = "InfoLabel2"
 UI.InfoLabel2.RichText = true
 UI.InfoLabel2.Size = UDim2.new(1, 0, 0, 0)
-UI.InfoLabel2.Text = [[<p align="center"><font size="22"><b>About Lucid</b></font></p>
+UI.InfoLabel2.Text = [[<b>Lucid</b>
 
-<p align="left">
-Lucid is a modern interface that replaces your executor's UI while keeping its original functionality. It provides a cleaner design, smoother animations, and a more consistent experience.
-</p>
+<i>A better UI for your executor.</i>
 
-<p align="center"><font size="22"><b>Features</b></font></p>
+Lucid is a custom executor UI designed to replace the default interface of your executor with a cleaner, more feature-rich experience.
 
-<p align="left">
-- Search scripts directly from <b>RScripts.net</b> or <b>ScriptBlox.com</b>, switchable from the Search tab.<br/>
-- Save your favorite scripts for quick access in the <b>Scripts</b> tab.<br/>
-- Multi-tab code editor with renameable tabs.<br/>
-- Built-in music player from <b>Lucid/Music/</b> folder.<br/>
-- Customize Lucid's appearance with your own colors.<br/>
-- Automatically save your settings and preferences.
-</p>
+Some executors offer powerful execution capabilities but have a UI that feels outdated, cluttered, or simply isn't enjoyable to use. <b>Lucid</b> was created to solve that.
 
-<p align="center"><font size="22"><b>Credits</b></font></p>
+<b>Version</b>
 
-<p align="left">
-Created and maintained by <b>JustSomeGuest</b>.
-</p>
+<font color="#9B7CFF">Legacy [V1]</font>
 
-<p align="center"><i>Thank you for using Lucid!</i></p>]]
+<i>The original Lucid experience.</i>
+
+<b>Executor</b>
+
+Your main workspace for writing and executing scripts.
+
+• <b>Multi-Tab Editor</b> — Work with multiple scripts at once.
+• <b>Syntax Highlighting</b> — Easier-to-read Lua code.
+• <b>Execute</b> — Run your current script.
+• <b>Clear</b> — Quickly clear the editor.
+• <b>Copy</b> — Copy your code with one click.
+
+<b>Search</b>
+
+Find scripts without leaving Lucid.
+
+Search supported script sources such as <b>rscripts.net</b> and <b>ScriptBlox</b>, then filter results by:
+
+• <b>All</b>
+• <b>Key</b>
+• <b>Keyless</b>
+
+Found something useful? You can <b>execute</b> the script, <b>copy</b> its code, or <b>save</b> it directly to your Scripts library.
+
+<b>Scripts</b>
+
+Keep your scripts organized in one place.
+
+Use the search bar to quickly find saved scripts, or create a new one with:
+
+• <b>Title</b>
+• <b>Description</b>
+• <b>Code</b>
+
+Saved scripts can be <b>executed</b> or <b>deleted</b> whenever you want.
+
+<b>Music</b>
+
+A built-in music player for your own audio collection.
+
+Place your audio files in <b>Lucid/Music/</b> and play them directly through Lucid.
+
+• <b>Song List</b>
+• <b>Volume</b>
+• <b>Playback Speed</b>
+• <b>Loop</b>
+
+<b>Settings</b>
+
+Customize Lucid to your liking.
+
+• <b>Animations</b> — Toggle UI animations.
+• <b>Theme Customization</b> — Create your own theme using RGB values.
+• <b>Preset Themes</b> — Quickly switch between built-in themes.
+
+<b>Credits</b>
+
+<i>Designed and developed by JustSomeGuest</i>]]]]
 UI.InfoLabel2.TextColor3 = Color3.fromRGB(255, 255, 255)
 UI.InfoLabel2.TextSize = 14
 UI.InfoLabel2.TextWrapped = true
