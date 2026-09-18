@@ -28,7 +28,7 @@ end
 local startergui = game.StarterGui
 local httpget = game.HttpGetAsync or game.HttpGet
 
-local success = pcall(function()
+local success, err = pcall(function()
     local source = httpget(game, "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/" .. version .. ".luau")
     loadstring(source)()
 end)
@@ -36,7 +36,9 @@ end)
 if not success then
     startergui:SetCore("SendNotification", {
         Title = "Lucid",
-        Text = "Failed to load " .. version .. " version.",
+        Text = ("Failed to load %s version."):format(version),
         Duration = 5
     })
+
+    warn(("[Lucid]: Failed to load %s version.\nError: \n%s"):format(version, tostring(err)))
 end
