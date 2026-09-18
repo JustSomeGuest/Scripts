@@ -33,21 +33,11 @@ local function UID(Length)
     local Chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     local Out = ""
 
-    for _ = 1, Length do
-        local N = math.random(1, #Chars)
-        Out ..= Chars:sub(N, N)
-    end
+    repeat
+        Out ..= Chars:sub(math.random(1, #Chars), math.random(1, #Chars))
+    until #Out >= Length
 
-    return Out
-end
-
-local function Shuffle(Table)
-    for I = #Table, 2, -1 do
-        local J = math.random(1, I)
-        Table[I], Table[J] = Table[J], Table[I]
-    end
-
-    return Table
+    return Out:sub(1, Length)
 end
 
 local function Xor(A, B)
@@ -70,186 +60,75 @@ local function Xor(A, B)
     return Result
 end
 
-local function Encode(Source)
-    local Key = math.random(17, 241)
+local function EncodeSource(Source)
+    local Key = math.random(31, 223)
     local Bytes = table.create(#Source)
 
     for I = 1, #Source do
         local Byte = string.byte(Source, I)
-        local K = (Key + I * 13) % 256
-        Bytes[I] = string.char(Xor(Byte, K))
+        local Mask = (Key + I * 13) % 256
+        Bytes[I] = Xor(Byte, Mask)
     end
 
-    return Key, table.concat(Bytes)
+    return Key, Bytes
 end
 
-local function EscapeString(Source)
-    Source = Source:gsub("\\", "\\\\")
-    Source = Source:gsub("\"", "\\\"")
-    Source = Source:gsub("\n", "\\n")
-    Source = Source:gsub("\r", "\\r")
-    Source = Source:gsub("\t", "\\t")
+local function Name()
+    local Chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    local Result = Chars:sub(math.random(1, 52), math.random(1, 52))
 
-    return Source
-end
-
-local function EncodePayload(Source)
-    local Key, Payload = Encode(Source)
-    local Parts = {}
-
-    for I = 1, #Payload do
-        Parts[#Parts + 1] = tostring(string.byte(Payload, I))
+    for _ = 1, math.random(1, 2) do
+        Result ..= Chars:sub(math.random(1, 52), math.random(1, 52))
     end
 
-    local A = UID(2)
-    local B = UID(2)
-    local C = UID(2)
-    local D = UID(2)
-    local E = UID(2)
-    local F = UID(2)
-    local G = UID(2)
-    local H = UID(2)
-    local I = UID(2)
-    local J = UID(2)
+    return Result
+end
 
-    local Decoder = table.concat({
-        "return({",
-        A,
-        "=function(",
-        B,
-        ",",
-        C,
-        ")",
-        "local ",
-        D,
-        ",",
-        E,
-        ",",
-        F,
-        ",",
-        G,
-        ",",
-        H,
-        ",",
-        I,
-        ",",
-        J,
-        "=",
-        Key,
-        ",",
-        "\"",
-        EscapeString(table.concat(Parts, ",")),
-        "\",",
-        "0,1,{},\"\"",
-        ";",
-        E,
-        "=",
-        C,
-        ".char",
-        ";",
-        F,
-        "=",
-        C,
-        ".byte",
-        ";",
-        G,
-        "=",
-        C,
-        ".sub",
-        ";",
-        H,
-        "=function(",
-        I,
-        ")",
-        "local ",
-        J,
-        "=0",
-        ";",
-        "for ",
-        D,
-        "=1,#",
-        I,
-        " do ",
-        J,
-        "=",
-        J,
-        "+1",
-        ";",
-        "end",
-        "return ",
-        J,
-        " end",
-        ";",
-        "for ",
-        D,
-        "=1,#",
-        G,
-        "(",
-        E,
-        "(",
-        C,
-        ",",
-        D,
-        ")",
-        ")",
-        " do ",
-        "local ",
-        I,
-        "=",
-        F,
-        "(",
-        C,
-        ",",
-        D,
-        ")",
-        ";",
-        I,
-        "=",
-        "(",
-        I,
-        "-(",
-        J,
-        "+",
-        D,
-        "*13)",
-        ")%256",
-        ";",
-        G,
-        "=",
-        G,
-        "..",
-        E,
-        "(",
-        I,
-        ")",
-        ";",
-        "end",
-        ";",
-        "return ",
-        G,
-        " end,",
-        B,
-        "=function(",
-        C,
-        ")",
-        "local ",
-        D,
-        "=",
-        A,
-        "(",
-        "nil,",
-        C,
-        ")",
-        ";",
-        "return ",
-        D,
-        " end})"
-    })
+local function MakeLoader(Source, Options)
+    local Key, Bytes = EncodeSource(Source)
 
-    Decoder = Decoder:gsub(
-        "local " .. J .. "=0;for " .. D,
-        "local " .. J .. "=0;for " .. D
-    )
+    local A = Name()
+    local B = Name()
+    local C = Name()
+    local D = Name()
+    local E = Name()
+    local F = Name()
+    local G = Name()
+    local H = Name()
+    local I = Name()
+    local J = Name()
+    local K = Name()
+    local L = Name()
+
+    local Data = {}
+
+    for Index, Byte in ipairs(Bytes) do
+        Data[Index] = tostring(Byte)
+    end
+
+    local Junk = ""
+
+    if Options.Junk then
+        local X = Name()
+        local Y = Name()
+        local Z = Name()
+
+        Junk = table.concat({
+            "local ",
+            X,
+            "=",
+            math.random(10000, 99999),
+            ";local ",
+            Y,
+            "={};local ",
+            Z,
+            "=",
+            X,
+            "+",
+            math.random(100, 999),
+            ";"
+        })
+    end
 
     local Output = table.concat({
         "return(function()",
@@ -269,68 +148,76 @@ local function EncodePayload(Source)
         "string,",
         "loadstring,",
         "pcall,",
-        "select,",
+        "type,",
         "table,",
-        "type",
+        "math",
         ";",
+        Junk,
         "local ",
         G,
-        "=",
-        "function(",
+        "={",
+        table.concat(Data, ","),
+        "};",
+        "local ",
         H,
-        ")",
-        "local ",
-        I,
-        "=",
-        "{",
-        table.concat(Parts, ","),
-        "}",
-        ";",
-        "local ",
-        J,
         "=",
         Key,
         ";",
         "local ",
-        "k",
-        "=",
-        "\"\"",
+        I,
+        "=\"\";",
+        "local ",
+        J,
         ";",
         "for ",
-        "l",
+        J,
         "=1,#",
-        I,
-        " do ",
-        "local m=",
-        I,
-        "[l]",
-        ";",
-        "local n=(m-(J+l*13))%256",
-        ";",
-        "k=k..",
-        A,
-        ".char(n)",
-        ";",
-        "end",
-        ";",
-        "return k",
-        "end",
-        ";",
-        "local ",
-        "o=",
         G,
-        "();",
+        " do ",
         "local ",
-        "p=",
-        "loadstring(o)",
-        ";",
+        K,
+        "=",
+        G,
+        "[",
+        J,
+        "];",
+        "local ",
+        L,
+        "=",
+        "(",
+        K,
+        "-(",
+        H,
+        "+",
+        J,
+        "*13))%256;",
+        I,
+        "=",
+        I,
+        "..",
+        A,
+        ".char(",
+        L,
+        ");",
+        "end;",
+        "local ",
+        J,
+        "=",
+        B,
+        "(",
+        I,
+        ");",
         "if ",
-        "type(p)~=\"function\" then return end;",
-        "return p()",
+        E,
+        "(",
+        J,
+        ")~=\"function\" then return end;",
+        "return ",
+        J,
+        "()",
         "end)()"
     })
 
-    Output = Output:gsub("%s+", "")
     return Output
 end
 
@@ -339,40 +226,11 @@ local function Obfuscate(Source, Options)
         return ""
     end
 
-    local Output = EncodePayload(Source)
-
-    if Options.Junk then
-        local A = UID(2)
-        local B = UID(2)
-        local C = UID(2)
-
-        Output = table.concat({
-            "return(function()",
-            "local ",
-            A,
-            "=",
-            math.random(10000, 99999),
-            ";",
-            "local ",
-            B,
-            "={};",
-            "local ",
-            C,
-            "=",
-            A,
-            "+",
-            math.random(100, 999),
-            ";",
-            Output:sub(7),
-            "end)()"
-        })
-    end
-
-    return Output
+    return MakeLoader(Source, Options)
 end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = UID(10)
+Gui.Name = Name()
 Gui.IgnoreGuiInset = true
 Gui.ResetOnSpawn = false
 Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -397,6 +255,7 @@ MainStroke.Parent = Main
 
 local Top = Instance.new("Frame")
 Top.BackgroundTransparency = 1
+Top.Position = UDim2.fromOffset(0, 0)
 Top.Size = UDim2.new(1, 0, 0, 50)
 Top.Parent = Main
 
@@ -451,6 +310,11 @@ local InputCorner = Instance.new("UICorner")
 InputCorner.CornerRadius = UDim.new(0, 7)
 InputCorner.Parent = Input
 
+local InputStroke = Instance.new("UIStroke")
+InputStroke.Color = Border
+InputStroke.Thickness = 1
+InputStroke.Parent = Input
+
 local Output = Instance.new("TextBox")
 Output.BackgroundColor3 = Surface
 Output.BorderSizePixel = 0
@@ -474,68 +338,64 @@ local OutputCorner = Instance.new("UICorner")
 OutputCorner.CornerRadius = UDim.new(0, 7)
 OutputCorner.Parent = Output
 
+local OutputStroke = Instance.new("UIStroke")
+OutputStroke.Color = Border
+OutputStroke.Thickness = 1
+OutputStroke.Parent = Output
+
 local OptionsFrame = Instance.new("Frame")
 OptionsFrame.BackgroundTransparency = 1
 OptionsFrame.Position = UDim2.fromOffset(15, 260)
-OptionsFrame.Size = UDim2.fromOffset(540, 38)
+OptionsFrame.Size = UDim2.fromOffset(540, 35)
 OptionsFrame.Parent = Main
 
 local State = {
     Junk = true
 }
 
-local OptionData = {
-    {
-        "Junk",
-        "Junk"
-    }
-}
+local JunkButton = Instance.new("TextButton")
+JunkButton.BackgroundTransparency = 1
+JunkButton.Position = UDim2.fromOffset(0, 0)
+JunkButton.Size = UDim2.fromOffset(150, 22)
+JunkButton.AutoButtonColor = false
+JunkButton.Text = ""
+JunkButton.Parent = OptionsFrame
 
-for Index, Data in ipairs(OptionData) do
-    local Button = Instance.new("TextButton")
-    Button.BackgroundTransparency = 1
-    Button.Position = UDim2.fromOffset((Index - 1) * 175, 0)
-    Button.Size = UDim2.fromOffset(165, 20)
-    Button.AutoButtonColor = false
-    Button.Text = ""
-    Button.Parent = OptionsFrame
+local JunkBox = Instance.new("Frame")
+JunkBox.BackgroundColor3 = Accent
+JunkBox.BorderSizePixel = 0
+JunkBox.Position = UDim2.fromOffset(0, 3)
+JunkBox.Size = UDim2.fromOffset(13, 13)
+JunkBox.Parent = JunkButton
 
-    local Box = Instance.new("Frame")
-    Box.BackgroundColor3 = Accent
-    Box.BorderSizePixel = 0
-    Box.Position = UDim2.fromOffset(0, 2)
-    Box.Size = UDim2.fromOffset(13, 13)
-    Box.Parent = Button
+local JunkCorner = Instance.new("UICorner")
+JunkCorner.CornerRadius = UDim.new(0, 3)
+JunkCorner.Parent = JunkBox
 
-    local BoxCorner = Instance.new("UICorner")
-    BoxCorner.CornerRadius = UDim.new(0, 3)
-    BoxCorner.Parent = Box
+local JunkText = Instance.new("TextLabel")
+JunkText.BackgroundTransparency = 1
+JunkText.Position = UDim2.fromOffset(20, 0)
+JunkText.Size = UDim2.fromOffset(125, 20)
+JunkText.Font = Enum.Font.Gotham
+JunkText.Text = "Add junk"
+JunkText.TextColor3 = Color3.fromRGB(190, 190, 196)
+JunkText.TextSize = 10
+JunkText.TextXAlignment = Enum.TextXAlignment.Left
+JunkText.Parent = JunkButton
 
-    local Label = Instance.new("TextLabel")
-    Label.BackgroundTransparency = 1
-    Label.Position = UDim2.fromOffset(20, 0)
-    Label.Size = UDim2.fromOffset(140, 18)
-    Label.Font = Enum.Font.Gotham
-    Label.Text = Data[1]
-    Label.TextColor3 = Color3.fromRGB(190, 190, 196)
-    Label.TextSize = 10
-    Label.TextXAlignment = Enum.TextXAlignment.Left
-    Label.Parent = Button
+JunkButton.MouseButton1Click:Connect(function()
+    State.Junk = not State.Junk
 
-    Button.MouseButton1Click:Connect(function()
-        State[Data[2]] = not State[Data[2]]
-
-        Tween(
-            Box,
-            0.12,
-            {
-                BackgroundColor3 = State[Data[2]]
-                    and Accent
-                    or Color3.fromRGB(42, 42, 46)
-            }
-        )
-    end)
-end
+    Tween(
+        JunkBox,
+        0.12,
+        {
+            BackgroundColor3 = State.Junk
+                and Accent
+                or Color3.fromRGB(42, 42, 46)
+        }
+    )
+end)
 
 local ObfuscateButton = Instance.new("TextButton")
 ObfuscateButton.BackgroundColor3 = Accent
@@ -575,6 +435,7 @@ CopyCorner.Parent = CopyButton
 
 local ClearButton = Instance.new("TextButton")
 ClearButton.BackgroundColor3 = Surface2
+ClearButton.BorderSizePixel = 0
 ClearButton.BorderSizePixel = 0
 ClearButton.Position = UDim2.fromOffset(430, 315)
 ClearButton.Size = UDim2.fromOffset(125, 38)
@@ -662,7 +523,7 @@ ObfuscateButton.MouseButton1Click:Connect(function()
     if Success then
         Output.Text = Result
     else
-        Output.Text = "-- Obfuscation failed: " .. tostring(Result)
+        Output.Text = "Obfuscation failed:\n" .. tostring(Result)
     end
 end)
 
