@@ -12,6 +12,13 @@ end
 local Hui = type(gethui) == "function" and gethui() or GetService("CoreGui")
 local TweenService = GetService("TweenService")
 
+local Accent = Color3.fromRGB(232, 72, 58)
+local Background = Color3.fromRGB(13, 13, 16)
+local Surface = Color3.fromRGB(19, 19, 23)
+local Surface2 = Color3.fromRGB(27, 27, 32)
+local Text = Color3.fromRGB(235, 235, 240)
+local Muted = Color3.fromRGB(135, 135, 145)
+
 local function Tween(Obj, Info, Props)
     TweenService:Create(Obj, Info, Props):Play()
 end
@@ -53,7 +60,7 @@ local Keywords = {
     ["continue"] = true,
     ["export"] = true,
     ["type"] = true,
-    ["typeof"] = true,
+    ["typeof"] = true
 }
 
 local Builtins = {
@@ -71,7 +78,7 @@ local Builtins = {
     "type",
     "typeof",
     "warn",
-    "xpcall",
+    "xpcall"
 }
 
 local UsedNames = {}
@@ -110,11 +117,11 @@ local function ReadString(Source, Start)
 end
 
 local function ReadLongString(Source, Start)
-    local Eq = 0
     local I = Start + 1
+    local Equals = 0
 
     while Source:sub(I, I) == "=" do
-        Eq += 1
+        Equals += 1
         I += 1
     end
 
@@ -122,14 +129,14 @@ local function ReadLongString(Source, Start)
         return nil
     end
 
-    local Close = "]" .. string.rep("=", Eq) .. "]"
-    local End = Source:find(Close, I + 1, true)
+    local Close = "]" .. string.rep("=", Equals) .. "]"
+    local Finish = Source:find(Close, I + 1, true)
 
-    if not End then
+    if not Finish then
         return Source:sub(Start), #Source + 1
     end
 
-    return Source:sub(Start, End + #Close - 1), End + #Close
+    return Source:sub(Start, Finish + #Close - 1), Finish + #Close
 end
 
 local function Tokenize(Source)
@@ -144,41 +151,32 @@ local function Tokenize(Source)
             I += 1
 
         elseif C == "-" and N == "-" then
-            local Long = Source:sub(I + 2, I + 2) == "["
+            local Long, Next = ReadLongString(Source, I + 2)
 
             if Long then
-                local Value, Next = ReadLongString(Source, I + 2)
-
-                if Value then
-                    table.insert(Tokens, {
-                        Type = "comment",
-                        Value = "--" .. Value
-                    })
-                    I = Next
-                else
-                    local E = Source:find("\n", I + 2, true) or (#Source + 1)
-                    table.insert(Tokens, {
-                        Type = "comment",
-                        Value = Source:sub(I, E - 1)
-                    })
-                    I = E
-                end
-            else
-                local E = Source:find("\n", I + 2, true) or (#Source + 1)
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = "comment",
-                    Value = Source:sub(I, E - 1)
-                })
-                I = E
+                    Value = "--" .. Long
+                }
+                I = Next
+            else
+                local Finish = Source:find("\n", I + 2, true) or (#Source + 1)
+
+                Tokens[#Tokens + 1] = {
+                    Type = "comment",
+                    Value = Source:sub(I, Finish - 1)
+                }
+
+                I = Finish
             end
 
         elseif C == "\"" or C == "'" then
             local Value, Next = ReadString(Source, I)
 
-            table.insert(Tokens, {
+            Tokens[#Tokens + 1] = {
                 Type = "string",
                 Value = Value
-            })
+            }
 
             I = Next
 
@@ -186,17 +184,19 @@ local function Tokenize(Source)
             local Value, Next = ReadLongString(Source, I)
 
             if Value then
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = "string",
                     Value = Value,
                     Long = true
-                })
+                }
+
                 I = Next
             else
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = "symbol",
                     Value = C
-                })
+                }
+
                 I += 1
             end
 
@@ -208,12 +208,10 @@ local function Tokenize(Source)
                 I += 1
             end
 
-            local Value = Source:sub(Start, I - 1)
-
-            table.insert(Tokens, {
+            Tokens[#Tokens + 1] = {
                 Type = "name",
-                Value = Value
-            })
+                Value = Source:sub(Start, I - 1)
+            }
 
         elseif C:match("%d") or (C == "." and N:match("%d")) then
             local Start = I
@@ -229,32 +227,35 @@ local function Tokenize(Source)
                 end
             end
 
-            table.insert(Tokens, {
+            Tokens[#Tokens + 1] = {
                 Type = "number",
                 Value = Source:sub(Start, I - 1)
-            })
+            }
 
         else
             local Three = Source:sub(I, I + 2)
             local Two = Source:sub(I, I + 1)
 
             if Three == "..." then
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = "symbol",
                     Value = Three
-                })
+                }
+
                 I += 3
             elseif Two == "==" or Two == "~=" or Two == "<=" or Two == ">=" or Two == ".." or Two == "//" or Two == "+=" or Two == "-=" or Two == "*=" or Two == "/=" or Two == "%=" or Two == "^=" or Two == "::" then
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = "symbol",
                     Value = Two
-                })
+                }
+
                 I += 2
             else
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = "symbol",
                     Value = C
-                })
+                }
+
                 I += 1
             end
         end
@@ -263,7 +264,7 @@ local function Tokenize(Source)
     return Tokens
 end
 
-local function DecodeQuoted(Value)
+local function DecodeString(Value)
     if #Value < 2 then
         return Value
     end
@@ -282,80 +283,81 @@ local function DecodeQuoted(Value)
         local C = Body:sub(I, I)
 
         if C ~= "\\" then
-            table.insert(Out, C)
+            Out[#Out + 1] = C
             I += 1
-            continue
-        end
+        else
+            local N = Body:sub(I + 1, I + 1)
 
-        local N = Body:sub(I + 1, I + 1)
+            if N == "n" then
+                Out[#Out + 1] = "\n"
+                I += 2
+            elseif N == "r" then
+                Out[#Out + 1] = "\r"
+                I += 2
+            elseif N == "t" then
+                Out[#Out + 1] = "\t"
+                I += 2
+            elseif N == "b" then
+                Out[#Out + 1] = "\b"
+                I += 2
+            elseif N == "f" then
+                Out[#Out + 1] = "\f"
+                I += 2
+            elseif N == "v" then
+                Out[#Out + 1] = "\v"
+                I += 2
+            elseif N == "a" then
+                Out[#Out + 1] = "\a"
+                I += 2
+            elseif N == "\\" or N == "\"" or N == "'" then
+                Out[#Out + 1] = N
+                I += 2
+            elseif N:match("%d") then
+                local Digits = Body:sub(I + 1, I + 3)
+                local Num = Digits:match("^%d%d?%d?")
 
-        if N == "n" then
-            table.insert(Out, "\n")
-            I += 2
-        elseif N == "r" then
-            table.insert(Out, "\r")
-            I += 2
-        elseif N == "t" then
-            table.insert(Out, "\t")
-            I += 2
-        elseif N == "b" then
-            table.insert(Out, "\b")
-            I += 2
-        elseif N == "f" then
-            table.insert(Out, "\f")
-            I += 2
-        elseif N == "v" then
-            table.insert(Out, "\v")
-            I += 2
-        elseif N == "a" then
-            table.insert(Out, "\a")
-            I += 2
-        elseif N == "\\" or N == "\"" or N == "'" then
-            table.insert(Out, N)
-            I += 2
-        elseif N:match("%d") then
-            local Digits = Body:sub(I + 1, I + 3)
-            local Num = Digits:match("^%d%d?%d?")
-
-            if Num then
-                table.insert(Out, string.char(tonumber(Num)))
-                I += #Num + 1
+                if Num then
+                    Out[#Out + 1] = string.char(tonumber(Num))
+                    I += #Num + 1
+                else
+                    Out[#Out + 1] = N
+                    I += 2
+                end
             else
-                table.insert(Out, N)
+                Out[#Out + 1] = N
                 I += 2
             end
-        else
-            table.insert(Out, N)
-            I += 2
         end
     end
 
     return table.concat(Out)
 end
 
-local function EncodeString(Value)
+local function EncodeString(Token)
     local Raw
 
-    if Value.Long then
-        Raw = Value.Value:match("^%[=*%[(.*)%]=*%]$")
+    if Token.Long then
+        Raw = Token.Value:match("^%[=*%[(.*)%]=*%]$")
+
         if Raw == nil then
-            return Value.Value
+            return Token.Value
         end
     else
-        Raw = DecodeQuoted(Value.Value)
+        Raw = DecodeString(Token.Value)
+
         if Raw == nil then
-            return Value.Value
+            return Token.Value
         end
+    end
+
+    if #Raw == 0 then
+        return "\"\""
     end
 
     local Parts = {}
 
     for I = 1, #Raw do
         Parts[#Parts + 1] = tostring(string.byte(Raw, I))
-    end
-
-    if #Parts == 0 then
-        return "\"\""
     end
 
     return "string.char(" .. table.concat(Parts, ",") .. ")"
@@ -385,17 +387,15 @@ end
 local function IsMemberAccess(Tokens, Index)
     local Previous = Tokens[Index - 1]
 
-    if not Previous then
-        return false
-    end
-
-    return Previous.Value == "." or Previous.Value == ":"
+    return Previous ~= nil and (Previous.Value == "." or Previous.Value == ":")
 end
 
 local function CollectLocals(Tokens)
     local Locals = {}
 
-    for I, Token in ipairs(Tokens) do
+    for I = 1, #Tokens do
+        local Token = Tokens[I]
+
         if Token.Type == "name" and Token.Value == "local" then
             local Next = Tokens[I + 1]
 
@@ -405,19 +405,15 @@ local function CollectLocals(Tokens)
                 local J = I + 2
 
                 while Tokens[J] and Tokens[J].Value == "," do
-                    if Tokens[J + 1] and Tokens[J + 1].Type == "name" then
-                        Locals[Tokens[J + 1].Value] = true
+                    local Name = Tokens[J + 1]
+
+                    if Name and Name.Type == "name" then
+                        Locals[Name.Value] = true
                         J += 2
                     else
                         break
                     end
                 end
-            end
-        elseif Token.Type == "name" and Token.Value == "function" then
-            local Name = Tokens[I + 1]
-
-            if Name and Name.Type == "name" and not IsMemberAccess(Tokens, I + 1) then
-                Locals[Name.Value] = true
             end
         end
     end
@@ -443,44 +439,23 @@ local function BuildRenameMap(Tokens, Options)
     return Map
 end
 
-local function BuildBuiltinMap(Tokens)
+local function BuildBuiltinMap(Tokens, Options)
     local Map = {}
-    local Seen = {}
 
-    for _, Token in ipairs(Tokens) do
-        if Token.Type == "name" and not IsMemberAccess(Tokens, table.find(Tokens, Token)) then
-            for _, Builtin in ipairs(Builtins) do
-                if Token.Value == Builtin and not Seen[Builtin] then
-                    Map[Builtin] = RandomName()
-                    Seen[Builtin] = true
-                    break
-                end
-            end
-        end
+    if not Options.HideBuiltins then
+        return Map
     end
 
-    return Map
-end
+    for I = 1, #Tokens do
+        local Token = Tokens[I]
 
-local function ApplyBuiltinMap(Tokens)
-    local Map = {}
-    local Seen = {}
-
-    for I, Token in ipairs(Tokens) do
         if Token.Type == "name" and not IsMemberAccess(Tokens, I) then
             for _, Builtin in ipairs(Builtins) do
-                if Token.Value == Builtin and not Seen[Builtin] then
+                if Token.Value == Builtin and not Map[Builtin] then
                     Map[Builtin] = RandomName()
-                    Seen[Builtin] = true
                     break
                 end
             end
-        end
-    end
-
-    for I, Token in ipairs(Tokens) do
-        if Token.Type == "name" and Map[Token.Value] and not IsMemberAccess(Tokens, I) then
-            Token.Value = Map[Token.Value]
         end
     end
 
@@ -489,21 +464,26 @@ end
 
 local function BuildOutput(Tokens, Options)
     local RenameMap = BuildRenameMap(Tokens, Options)
-    local BuiltinMap = {}
-
-    if Options.HideBuiltins then
-        BuiltinMap = ApplyBuiltinMap(Tokens)
-    end
-
+    local BuiltinMap = BuildBuiltinMap(Tokens, Options)
     local Parts = {}
 
-    if Options.HideBuiltins and next(BuiltinMap) then
-        for Builtin, Alias in pairs(BuiltinMap) do
+    for _, Builtin in ipairs(Builtins) do
+        local Alias = BuiltinMap[Builtin]
+
+        if Alias then
             Parts[#Parts + 1] = "local " .. Alias .. "=" .. Builtin .. ";"
         end
     end
 
-    for I, Token in ipairs(Tokens) do
+    if Options.InsertJunk then
+        Parts[#Parts + 1] = "local " .. RandomName() .. "=0;"
+        Parts[#Parts + 1] = "local " .. RandomName() .. "={};"
+        Parts[#Parts + 1] = "local " .. RandomName() .. "=true;"
+    end
+
+    for I = 1, #Tokens do
+        local Token = Tokens[I]
+
         if Token.Type == "comment" then
             if not Options.StripComments then
                 Parts[#Parts + 1] = Token.Value
@@ -528,14 +508,11 @@ local function BuildOutput(Tokens, Options)
 
             if RenameMap[Value] and not Keywords[Value] then
                 Value = RenameMap[Value]
-            end
-
-            if BuiltinMap[Value] and not IsMemberAccess(Tokens, I) then
+            elseif BuiltinMap[Value] and not IsMemberAccess(Tokens, I) then
                 Value = BuiltinMap[Value]
             end
 
             Parts[#Parts + 1] = Value
-
         else
             Parts[#Parts + 1] = Token.Value
         end
@@ -543,21 +520,10 @@ local function BuildOutput(Tokens, Options)
 
     local Output = table.concat(Parts)
 
-    if Options.InsertJunk then
-        local Junk = {
-            "local " .. RandomName() .. "=0;",
-            "local " .. RandomName() .. "={};",
-            "local " .. RandomName() .. "=true;",
-        }
-
-        Output = table.concat(Junk) .. Output
-    end
-
     if Options.Minify then
         Output = Output
             :gsub("%s+", " ")
             :gsub("%s*([%(%){%}%[%],;:+%-%*/%%%^<>=~%.])%s*", "%1")
-            :gsub(";%s*end", ";end")
             :gsub("^%s+", "")
             :gsub("%s+$", "")
     end
@@ -581,300 +547,294 @@ Gui.Parent = Hui
 
 local Main = Instance.new("Frame")
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
-Main.BackgroundColor3 = Color3.fromRGB(13, 13, 17)
+Main.BackgroundColor3 = Background
 Main.BorderSizePixel = 0
 Main.Position = UDim2.fromScale(0.5, 0.5)
-Main.Size = UDim2.fromOffset(760, 500)
+Main.Size = UDim2.fromOffset(600, 390)
 Main.Parent = Gui
 
-local Corner = Instance.new("UICorner")
-Corner.CornerRadius = UDim.new(0, 12)
-Corner.Parent = Main
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 10)
+MainCorner.Parent = Main
 
-local Stroke = Instance.new("UIStroke")
-Stroke.Color = Color3.fromRGB(40, 40, 48)
-Stroke.Thickness = 1
-Stroke.Parent = Main
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Color = Color3.fromRGB(38, 38, 44)
+MainStroke.Thickness = 1
+MainStroke.Parent = Main
+
+local Top = Instance.new("Frame")
+Top.BackgroundTransparency = 1
+Top.Position = UDim2.fromOffset(0, 0)
+Top.Size = UDim2.new(1, 0, 0, 52)
+Top.Parent = Main
 
 local Title = Instance.new("TextLabel")
 Title.BackgroundTransparency = 1
-Title.Position = UDim2.fromOffset(20, 15)
-Title.Size = UDim2.fromOffset(400, 28)
+Title.Position = UDim2.fromOffset(17, 9)
+Title.Size = UDim2.fromOffset(400, 24)
 Title.Font = Enum.Font.GothamBold
 Title.Text = "Blur Obfuscator"
-Title.TextColor3 = Color3.fromRGB(245, 245, 250)
-Title.TextSize = 20
+Title.TextColor3 = Text
+Title.TextSize = 17
 Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.Parent = Main
+Title.Parent = Top
 
 local Subtitle = Instance.new("TextLabel")
 Subtitle.BackgroundTransparency = 1
-Subtitle.Position = UDim2.fromOffset(21, 42)
-Subtitle.Size = UDim2.fromOffset(500, 20)
+Subtitle.Position = UDim2.fromOffset(18, 29)
+Subtitle.Size = UDim2.fromOffset(400, 18)
 Subtitle.Font = Enum.Font.Gotham
 Subtitle.Text = "Luau source protection"
-Subtitle.TextColor3 = Color3.fromRGB(125, 125, 140)
-Subtitle.TextSize = 12
+Subtitle.TextColor3 = Muted
+Subtitle.TextSize = 10
 Subtitle.TextXAlignment = Enum.TextXAlignment.Left
-Subtitle.Parent = Main
+Subtitle.Parent = Top
 
 local Input = Instance.new("TextBox")
-Input.BackgroundColor3 = Color3.fromRGB(19, 19, 24)
+Input.BackgroundColor3 = Surface
 Input.BorderSizePixel = 0
 Input.ClearTextOnFocus = false
 Input.MultiLine = true
-Input.Position = UDim2.fromOffset(20, 78)
-Input.Size = UDim2.fromOffset(350, 270)
+Input.Position = UDim2.fromOffset(15, 62)
+Input.Size = UDim2.fromOffset(280, 205)
 Input.Font = Enum.Font.Code
-Input.PlaceholderColor3 = Color3.fromRGB(90, 90, 105)
+Input.PlaceholderColor3 = Muted
 Input.PlaceholderText = "Paste Luau here..."
 Input.Text = ""
-Input.TextColor3 = Color3.fromRGB(225, 225, 235)
-Input.TextSize = 13
+Input.TextColor3 = Text
+Input.TextSize = 12
 Input.TextWrapped = false
 Input.TextXAlignment = Enum.TextXAlignment.Left
 Input.TextYAlignment = Enum.TextYAlignment.Top
 Input.Parent = Main
 
 local InputCorner = Instance.new("UICorner")
-InputCorner.CornerRadius = UDim.new(0, 8)
+InputCorner.CornerRadius = UDim.new(0, 7)
 InputCorner.Parent = Input
 
 local Output = Instance.new("TextBox")
-Output.BackgroundColor3 = Color3.fromRGB(19, 19, 24)
+Output.BackgroundColor3 = Surface
 Output.BorderSizePixel = 0
 Output.ClearTextOnFocus = false
 Output.MultiLine = true
-Output.Position = UDim2.fromOffset(390, 78)
-Output.Size = UDim2.fromOffset(350, 270)
+Output.Position = UDim2.fromOffset(305, 62)
+Output.Size = UDim2.fromOffset(280, 205)
 Output.Font = Enum.Font.Code
-Output.PlaceholderColor3 = Color3.fromRGB(90, 90, 105)
+Output.PlaceholderColor3 = Muted
 Output.PlaceholderText = "Obfuscated output..."
 Output.Text = ""
-Output.TextColor3 = Color3.fromRGB(225, 225, 235)
+Output.TextColor3 = Text
 Output.TextEditable = false
-Output.TextSize = 13
+Output.TextSize = 12
 Output.TextWrapped = false
 Output.TextXAlignment = Enum.TextXAlignment.Left
 Output.TextYAlignment = Enum.TextYAlignment.Top
 Output.Parent = Main
 
 local OutputCorner = Instance.new("UICorner")
-OutputCorner.CornerRadius = UDim.new(0, 8)
+OutputCorner.CornerRadius = UDim.new(0, 7)
 OutputCorner.Parent = Output
 
 local OptionsFrame = Instance.new("Frame")
 OptionsFrame.BackgroundTransparency = 1
-OptionsFrame.Position = UDim2.fromOffset(20, 362)
-OptionsFrame.Size = UDim2.fromOffset(720, 48)
+OptionsFrame.Position = UDim2.fromOffset(15, 280)
+OptionsFrame.Size = UDim2.fromOffset(570, 42)
 OptionsFrame.Parent = Main
 
 local Options = {
     {
         Name = "Rename locals",
-        Key = "RenameLocals",
-        Enabled = true
+        Key = "RenameLocals"
     },
     {
         Name = "Encode strings",
-        Key = "EncodeStrings",
-        Enabled = true
+        Key = "EncodeStrings"
     },
     {
         Name = "Obfuscate numbers",
-        Key = "ObfuscateNums",
-        Enabled = true
+        Key = "ObfuscateNums"
     },
     {
         Name = "Strip comments",
-        Key = "StripComments",
-        Enabled = true
+        Key = "StripComments"
     },
     {
         Name = "Minify",
-        Key = "Minify",
-        Enabled = true
+        Key = "Minify"
     },
     {
         Name = "Hide builtins",
-        Key = "HideBuiltins",
-        Enabled = true
+        Key = "HideBuiltins"
     }
 }
 
-local State = {}
+local State = {
+    RenameLocals = true,
+    EncodeStrings = true,
+    ObfuscateNums = true,
+    StripComments = true,
+    Minify = true,
+    HideBuiltins = true
+}
 
-local function CreateToggle(Data, Index)
-    local X = ((Index - 1) % 3) * 240
-    local Y = math.floor((Index - 1) / 3) * 24
+for I, Data in ipairs(Options) do
+    local Column = (I - 1) % 3
+    local Row = math.floor((I - 1) / 3)
 
     local Button = Instance.new("TextButton")
     Button.BackgroundTransparency = 1
-    Button.Position = UDim2.fromOffset(X, Y)
-    Button.Size = UDim2.fromOffset(225, 22)
-    Button.Font = Enum.Font.Gotham
-    Button.Text = ""
+    Button.Position = UDim2.fromOffset(Column * 190, Row * 22)
+    Button.Size = UDim2.fromOffset(180, 20)
     Button.AutoButtonColor = false
+    Button.Text = ""
     Button.Parent = OptionsFrame
 
     local Box = Instance.new("Frame")
-    Box.BackgroundColor3 = Data.Enabled and Color3.fromRGB(125, 80, 220) or Color3.fromRGB(35, 35, 42)
+    Box.BackgroundColor3 = Accent
     Box.BorderSizePixel = 0
-    Box.Position = UDim2.fromOffset(0, 3)
-    Box.Size = UDim2.fromOffset(16, 16)
+    Box.Position = UDim2.fromOffset(0, 2)
+    Box.Size = UDim2.fromOffset(14, 14)
     Box.Parent = Button
 
     local BoxCorner = Instance.new("UICorner")
-    BoxCorner.CornerRadius = UDim.new(0, 4)
+    BoxCorner.CornerRadius = UDim.new(0, 3)
     BoxCorner.Parent = Box
 
     local Label = Instance.new("TextLabel")
     Label.BackgroundTransparency = 1
-    Label.Position = UDim2.fromOffset(25, 0)
-    Label.Size = UDim2.fromOffset(200, 22)
+    Label.Position = UDim2.fromOffset(21, 0)
+    Label.Size = UDim2.fromOffset(159, 20)
     Label.Font = Enum.Font.Gotham
     Label.Text = Data.Name
-    Label.TextColor3 = Color3.fromRGB(190, 190, 202)
-    Label.TextSize = 12
+    Label.TextColor3 = Color3.fromRGB(190, 190, 198)
+    Label.TextSize = 10
     Label.TextXAlignment = Enum.TextXAlignment.Left
     Label.Parent = Button
-
-    State[Data.Key] = Data.Enabled
 
     Button.MouseButton1Click:Connect(function()
         State[Data.Key] = not State[Data.Key]
 
         Tween(
             Box,
-            TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
             {
                 BackgroundColor3 = State[Data.Key]
-                    and Color3.fromRGB(125, 80, 220)
-                    or Color3.fromRGB(35, 35, 42)
+                    and Accent
+                    or Color3.fromRGB(42, 42, 48)
             }
         )
     end)
 end
 
-for I, Data in ipairs(Options) do
-    CreateToggle(Data, I)
-end
-
-local Obfuscate = Instance.new("TextButton")
-Obfuscate.AnchorPoint = Vector2.new(0, 0)
-Obfuscate.BackgroundColor3 = Color3.fromRGB(125, 80, 220)
-Obfuscate.BorderSizePixel = 0
-Obfuscate.Position = UDim2.fromOffset(20, 425)
-Obfuscate.Size = UDim2.fromOffset(300, 48)
-Obfuscate.AutoButtonColor = false
-Obfuscate.Font = Enum.Font.GothamBold
-Obfuscate.Text = "Obfuscate"
-Obfuscate.TextColor3 = Color3.fromRGB(255, 255, 255)
-Obfuscate.TextSize = 14
-Obfuscate.TextWrapped = false
-Obfuscate.Parent = Main
+local ObfuscateButton = Instance.new("TextButton")
+ObfuscateButton.BackgroundColor3 = Accent
+ObfuscateButton.BorderSizePixel = 0
+ObfuscateButton.Position = UDim2.fromOffset(15, 335)
+ObfuscateButton.Size = UDim2.fromOffset(275, 40)
+ObfuscateButton.AutoButtonColor = false
+ObfuscateButton.Font = Enum.Font.GothamBold
+ObfuscateButton.Text = "Obfuscate"
+ObfuscateButton.TextColor3 = Color3.new(1, 1, 1)
+ObfuscateButton.TextSize = 12
+ObfuscateButton.Parent = Main
 
 local ObfuscateCorner = Instance.new("UICorner")
-ObfuscateCorner.CornerRadius = UDim.new(0, 8)
-ObfuscateCorner.Parent = Obfuscate
+ObfuscateCorner.CornerRadius = UDim.new(0, 7)
+ObfuscateCorner.Parent = ObfuscateButton
 
-local ObfuscateAspect = Instance.new("UIAspectRatioConstraint")
-ObfuscateAspect.AspectRatio = 6.25
-ObfuscateAspect.Parent = Obfuscate
-
-local Copy = Instance.new("TextButton")
-Copy.BackgroundColor3 = Color3.fromRGB(31, 31, 38)
-Copy.BorderSizePixel = 0
-Copy.Position = UDim2.fromOffset(335, 425)
-Copy.Size = UDim2.fromOffset(190, 48)
-Copy.AutoButtonColor = false
-Copy.Font = Enum.Font.GothamBold
-Copy.Text = "Copy"
-Copy.TextColor3 = Color3.fromRGB(220, 220, 230)
-Copy.TextSize = 14
-Copy.Parent = Main
+local CopyButton = Instance.new("TextButton")
+CopyButton.BackgroundColor3 = Surface2
+CopyButton.BorderSizePixel = 0
+CopyButton.Position = UDim2.fromOffset(300, 335)
+CopyButton.Size = UDim2.fromOffset(135, 40)
+CopyButton.AutoButtonColor = false
+CopyButton.Font = Enum.Font.GothamBold
+CopyButton.Text = "Copy"
+CopyButton.TextColor3 = Text
+CopyButton.TextSize = 12
+CopyButton.Parent = Main
 
 local CopyCorner = Instance.new("UICorner")
-CopyCorner.CornerRadius = UDim.new(0, 8)
-CopyCorner.Parent = Copy
+CopyCorner.CornerRadius = UDim.new(0, 7)
+CopyCorner.Parent = CopyButton
 
-local Clear = Instance.new("TextButton")
-Clear.BackgroundColor3 = Color3.fromRGB(31, 31, 38)
-Clear.BorderSizePixel = 0
-Clear.Position = UDim2.fromOffset(540, 425)
-Clear.Size = UDim2.fromOffset(200, 48)
-Clear.AutoButtonColor = false
-Clear.Font = Enum.Font.GothamBold
-Clear.Text = "Clear"
-Clear.TextColor3 = Color3.fromRGB(220, 220, 230)
-Clear.TextSize = 14
-Clear.Parent = Main
+local ClearButton = Instance.new("TextButton")
+ClearButton.BackgroundColor3 = Surface2
+ClearButton.BorderSizePixel = 0
+ClearButton.Position = UDim2.fromOffset(445, 335)
+ClearButton.Size = UDim2.fromOffset(140, 40)
+ClearButton.AutoButtonColor = false
+ClearButton.Font = Enum.Font.GothamBold
+ClearButton.Text = "Clear"
+ClearButton.TextColor3 = Text
+ClearButton.TextSize = 12
+ClearButton.Parent = Main
 
 local ClearCorner = Instance.new("UICorner")
-ClearCorner.CornerRadius = UDim.new(0, 8)
-ClearCorner.Parent = Clear
+ClearCorner.CornerRadius = UDim.new(0, 7)
+ClearCorner.Parent = ClearButton
 
-Obfuscate.MouseEnter:Connect(function()
+ObfuscateButton.MouseEnter:Connect(function()
     Tween(
-        Obfuscate,
-        TweenInfo.new(0.15),
+        ObfuscateButton,
+        TweenInfo.new(0.12),
         {
-            BackgroundColor3 = Color3.fromRGB(145, 95, 245)
+            BackgroundColor3 = Color3.fromRGB(242, 87, 73)
         }
     )
 end)
 
-Obfuscate.MouseLeave:Connect(function()
+ObfuscateButton.MouseLeave:Connect(function()
     Tween(
-        Obfuscate,
-        TweenInfo.new(0.15),
+        ObfuscateButton,
+        TweenInfo.new(0.12),
         {
-            BackgroundColor3 = Color3.fromRGB(125, 80, 220)
+            BackgroundColor3 = Accent
         }
     )
 end)
 
-Copy.MouseEnter:Connect(function()
+CopyButton.MouseEnter:Connect(function()
     Tween(
-        Copy,
-        TweenInfo.new(0.15),
+        CopyButton,
+        TweenInfo.new(0.12),
         {
-            BackgroundColor3 = Color3.fromRGB(42, 42, 51)
+            BackgroundColor3 = Color3.fromRGB(38, 38, 45)
         }
     )
 end)
 
-Copy.MouseLeave:Connect(function()
+CopyButton.MouseLeave:Connect(function()
     Tween(
-        Copy,
-        TweenInfo.new(0.15),
+        CopyButton,
+        TweenInfo.new(0.12),
         {
-            BackgroundColor3 = Color3.fromRGB(31, 31, 38)
+            BackgroundColor3 = Surface2
         }
     )
 end)
 
-Clear.MouseEnter:Connect(function()
+ClearButton.MouseEnter:Connect(function()
     Tween(
-        Clear,
-        TweenInfo.new(0.15),
+        ClearButton,
+        TweenInfo.new(0.12),
         {
-            BackgroundColor3 = Color3.fromRGB(42, 42, 51)
+            BackgroundColor3 = Color3.fromRGB(38, 38, 45)
         }
     )
 end)
 
-Clear.MouseLeave:Connect(function()
+ClearButton.MouseLeave:Connect(function()
     Tween(
-        Clear,
-        TweenInfo.new(0.15),
+        ClearButton,
+        TweenInfo.new(0.12),
         {
-            BackgroundColor3 = Color3.fromRGB(31, 31, 38)
+            BackgroundColor3 = Surface2
         }
     )
 end)
 
-Obfuscate.MouseButton1Click:Connect(function()
+ObfuscateButton.MouseButton1Click:Connect(function()
     if Input.Text == "" then
         Output.Text = ""
         return
@@ -891,24 +851,68 @@ Obfuscate.MouseButton1Click:Connect(function()
     end
 end)
 
-Copy.MouseButton1Click:Connect(function()
+CopyButton.MouseButton1Click:Connect(function()
     if Output.Text == "" then
         return
     end
 
-    if setclipboard then
+    if type(setclipboard) == "function" then
         setclipboard(Output.Text)
-        Copy.Text = "Copied!"
+        CopyButton.Text = "Copied!"
 
         task.delay(1, function()
-            if Copy then
-                Copy.Text = "Copy"
+            if CopyButton.Parent then
+                CopyButton.Text = "Copy"
             end
         end)
     end
 end)
 
-Clear.MouseButton1Click:Connect(function()
+ClearButton.MouseButton1Click:Connect(function()
     Input.Text = ""
     Output.Text = ""
+end)
+
+local Dragging = false
+local DragStart
+local StartPosition
+
+Top.InputBegan:Connect(function(InputObject)
+    if InputObject.UserInputType == Enum.UserInputType.MouseButton1
+        or InputObject.UserInputType == Enum.UserInputType.Touch then
+
+        Dragging = true
+        DragStart = InputObject.Position
+        StartPosition = Main.Position
+
+        InputObject.Changed:Connect(function()
+            if InputObject.UserInputState == Enum.UserInputState.End then
+                Dragging = false
+            end
+        end)
+    end
+end)
+
+Top.InputChanged:Connect(function(InputObject)
+    if InputObject.UserInputType == Enum.UserInputType.MouseMovement
+        or InputObject.UserInputType == Enum.UserInputType.Touch then
+
+        local Connection
+
+        Connection = InputObject:GetPropertyChangedSignal("Position"):Connect(function()
+            if not Dragging then
+                Connection:Disconnect()
+                return
+            end
+
+            local Delta = InputObject.Position - DragStart
+
+            Main.Position = UDim2.new(
+                StartPosition.X.Scale,
+                StartPosition.X.Offset + Delta.X,
+                StartPosition.Y.Scale,
+                StartPosition.Y.Offset + Delta.Y
+            )
+        end)
+    end
 end)
