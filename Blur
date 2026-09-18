@@ -11,6 +11,7 @@ end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
 local TweenService = GetService("TweenService")
+local UIS = GetService("UserInputService")
 
 local function Tween(Object, Speed, Props, Style, Dir)
     return TweenService:Create(
@@ -38,61 +39,123 @@ local function UID(Length)
     return table.concat(Id)
 end
 
-local function HttpGet(Url)
-    local Get = game.HttpGetAsync or game.HttpGet
-    return loadstring(Get(game, Url))()
-end
-
 local LuauKeywords = {
-    ["and"] = true, ["break"] = true, ["do"] = true, ["else"] = true,
-    ["elseif"] = true, ["end"] = true, ["false"] = true, ["for"] = true,
-    ["function"] = true, ["if"] = true, ["in"] = true, ["local"] = true,
-    ["nil"] = true, ["not"] = true, ["or"] = true, ["repeat"] = true,
-    ["return"] = true, ["then"] = true, ["true"] = true, ["until"] = true,
-    ["while"] = true, ["continue"] = true,
+    ["and"] = true,
+    ["break"] = true,
+    ["do"] = true,
+    ["else"] = true,
+    ["elseif"] = true,
+    ["end"] = true,
+    ["false"] = true,
+    ["for"] = true,
+    ["function"] = true,
+    ["if"] = true,
+    ["in"] = true,
+    ["local"] = true,
+    ["nil"] = true,
+    ["not"] = true,
+    ["or"] = true,
+    ["repeat"] = true,
+    ["return"] = true,
+    ["then"] = true,
+    ["true"] = true,
+    ["until"] = true,
+    ["while"] = true,
+    ["continue"] = true,
+    ["type"] = true,
+    ["export"] = true
 }
 
 local LuauBuiltins = {
-    "print", "warn", "error", "assert", "pcall", "xpcall", "ipairs", "pairs",
-    "next", "select", "tonumber", "tostring", "type", "unpack", "rawget",
-    "rawset", "rawequal", "rawlen", "setmetatable", "getmetatable", "require",
-    "loadstring", "load", "dofile", "loadfile", "coroutine", "math", "string",
-    "table", "os", "io", "bit32", "utf8", "task", "game", "workspace",
-    "script", "plugin", "shared", "_G", "_ENV", "Enum", "Instance", "Vector2",
-    "Vector3", "CFrame", "Color3", "BrickColor", "UDim", "UDim2", "Rect",
-    "NumberSequence", "ColorSequence", "NumberRange", "Ray", "RaycastParams",
-    "TweenInfo", "Random", "DateTime", "tick", "time", "wait", "spawn",
-    "delay", "typeof", "gcinfo", "newproxy", "collectgarbage",
+    "print",
+    "warn",
+    "error",
+    "assert",
+    "pcall",
+    "xpcall",
+    "ipairs",
+    "pairs",
+    "next",
+    "select",
+    "tonumber",
+    "tostring",
+    "type",
+    "typeof",
+    "unpack",
+    "rawget",
+    "rawset",
+    "rawequal",
+    "rawlen",
+    "setmetatable",
+    "getmetatable",
+    "require",
+    "loadstring",
+    "load",
+    "coroutine",
+    "math",
+    "string",
+    "table",
+    "os",
+    "bit32",
+    "utf8",
+    "task",
+    "game",
+    "workspace",
+    "script",
+    "plugin",
+    "shared",
+    "_G",
+    "_ENV",
+    "Enum",
+    "Instance",
+    "Vector2",
+    "Vector3",
+    "Vector2int16",
+    "Vector3int16",
+    "CFrame",
+    "Color3",
+    "BrickColor",
+    "UDim",
+    "UDim2",
+    "Rect",
+    "NumberSequence",
+    "ColorSequence",
+    "NumberRange",
+    "Ray",
+    "RaycastParams",
+    "TweenInfo",
+    "Random",
+    "DateTime",
+    "tick",
+    "time",
+    "wait",
+    "spawn",
+    "delay",
+    "gcinfo",
+    "newproxy",
+    "collectgarbage",
+    "cloneref",
+    "getgenv",
+    "gethui",
+    "setclipboard",
+    "toclipboard"
 }
 
 local LuauBuiltinsSet = {}
 
-for _, v in ipairs(LuauBuiltins) do
-    LuauBuiltinsSet[v] = true
+for _, Value in ipairs(LuauBuiltins) do
+    LuauBuiltinsSet[Value] = true
 end
 
 local function RandomName(Length)
-    Length = Length or math.random(8, 16)
+    Length = Length or math.random(3, 8)
 
-    local Consonants = "bcdfghjklmnpqrstvwxyz"
-    local Vowels = "aeiou"
-    local Name = {}
-    local UseVowel = math.random(0, 1) == 0
+    local Chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    local Name = table.create(Length)
 
     for i = 1, Length do
-        if UseVowel then
-            local Idx = math.random(1, #Vowels)
-            Name[i] = Vowels:sub(Idx, Idx)
-        else
-            local Idx = math.random(1, #Consonants)
-            Name[i] = Consonants:sub(Idx, Idx)
-        end
-
-        UseVowel = not UseVowel
-    end
-
-    if math.random(0, 1) == 0 then
-        Name[1] = Name[1]:upper()
+        local Index = math.random(1, #Chars)
+        Name[i] = Chars:sub(Index, Index)
     end
 
     return table.concat(Name)
@@ -106,7 +169,7 @@ local function ObfuscatorUsed()
             local Name
 
             repeat
-                Name = (Base or "") .. RandomName(math.random(6, 14))
+                Name = (Base or "") .. RandomName(math.random(3, 8))
             until not Used[Name]
                 and not LuauKeywords[Name]
                 and not LuauBuiltinsSet[Name]
@@ -129,7 +192,7 @@ local TokenType = {
     Space = "Space",
     Comment = "Comment",
     LongString = "LongString",
-    Eof = "Eof",
+    Eof = "Eof"
 }
 
 local function Tokenize(Source)
@@ -142,24 +205,24 @@ local function Tokenize(Source)
         return Source:sub(Pos + Offset, Pos + Offset)
     end
 
-    local function Advance(N)
-        N = N or 1
+    local function Advance(Count)
+        Count = Count or 1
 
-        local Ch = Source:sub(Pos, Pos + N - 1)
+        local Value = Source:sub(Pos, Pos + Count - 1)
 
-        Pos = Pos + N
+        Pos = Pos + Count
 
-        return Ch
+        return Value
     end
 
-    local function MatchLongBracket()
+    local function ReadLongBracket()
         if Peek() ~= "[" then
             return nil
         end
 
-        local Level = 0
         local Start = Pos
         local I = Pos + 1
+        local Level = 0
 
         while Source:sub(I, I) == "=" do
             Level = Level + 1
@@ -170,26 +233,26 @@ local function Tokenize(Source)
             return nil
         end
 
-        local OpenLen = Level + 2
+        local OpenLength = Level + 2
+        local Close = "]" .. string.rep("=", Level) .. "]"
 
-        Pos = Pos + OpenLen
+        Pos = Pos + OpenLength
 
-        local Close = "]" .. ("="):rep(Level) .. "]"
-        local ClosePos = Source:find(Close, Pos, true)
+        local ClosePosition = Source:find(Close, Pos, true)
 
-        if not ClosePos then
-            local Remaining = Source:sub(Pos)
+        if not ClosePosition then
+            local Value = Source:sub(Start)
 
             Pos = Len + 1
 
-            return Source:sub(Start, Start + OpenLen - 1) .. Remaining
+            return Value
         end
 
-        local Content = Source:sub(Start, ClosePos + #Close - 1)
+        local Value = Source:sub(Start, ClosePosition + #Close - 1)
 
-        Pos = ClosePos + #Close
+        Pos = ClosePosition + #Close
 
-        return Content
+        return Value
     end
 
     while Pos <= Len do
@@ -198,35 +261,44 @@ local function Tokenize(Source)
         if Ch == "\n" then
             Advance()
 
-            table.insert(Tokens, {
+            Tokens[#Tokens + 1] = {
                 Type = TokenType.Newline,
                 Value = "\n"
-            })
+            }
 
-        elseif Ch == " " or Ch == "\t" or Ch == "\r" then
+        elseif Ch == " "
+            or Ch == "\t"
+            or Ch == "\r" then
+
             local Start = Pos
 
-            while Pos <= Len
-                and (Peek() == " " or Peek() == "\t" or Peek() == "\r") do
+            while Pos <= Len do
+                local Current = Peek()
+
+                if Current ~= " "
+                    and Current ~= "\t"
+                    and Current ~= "\r" then
+                    break
+                end
+
                 Advance()
             end
 
-            table.insert(Tokens, {
+            Tokens[#Tokens + 1] = {
                 Type = TokenType.Space,
                 Value = Source:sub(Start, Pos - 1)
-            })
+            }
 
         elseif Ch == "-" and Peek(1) == "-" then
             Advance(2)
 
-            local Long = MatchLongBracket()
+            local Long = ReadLongBracket()
 
             if Long then
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = TokenType.Comment,
-                    Value = "--" .. Long,
-                    IsLong = true
-                })
+                    Value = "--" .. Long
+                }
             else
                 local Start = Pos
 
@@ -234,261 +306,192 @@ local function Tokenize(Source)
                     Advance()
                 end
 
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = TokenType.Comment,
                     Value = "--" .. Source:sub(Start, Pos - 1)
-                })
+                }
             end
 
         elseif Ch == "[" then
-            local SavePos = Pos
-            local Long = MatchLongBracket()
+            local Save = Pos
+            local Long = ReadLongBracket()
 
             if Long then
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = TokenType.LongString,
                     Value = Long
-                })
+                }
             else
-                Pos = SavePos
+                Pos = Save
                 Advance()
 
-                table.insert(Tokens, {
+                Tokens[#Tokens + 1] = {
                     Type = TokenType.Punct,
                     Value = "["
-                })
+                }
             end
 
         elseif Ch == '"' or Ch == "'" then
             local Quote = Advance()
-            local Parts = { Quote }
+            local Parts = {Quote}
 
             while Pos <= Len do
-                local C = Peek()
+                local Current = Peek()
 
-                if C == "\\" then
+                if Current == "\\" then
                     Parts[#Parts + 1] = Advance()
 
                     if Pos <= Len then
                         Parts[#Parts + 1] = Advance()
                     end
-                elseif C == Quote then
+                elseif Current == Quote then
                     Parts[#Parts + 1] = Advance()
                     break
-                elseif C == "\n" then
+                elseif Current == "\n" then
                     break
                 else
                     Parts[#Parts + 1] = Advance()
                 end
             end
 
-            table.insert(Tokens, {
+            Tokens[#Tokens + 1] = {
                 Type = TokenType.String,
                 Value = table.concat(Parts)
-            })
+            }
 
         elseif Ch:match("%d")
             or (Ch == "." and Peek(1):match("%d")) then
 
             local Start = Pos
 
-            if Ch == "0" and (Peek(1) == "x" or Peek(1) == "X") then
-                Advance(2)
+            if Ch == "0"
+                and (Peek(1) == "x" or Peek(1) == "X") then
 
-                while Pos <= Len and Peek():match("[%x_]") do
-                    Advance()
-                end
-            elseif Ch == "0" and (Peek(1) == "b" or Peek(1) == "B") then
                 Advance(2)
 
                 while Pos <= Len
-                    and (Peek() == "0" or Peek() == "1" or Peek() == "_") do
-                    Advance()
-                end
-            else
-                while Pos <= Len and Peek():match("[%d_]") do
+                    and Peek():match("[%da-fA-F_]") do
                     Advance()
                 end
 
-                if Pos <= Len
-                    and Peek() == "."
+            elseif Ch == "0"
+                and (Peek(1) == "b" or Peek(1) == "B") then
+
+                Advance(2)
+
+                while Pos <= Len
+                    and Peek():match("[01_]") do
+                    Advance()
+                end
+
+            else
+                while Pos <= Len
+                    and Peek():match("[%d_]") do
+                    Advance()
+                end
+
+                if Peek() == "."
                     and Peek(1):match("%d") then
 
                     Advance()
 
-                    while Pos <= Len and Peek():match("[%d_]") do
+                    while Pos <= Len
+                        and Peek():match("[%d_]") do
                         Advance()
                     end
                 end
 
-                if Pos <= Len and (Peek() == "e" or Peek() == "E") then
+                if Peek() == "e"
+                    or Peek() == "E" then
+
                     Advance()
 
-                    if Pos <= Len
-                        and (Peek() == "+" or Peek() == "-") then
+                    if Peek() == "+"
+                        or Peek() == "-" then
                         Advance()
                     end
 
-                    while Pos <= Len and Peek():match("%d") do
+                    while Pos <= Len
+                        and Peek():match("[%d_]") do
                         Advance()
                     end
                 end
             end
 
-            table.insert(Tokens, {
+            Tokens[#Tokens + 1] = {
                 Type = TokenType.Number,
                 Value = Source:sub(Start, Pos - 1)
-            })
+            }
 
         elseif Ch:match("[%a_]") then
             local Start = Pos
 
-            while Pos <= Len and Peek():match("[%w_]") do
+            while Pos <= Len
+                and Peek():match("[%w_]") do
                 Advance()
             end
 
             local Word = Source:sub(Start, Pos - 1)
 
-            if LuauKeywords[Word] then
-                table.insert(Tokens, {
-                    Type = TokenType.Keyword,
-                    Value = Word
-                })
-            else
-                table.insert(Tokens, {
-                    Type = TokenType.Name,
-                    Value = Word
-                })
-            end
-
-        elseif Ch == "." then
-            if Peek(1) == "." and Peek(2) == "." then
-                Advance(3)
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = "..."
-                })
-            elseif Peek(1) == "." then
-                Advance(2)
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = ".."
-                })
-            else
-                Advance()
-
-                table.insert(Tokens, {
-                    Type = TokenType.Punct,
-                    Value = "."
-                })
-            end
-
-        elseif Ch == "=" then
-            if Peek(1) == "=" then
-                Advance(2)
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = "=="
-                })
-            else
-                Advance()
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = "="
-                })
-            end
-
-        elseif Ch == "~" and Peek(1) == "=" then
-            Advance(2)
-
-            table.insert(Tokens, {
-                Type = TokenType.Op,
-                Value = "~="
-            })
-
-        elseif Ch == "<" then
-            if Peek(1) == "=" then
-                Advance(2)
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = "<="
-                })
-            elseif Peek(1) == "<" then
-                Advance(2)
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = "<<"
-                })
-            else
-                Advance()
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = "<"
-                })
-            end
-
-        elseif Ch == ">" then
-            if Peek(1) == "=" then
-                Advance(2)
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = ">="
-                })
-            elseif Peek(1) == ">" then
-                Advance(2)
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = ">>"
-                })
-            else
-                Advance()
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = ">"
-                })
-            end
-
-        elseif Ch == "/" then
-            if Peek(1) == "/" then
-                Advance(2)
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = "//"
-                })
-            else
-                Advance()
-
-                table.insert(Tokens, {
-                    Type = TokenType.Op,
-                    Value = "/"
-                })
-            end
+            Tokens[#Tokens + 1] = {
+                Type = LuauKeywords[Word]
+                    and TokenType.Keyword
+                    or TokenType.Name,
+                Value = Word
+            }
 
         else
-            Advance()
+            local Three = Ch .. Peek(1) .. Peek(2)
+            local Two = Ch .. Peek(1)
 
-            table.insert(Tokens, {
-                Type = TokenType.Punct,
-                Value = Ch
-            })
+            if Three == "..." then
+                Advance(3)
+
+                Tokens[#Tokens + 1] = {
+                    Type = TokenType.Op,
+                    Value = "..."
+                }
+
+            elseif Two == ".."
+                or Two == "=="
+                or Two == "~="
+                or Two == "<="
+                or Two == ">="
+                or Two == "<<"
+                or Two == ">>"
+                or Two == "//"
+                or Two == "+="
+                or Two == "-="
+                or Two == "*="
+                or Two == "/="
+                or Two == "%="
+                or Two == "^="
+                or Two == "&="
+                or Two == "|="
+                or Two == "::" then
+
+                Advance(2)
+
+                Tokens[#Tokens + 1] = {
+                    Type = TokenType.Op,
+                    Value = Two
+                }
+
+            else
+                Advance()
+
+                Tokens[#Tokens + 1] = {
+                    Type = TokenType.Punct,
+                    Value = Ch
+                }
+            end
         end
     end
 
-    table.insert(Tokens, {
+    Tokens[#Tokens + 1] = {
         Type = TokenType.Eof,
         Value = ""
-    })
+    }
 
     return Tokens
 end
@@ -500,7 +503,9 @@ local function CollectLocals(Tokens)
     while I <= #Tokens do
         local Tok = Tokens[I]
 
-        if Tok.Type == TokenType.Keyword and Tok.Value == "local" then
+        if Tok.Type == TokenType.Keyword
+            and Tok.Value == "local" then
+
             local J = I + 1
 
             while J <= #Tokens
@@ -511,38 +516,40 @@ local function CollectLocals(Tokens)
                 J = J + 1
             end
 
-            if J <= #Tokens
+            if Tokens[J]
                 and Tokens[J].Type == TokenType.Keyword
                 and Tokens[J].Value == "function" then
 
-                local K = J + 1
+                J = J + 1
 
-                while K <= #Tokens
+                while J <= #Tokens
                     and (
-                        Tokens[K].Type == TokenType.Space
-                        or Tokens[K].Type == TokenType.Newline
+                        Tokens[J].Type == TokenType.Space
+                        or Tokens[J].Type == TokenType.Newline
                     ) do
-                    K = K + 1
+                    J = J + 1
                 end
 
-                if K <= #Tokens and Tokens[K].Type == TokenType.Name then
-                    Locals[Tokens[K].Value] = true
+                if Tokens[J]
+                    and Tokens[J].Type == TokenType.Name then
+
+                    Locals[Tokens[J].Value] = true
                 end
-            elseif J <= #Tokens and Tokens[J].Type == TokenType.Name then
-                local K = J
+            else
+                while J <= #Tokens do
+                    local Current = Tokens[J]
 
-                while K <= #Tokens do
-                    local T2 = Tokens[K]
-
-                    if T2.Type == TokenType.Name then
-                        Locals[T2.Value] = true
-                    elseif T2.Type == TokenType.Punct and T2.Value == "," then
-                    elseif T2.Type == TokenType.Space then
+                    if Current.Type == TokenType.Name then
+                        Locals[Current.Value] = true
+                    elseif Current.Type == TokenType.Punct
+                        and Current.Value == "," then
+                    elseif Current.Type == TokenType.Space
+                        or Current.Type == TokenType.Newline then
                     else
                         break
                     end
 
-                    K = K + 1
+                    J = J + 1
                 end
             end
         end
@@ -553,43 +560,32 @@ local function CollectLocals(Tokens)
     return Locals
 end
 
-local function IsAfterDot(Tokens, Index)
+local function IsMemberAccess(Tokens, Index)
     local I = Index - 1
 
-    while I >= 1 and Tokens[I].Type == TokenType.Space do
+    while I >= 1
+        and (
+            Tokens[I].Type == TokenType.Space
+            or Tokens[I].Type == TokenType.Newline
+        ) do
         I = I - 1
     end
 
-    if I >= 1
-        and Tokens[I].Type == TokenType.Punct
-        and Tokens[I].Value == "." then
-        return true
+    if not Tokens[I] then
+        return false
     end
 
-    if I >= 1
-        and Tokens[I].Type == TokenType.Punct
-        and Tokens[I].Value == ":" then
-        return true
-    end
-
-    return false
-end
-
-local function IsBeforeParen(Tokens, Index)
-    local I = Index + 1
-
-    while I <= #Tokens and Tokens[I].Type == TokenType.Space do
-        I = I + 1
-    end
-
-    return false
+    return Tokens[I].Value == "."
+        or Tokens[I].Value == ":"
 end
 
 local function BuildRenameMap(Tokens, LocalSet, Names)
     local Map = {}
 
-    for Name, _ in pairs(LocalSet) do
-        if not LuauKeywords[Name] and not LuauBuiltinsSet[Name] then
+    for Name in pairs(LocalSet) do
+        if not LuauKeywords[Name]
+            and not LuauBuiltinsSet[Name] then
+
             Map[Name] = Names:New()
         end
     end
@@ -597,151 +593,352 @@ local function BuildRenameMap(Tokens, LocalSet, Names)
     return Map
 end
 
-local function EncodeString(Str)
-    local Inner = Str:sub(2, -2)
-    local Quote = Str:sub(1, 1)
-    local Parts = {}
+local function DecodeStringValue(Value)
+    local Inner = Value:sub(2, -2)
+    local Result = {}
     local I = 1
 
     while I <= #Inner do
-        local C = Inner:sub(I, I)
+        local Ch = Inner:sub(I, I)
 
-        if C == "\\" and I < #Inner then
-            Parts[#Parts + 1] = C .. Inner:sub(I + 1, I + 1)
-            I = I + 2
+        if Ch == "\\" then
+            local Next = Inner:sub(I + 1, I + 1)
+
+            if Next == "x"
+                and Inner:sub(I + 2, I + 3):match("^[%da-fA-F][%da-fA-F]$") then
+
+                local Hex = Inner:sub(I + 2, I + 3)
+                Result[#Result + 1] = string.char(tonumber(Hex, 16))
+                I = I + 4
+
+            elseif Next == "n" then
+                Result[#Result + 1] = "\n"
+                I = I + 2
+
+            elseif Next == "r" then
+                Result[#Result + 1] = "\r"
+                I = I + 2
+
+            elseif Next == "t" then
+                Result[#Result + 1] = "\t"
+                I = I + 2
+
+            elseif Next == "a" then
+                Result[#Result + 1] = "\a"
+                I = I + 2
+
+            elseif Next == "b" then
+                Result[#Result + 1] = "\b"
+                I = I + 2
+
+            elseif Next == "f" then
+                Result[#Result + 1] = "\f"
+                I = I + 2
+
+            elseif Next == "v" then
+                Result[#Result + 1] = "\v"
+                I = I + 2
+
+            elseif Next == "\\" then
+                Result[#Result + 1] = "\\"
+                I = I + 2
+
+            elseif Next == '"' then
+                Result[#Result + 1] = '"'
+                I = I + 2
+
+            elseif Next == "'" then
+                Result[#Result + 1] = "'"
+                I = I + 2
+
+            else
+                Result[#Result + 1] = Ch
+                I = I + 1
+            end
         else
-            local Byte = C:byte()
-
-            Parts[#Parts + 1] = "\\x" .. string.format("%02x", Byte)
-
+            Result[#Result + 1] = Ch
             I = I + 1
         end
+    end
+
+    return table.concat(Result)
+end
+
+local function EncodeString(Value)
+    local Quote = Value:sub(1, 1)
+
+    if Value:sub(-1) ~= Quote then
+        return Value
+    end
+
+    local Decoded = DecodeStringValue(Value)
+    local Parts = table.create(#Decoded)
+
+    for I = 1, #Decoded do
+        Parts[I] = string.format("\\x%02X", Decoded:byte(I))
     end
 
     return Quote .. table.concat(Parts) .. Quote
 end
 
-local function ObfuscateNumber(NumStr)
-    local N = tonumber(NumStr)
+local function ObfuscateNumber(Value)
+    local Number = tonumber(Value)
 
-    if not N then
-        return NumStr
+    if not Number
+        or Number ~= math.floor(Number)
+        or Number < 0
+        or Number > 1000000 then
+
+        return Value
     end
 
-    if N ~= math.floor(N) then
-        return NumStr
+    local Mode = math.random(1, 4)
+
+    if Mode == 1 then
+        local A = math.random(1, 255)
+        local B = Number - A
+
+        if B >= 0 then
+            return "(" .. tostring(A) .. "+" .. tostring(B) .. ")"
+        end
+
+    elseif Mode == 2 then
+        return "0x" .. string.format("%X", Number)
+
+    elseif Mode == 3
+        and Number <= 65535 then
+
+        local Binary = {}
+
+        if Number == 0 then
+            return "0b0"
+        end
+
+        local N = Number
+
+        while N > 0 do
+            Binary[#Binary + 1] = tostring(N % 2)
+            N = math.floor(N / 2)
+        end
+
+        for I = 1, math.floor(#Binary / 2) do
+            Binary[I], Binary[#Binary - I + 1] =
+                Binary[#Binary - I + 1], Binary[I]
+        end
+
+        return "0b" .. table.concat(Binary)
+
+    elseif Mode == 4 then
+        local A = math.random(2, 20)
+        local B = math.floor(Number / A)
+        local C = Number - A * B
+
+        if B >= 0 and C >= 0 then
+            return "("
+                .. tostring(A)
+                .. "*"
+                .. tostring(B)
+                .. "+"
+                .. tostring(C)
+                .. ")"
+        end
     end
 
-    if N < 0 or N > 1000000 then
-        return NumStr
-    end
-
-    local A = math.random(1, 300)
-    local B = math.random(1, 300)
-    local C = math.floor(N) - A - B
-
-    return "("
-        .. tostring(A)
-        .. "+"
-        .. tostring(B)
-        .. "+"
-        .. tostring(C)
-        .. ")"
+    return Value
 end
 
 local JunkTemplates = {
     function(Names)
-        local N = Names:New("_j")
-        local V = math.random(100, 9999)
-
-        return "local "
-            .. N
-            .. "="
-            .. tostring(V)
-            .. "+"
-            .. tostring(math.random(1, 100))
+        local A = Names:New("_")
+        return "local " .. A .. "=" .. tostring(math.random(10, 9999))
     end,
 
     function(Names)
-        local N = Names:New("_j")
-
-        return "local "
-            .. N
-            .. '=string.rep("'
-            .. RandomName(3)
-            .. '",'
-            .. tostring(math.random(1, 3))
-            .. ")"
+        local A = Names:New("_")
+        return "local " .. A .. "=type(nil)"
     end,
 
     function(Names)
-        local N = Names:New("_j")
-        local A = math.random(1, 50)
-        local B = math.random(1, 50)
-
-        return "local "
-            .. N
-            .. "="
-            .. tostring(A)
-            .. "*"
-            .. tostring(B)
+        local A = Names:New("_")
+        return "local " .. A .. "={}"
     end,
 
     function(Names)
-        local N = Names:New("_j")
-
-        return "local " .. N .. "=type(nil)"
+        local A = Names:New("_")
+        local B = math.random(1, 20)
+        return "local " .. A .. "=" .. tostring(B) .. "*" .. tostring(B)
     end,
 
     function(Names)
-        local N = Names:New("_j")
-
-        return "local "
-            .. N
-            .. "=math.floor("
-            .. tostring(math.random(10, 999))
-            .. ")"
-    end,
-
-    function(Names)
-        local N = Names:New("_j")
-        local Iter = Names:New("_i")
-        local Acc = Names:New("_a")
-        local Lim = math.random(1, 3)
-
-        return "local "
-            .. Acc
-            .. "=0;for "
-            .. Iter
-            .. "=1,"
-            .. tostring(Lim)
-            .. " do "
-            .. Acc
-            .. "="
-            .. Acc
-            .. "+1 end;local "
-            .. N
-            .. "="
-            .. Acc
-    end,
-
-    function(Names)
-        local N = Names:New("_j")
-
-        return "local "
-            .. N
-            .. "={"
-            .. tostring(math.random(1, 9))
-            .. ","
-            .. tostring(math.random(1, 9))
-            .. "}"
-    end,
+        local A = Names:New("_")
+        return "local " .. A .. "=string.char(" .. tostring(math.random(65, 90)) .. ")"
+    end
 }
 
-local function GetJunkLine(Names)
-    local T = JunkTemplates[math.random(1, #JunkTemplates)]
+local function GetJunk(Names)
+    return JunkTemplates[math.random(1, #JunkTemplates)](Names)
+end
 
-    return T(Names)
+local function IsWordLike(Token)
+    if not Token then
+        return false
+    end
+
+    if Token.Type == TokenType.Name
+        or Token.Type == TokenType.Keyword
+        or Token.Type == TokenType.Number then
+        return true
+    end
+
+    return false
+end
+
+local function NeedSeparator(Previous, Current)
+    if not Previous
+        or not Current then
+        return false
+    end
+
+    if IsWordLike(Previous)
+        and IsWordLike(Current) then
+        return true
+    end
+
+    if Previous.Type == TokenType.Op
+        and Current.Type == TokenType.Op then
+        return true
+    end
+
+    if Previous.Value == "-"
+        and Current.Value == "-" then
+        return true
+    end
+
+    return false
+end
+
+local function BuildCompact(Tokens, RenameMap, Options, Names)
+    local Output = {}
+    local Previous = nil
+    local JunkCounter = 0
+    local JunkEvery = math.random(7, 14)
+
+    for Index, Token in ipairs(Tokens) do
+        if Token.Type == TokenType.Eof then
+            break
+        end
+
+        if Token.Type == TokenType.Comment then
+            if not Options.StripComments then
+                Output[#Output + 1] = Token.Value
+                Previous = Token
+            end
+
+        elseif Token.Type == TokenType.Space
+            or Token.Type == TokenType.Newline then
+
+            if not Options.Minify then
+                Output[#Output + 1] = " "
+            end
+
+        elseif Token.Type == TokenType.LongString then
+            Output[#Output + 1] = Token.Value
+            Previous = Token
+
+        elseif Token.Type == TokenType.String then
+            if Options.EncodeStrings then
+                Token.Value = EncodeString(Token.Value)
+            end
+
+            if NeedSeparator(Previous, Token) then
+                Output[#Output + 1] = " "
+            end
+
+            Output[#Output + 1] = Token.Value
+            Previous = Token
+
+        elseif Token.Type == TokenType.Number then
+            local Value = Token.Value
+
+            if Options.ObfuscateNums then
+                Value = ObfuscateNumber(Value)
+            end
+
+            if NeedSeparator(Previous, Token) then
+                Output[#Output + 1] = " "
+            end
+
+            Output[#Output + 1] = Value
+            Previous = {
+                Type = TokenType.Number,
+                Value = Value
+            }
+
+        elseif Token.Type == TokenType.Name then
+            local Value = Token.Value
+
+            if Options.RenameLocals
+                and RenameMap[Value]
+                and not IsMemberAccess(Tokens, Index) then
+
+                Value = RenameMap[Value]
+            end
+
+            if NeedSeparator(Previous, Token) then
+                Output[#Output + 1] = " "
+            end
+
+            Output[#Output + 1] = Value
+
+            Previous = {
+                Type = TokenType.Name,
+                Value = Value
+            }
+
+        else
+            local Value = Token.Value
+
+            if NeedSeparator(Previous, Token) then
+                Output[#Output + 1] = " "
+            end
+
+            Output[#Output + 1] = Value
+
+            Previous = {
+                Type = Token.Type,
+                Value = Value
+            }
+        end
+
+        if Options.InsertJunk
+            and not Options.Minify
+            and Token.Type == TokenType.Newline then
+
+            JunkCounter = JunkCounter + 1
+
+            if JunkCounter >= JunkEvery then
+                Output[#Output + 1] = GetJunk(Names)
+                JunkCounter = 0
+                JunkEvery = math.random(7, 14)
+            end
+        end
+    end
+
+    return table.concat(Output)
+end
+
+local function NormalizeOneLine(Source)
+    Source = Source:gsub("%s+", " ")
+
+    Source = Source:gsub("%s*([%(%)%{%}%[%],;:%?])%s*", "%1")
+    Source = Source:gsub("%s*([%.])%s*", "%1")
+
+    Source = Source:gsub("%s*([+%*/%^%%<>~&|])%s*", "%1")
+    Source = Source:gsub("%s*=%s*", "=")
+
+    Source = Source:gsub("%s+", " ")
+
+    return Source:match("^%s*(.-)%s*$")
 end
 
 local function Obfuscate(Source, Options)
@@ -750,159 +947,61 @@ local function Obfuscate(Source, Options)
     local RenameLocals = Options.RenameLocals ~= false
     local EncodeStrings = Options.EncodeStrings ~= false
     local ObfuscateNums = Options.ObfuscateNums ~= false
-    local InsertJunk = Options.InsertJunk ~= false
+    local InsertJunk = Options.InsertJunk == true
     local StripComments = Options.StripComments ~= false
-    local Minify = Options.Minify == true
+    local Minify = Options.Minify ~= false
 
-    local Ok, Tokens = pcall(Tokenize, Source)
+    local Success, Tokens = pcall(Tokenize, Source)
 
-    if not Ok then
+    if not Success then
         return nil, "Tokenizer error: " .. tostring(Tokens)
     end
 
     local Names = ObfuscatorUsed()
-
-    local LocalSet = {}
-
-    if RenameLocals then
-        LocalSet = CollectLocals(Tokens)
-    end
-
+    local LocalSet = CollectLocals(Tokens)
     local RenameMap = {}
 
     if RenameLocals then
         RenameMap = BuildRenameMap(Tokens, LocalSet, Names)
     end
 
-    local Output = {}
-    local PrevWasAlnum = false
-    local LineCount = 0
-    local JunkEvery = math.random(4, 8)
-    local LinesSinceJunk = 0
+    local Result = BuildCompact(
+        Tokens,
+        RenameMap,
+        {
+            RenameLocals = RenameLocals,
+            EncodeStrings = EncodeStrings,
+            ObfuscateNums = ObfuscateNums,
+            InsertJunk = InsertJunk,
+            StripComments = StripComments,
+            Minify = Minify
+        },
+        Names
+    )
 
-    for I, Tok in ipairs(Tokens) do
-        if Tok.Type == TokenType.Eof then
-            break
-        end
+    Result = NormalizeOneLine(Result)
 
-        if Tok.Type == TokenType.Comment then
-            if not StripComments then
-                Output[#Output + 1] = Tok.Value
-            end
+    local WrapperName = Names:New()
+    local ReturnName = Names:New()
 
-        elseif Tok.Type == TokenType.LongString then
-            Output[#Output + 1] = Tok.Value
-
-        elseif Tok.Type == TokenType.String then
-            if EncodeStrings then
-                local Quote = Tok.Value:sub(1, 1)
-
-                if Quote == '"' or Quote == "'" then
-                    Output[#Output + 1] = EncodeString(Tok.Value)
-                else
-                    Output[#Output + 1] = Tok.Value
-                end
-            else
-                Output[#Output + 1] = Tok.Value
-            end
-
-        elseif Tok.Type == TokenType.Number then
-            if ObfuscateNums
-                and not Tok.Value:match("[xXbBoO]")
-                and not Tok.Value:match("[eE]")
-                and not Tok.Value:match("%.") then
-
-                Output[#Output + 1] = ObfuscateNumber(Tok.Value)
-            else
-                Output[#Output + 1] = Tok.Value
-            end
-
-        elseif Tok.Type == TokenType.Name then
-            local Val = Tok.Value
-
-            if RenameLocals
-                and RenameMap[Val]
-                and not IsAfterDot(Tokens, I) then
-
-                Val = RenameMap[Val]
-            end
-
-            if PrevWasAlnum then
-                Output[#Output + 1] = " "
-            end
-
-            Output[#Output + 1] = Val
-            PrevWasAlnum = true
-
-        elseif Tok.Type == TokenType.Keyword then
-            if PrevWasAlnum then
-                Output[#Output + 1] = " "
-            end
-
-            Output[#Output + 1] = Tok.Value
-            PrevWasAlnum = true
-
-        elseif Tok.Type == TokenType.Space then
-            if Minify then
-                PrevWasAlnum = false
-            else
-                Output[#Output + 1] = Tok.Value
-                PrevWasAlnum = false
-            end
-
-        elseif Tok.Type == TokenType.Newline then
-            LineCount = LineCount + 1
-            LinesSinceJunk = LinesSinceJunk + 1
-
-            if Minify then
-                Output[#Output + 1] = ";"
-                PrevWasAlnum = false
-            else
-                if InsertJunk
-                    and LinesSinceJunk >= JunkEvery
-                    and math.random(0, 2) ~= 0 then
-
-                    local JunkCount = math.random(1, 2)
-
-                    for _ = 1, JunkCount do
-                        Output[#Output + 1] = "\n" .. GetJunkLine(Names)
-                    end
-
-                    LinesSinceJunk = 0
-                    JunkEvery = math.random(4, 9)
-                end
-
-                Output[#Output + 1] = "\n"
-                PrevWasAlnum = false
-            end
-
-        else
-            local Val = Tok.Value
-            local IsAlnum = Val:match("[%w_]")
-
-            if IsAlnum and PrevWasAlnum then
-                Output[#Output + 1] = " "
-            end
-
-            Output[#Output + 1] = Val
-            PrevWasAlnum = IsAlnum ~= nil
-        end
+    if Result == "" then
+        return nil, "No valid source."
     end
 
-    local Result = table.concat(Output)
+    local Wrapped =
+        "return(function()"
+        .. "local "
+        .. WrapperName
+        .. "="
+        .. ReturnName
+        .. ";"
+        .. Result
+        .. ";"
+        .. "end)()"
 
-    if InsertJunk and not Minify then
-        local HeaderLines = {}
-        local JunkCountHeader = math.random(3, 6)
+    Wrapped = Wrapped:gsub(";;+", ";")
 
-        for _ = 1, JunkCountHeader do
-            HeaderLines[#HeaderLines + 1] = GetJunkLine(Names)
-        end
-
-        Result = table.concat(HeaderLines, "\n") .. "\n" .. Result
-    end
-
-    return Result, nil
+    return Wrapped, nil
 end
 
 local ScreenGui = Instance.new("ScreenGui")
@@ -923,14 +1022,13 @@ local Colors = {
     Text = Color3.fromRGB(237, 237, 237),
     Text2 = Color3.fromRGB(153, 153, 153),
     Text3 = Color3.fromRGB(85, 85, 85),
-    Green = Color3.fromRGB(74, 222, 128),
+    Green = Color3.fromRGB(74, 222, 128)
 }
 
 local function Corner(Object, Radius)
     local C = Instance.new("UICorner")
     C.CornerRadius = UDim.new(0, Radius or 7)
     C.Parent = Object
-
     return C
 end
 
@@ -939,7 +1037,6 @@ local function Stroke(Object, Color, Thickness)
     S.Color = Color
     S.Thickness = Thickness or 1
     S.Parent = Object
-
     return S
 end
 
@@ -953,11 +1050,8 @@ local function Label(Parent, Text, Size, Color, Font)
     L.TextXAlignment = Enum.TextXAlignment.Left
     L.TextYAlignment = Enum.TextYAlignment.Center
     L.Parent = Parent
-
     return L
 end
-
-local UIS = GetService("UserInputService")
 
 local VP = workspace.CurrentCamera.ViewportSize
 local WinW = math.clamp(VP.X * 0.84, 560, 1050)
@@ -1064,7 +1158,9 @@ CloseButton.MouseButton1Click:Connect(function()
     }):Play()
 
     task.delay(0.18, function()
-        ScreenGui:Destroy()
+        if ScreenGui.Parent then
+            ScreenGui:Destroy()
+        end
     end)
 end)
 
@@ -1169,7 +1265,7 @@ SectionHeader(Left, "INPUT")
 SectionHeader(Right, "OUTPUT")
 
 local InputContainer = Instance.new("Frame")
-InputContainer.Size = UDim2.new(1, 0, 1, -34 - 128)
+InputContainer.Size = UDim2.new(1, 0, 1, -162)
 InputContainer.Position = UDim2.new(0, 0, 0, 34)
 InputContainer.BackgroundColor3 = Colors.Editor
 InputContainer.BorderSizePixel = 0
@@ -1177,7 +1273,7 @@ InputContainer.ClipsDescendants = true
 InputContainer.Parent = Left
 
 local OutputContainer = Instance.new("Frame")
-OutputContainer.Size = UDim2.new(1, 0, 1, -34 - 48)
+OutputContainer.Size = UDim2.new(1, 0, 1, -82)
 OutputContainer.Position = UDim2.new(0, 0, 0, 34)
 OutputContainer.BackgroundColor3 = Colors.Editor
 OutputContainer.BorderSizePixel = 0
@@ -1346,7 +1442,7 @@ local OptStripComments = Toggle(
 local OptMinify = Toggle(
     Options,
     "Minify Output",
-    false,
+    true,
     170,
     72
 )
@@ -1473,12 +1569,15 @@ ObfButton.MouseButton1Click:Connect(function()
             InsertJunk = OptInsertJunk.Value,
             ObfuscateNums = OptObfNums.Value,
             StripComments = OptStripComments.Value,
-            Minify = OptMinify.Value,
+            Minify = OptMinify.Value
         })
 
         if Err then
             OutputBox.Text = ""
-            SetStatus("Error: " .. tostring(Err), Colors.Accent)
+            SetStatus(
+                "Error: " .. tostring(Err),
+                Colors.Accent
+            )
         else
             OutputBox.Text = Result
 
@@ -1519,16 +1618,13 @@ CopyButton.MouseButton1Click:Connect(function()
     local Copied = false
 
     if type(setclipboard) == "function" then
-        local Success = pcall(setclipboard, Text)
-        Copied = Success
+        Copied = pcall(setclipboard, Text)
     elseif type(toclipboard) == "function" then
-        local Success = pcall(toclipboard, Text)
-        Copied = Success
+        Copied = pcall(toclipboard, Text)
     elseif type(Clipboard) == "table"
         and type(Clipboard.set) == "function" then
 
-        local Success = pcall(Clipboard.set, Text)
-        Copied = Success
+        Copied = pcall(Clipboard.set, Text)
     end
 
     if Copied then
@@ -1537,7 +1633,10 @@ CopyButton.MouseButton1Click:Connect(function()
         CopyButton.Text = "Copied"
         CopyButton.TextColor3 = Colors.Green
 
-        SetStatus("Output copied to clipboard.", Colors.Green)
+        SetStatus(
+            "Output copied to clipboard.",
+            Colors.Green
+        )
 
         task.delay(1.4, function()
             if CopyButton.Parent then
@@ -1546,7 +1645,10 @@ CopyButton.MouseButton1Click:Connect(function()
             end
         end)
     else
-        SetStatus("Clipboard API unavailable.", Colors.Accent)
+        SetStatus(
+            "Clipboard API unavailable.",
+            Colors.Accent
+        )
     end
 end)
 
