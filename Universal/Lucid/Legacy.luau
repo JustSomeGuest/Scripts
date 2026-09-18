@@ -553,10 +553,13 @@ function Funcs.CreateResultCard(data, parent)
 
         if runBtn then
             runBtn.MouseButton1Click:Connect(function()
-                local fn, loadErr = loadstring(scriptData.Code or "")
-                if not fn then error(loadErr) end
-                local success, runErr = pcall(fn)
-                if not success then error(runErr) end
+                local code = ResolveCode()
+                if code then
+                    local fn, loadErr = loadstring(code)
+                    if not fn then error(loadErr) end
+                    local success, runErr = pcall(fn)
+                    if not success then error(runErr) end
+                end
             end)
         end
         if copyBtn then
