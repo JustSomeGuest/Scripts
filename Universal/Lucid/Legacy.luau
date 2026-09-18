@@ -1936,7 +1936,7 @@ Customize Lucid to your liking.
 
 <b>Credits</b>
 
-<i>Designed and developed by JustSomeGuest</i>]]]]
+<i>Designed and developed by JustSomeGuest</i>]]
 UI.InfoLabel2.TextColor3 = Color3.fromRGB(255, 255, 255)
 UI.InfoLabel2.TextSize = 14
 UI.InfoLabel2.TextWrapped = true
