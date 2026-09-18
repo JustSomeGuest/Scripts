@@ -9,585 +9,401 @@ local function GetService(Name)
     return cloneref and cloneref(Svc) or Svc
 end
 
-local Hui = type(gethui) == "function" and gethui() or GetService("CoreGui")
+local Hui = gethui and gethui() or GetService("CoreGui")
 local TweenService = GetService("TweenService")
-local UIS = GetService("UserInputService")
+local UserInputService = GetService("UserInputService")
 
-local Accent = Color3.fromRGB(232, 72, 58)
-local Background = Color3.fromRGB(12, 12, 14)
-local Surface = Color3.fromRGB(18, 18, 21)
-local Surface2 = Color3.fromRGB(24, 24, 28)
-local Border = Color3.fromRGB(38, 38, 42)
-local Text = Color3.fromRGB(235, 235, 238)
-local Muted = Color3.fromRGB(125, 125, 132)
-
-local function Tween(Obj, Time, Props)
-    TweenService:Create(
-        Obj,
-        TweenInfo.new(Time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+local function Tween(Object, Speed, Props, Style, Dir)
+    return TweenService:Create(
+        Object,
+        TweenInfo.new(
+            Speed,
+            Enum.EasingStyle[Style or "Quad"],
+            Enum.EasingDirection[Dir or "Out"]
+        ),
         Props
-    ):Play()
+    )
 end
 
 local function UID(Length)
+    Length = Length or 64
+
     local Chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    local Out = ""
+    local Id = table.create(Length)
 
-    repeat
-        Out ..= Chars:sub(math.random(1, #Chars), math.random(1, #Chars))
-    until #Out >= Length
-
-    return Out:sub(1, Length)
-end
-
-local function Xor(A, B)
-    local Result = 0
-    local Bit = 1
-
-    while A > 0 or B > 0 do
-        local AA = A % 2
-        local BB = B % 2
-
-        if AA ~= BB then
-            Result += Bit
-        end
-
-        A = math.floor(A / 2)
-        B = math.floor(B / 2)
-        Bit *= 2
+    for I = 1, Length do
+        local Rand = math.random(1, #Chars)
+        Id[I] = Chars:sub(Rand, Rand)
     end
 
-    return Result
+    return table.concat(Id)
 end
 
-local function EncodeSource(Source)
-    local Key = math.random(31, 223)
-    local Bytes = table.create(#Source)
+local function HttpGet(Url)
+    local Get = game.HttpGetAsync or game.HttpGet
+    return loadstring(Get(game, Url))()
+end
+
+math.randomseed(os.clock() * 1000000)
+
+local Blur = {}
+
+local Accent = Color3.fromRGB(232, 72, 58)
+local Background = Color3.fromRGB(13, 13, 16)
+local Surface = Color3.fromRGB(18, 18, 22)
+local Surface2 = Color3.fromRGB(23, 23, 28)
+local Border = Color3.fromRGB(38, 38, 44)
+local Text = Color3.fromRGB(238, 238, 242)
+local SubText = Color3.fromRGB(125, 125, 134)
+
+local function Encode(Source, Key)
+    local Data = table.create(#Source)
 
     for I = 1, #Source do
-        local Byte = string.byte(Source, I)
-        local Mask = (Key + I * 13) % 256
-        Bytes[I] = Xor(Byte, Mask)
+        Data[I] = (string.byte(Source, I) + Key + I * 13) % 256
     end
 
-    return Key, Bytes
+    return Data
 end
 
-local function Name()
-    local Chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    local Result = Chars:sub(math.random(1, 52), math.random(1, 52))
+local function MakeLoader(Source)
+    local A = UID(math.random(2, 4))
+    local B = UID(math.random(2, 4))
+    local C = UID(math.random(2, 4))
+    local D = UID(math.random(2, 4))
+    local E = UID(math.random(2, 4))
+    local F = UID(math.random(2, 4))
+    local G = UID(math.random(2, 4))
+    local H = UID(math.random(2, 4))
 
-    for _ = 1, math.random(1, 2) do
-        Result ..= Chars:sub(math.random(1, 52), math.random(1, 52))
-    end
+    local Key = math.random(10000, 99999)
+    local Data = Encode(Source, Key)
 
-    return Result
-end
-
-local function MakeLoader(Source, Options)
-    local Key, Bytes = EncodeSource(Source)
-
-    local A = Name()
-    local B = Name()
-    local C = Name()
-    local D = Name()
-    local E = Name()
-    local F = Name()
-    local G = Name()
-    local H = Name()
-    local I = Name()
-    local J = Name()
-    local K = Name()
-    local L = Name()
-
-    local Data = {}
-
-    for Index, Byte in ipairs(Bytes) do
-        Data[Index] = tostring(Byte)
-    end
-
-    local Junk = ""
-
-    if Options.Junk then
-        local X = Name()
-        local Y = Name()
-        local Z = Name()
-
-        Junk = table.concat({
-            "local ",
-            X,
-            "=",
-            math.random(10000, 99999),
-            ";local ",
-            Y,
-            "={};local ",
-            Z,
-            "=",
-            X,
-            "+",
-            math.random(100, 999),
-            ";"
-        })
-    end
-
-    local Output = table.concat({
-        "return(function()",
-        "local ",
-        A,
-        ",",
-        B,
-        ",",
-        C,
-        ",",
-        D,
-        ",",
-        E,
-        ",",
-        F,
-        "=",
-        "string,",
-        "loadstring,",
-        "pcall,",
-        "type,",
-        "table,",
-        "math",
-        ";",
-        Junk,
-        "local ",
-        G,
-        "={",
-        table.concat(Data, ","),
-        "};",
-        "local ",
-        H,
-        "=",
-        Key,
-        ";",
-        "local ",
-        I,
-        "=\"\";",
-        "local ",
-        J,
-        ";",
-        "for ",
-        J,
-        "=1,#",
-        G,
-        " do ",
-        "local ",
-        K,
-        "=",
-        G,
-        "[",
-        J,
-        "];",
-        "local ",
-        L,
-        "=",
-        "(",
-        K,
-        "-(",
-        H,
-        "+",
-        J,
-        "*13))%256;",
-        I,
-        "=",
-        I,
-        "..",
-        A,
-        ".char(",
-        L,
-        ");",
-        "end;",
-        "local ",
-        J,
-        "=",
-        B,
-        "(",
-        I,
-        ");",
-        "if ",
-        E,
-        "(",
-        J,
-        ")~=\"function\" then return end;",
-        "return ",
-        J,
-        "()",
-        "end)()"
+    return table.concat({
+        "return({function()",
+        "local ", A, ",", B, ",", C, ",", D, "=string,loadstring,pcall,type",
+        ";local ", E, "=", Key,
+        ";local ", F, "={", table.concat(Data, ","), "}",
+        ";local ", G, "=\"\"",
+        ";local ", H, "=1",
+        ";while ", H, "<=#", F, " do ",
+        G, "=", G, "..", A, ".char((",
+        F, "[", H, "]-", E, "-", H, "*13)%256)",
+        ";", H, "=", H, "+1 end",
+        ";local ", A, "=", B, "(", G, ")",
+        ";if ", D, "(", A, ')=="function" then return ', A, "() end",
+        "end})[1]()"
     })
-
-    return Output
 end
 
-local function Obfuscate(Source, Options)
-    if Source == "" then
-        return ""
-    end
+local Existing = Hui:FindFirstChild("Blur")
 
-    return MakeLoader(Source, Options)
+if Existing then
+    Existing:Destroy()
 end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = Name()
+Gui.Name = "Blur"
 Gui.IgnoreGuiInset = true
 Gui.ResetOnSpawn = false
 Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 Gui.Parent = Hui
 
 local Main = Instance.new("Frame")
+Main.Name = "Main"
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.Position = UDim2.fromScale(0.5, 0.5)
+Main.Size = UDim2.fromOffset(540, 350)
 Main.BackgroundColor3 = Background
 Main.BorderSizePixel = 0
-Main.Position = UDim2.fromScale(0.5, 0.5)
-Main.Size = UDim2.fromOffset(570, 365)
+Main.ClipsDescendants = true
 Main.Parent = Gui
 
 local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0, 9)
+MainCorner.CornerRadius = UDim.new(0, 12)
 MainCorner.Parent = Main
 
 local MainStroke = Instance.new("UIStroke")
 MainStroke.Color = Border
 MainStroke.Thickness = 1
+MainStroke.Transparency = 0.2
 MainStroke.Parent = Main
 
-local Top = Instance.new("Frame")
-Top.BackgroundTransparency = 1
-Top.Position = UDim2.fromOffset(0, 0)
-Top.Size = UDim2.new(1, 0, 0, 50)
-Top.Parent = Main
+local Topbar = Instance.new("Frame")
+Topbar.Name = "Topbar"
+Topbar.Size = UDim2.new(1, 0, 0, 50)
+Topbar.BackgroundColor3 = Surface
+Topbar.BorderSizePixel = 0
+Topbar.Active = true
+Topbar.Parent = Main
+
+local TopbarLine = Instance.new("Frame")
+TopbarLine.Name = "Line"
+TopbarLine.Position = UDim2.new(0, 0, 1, -1)
+TopbarLine.Size = UDim2.new(1, 0, 0, 1)
+TopbarLine.BackgroundColor3 = Border
+TopbarLine.BorderSizePixel = 0
+TopbarLine.Parent = Topbar
 
 local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Position = UDim2.fromOffset(17, 7)
+Title.Size = UDim2.fromOffset(300, 21)
 Title.BackgroundTransparency = 1
-Title.Position = UDim2.fromOffset(16, 8)
-Title.Size = UDim2.fromOffset(400, 22)
 Title.Font = Enum.Font.GothamBold
 Title.Text = "Blur"
 Title.TextColor3 = Text
 Title.TextSize = 16
 Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.Parent = Top
+Title.Parent = Topbar
 
 local Subtitle = Instance.new("TextLabel")
+Subtitle.Name = "Subtitle"
+Subtitle.Position = UDim2.fromOffset(18, 27)
+Subtitle.Size = UDim2.fromOffset(300, 16)
 Subtitle.BackgroundTransparency = 1
-Subtitle.Position = UDim2.fromOffset(17, 28)
-Subtitle.Size = UDim2.fromOffset(400, 16)
 Subtitle.Font = Enum.Font.Gotham
 Subtitle.Text = "Luau obfuscator"
-Subtitle.TextColor3 = Muted
+Subtitle.TextColor3 = SubText
 Subtitle.TextSize = 9
 Subtitle.TextXAlignment = Enum.TextXAlignment.Left
-Subtitle.Parent = Top
+Subtitle.Parent = Topbar
 
-local AccentLine = Instance.new("Frame")
-AccentLine.BackgroundColor3 = Accent
-AccentLine.BorderSizePixel = 0
-AccentLine.Position = UDim2.fromOffset(16, 46)
-AccentLine.Size = UDim2.fromOffset(35, 2)
-AccentLine.Parent = Top
+local Close = Instance.new("TextButton")
+Close.Name = "Close"
+Close.AnchorPoint = Vector2.new(1, 0.5)
+Close.Position = UDim2.new(1, -12, 0.5, 0)
+Close.Size = UDim2.fromOffset(28, 28)
+Close.BackgroundColor3 = Surface2
+Close.BorderSizePixel = 0
+Close.AutoButtonColor = false
+Close.Font = Enum.Font.GothamMedium
+Close.Text = "×"
+Close.TextColor3 = Color3.fromRGB(180, 180, 188)
+Close.TextSize = 18
+Close.Parent = Topbar
 
-local Input = Instance.new("TextBox")
-Input.BackgroundColor3 = Surface
-Input.BorderSizePixel = 0
-Input.ClearTextOnFocus = false
-Input.MultiLine = true
-Input.Position = UDim2.fromOffset(15, 59)
-Input.Size = UDim2.fromOffset(265, 190)
-Input.Font = Enum.Font.Code
-Input.PlaceholderColor3 = Muted
-Input.PlaceholderText = "Paste Luau..."
-Input.Text = ""
-Input.TextColor3 = Text
-Input.TextSize = 11
-Input.TextWrapped = false
-Input.TextXAlignment = Enum.TextXAlignment.Left
-Input.TextYAlignment = Enum.TextYAlignment.Top
-Input.Parent = Main
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0, 7)
+CloseCorner.Parent = Close
 
-local InputCorner = Instance.new("UICorner")
-InputCorner.CornerRadius = UDim.new(0, 7)
-InputCorner.Parent = Input
+local Editor = Instance.new("TextBox")
+Editor.Name = "Editor"
+Editor.Position = UDim2.fromOffset(14, 61)
+Editor.Size = UDim2.new(1, -28, 1, -125)
+Editor.BackgroundColor3 = Color3.fromRGB(10, 10, 13)
+Editor.BorderSizePixel = 0
+Editor.ClearTextOnFocus = false
+Editor.Font = Enum.Font.Code
+Editor.MultiLine = true
+Editor.PlaceholderText = "Paste Luau source..."
+Editor.PlaceholderColor3 = Color3.fromRGB(70, 70, 77)
+Editor.Text = ""
+Editor.TextColor3 = Color3.fromRGB(220, 220, 224)
+Editor.TextSize = 12
+Editor.TextXAlignment = Enum.TextXAlignment.Left
+Editor.TextYAlignment = Enum.TextYAlignment.Top
+Editor.TextWrapped = false
+Editor.Parent = Main
 
-local InputStroke = Instance.new("UIStroke")
-InputStroke.Color = Border
-InputStroke.Thickness = 1
-InputStroke.Parent = Input
+local EditorCorner = Instance.new("UICorner")
+EditorCorner.CornerRadius = UDim.new(0, 9)
+EditorCorner.Parent = Editor
+
+local EditorPadding = Instance.new("UIPadding")
+EditorPadding.PaddingTop = UDim.new(0, 10)
+EditorPadding.PaddingBottom = UDim.new(0, 10)
+EditorPadding.PaddingLeft = UDim.new(0, 11)
+EditorPadding.PaddingRight = UDim.new(0, 11)
+EditorPadding.Parent = Editor
 
 local Output = Instance.new("TextBox")
-Output.BackgroundColor3 = Surface
+Output.Name = "Output"
+Output.Position = Editor.Position
+Output.Size = Editor.Size
+Output.BackgroundColor3 = Editor.BackgroundColor3
 Output.BorderSizePixel = 0
 Output.ClearTextOnFocus = false
-Output.MultiLine = true
-Output.Position = UDim2.fromOffset(290, 59)
-Output.Size = UDim2.fromOffset(265, 190)
 Output.Font = Enum.Font.Code
-Output.PlaceholderColor3 = Muted
-Output.PlaceholderText = "Output..."
+Output.MultiLine = true
 Output.Text = ""
-Output.TextColor3 = Text
-Output.TextEditable = false
+Output.TextColor3 = Editor.TextColor3
 Output.TextSize = 11
-Output.TextWrapped = false
 Output.TextXAlignment = Enum.TextXAlignment.Left
 Output.TextYAlignment = Enum.TextYAlignment.Top
+Output.TextWrapped = false
+Output.Visible = false
 Output.Parent = Main
 
 local OutputCorner = Instance.new("UICorner")
-OutputCorner.CornerRadius = UDim.new(0, 7)
+OutputCorner.CornerRadius = UDim.new(0, 9)
 OutputCorner.Parent = Output
 
-local OutputStroke = Instance.new("UIStroke")
-OutputStroke.Color = Border
-OutputStroke.Thickness = 1
-OutputStroke.Parent = Output
+local OutputPadding = Instance.new("UIPadding")
+OutputPadding.PaddingTop = UDim.new(0, 10)
+OutputPadding.PaddingBottom = UDim.new(0, 10)
+OutputPadding.PaddingLeft = UDim.new(0, 11)
+OutputPadding.PaddingRight = UDim.new(0, 11)
+OutputPadding.Parent = Output
 
-local OptionsFrame = Instance.new("Frame")
-OptionsFrame.BackgroundTransparency = 1
-OptionsFrame.Position = UDim2.fromOffset(15, 260)
-OptionsFrame.Size = UDim2.fromOffset(540, 35)
-OptionsFrame.Parent = Main
+local Status = Instance.new("TextLabel")
+Status.Name = "Status"
+Status.Position = UDim2.fromOffset(16, 320)
+Status.Size = UDim2.fromOffset(180, 18)
+Status.BackgroundTransparency = 1
+Status.Font = Enum.Font.Gotham
+Status.Text = "Ready"
+Status.TextColor3 = SubText
+Status.TextSize = 9
+Status.TextXAlignment = Enum.TextXAlignment.Left
+Status.Parent = Main
 
-local State = {
-    Junk = true
-}
+local Action = Instance.new("TextButton")
+Action.Name = "Action"
+Action.AnchorPoint = Vector2.new(0.5, 1)
+Action.Position = UDim2.new(0.5, 0, 1, -13)
+Action.Size = UDim2.fromOffset(285, 38)
+Action.BackgroundColor3 = Accent
+Action.BorderSizePixel = 0
+Action.AutoButtonColor = false
+Action.Font = Enum.Font.GothamBold
+Action.Text = "Obfuscate"
+Action.TextColor3 = Color3.fromRGB(255, 255, 255)
+Action.TextSize = 12
+Action.Parent = Main
 
-local JunkButton = Instance.new("TextButton")
-JunkButton.BackgroundTransparency = 1
-JunkButton.Position = UDim2.fromOffset(0, 0)
-JunkButton.Size = UDim2.fromOffset(150, 22)
-JunkButton.AutoButtonColor = false
-JunkButton.Text = ""
-JunkButton.Parent = OptionsFrame
+local ActionCorner = Instance.new("UICorner")
+ActionCorner.CornerRadius = UDim.new(0, 8)
+ActionCorner.Parent = Action
 
-local JunkBox = Instance.new("Frame")
-JunkBox.BackgroundColor3 = Accent
-JunkBox.BorderSizePixel = 0
-JunkBox.Position = UDim2.fromOffset(0, 3)
-JunkBox.Size = UDim2.fromOffset(13, 13)
-JunkBox.Parent = JunkButton
-
-local JunkCorner = Instance.new("UICorner")
-JunkCorner.CornerRadius = UDim.new(0, 3)
-JunkCorner.Parent = JunkBox
-
-local JunkText = Instance.new("TextLabel")
-JunkText.BackgroundTransparency = 1
-JunkText.Position = UDim2.fromOffset(20, 0)
-JunkText.Size = UDim2.fromOffset(125, 20)
-JunkText.Font = Enum.Font.Gotham
-JunkText.Text = "Add junk"
-JunkText.TextColor3 = Color3.fromRGB(190, 190, 196)
-JunkText.TextSize = 10
-JunkText.TextXAlignment = Enum.TextXAlignment.Left
-JunkText.Parent = JunkButton
-
-JunkButton.MouseButton1Click:Connect(function()
-    State.Junk = not State.Junk
-
-    Tween(
-        JunkBox,
-        0.12,
-        {
-            BackgroundColor3 = State.Junk
-                and Accent
-                or Color3.fromRGB(42, 42, 46)
-        }
-    )
-end)
-
-local ObfuscateButton = Instance.new("TextButton")
-ObfuscateButton.BackgroundColor3 = Accent
-ObfuscateButton.BorderSizePixel = 0
-ObfuscateButton.Position = UDim2.fromOffset(15, 315)
-ObfuscateButton.Size = UDim2.fromOffset(270, 38)
-ObfuscateButton.AutoButtonColor = false
-ObfuscateButton.Font = Enum.Font.GothamBold
-ObfuscateButton.Text = "Obfuscate"
-ObfuscateButton.TextColor3 = Color3.new(1, 1, 1)
-ObfuscateButton.TextSize = 12
-ObfuscateButton.Parent = Main
-
-local ObfuscateCorner = Instance.new("UICorner")
-ObfuscateCorner.CornerRadius = UDim.new(0, 7)
-ObfuscateCorner.Parent = ObfuscateButton
-
-local ObfuscateRatio = Instance.new("UIAspectRatioConstraint")
-ObfuscateRatio.AspectRatio = 7.1
-ObfuscateRatio.Parent = ObfuscateButton
-
-local CopyButton = Instance.new("TextButton")
-CopyButton.BackgroundColor3 = Surface2
-CopyButton.BorderSizePixel = 0
-CopyButton.Position = UDim2.fromOffset(295, 315)
-CopyButton.Size = UDim2.fromOffset(125, 38)
-CopyButton.AutoButtonColor = false
-CopyButton.Font = Enum.Font.GothamBold
-CopyButton.Text = "Copy"
-CopyButton.TextColor3 = Text
-CopyButton.TextSize = 11
-CopyButton.Parent = Main
-
-local CopyCorner = Instance.new("UICorner")
-CopyCorner.CornerRadius = UDim.new(0, 7)
-CopyCorner.Parent = CopyButton
-
-local ClearButton = Instance.new("TextButton")
-ClearButton.BackgroundColor3 = Surface2
-ClearButton.BorderSizePixel = 0
-ClearButton.BorderSizePixel = 0
-ClearButton.Position = UDim2.fromOffset(430, 315)
-ClearButton.Size = UDim2.fromOffset(125, 38)
-ClearButton.AutoButtonColor = false
-ClearButton.Font = Enum.Font.GothamBold
-ClearButton.Text = "Clear"
-ClearButton.TextColor3 = Text
-ClearButton.TextSize = 11
-ClearButton.Parent = Main
-
-local ClearCorner = Instance.new("UICorner")
-ClearCorner.CornerRadius = UDim.new(0, 7)
-ClearCorner.Parent = ClearButton
-
-ObfuscateButton.MouseEnter:Connect(function()
-    Tween(
-        ObfuscateButton,
-        0.12,
-        {
-            BackgroundColor3 = Color3.fromRGB(245, 87, 73)
-        }
-    )
-end)
-
-ObfuscateButton.MouseLeave:Connect(function()
-    Tween(
-        ObfuscateButton,
-        0.12,
-        {
-            BackgroundColor3 = Accent
-        }
-    )
-end)
-
-CopyButton.MouseEnter:Connect(function()
-    Tween(
-        CopyButton,
-        0.12,
-        {
-            BackgroundColor3 = Color3.fromRGB(34, 34, 39)
-        }
-    )
-end)
-
-CopyButton.MouseLeave:Connect(function()
-    Tween(
-        CopyButton,
-        0.12,
-        {
-            BackgroundColor3 = Surface2
-        }
-    )
-end)
-
-ClearButton.MouseEnter:Connect(function()
-    Tween(
-        ClearButton,
-        0.12,
-        {
-            BackgroundColor3 = Color3.fromRGB(34, 34, 39)
-        }
-    )
-end)
-
-ClearButton.MouseLeave:Connect(function()
-    Tween(
-        ClearButton,
-        0.12,
-        {
-            BackgroundColor3 = Surface2
-        }
-    )
-end)
-
-ObfuscateButton.MouseButton1Click:Connect(function()
-    if Input.Text == "" then
-        Output.Text = ""
-        return
-    end
-
-    local Success, Result = pcall(function()
-        return Obfuscate(Input.Text, State)
-    end)
-
-    if Success then
-        Output.Text = Result
-    else
-        Output.Text = "Obfuscation failed:\n" .. tostring(Result)
-    end
-end)
-
-CopyButton.MouseButton1Click:Connect(function()
-    if Output.Text == "" then
-        return
-    end
-
-    if type(setclipboard) == "function" then
-        setclipboard(Output.Text)
-        CopyButton.Text = "Copied!"
-
-        task.delay(1, function()
-            if CopyButton.Parent then
-                CopyButton.Text = "Copy"
-            end
-        end)
-    end
-end)
-
-ClearButton.MouseButton1Click:Connect(function()
-    Input.Text = ""
-    Output.Text = ""
-end)
+local Back = Instance.new("TextButton")
+Back.Name = "Back"
+Back.Position = UDim2.fromOffset(205, 319)
+Back.Size = UDim2.fromOffset(45, 18)
+Back.BackgroundTransparency = 1
+Back.AutoButtonColor = false
+Back.Font = Enum.Font.GothamMedium
+Back.Text = "Back"
+Back.TextColor3 = Accent
+Back.TextSize = 9
+Back.Visible = false
+Back.Parent = Main
 
 local Dragging = false
 local DragStart
 local StartPosition
-local DragInput
 
-Top.InputBegan:Connect(function(InputObject)
-    if InputObject.UserInputType == Enum.UserInputType.MouseButton1
-        or InputObject.UserInputType == Enum.UserInputType.Touch then
-
+Topbar.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
         Dragging = true
-        DragStart = InputObject.Position
+        DragStart = Input.Position
         StartPosition = Main.Position
-        DragInput = InputObject
-
-        InputObject.Changed:Connect(function()
-            if InputObject.UserInputState == Enum.UserInputState.End then
-                Dragging = false
-            end
-        end)
     end
 end)
 
-Top.InputChanged:Connect(function(InputObject)
-    if InputObject.UserInputType == Enum.UserInputType.MouseMovement
-        or InputObject.UserInputType == Enum.UserInputType.Touch then
-
-        DragInput = InputObject
+Topbar.InputEnded:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+        Dragging = false
     end
 end)
 
-UIS.InputChanged:Connect(function(InputObject)
-    if InputObject == DragInput and Dragging then
-        local Delta = InputObject.Position - DragStart
-
-        Main.Position = UDim2.new(
-            StartPosition.X.Scale,
-            StartPosition.X.Offset + Delta.X,
-            StartPosition.Y.Scale,
-            StartPosition.Y.Offset + Delta.Y
-        )
+UserInputService.InputChanged:Connect(function(Input)
+    if not Dragging then
+        return
     end
+
+    if Input.UserInputType ~= Enum.UserInputType.MouseMovement and Input.UserInputType ~= Enum.UserInputType.Touch then
+        return
+    end
+
+    local Delta = Input.Position - DragStart
+
+    Main.Position = UDim2.new(
+        StartPosition.X.Scale,
+        StartPosition.X.Offset + Delta.X,
+        StartPosition.Y.Scale,
+        StartPosition.Y.Offset + Delta.Y
+    )
 end)
+
+Close.MouseEnter:Connect(function()
+    Tween(Close, 0.12, {
+        BackgroundColor3 = Color3.fromRGB(40, 40, 46)
+    }):Play()
+end)
+
+Close.MouseLeave:Connect(function()
+    Tween(Close, 0.12, {
+        BackgroundColor3 = Surface2
+    }):Play()
+end)
+
+Action.MouseEnter:Connect(function()
+    Tween(Action, 0.12, {
+        BackgroundColor3 = Color3.fromRGB(242, 82, 67)
+    }):Play()
+end)
+
+Action.MouseLeave:Connect(function()
+    Tween(Action, 0.12, {
+        BackgroundColor3 = Accent
+    }):Play()
+end)
+
+Close.MouseButton1Click:Connect(function()
+    Gui:Destroy()
+end)
+
+Back.MouseButton1Click:Connect(function()
+    Output.Visible = false
+    Editor.Visible = true
+    Back.Visible = false
+    Action.Text = "Obfuscate"
+    Status.Text = "Ready"
+end)
+
+Action.MouseButton1Click:Connect(function()
+    if Output.Visible then
+        if type(setclipboard) == "function" then
+            setclipboard(Output.Text)
+            Status.Text = "Copied"
+        else
+            Status.Text = "Output ready"
+        end
+
+        return
+    end
+
+    local Source = Editor.Text
+
+    if Source == "" then
+        Status.Text = "Nothing to obfuscate"
+        return
+    end
+
+    Status.Text = "Obfuscating..."
+    Action.Active = false
+
+    task.wait()
+
+    local Success, Result = pcall(MakeLoader, Source)
+
+    Action.Active = true
+
+    if not Success or type(Result) ~= "string" or Result == "" then
+        Status.Text = "Obfuscation failed"
+        return
+    end
+
+    Output.Text = Result
+    Editor.Visible = false
+    Output.Visible = true
+    Back.Visible = true
+    Action.Text = "Copy Output"
+    Status.Text = "Obfuscated"
+end)
+
+Blur.Gui = Gui
+Blur.MakeLoader = MakeLoader
+
+Env.Blur = Blur
