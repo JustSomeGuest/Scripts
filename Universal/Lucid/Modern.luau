@@ -873,17 +873,76 @@ do
 	aboutL.FontFace = GothamMed
 	aboutL.TextSize = 13
 	aboutL.TextColor3 = SUBTEXT
-	aboutL.Text = [[Lucid — A modern executor interface
-Version: Modern
+	aboutL.Text = [[<b>Lucid</b>
 
-• Search scripts from RScripts.net or ScriptBlox
-• Save favorite scripts for quick access
-• Multi-tab code editor with syntax highlighting
-• Console tab — view print/warn output live
-• Built-in music player (Lucid/Music/ folder)
-• Customize colors in Settings
+<i>A better UI for your executor.</i>
 
-Created by JustSomeGuest]]
+Lucid is a custom executor UI designed to replace the default interface of your executor with a cleaner, more feature-rich experience.
+
+Some executors offer powerful execution capabilities but have a UI that feels outdated, cluttered, or simply isn't enjoyable to use. <b>Lucid</b> was created to solve that.
+
+<b>Version</b>
+
+<font color="#9B7CFF">Modern [V2]</font>
+
+<i>The modern Lucid experience.</i>
+
+<b>Executor</b>
+
+Your main workspace for writing and executing scripts.
+
+• <b>Multi-Tab Editor</b> — Work with multiple scripts at once.
+• <b>Syntax Highlighting</b> — Easier-to-read Lua code.
+• <b>Execute</b> — Run your current script.
+• <b>Clear</b> — Quickly clear the editor.
+• <b>Copy</b> — Copy your code with one click.
+
+<b>Search</b>
+
+Find scripts without leaving Lucid.
+
+Search supported script sources such as <b>rscripts.net</b> and <b>ScriptBlox</b>, then filter results by:
+
+• <b>All</b>
+• <b>Key</b>
+• <b>Keyless</b>
+
+Found something useful? You can <b>execute</b> the script, <b>copy</b> its code, or <b>save</b> it directly to your Scripts library.
+
+<b>Scripts</b>
+
+Keep your scripts organized in one place.
+
+Use the search bar to quickly find saved scripts, or create a new one with:
+
+• <b>Title</b>
+• <b>Description</b>
+• <b>Code</b>
+
+Saved scripts can be <b>executed</b> or <b>deleted</b> whenever you want.
+
+<b>Music</b>
+
+A built-in music player for your own audio collection.
+
+Place your audio files in <b>Lucid/Music/</b> and play them directly through Lucid.
+
+• <b>Song List</b>
+• <b>Volume</b>
+• <b>Playback Speed</b>
+• <b>Loop</b>
+
+<b>Settings</b>
+
+Customize Lucid to your liking.
+
+• <b>Animations</b> — Toggle UI animations.
+• <b>Theme Customization</b> — Create your own theme using RGB values.
+• <b>Preset Themes</b> — Quickly switch between built-in themes.
+
+<b>Credits</b>
+
+<i>Designed and developed by JustSomeGuest</i>]]
 	aboutL.Size = UDim2.new(1,0,0,0)
 	aboutL.AutomaticSize = Enum.AutomaticSize.Y
 	aboutL.TextWrapped = true
