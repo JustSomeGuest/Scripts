@@ -653,7 +653,7 @@ FpsLbl.TextXAlignment = Enum.TextXAlignment.Left
 UI.FpsLbl = FpsLbl
 
 local function MkPageContent(name)
-	if name == "Settings" or name == "Music" then
+	if name == "Settings" or name == "Music" or name == "Home" then
 		local frame = Instance.new("ScrollingFrame")
 		frame.BackgroundTransparency = 1
 		frame.BorderSizePixel = 0
