@@ -34,27 +34,28 @@ VoidUI:SetTitle("Gelatek Hub Remastered")
 
 VoidUI:SetTheme({
     Accent = "255, 88, 91",
-    BackgroundColor = "31, 31, 31",
+    Background = "31, 31, 31",
     Secondary = "43, 43, 43",
-    TextColor = "255, 255, 255",
-    NonSelectedTextColor = "141, 141, 141"
+    Text = "255, 255, 255",
+    NonSelectedText = "141, 141, 141"
 })
 
 local function SafeCall(func, ...)
     local ok, result = pcall(func, ...)
-    if not ok then warn("[Gelatek Hub]: " .. tostring(result)) end
+    if not ok then
+        warn("[Gelatek Hub]: " .. tostring(result))
+    end
     return ok, result
 end
 
 local function HttpGet(Url)
-    local HttpGet = game.HttpGetAsync or game.HttpGet
-    return loadstring(HttpGet(game, Url))()
+    return loadstring(game:HttpGet(Url))()
 end
 
-local WriteFile = writefile or function() return end
-local IsFile = isfile or function() return false end
-local IsFolder = isfolder or function() return false end
-local MakeFolder = makefolder or function() return end
+local WriteFile = writefile
+local IsFile = isfile
+local IsFolder = isfolder
+local MakeFolder = makefolder
 
 local function CheckAudioPackage()
     if not WriteFile or not IsFile or not MakeFolder or not IsFolder then
@@ -85,7 +86,10 @@ local Games = {
 
 local function IsGame(gameName)
     local placeId = Games[gameName]
-    if not placeId then return false end
+    if not placeId then
+        return false
+    end
+
     return game.PlaceId == placeId
 end
 
@@ -111,11 +115,15 @@ local Wait = task.wait
 
 local function WaitForDeath()
     local character = Player.Character
+
     if not character then
         character = Player.CharacterAdded:Wait()
     end
+
     local humanoid = character:WaitForChild("Humanoid")
+
     local connection
+
     connection = humanoid.HealthChanged:Connect(function(health)
         if health <= 0 then
             connection:Disconnect()
@@ -240,7 +248,7 @@ VoidUI:New("Button", {
     Callback = function()
         if IsGame("JaB") then
             local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
-            
+
             if Env.GelatekHubConfig.PermanentDeath then
                 CmdEvent:FireServer("cmd", "-pd")
             end
@@ -400,16 +408,19 @@ local HatsTab = VoidUI:New("Tab", {
 local function Copy(text)
     if type(setclipboard) ~= "function" then
         warn("[Gelatek Hub Remastered]: Executor doesn't support setclipboard")
+
         GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Gelatek Hub Remastered",
             Text = "Your executor doesn't support clipboard access!",
             Duration = 4
         })
+
         return
     end
 
     SafeCall(function()
         setclipboard(text)
+
         GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Gelatek Hub Remastered",
             Text = "Copied Hat Id!",
@@ -425,8 +436,11 @@ local function MakeHatButton(text, ids)
         Callback = function()
             if IsGame("JaB") then
                 local CmdEvent = ReplicatedStorage:WaitForChild("01_server")
+
                 CmdEvent:FireServer("cmd", "-gh " .. ids)
+
                 Wait(2)
+
                 CmdEvent:FireServer("cmd", "-net")
             else
                 Copy(ids)
