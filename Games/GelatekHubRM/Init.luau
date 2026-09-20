@@ -32,13 +32,7 @@ local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSo
 
 VoidUI:SetTitle("Gelatek Hub Remastered")
 
-VoidUI:SetTheme({
-    Accent = "255, 88, 91",
-    Background = "31, 31, 31",
-    Secondary = "43, 43, 43",
-    Text = "255, 255, 255",
-    NonSelectedText = "141, 141, 141"
-})
+VoidUI:SetTheme("Crimson")
 
 local function SafeCall(func, ...)
     local ok, result = pcall(func, ...)
