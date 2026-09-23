@@ -2,6 +2,10 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+pcall(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.luau"))()
+end)
+
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
 local function GetService(Name)
