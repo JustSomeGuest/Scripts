@@ -22,37 +22,27 @@ local function u32(data, pos)
 end
 
 local function p16(value)
-    return string.char(
-        bit_band(value, 255),
-        bit_band(bit_rshift(value, 8), 255)
-    )
+    return string.char(bit_band(value, 255), bit_band(bit_rshift(value, 8), 255))
 end
 
 local function p32(value)
-    return string.char(
-        bit_band(value, 255),
-        bit_band(bit_rshift(value, 8), 255),
-        bit_band(bit_rshift(value, 16), 255),
-        bit_band(bit_rshift(value, 24), 255)
-    )
+    return string.char(bit_band(value, 255), bit_band(bit_rshift(value, 8), 255), bit_band(bit_rshift(value, 16), 255), bit_band(bit_rshift(value, 24), 255))
 end
 
 local crc_table = {}
 
-do
-    for i = 0, 255 do
-        local crc = i
+for i = 0, 255 do
+    local crc = i
 
-        for _ = 1, 8 do
-            if bit_band(crc, 1) ~= 0 then
-                crc = bit_bxor(bit_rshift(crc, 1), 0xEDB88320)
-            else
-                crc = bit_rshift(crc, 1)
-            end
+    for _ = 1, 8 do
+        if bit_band(crc, 1) ~= 0 then
+            crc = bit_bxor(bit_rshift(crc, 1), 0xEDB88320)
+        else
+            crc = bit_rshift(crc, 1)
         end
-
-        crc_table[i] = crc
     end
+
+    crc_table[i] = crc
 end
 
 local function crc32(data)
@@ -61,11 +51,7 @@ local function crc32(data)
     for i = 1, #data do
         local byte = string.byte(data, i)
         local index = bit_band(bit_bxor(crc, byte), 255)
-
-        crc = bit_bxor(
-            bit_rshift(crc, 8),
-            crc_table[index]
-        )
+        crc = bit_bxor(bit_rshift(crc, 8), crc_table[index])
     end
 
     return bit_bxor(crc, 0xFFFFFFFF)
@@ -75,11 +61,7 @@ local function reverse_bits(value, count)
     local result = 0
 
     for _ = 1, count do
-        result = bit_bor(
-            bit_lshift(result, 1),
-            bit_band(value, 1)
-        )
-
+        result = bit_bor(bit_lshift(result, 1), bit_band(value, 1))
         value = bit_rshift(value, 1)
     end
 
@@ -112,17 +94,13 @@ local function make_huffman(lengths)
     for symbol, length in pairs(lengths) do
         if length > 0 then
             local canonical = next_code[length]
-
             next_code[length] = canonical + 1
 
             local reversed = reverse_bits(canonical, length)
             local node = tree
 
             for bit = 1, length do
-                local value = bit_band(
-                    bit_rshift(reversed, bit - 1),
-                    1
-                )
+                local value = bit_band(bit_rshift(reversed, bit - 1), 1)
 
                 if bit == length then
                     node[value] = symbol
@@ -138,13 +116,13 @@ local function make_huffman(lengths)
 end
 
 local function bit_reader(data, position)
-    local state = {
+    local reader = {
         data = data,
         byte = position or 1,
         bit = 0
     }
 
-    function state:read(count)
+    function reader:read(count)
         local result = 0
         local shift = 0
 
@@ -157,16 +135,9 @@ local function bit_reader(data, position)
             local available = 8 - self.bit
             local take = math.min(count, available)
             local mask = bit_lshift(1, take) - 1
+            local value = bit_band(bit_rshift(current, self.bit), mask)
 
-            local value = bit_band(
-                bit_rshift(current, self.bit),
-                mask
-            )
-
-            result = bit_bor(
-                result,
-                bit_lshift(value, shift)
-            )
+            result = bit_bor(result, bit_lshift(value, shift))
 
             self.bit = self.bit + take
             shift = shift + take
@@ -181,14 +152,14 @@ local function bit_reader(data, position)
         return result
     end
 
-    function state:align()
+    function reader:align()
         if self.bit ~= 0 then
             self.bit = 0
             self.byte = self.byte + 1
         end
     end
 
-    return state
+    return reader
 end
 
 local length_base = {
@@ -256,9 +227,7 @@ local function read_huffman(reader, tree)
     local node = tree
 
     while type(node) == "table" do
-        local bit = reader:read(1)
-
-        node = node[bit]
+        node = node[reader:read(1)]
 
         if node == nil then
             error("Invalid DEFLATE Huffman code")
@@ -289,7 +258,6 @@ local function inflate(data)
             for _ = 1, length do
                 output[#output + 1] = string.char(reader:read(8))
             end
-
         elseif block_type == 1 or block_type == 2 then
             local literal_tree
             local distance_tree
@@ -329,36 +297,32 @@ local function inflate(data)
                     if symbol <= 15 then
                         all_lengths[index] = symbol
                         index = index + 1
-
                     elseif symbol == 16 then
                         if index == 1 then
                             error("Invalid DEFLATE repeat")
                         end
 
-                        local repeat = reader:read(2) + 3
+                        local repeat_count = reader:read(2) + 3
                         local previous = all_lengths[index - 1]
 
-                        for _ = 1, repeat do
+                        for _ = 1, repeat_count do
                             all_lengths[index] = previous
                             index = index + 1
                         end
-
                     elseif symbol == 17 then
-                        local repeat = reader:read(3) + 3
+                        local repeat_count = reader:read(3) + 3
 
-                        for _ = 1, repeat do
+                        for _ = 1, repeat_count do
                             all_lengths[index] = 0
                             index = index + 1
                         end
-
                     elseif symbol == 18 then
-                        local repeat = reader:read(7) + 11
+                        local repeat_count = reader:read(7) + 11
 
-                        for _ = 1, repeat do
+                        for _ = 1, repeat_count do
                             all_lengths[index] = 0
                             index = index + 1
                         end
-
                     else
                         error("Invalid DEFLATE code length")
                     end
@@ -384,12 +348,10 @@ local function inflate(data)
 
                 if symbol < 256 then
                     output[#output + 1] = string.char(symbol)
-
                 elseif symbol == 256 then
                     break
-
                 elseif symbol <= 285 then
-                    local index = symbol - 257 + 1
+                    local index = symbol - 256
                     local length = length_base[index]
                     local extra = length_extra[index]
 
@@ -397,10 +359,7 @@ local function inflate(data)
                         length = length + reader:read(extra)
                     end
 
-                    local distance_symbol = read_huffman(
-                        reader,
-                        distance_tree
-                    )
+                    local distance_symbol = read_huffman(reader, distance_tree)
 
                     if distance_symbol > 29 then
                         error("Invalid DEFLATE distance")
@@ -424,12 +383,10 @@ local function inflate(data)
 
                         output[#output + 1] = output[source]
                     end
-
                 else
                     error("Invalid DEFLATE literal")
                 end
             end
-
         else
             error("Reserved DEFLATE block type")
         end
@@ -482,14 +439,10 @@ local function collect_files(path, root, files)
             path = path,
             name = basename(path)
         }
-
         return
     end
 
-    assert(
-        isfolder(path),
-        "Path does not exist: " .. path
-    )
+    assert(isfolder(path), "Path does not exist: " .. path)
 
     for _, child in ipairs(listfiles(path)) do
         if isfile(child) then
@@ -504,23 +457,11 @@ local function collect_files(path, root, files)
 end
 
 function LuaZip.zip(input_path, output_path)
-    assert(
-        type(input_path) == "string",
-        "input_path must be a string"
-    )
-
-    assert(
-        type(output_path) == "string",
-        "output_path must be a string"
-    )
+    assert(type(input_path) == "string", "input_path must be a string")
+    assert(type(output_path) == "string", "output_path must be a string")
 
     local files = {}
-
-    collect_files(
-        input_path,
-        input_path,
-        files
-    )
+    collect_files(input_path, input_path, files)
 
     local local_headers = {}
     local central_headers = {}
@@ -532,8 +473,7 @@ function LuaZip.zip(input_path, output_path)
         local name = file.name:gsub("\\", "/")
         local checksum = crc32(data)
 
-        local header =
-            "PK\003\004" ..
+        local header = "PK\003\004" ..
             p16(20) ..
             p16(0) ..
             p16(0) ..
@@ -549,8 +489,7 @@ function LuaZip.zip(input_path, output_path)
 
         local_headers[#local_headers + 1] = header
 
-        local central =
-            "PK\001\002" ..
+        local central = "PK\001\002" ..
             p16(20) ..
             p16(20) ..
             p16(0) ..
@@ -570,7 +509,6 @@ function LuaZip.zip(input_path, output_path)
             name
 
         central_headers[#central_headers + 1] = central
-
         offset = offset + #header
         count = count + 1
     end
@@ -578,8 +516,7 @@ function LuaZip.zip(input_path, output_path)
     local local_data = table.concat(local_headers)
     local central_data = table.concat(central_headers)
 
-    local end_record =
-        "PK\005\006" ..
+    local end_record = "PK\005\006" ..
         p16(0) ..
         p16(0) ..
         p16(count) ..
@@ -588,21 +525,12 @@ function LuaZip.zip(input_path, output_path)
         p32(#local_data) ..
         p16(0)
 
-    writefile(
-        output_path,
-        local_data ..
-        central_data ..
-        end_record
-    )
-
+    writefile(output_path, local_data .. central_data .. end_record)
     return true
 end
 
 function LuaZip.unzip(zip_path, output_path)
-    assert(
-        isfile(zip_path),
-        "ZIP file does not exist: " .. zip_path
-    )
+    assert(isfile(zip_path), "ZIP file does not exist: " .. zip_path)
 
     local data = readfile(zip_path)
     local eocd
@@ -614,19 +542,13 @@ function LuaZip.unzip(zip_path, output_path)
         end
     end
 
-    assert(
-        eocd,
-        "Invalid ZIP: end of central directory not found"
-    )
+    assert(eocd, "Invalid ZIP: end of central directory not found")
 
     local count = u16(data, eocd + 10)
     local central_size = u32(data, eocd + 12)
     local central_offset = u32(data, eocd + 16)
 
-    assert(
-        central_offset + central_size <= #data,
-        "Invalid ZIP central directory"
-    )
+    assert(central_offset + central_size <= #data, "Invalid ZIP central directory")
 
     if not isfolder(output_path) then
         makefolder(output_path)
@@ -635,10 +557,7 @@ function LuaZip.unzip(zip_path, output_path)
     local position = central_offset + 1
 
     for _ = 1, count do
-        assert(
-            data:sub(position, position + 3) == "PK\001\002",
-            "Invalid ZIP central directory entry"
-        )
+        assert(data:sub(position, position + 3) == "PK\001\002", "Invalid ZIP central directory entry")
 
         local compression = u16(data, position + 10)
         local compressed_size = u32(data, position + 20)
@@ -648,46 +567,20 @@ function LuaZip.unzip(zip_path, output_path)
         local comment_length = u16(data, position + 32)
         local local_offset = u32(data, position + 42)
 
-        local name = data:sub(
-            position + 46,
-            position + 45 + name_length
-        )
-
-        name = name:gsub("\\", "/")
+        local name = data:sub(position + 46, position + 45 + name_length):gsub("\\", "/")
 
         if name:sub(-1) == "/" then
-            ensure_folder(
-                output_path .. "/" .. name
-            )
+            ensure_folder(output_path .. "/" .. name)
         else
             local local_position = local_offset + 1
 
-            assert(
-                data:sub(local_position, local_position + 3) == "PK\003\004",
-                "Invalid local ZIP header"
-            )
+            assert(data:sub(local_position, local_position + 3) == "PK\003\004", "Invalid local ZIP header")
 
-            local local_name_length = u16(
-                data,
-                local_position + 26
-            )
+            local local_name_length = u16(data, local_position + 26)
+            local local_extra_length = u16(data, local_position + 28)
+            local compressed_start = local_position + 30 + local_name_length + local_extra_length
 
-            local local_extra_length = u16(
-                data,
-                local_position + 28
-            )
-
-            local compressed_start =
-                local_position +
-                30 +
-                local_name_length +
-                local_extra_length
-
-            local compressed_data = data:sub(
-                compressed_start,
-                compressed_start + compressed_size - 1
-            )
-
+            local compressed_data = data:sub(compressed_start, compressed_start + compressed_size - 1)
             local file_data
 
             if compression == 0 then
@@ -695,44 +588,22 @@ function LuaZip.unzip(zip_path, output_path)
             elseif compression == 8 then
                 file_data = inflate(compressed_data)
             else
-                error(
-                    "Unsupported ZIP compression method " ..
-                    tostring(compression) ..
-                    " for " ..
-                    name
-                )
+                error("Unsupported ZIP compression method " .. tostring(compression) .. " for " .. name)
             end
 
-            assert(
-                #file_data == uncompressed_size,
-                "Size mismatch while extracting " .. name
-            )
+            assert(#file_data == uncompressed_size, "Size mismatch while extracting " .. name)
 
-            local output_file =
-                output_path ..
-                "/" ..
-                name
-
-            local parent = output_file:match(
-                "^(.+)/[^/]+$"
-            )
+            local output_file = output_path .. "/" .. name
+            local parent = output_file:match("^(.+)/[^/]+$")
 
             if parent then
                 ensure_folder(parent)
             end
 
-            writefile(
-                output_file,
-                file_data
-            )
+            writefile(output_file, file_data)
         end
 
-        position =
-            position +
-            46 +
-            name_length +
-            extra_length +
-            comment_length
+        position = position + 46 + name_length + extra_length + comment_length
     end
 
     return true
