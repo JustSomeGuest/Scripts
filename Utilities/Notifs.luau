@@ -6,7 +6,23 @@ if not isfolder("infiniteyield") or not isfile("IY_FE.iy") then
     return
 end
 
-local Notifs = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Notify.luau"))()
+local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
+
+if Shared.__Notifs_Loaded then
+    return
+end
+
+local Notifs
+
+local Success = pcall(function()
+    Notifs = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Notify.luau"))()
+end)
+
+if not Success or not Notifs then
+    return
+end
+
+Shared.__Notifs_Loaded = true
 
 local function Notify(Text, Dur)
     Notifs:Notify("Notification", Text, Dur)
