@@ -7,10 +7,6 @@ local bit_lshift = bit32.lshift
 local bit_rshift = bit32.rshift
 local bit_bnot = bit32.bnot
 
-local function u8(data, pos)
-    return string.byte(data, pos)
-end
-
 local function u16(data, pos)
     local a, b = string.byte(data, pos, pos + 1)
     return a + b * 256
@@ -138,7 +134,6 @@ local function bit_reader(data, position)
             local value = bit_band(bit_rshift(current, self.bit), mask)
 
             result = bit_bor(result, bit_lshift(value, shift))
-
             self.bit = self.bit + take
             shift = shift + take
             count = count - take
@@ -433,12 +428,23 @@ local function ensure_folder(path)
     end
 end
 
+local function ensure_parent(path)
+    path = path:gsub("\\", "/")
+
+    local parent = path:match("^(.+)/[^/]+$")
+
+    if parent then
+        ensure_folder(parent)
+    end
+end
+
 local function collect_files(path, root, files)
     if isfile(path) then
         files[#files + 1] = {
             path = path,
             name = basename(path)
         }
+
         return
     end
 
@@ -462,6 +468,7 @@ function LuaZip.zip(input_path, output_path)
 
     local files = {}
     collect_files(input_path, input_path, files)
+    ensure_parent(output_path)
 
     local local_headers = {}
     local central_headers = {}
@@ -526,6 +533,7 @@ function LuaZip.zip(input_path, output_path)
         p16(0)
 
     writefile(output_path, local_data .. central_data .. end_record)
+
     return true
 end
 
@@ -550,6 +558,7 @@ function LuaZip.unzip(zip_path, output_path)
 
     assert(central_offset + central_size <= #data, "Invalid ZIP central directory")
 
+    ensure_parent(output_path)
     if not isfolder(output_path) then
         makefolder(output_path)
     end
@@ -594,12 +603,7 @@ function LuaZip.unzip(zip_path, output_path)
             assert(#file_data == uncompressed_size, "Size mismatch while extracting " .. name)
 
             local output_file = output_path .. "/" .. name
-            local parent = output_file:match("^(.+)/[^/]+$")
-
-            if parent then
-                ensure_folder(parent)
-            end
-
+            ensure_parent(output_file)
             writefile(output_file, file_data)
         end
 
