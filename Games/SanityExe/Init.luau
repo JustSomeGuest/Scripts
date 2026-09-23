@@ -2,6 +2,10 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+pcall(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.luau"))()
+end)
+
 local Shared = (function()
     local ok, env = pcall(getgenv)
     return (ok and env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
