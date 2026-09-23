@@ -253,6 +253,7 @@ local function inflate(data)
             for _ = 1, length do
                 output[#output + 1] = string.char(reader:read(8))
             end
+
         elseif block_type == 1 or block_type == 2 then
             local literal_tree
             local distance_tree
@@ -292,6 +293,7 @@ local function inflate(data)
                     if symbol <= 15 then
                         all_lengths[index] = symbol
                         index = index + 1
+
                     elseif symbol == 16 then
                         if index == 1 then
                             error("Invalid DEFLATE repeat")
@@ -304,6 +306,7 @@ local function inflate(data)
                             all_lengths[index] = previous
                             index = index + 1
                         end
+
                     elseif symbol == 17 then
                         local repeat_count = reader:read(3) + 3
 
@@ -311,6 +314,7 @@ local function inflate(data)
                             all_lengths[index] = 0
                             index = index + 1
                         end
+
                     elseif symbol == 18 then
                         local repeat_count = reader:read(7) + 11
 
@@ -318,6 +322,7 @@ local function inflate(data)
                             all_lengths[index] = 0
                             index = index + 1
                         end
+
                     else
                         error("Invalid DEFLATE code length")
                     end
@@ -343,8 +348,10 @@ local function inflate(data)
 
                 if symbol < 256 then
                     output[#output + 1] = string.char(symbol)
+
                 elseif symbol == 256 then
                     break
+
                 elseif symbol <= 285 then
                     local index = symbol - 256
                     local length = length_base[index]
@@ -378,10 +385,12 @@ local function inflate(data)
 
                         output[#output + 1] = output[source]
                     end
+
                 else
                     error("Invalid DEFLATE literal")
                 end
             end
+
         else
             error("Reserved DEFLATE block type")
         end
@@ -423,7 +432,11 @@ local function ensure_folder(path)
         end
 
         if not isfolder(current) then
-            makefolder(current)
+            local ok, err = pcall(makefolder, current)
+
+            if not ok and not isfolder(current) then
+                error("Failed to create folder " .. current .. ": " .. tostring(err))
+            end
         end
     end
 end
@@ -533,7 +546,6 @@ function LuaZip.zip(input_path, output_path)
         p16(0)
 
     writefile(output_path, local_data .. central_data .. end_record)
-
     return true
 end
 
@@ -558,10 +570,7 @@ function LuaZip.unzip(zip_path, output_path)
 
     assert(central_offset + central_size <= #data, "Invalid ZIP central directory")
 
-    ensure_parent(output_path)
-    if not isfolder(output_path) then
-        makefolder(output_path)
-    end
+    ensure_folder(output_path)
 
     local position = central_offset + 1
 
