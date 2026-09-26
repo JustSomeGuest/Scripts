@@ -10,10 +10,17 @@ local infiniteyield = {
     "IYR.LOL"
 }
 
+local found = false
+
 for _, path in ipairs(infiniteyield) do
-    if not isfolder(path) and not isfile(path) then
-        return
+    if isfolder(path) or isfile(path) then
+        found = true
+        break
     end
+end
+
+if not found then
+    return
 end
 
 local env = (type(getgenv) == "function" and getgenv()) or env or _G
@@ -34,6 +41,8 @@ if not success or not notifs then
     env.__notifs_loaded = nil
     return
 end
+
+notifs:SetTheme("Slate")
 
 local function notify(text, dur)
     notifs:Notify("Notification", text, dur)
@@ -89,7 +98,6 @@ local messages = {
     "Still waiting for the scripting skills to arrive.",
     "Bro has been promoted to Senior Skid.",
     "Congratulations! You are still a skid.",
-
     "Bro calls himself a hacker 😭",
     "Hacker status: running a premade script.",
     "Bro thinks using a script makes him a hacker 💀",
@@ -112,7 +120,6 @@ local messages = {
     "Certified hacker: cannot write the code he runs.",
     "Bro's hacking toolkit is literally copy and paste.",
     "The world's first hacker with zero lines of original code.",
-
     "Bro probably doesn't even know what the script he ran does 💀",
     "Running random code and calling yourself a hacker 😭",
     "Bro clicked Execute without reading a single line.",
@@ -128,7 +135,7 @@ local messages = {
     "Bro's entire debugging method is hoping it works.",
     "Random script acquired. Understanding not acquired.",
     "Bro runs first and asks questions never.",
-    "If the script has a loadstring, bro is already clicking it.",
+    "If it says Execute, bro is already clicking it.",
     "Bro couldn't explain what his own script is doing 😭",
     "Trusting random code is crazy work.",
     "Bro's favorite programming concept is 'I hope this is safe'.",
