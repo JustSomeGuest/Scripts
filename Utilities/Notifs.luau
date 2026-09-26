@@ -42,8 +42,6 @@ if not success or not notifs then
     return
 end
 
-notifs:SetTheme("Slate")
-
 local function notify(text, dur)
     notifs:Notify("Notification", text, dur)
 end
