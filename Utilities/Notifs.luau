@@ -3,6 +3,7 @@ if not game:IsLoaded() then
 end
 
 task.spawn(function()
+pcall(function()
 
 local infiniteyield = {
     "infiniteyield",
@@ -169,4 +170,5 @@ while true do
     notify(messages[math.random(1, #messages)], 3)
 end
 
+end)
 end)
