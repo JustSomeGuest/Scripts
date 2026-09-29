@@ -30,7 +30,7 @@ end
 
 Env.GelatekHubRM.IsLoaded = true
 
-local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.luau"))()
+local VoidUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.lua"))()
 
 VoidUI:SetTitle("Gelatek Hub Remastered")
 
@@ -64,7 +64,7 @@ local function CheckAudioPackage()
     end
 
     local ok, err = pcall(function()
-        HttpGet(Modules .. "/Audios.luau")
+        HttpGet(Modules .. "/Audios.lua")
     end)
 
     if not ok then
@@ -74,7 +74,7 @@ end
 
 SafeCall(CheckAudioPackage)
 
-HttpGet(Modules .. "/Functions.luau")
+HttpGet(Modules .. "/Functions.lua")
 
 local Games = {
     ["JaB"] = 123974602339071,
@@ -257,7 +257,7 @@ VoidUI:New("Button", {
 
             Wait(2)
 
-            HttpGet(Modules .. "/Reanimate.luau")
+            HttpGet(Modules .. "/Reanimate.lua")
 
             WaitForDeath()
             Wait(0.1)
@@ -266,7 +266,7 @@ VoidUI:New("Button", {
                 CmdEvent:FireServer("cmd", "-net")
             end
         else
-            HttpGet(Modules .. "/Reanimate.luau")
+            HttpGet(Modules .. "/Reanimate.lua")
         end
     end
 })
@@ -378,24 +378,24 @@ local function MakeScriptButton(text, path)
     })
 end
 
-MakeScriptButton("Gale Fighter", FreeScripts .. "/GaleFighter.luau")
-MakeScriptButton("Ender", FreeScripts .. "/Ender.luau")
-MakeScriptButton("Caducus", FreeScripts .. "/Caducus.luau")
+MakeScriptButton("Gale Fighter", FreeScripts .. "/GaleFighter.lua")
+MakeScriptButton("Ender", FreeScripts .. "/Ender.lua")
+MakeScriptButton("Caducus", FreeScripts .. "/Caducus.lua")
 
 VoidUI:New("Section", {
     Parent = ScriptsTab,
     Text = "Hat Scripts"
 })
 
-MakeScriptButton("Dual Ultima", HatScripts .. "/DualUltima.luau")
-MakeScriptButton("Carnage", HatScripts .. "/Carnage.luau")
-MakeScriptButton("Neptunian V", HatScripts .. "/Neptunian.luau")
-MakeScriptButton("Zenith Battle Rifle-70", HatScripts .. "/ZenithAttackRifle.luau")
-MakeScriptButton("Chips", HatScripts .. "/Chips.luau")
-MakeScriptButton("Void Scythe", HatScripts .. "/VoidScythe.luau")
-MakeScriptButton("Voodoo Doll", HatScripts .. "/VoodooDoll.luau")
-MakeScriptButton("Quenox", HatScripts .. "/Quenox.luau")
-MakeScriptButton("Goner", HatScripts .. "/Goner.luau")
+MakeScriptButton("Dual Ultima", HatScripts .. "/DualUltima.lua")
+MakeScriptButton("Carnage", HatScripts .. "/Carnage.lua")
+MakeScriptButton("Neptunian V", HatScripts .. "/Neptunian.lua")
+MakeScriptButton("Zenith Battle Rifle-70", HatScripts .. "/ZenithAttackRifle.lua")
+MakeScriptButton("Chips", HatScripts .. "/Chips.lua")
+MakeScriptButton("Void Scythe", HatScripts .. "/VoidScythe.lua")
+MakeScriptButton("Voodoo Doll", HatScripts .. "/VoodooDoll.lua")
+MakeScriptButton("Quenox", HatScripts .. "/Quenox.lua")
+MakeScriptButton("Goner", HatScripts .. "/Goner.lua")
 
 local HatsTab = VoidUI:New("Tab", {
     Text = "Hats"
@@ -463,7 +463,7 @@ VoidUI:New("Button", {
     Parent = ExtraTab,
     Text = "Shiftlock",
     Callback = function()
-        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Shiftlock/Init.luau")
+        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Shiftlock/Init.lua")
     end
 })
 
@@ -471,7 +471,7 @@ VoidUI:New("Button", {
     Parent = ExtraTab,
     Text = "TouchGui (Uses Keyboard Keys)",
     Callback = function()
-        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/TouchGui.luau")
+        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/TouchGui.lua")
     end
 })
 
@@ -479,7 +479,7 @@ VoidUI:New("Button", {
     Parent = ExtraTab,
     Text = "Mobile Keyboard",
     Callback = function()
-        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/DeltaKD.luau")
+        HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/DeltaKD.lua")
     end
 })
 
