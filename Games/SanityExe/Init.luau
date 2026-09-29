@@ -2,49 +2,14 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-pcall(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.luau"))()
-end)
+pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
-local Shared = (function()
-    local ok, env = pcall(getgenv)
-    return (ok and env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
-end)()
+local Env = (type(getgenv) == "function" and getgenv()) or _G
 
-local function Check(t, val, fb)
-    if type(val) == t then
-        return val
-    end
-
-    if fb ~= nil then
-        if type(fb) == "function" then
-            return function(...)
-                warn("[Expect]: Missing executor functionality. Using fallback function.")
-                return fb(...)
-            end
-        end
-
-        warn("[Expect]: Value has unexpected type. Using fallback value.")
-    end
-
-    return fb
+local function GetService(Name)
+    local Svc = game:GetService(Name)
+    return cloneref and cloneref(Svc) or Svc
 end
-
-local CloneRef = Check("function", cloneref, function(...) return ... end)
-
-local Services = setmetatable({}, {
-    __index = function(self, name)
-        local ok, c = pcall(function()
-            return CloneRef(game:GetService(name))
-        end)
-        if ok then
-            rawset(self, name, c)
-            return c
-        else
-            error("Invalid Service: " .. tostring(name))
-        end
-    end
-})
 
 local function Get(url)
     local ok, res = pcall(game.HttpGetAsync, game, url)
@@ -54,8 +19,8 @@ local function Get(url)
     return game:HttpGet(url)
 end
 
-local GuiSvc = Services.GuiService
-local TpSvc = Services.TeleportService
+local GuiSvc = GetService("GuiService")
+local TpSvc = GetService("TeleportService")
 
 GuiSvc:SetGameplayPausedNotificationEnabled(false)
 
@@ -70,78 +35,26 @@ else
     QueueOnTP = nil
 end
 
-Shared["Sanity.exe"] = Shared["Sanity.exe"] or {}
+Env.__Sanity = Env.__Sanity or {}
 
-if Shared["Sanity.exe"].IsLoaded then
+if Env.__Sanity.IsLoaded then
     warn("[Sanity.exe]: Already loaded, skipping init")
     return
 end
 
-Shared["Sanity.exe"].IsLoaded = true
-
-local Hui = select(2, pcall(gethui)) or warn("[Sanity.exe]: Failed to use gethui.")
-local CoreGui = Services.CoreGui
-
-local function FindTitle()
-    local Title = nil
-    if Hui then
-        local VoidUI = Hui:FindFirstChild("VoidUI")
-        if VoidUI then
-            local Main = VoidUI:FindFirstChild("Main")
-            if Main then
-                local Topbar = Main:FindFirstChild("Topbar")
-                if Topbar then
-                    Title = Topbar:FindFirstChild("Title")
-                end
-            end
-        end
-    end
-    
-    if not Title and CoreGui then
-        local VoidUI = CoreGui:FindFirstChild("VoidUI")
-        if VoidUI then
-            local Main = VoidUI:FindFirstChild("Main")
-            if Main then
-                local Topbar = Main:FindFirstChild("Topbar")
-                if Topbar then
-                    Title = Topbar:FindFirstChild("Title")
-                end
-            end
-        end
-    end
-    
-    return Title
-end
-
-local function OnDestroy(VoidUI)
-    if VoidUI then
-        VoidUI.AncestryChanged:Connect(function(_, Parent)
-            if Parent == nil then
-                Shared["Sanity.exe"].IsLoaded = false
-            end
-        end)
-    end
-end
-
-local Title = FindTitle()
-if Title and Title.Text and Title.Text:find("Sanity.exe") then
-    OnDestroy(Title.Parent and Title.Parent.Parent and Title.Parent.Parent.Parent)
-end
+Env.__Sanity.IsLoaded = true
 
 local function LoadUI()
-    local scr = Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.luau")
+    local scr = Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.lua")
+
     if scr then
         local fn, err = loadstring(scr)
+
         if fn then
             local ok, e = pcall(fn)
+
             if not ok then
                 warn("[Sanity.exe]: UI execution error: " .. tostring(e))
-            else
-                task.wait(1)
-                local Title = FindTitle()
-                if Title and Title.Text and Title.Text:find("Sanity.exe") then
-                    OnDestroy(Title.Parent and Title.Parent.Parent and Title.Parent.Parent.Parent)
-                end
             end
         else
             warn("[Sanity.exe]: Error loading UI: " .. tostring(err))
@@ -153,7 +66,7 @@ end
 
 local function LoadGames()
     local ok, data = pcall(function()
-        return Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau")
+        return Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.lua")
     end)
 
     if not ok or not data then
@@ -163,6 +76,7 @@ local function LoadGames()
     end
 
     local fn, err = loadstring(data)
+
     if not fn then
         warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(err))
         LoadUI()
@@ -182,13 +96,13 @@ local function LoadGames()
     if found then
         if QueueOnTP then
             pcall(function()
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.lua"))()')
             end)
         end
     else
         if QueueOnTP then
             pcall(function()
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.luau"))()')
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.lua"))()')
             end)
         end
     end
