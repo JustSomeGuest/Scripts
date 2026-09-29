@@ -5,6 +5,8 @@ end
 task.spawn(function()
 pcall(function()
 
+game:GetService("GuiService"):SetGameplayPausedNotificationEnabled(false)
+
 local infiniteyield = {
     "infiniteyield",
     "IY_FE.iy",
