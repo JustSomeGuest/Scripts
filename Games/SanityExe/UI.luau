@@ -2,10 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local Shared = (function()
-    local ok, env = pcall(getgenv)
-    return (ok and env) or _G or (warn("[Shared]: Failed to access a usable global environment.") or {})
-end)()
+local Env = (type(getgenv) == "function" and getgenv()) or _G
 
 local function Get(Url)
     local ok, res = pcall(game.HttpGetAsync, game, Url)
@@ -15,20 +12,16 @@ local function Get(Url)
     return game:HttpGet(Url)
 end
 
-Shared.VoidUI = loadstring(Get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Stable/Source/Init.luau"))()
+Env.VoidUI = loadstring(Get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.luau"))()
 
-local UI = Shared.VoidUI
+local UI = Env.VoidUI
 
 if not UI then
     warn("[Sanity.exe]: Failed to load VoidUI")
     return
 end
 
-UI:SetTheme({
-    Accent = "255, 255, 255"
-})
-
-UI:SetLogo("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Assets/sanity_logo.png")
+UI:SetTheme("Minimal")
 
 local ListUrl = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
 local PlaceId = game.PlaceId
