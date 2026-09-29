@@ -1,6 +1,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
+local Env = (type(getgenv) == "function" and getgenv()) or _G
 
 local function GetService(n) local s = game:GetService(n) return cloneref and cloneref(s) or s end
 
