@@ -2,9 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-pcall(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.luau"))()
-end)
+pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
 local function GetService(Name)
     local Svc = game:GetService(Name)
