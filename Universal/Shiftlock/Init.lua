@@ -2,11 +2,9 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-pcall(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.luau"))()
-end)
+pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
-local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
+local Env = (type(getgenv) == "function" and getgenv()) or _G
 
 local function GetService(Name)
     local Svc = game:GetService(Name)
@@ -14,7 +12,6 @@ local function GetService(Name)
 end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
-
 local Players = GetService("Players")
 local RunService = GetService("RunService")
 local UIS = GetService("UserInputService")
