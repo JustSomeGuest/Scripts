@@ -36,7 +36,7 @@ local startergui = getservice("StarterGui")
 local httpget = game.HttpGetAsync or game.HttpGet
 
 local success, err = pcall(function()
-    local source = httpget(game, "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/" .. version .. ".lua")
+    local source = httpget(game, "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/" .. version .. ".luau")
     loadstring(source)()
 end)
 
