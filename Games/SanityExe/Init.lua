@@ -42,7 +42,7 @@ end
 Env.__Sanity.IsLoaded = true
 
 local function LoadUI()
-    local scr = Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/UI.lua")
+    local scr = Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/UI.lua")
 
     if scr then
         local fn, err = loadstring(scr)
@@ -63,7 +63,7 @@ end
 
 local function LoadGames()
     local ok, data = pcall(function()
-        return Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.lua")
+        return Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Games/Supported.lua")
     end)
 
     if not ok or not data then
@@ -93,13 +93,13 @@ local function LoadGames()
     if found then
         if QueueOnTP then
             pcall(function()
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.lua"))()')
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
             end)
         end
     else
         if QueueOnTP then
             pcall(function()
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Init.lua"))()')
+                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
             end)
         end
     end
