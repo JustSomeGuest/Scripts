@@ -4,7 +4,7 @@ end
 
 pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
-local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
+local Env = (type(getgenv) == "function" and getgenv()) or _G
 
 local function GetService(Name)
     local Svc = game:GetService(Name)
