@@ -2,15 +2,13 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-pcall(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.luau"))()
-end)
+pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
-local Shared = (type(getgenv) == "function" and getgenv()) or shared or _G
+local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local function GetService(Service)
-    local Service = game:GetService(Service)
-    return cloneref and cloneref(Service) or Service
+local function GetService(Name)
+    local Svc = game:GetService(Name)
+    return cloneref and cloneref(Svc) or Svc
 end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
@@ -25,16 +23,18 @@ local function UID(Length)
     Length = Length or 64
     local Chars = [[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]]
     local Id = table.create(Length)
+
     for i = 1, Length do
         local Rand = math.random(1, #Chars)
         Id[i] = Chars:sub(Rand, Rand)
     end
+
     return table.concat(Id)
 end
 
-Shared.TouchGui = Shared.TouchGui or {}
+Env.TouchGui = Env.TouchGui or {}
 
-if Shared.TouchGui.isLoaded then
+if Env.TouchGui.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "TouchGui",
         Text = "TouchGui is already running!",
@@ -43,21 +43,21 @@ if Shared.TouchGui.isLoaded then
     return
 end
 
-Shared.TouchGui.isLoaded = true
+Env.TouchGui.IsLoaded = true
 
-local function isDesktop()
+local function IsDesktop()
     return not UserInputService.TouchEnabled
         and UserInputService.MouseEnabled
         and UserInputService.KeyboardEnabled
 end
 
-local function isMobile()
+local function IsMobile()
     return UserInputService.TouchEnabled
         and not UserInputService.MouseEnabled
         and not UserInputService.KeyboardEnabled
 end
 
-if isDesktop() then
+if IsDesktop() then
     StarterGui:SetCore("SendNotification", {
         Title = "TouchGui",
         Text = "This script is intended for mobile devices only.",
@@ -66,7 +66,7 @@ if isDesktop() then
     return
 end
 
-if not isMobile() then
+if not IsMobile() then
     return
 end
 
@@ -107,29 +107,33 @@ local ZoneKeys = {
 
 local ActiveKeys = {W = false, A = false, S = false, D = false}
 
-local function SendKey(key, isDown)
-    local keyCode = Enum.KeyCode[key]
-    if keyCode then
-        VirtualInputManager:SendKeyEvent(isDown, keyCode, false, game)
+local function SendKey(Key, IsDown)
+    local KeyCode = Enum.KeyCode[Key]
+
+    if KeyCode then
+        VirtualInputManager:SendKeyEvent(IsDown, KeyCode, false, game)
     end
 end
 
-local function UpdateMovement(zone)
-    local keysToPress = ZoneKeys[zone] or {}
-    for key, isActive in pairs(ActiveKeys) do
-        local shouldBeActive = false
-        for _, zoneKey in ipairs(keysToPress) do
-            if zoneKey == key then
-                shouldBeActive = true
+local function UpdateMovement(Zone)
+    local KeysToPress = ZoneKeys[Zone] or {}
+
+    for Key, IsActive in pairs(ActiveKeys) do
+        local ShouldBeActive = false
+
+        for _, ZoneKey in ipairs(KeysToPress) do
+            if ZoneKey == Key then
+                ShouldBeActive = true
                 break
             end
         end
-        if shouldBeActive and not isActive then
-            ActiveKeys[key] = true
-            SendKey(key, true)
-        elseif not shouldBeActive and isActive then
-            ActiveKeys[key] = false
-            SendKey(key, false)
+
+        if ShouldBeActive and not IsActive then
+            ActiveKeys[Key] = true
+            SendKey(Key, true)
+        elseif not ShouldBeActive and IsActive then
+            ActiveKeys[Key] = false
+            SendKey(Key, false)
         end
     end
 end
@@ -196,15 +200,17 @@ if OriginalJump then
         Jump.Size = OriginalJump.Size
     end)
 
-    local oppositePos, oppositeAnchor = GetOppositePos(OriginalJump.Position, OriginalJump.AnchorPoint)
-    Thumb.Position = oppositePos
-    Thumb.AnchorPoint = oppositeAnchor
+    local OppositePos, OppositeAnchor = GetOppositePos(OriginalJump.Position, OriginalJump.AnchorPoint)
+
+    Thumb.Position = OppositePos
+    Thumb.AnchorPoint = OppositeAnchor
     Thumb.Size = OriginalJump.Size
 
     OriginalJump:GetPropertyChangedSignal("Position"):Connect(function()
-        local newOppositePos, newOppositeAnchor = GetOppositePos(OriginalJump.Position, OriginalJump.AnchorPoint)
-        Thumb.Position = newOppositePos
-        Thumb.AnchorPoint = newOppositeAnchor
+        local NewOppositePos, NewOppositeAnchor = GetOppositePos(OriginalJump.Position, OriginalJump.AnchorPoint)
+
+        Thumb.Position = NewOppositePos
+        Thumb.AnchorPoint = NewOppositeAnchor
     end)
 
     OriginalJump:GetPropertyChangedSignal("Size"):Connect(function()
@@ -248,17 +254,26 @@ local function UpdateKnobPosition(Input)
     local ThumbPosition = Thumb.AbsolutePosition
     local ThumbSize = Thumb.AbsoluteSize
     local Center = ThumbPosition + (ThumbSize / 2)
+
     local Relative = Vector2.new(
         Input.Position.X - Center.X,
         Input.Position.Y - Center.Y
     )
+
     local Radius = ThumbSize.X / 2
     local Distance = Relative.Magnitude
+
     if Distance > Radius then
         Relative = Relative.Unit * Radius
     end
+
     local Normalized = Relative / Radius
-    TargetKnobPosition = Vector2.new((Normalized.X + 1) / 2, (Normalized.Y + 1) / 2)
+
+    TargetKnobPosition = Vector2.new(
+        (Normalized.X + 1) / 2,
+        (Normalized.Y + 1) / 2
+    )
+
     local Zone = GetZoneFromNormalized(Normalized.X, Normalized.Y)
     UpdateMovement(Zone)
 end
@@ -269,10 +284,16 @@ local function ResetKnob()
 end
 
 RunService.RenderStepped:Connect(function()
-    local smoothed = CurrentKnobPosition:Lerp(TargetKnobPosition, 0.3)
-    CurrentKnobPosition = smoothed
+    local Smoothed = CurrentKnobPosition:Lerp(TargetKnobPosition, 0.3)
+
+    CurrentKnobPosition = Smoothed
     Knob.AnchorPoint = Vector2.new(0.5, 0.5)
-    Knob.Position = UDim2.new(CurrentKnobPosition.X, 0, CurrentKnobPosition.Y, 0)
+    Knob.Position = UDim2.new(
+        CurrentKnobPosition.X,
+        0,
+        CurrentKnobPosition.Y,
+        0
+    )
 end)
 
 Thumb.InputBegan:Connect(function(Input)
