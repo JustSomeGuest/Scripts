@@ -19,10 +19,7 @@ local function Get(url)
     return game:HttpGet(url)
 end
 
-local GuiSvc = GetService("GuiService")
 local TpSvc = GetService("TeleportService")
-
-GuiSvc:SetGameplayPausedNotificationEnabled(false)
 
 local QueueOnTP
 local qok, qres = pcall(function()
