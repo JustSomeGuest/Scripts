@@ -2,11 +2,14 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-pcall(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.luau"))()
-end)
+pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
-local env = (type(getgenv) == "function" and getgenv()) or shared or _G
+local function getservice(name)
+    local svc = game:GetService(name)
+    return cloneref and cloneref(svc) or svc
+end
+
+local env = (type(getgenv) == "function" and getgenv()) or _G
 
 local versions = {
     "Classic",
@@ -29,11 +32,11 @@ if not valid then
     error(("Invalid Lucid version: %s"):format(tostring(env.__Lucid_Version)))
 end
 
-local startergui = game.StarterGui
+local startergui = getservice("StarterGui")
 local httpget = game.HttpGetAsync or game.HttpGet
 
 local success, err = pcall(function()
-    local source = httpget(game, "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/" .. version .. ".luau")
+    local source = httpget(game, "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/" .. version .. ".lua")
     loadstring(source)()
 end)
 
