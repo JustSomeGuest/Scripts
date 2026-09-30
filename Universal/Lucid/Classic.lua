@@ -524,7 +524,7 @@ end
 
 local BuiltInScripts = {
 	{Name="Dex++ (Built-In)", Description="Explore game instances.", Code='loadstring(game:HttpGet("https://github.com/AZYsGithub/DexPlusPlus/releases/latest/download/out.lua"))()'},
-	{Name="Keyboard (Built-In)", Description="Virtual keyboard for mobile.", Code='loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/DeltaKD.luau"))()'}
+	{Name="Keyboard (Built-In)", Description="Virtual keyboard for mobile.", Code='loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/DeltaKD.lua"))()'}
 }
 
 function Funcs.InitDefaultScripts()

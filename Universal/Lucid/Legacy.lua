@@ -400,7 +400,7 @@ local BuiltInScripts = {
     {
         Name = "Keyboard (Built-In)",
         Description = "A virtual keyboard GUI made for mobile devices.",
-        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/DeltaKD.luau"))()]]
+        Code = [[loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/DeltaKD.lua"))()]]
     }
 }
 
