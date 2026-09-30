@@ -1,0 +1,3 @@
+-- Heya! You must be a friend or a fan, bc otherwise idk why you’re looking at my repo files lol.
+-- This is coming soon! :)
+-- Btw, this’ll be a fork of DEX++, just with a more modern-looking UI.
