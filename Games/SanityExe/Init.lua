@@ -37,7 +37,7 @@ if qok then
     QueueOnTP = qres
 end
 
-local VoidUI = loadstring(Get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.luau"))()
+local VoidUI = loadstring(Get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.lua"))()
 
 if not VoidUI then
     warn("[Sanity.exe]: Failed to load VoidUI")
@@ -50,7 +50,7 @@ local UI = Env.VoidUI
 
 UI:SetTheme("Minimal")
 
-local ListUrl = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
+local ListUrl = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.lua"
 local PlaceId = game.PlaceId
 
 local function LoadGame(Path)
