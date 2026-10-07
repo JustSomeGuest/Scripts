@@ -9,15 +9,12 @@ local function GetService(Name)
     return cloneref and cloneref(Svc) or Svc
 end
 
-local function Get(Url)
-    local ok, res = pcall(game.HttpGetAsync, game, Url)
-    if ok then
-        return res
-    end
-    return game:HttpGet(Url)
+local function HttpGet(Url)
+    local Get = game.HttpGetAsync or game.HttpGet
+    return loadstring(Get(game, Url))()
 end
 
-pcall(loadstring, Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
+pcall(loadstring, HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
 Env.__Sanity = Env.__Sanity or {}
 
@@ -29,6 +26,7 @@ end
 Env.__Sanity.IsLoaded = true
 
 local QueueOnTP
+
 local qok, qres = pcall(function()
     return queue_on_teleport
 end)
@@ -37,27 +35,27 @@ if qok then
     QueueOnTP = qres
 end
 
-local VoidUI = loadstring(Get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.lua"))()
+local VoidUI = loadstring(HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.lua"))()
 
 if not VoidUI then
     warn("[Sanity.exe]: Failed to load VoidUI")
     return
 end
 
-Env.VoidUI = VoidUI
+Env.__Sanity.VoidUI = VoidUI
 
-local UI = Env.VoidUI
+local UI = Env.__Sanity.VoidUI
 
-UI:SetTheme("Minimal")
+UI:SetTheme("Midnight")
 
-local ListUrl = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.lua"
+local ListUrl = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Games/Supported.lua"
 local PlaceId = game.PlaceId
 
 local function LoadGame(Path)
-    local Url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/" .. Path
+    local Url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Games/" .. Path
 
     local ok, Scr = pcall(function()
-        return Get(Url)
+        return HttpGet(Url)
     end)
 
     if ok and Scr then
@@ -88,7 +86,7 @@ end
 
 local function LoadList()
     local ok, Data = pcall(function()
-        return Get(ListUrl)
+        return HttpGet(ListUrl)
     end)
 
     if not ok or not Data then
@@ -135,7 +133,7 @@ local function LoadList()
 
             if QueueOnTP then
                 pcall(function()
-                    QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
+                    QueueOnTP('loadstring(game:HttpHttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
                 end)
             end
 
