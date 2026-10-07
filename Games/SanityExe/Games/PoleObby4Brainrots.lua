@@ -16,7 +16,7 @@ local RunService = GetService("RunService")
 local StarterGui = GetService("StarterGui")
 local PlayerGui = Player:WaitForChild("PlayerGui")
 
-local UI = Env.VoidUI
+local UI = Env.__Sanity.VoidUI
 
 if not UI then
     warn("[Sanity.exe]: Failed to load VoidUI")
