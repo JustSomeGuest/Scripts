@@ -139,8 +139,8 @@ local function LoadList()
                 end)
             end
 
-            if Game.FilePath then
-                LoadGame(Game.FilePath)
+            if Game.File then
+                LoadGame(Game.File)
             end
 
             return
@@ -148,6 +148,7 @@ local function LoadList()
     end
 
     UI:SetTitle("Sanity.exe")
+    UI:SetTheme("Midnight")
 
     local Tab = UI:New("Tab", {
         Text = "Main"
