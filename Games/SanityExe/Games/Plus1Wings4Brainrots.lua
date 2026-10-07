@@ -15,7 +15,7 @@ local Workspace = GetService("Workspace")
 local RunService = GetService("RunService")
 local StarterGui = GetService("StarterGui")
 
-local UI = Env.VoidUI
+local UI = Env.__Sanity.VoidUI
 
 if not UI then
     warn("[Sanity.exe]: Failed to load VoidUI")
