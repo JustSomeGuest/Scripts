@@ -2,8 +2,6 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
-
 local Env = (type(getgenv) == "function" and getgenv()) or _G
 
 local function GetService(Name)
@@ -11,26 +9,15 @@ local function GetService(Name)
     return cloneref and cloneref(Svc) or Svc
 end
 
-local function Get(url)
-    local ok, res = pcall(game.HttpGetAsync, game, url)
+local function Get(Url)
+    local ok, res = pcall(game.HttpGetAsync, game, Url)
     if ok then
         return res
     end
-    return game:HttpGet(url)
+    return game:HttpGet(Url)
 end
 
-local TpSvc = GetService("TeleportService")
-
-local QueueOnTP
-local qok, qres = pcall(function()
-    return queue_on_teleport
-end)
-
-if qok then
-    QueueOnTP = qres
-else
-    QueueOnTP = nil
-end
+pcall(loadstring, Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
 Env.__Sanity = Env.__Sanity or {}
 
@@ -41,70 +28,155 @@ end
 
 Env.__Sanity.IsLoaded = true
 
-local function LoadUI()
-    local scr = Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/UI.lua")
+local QueueOnTP
+local qok, qres = pcall(function()
+    return queue_on_teleport
+end)
 
-    if scr then
-        local fn, err = loadstring(scr)
-
-        if fn then
-            local ok, e = pcall(fn)
-
-            if not ok then
-                warn("[Sanity.exe]: UI execution error: " .. tostring(e))
-            end
-        else
-            warn("[Sanity.exe]: Error loading UI: " .. tostring(err))
-        end
-    else
-        warn("[Sanity.exe]: Failed to download UI script")
-    end
+if qok then
+    QueueOnTP = qres
 end
 
-local function LoadGames()
-    local ok, data = pcall(function()
-        return Get("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Games/Supported.lua")
+local VoidUI = loadstring(Get("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.luau"))()
+
+if not VoidUI then
+    warn("[Sanity.exe]: Failed to load VoidUI")
+    return
+end
+
+Env.VoidUI = VoidUI
+
+local UI = Env.VoidUI
+
+UI:SetTheme("Minimal")
+
+local ListUrl = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/Supported.luau"
+local PlaceId = game.PlaceId
+
+local function LoadGame(Path)
+    local Url = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/main/Games/SanityExe/Games/" .. Path
+
+    local ok, Scr = pcall(function()
+        return Get(Url)
     end)
 
-    if not ok or not data then
-        warn("[Sanity.exe]: Failed to load supported games list.")
-        LoadUI()
-        return
-    end
+    if ok and Scr then
+        local Fn, Err = loadstring(Scr)
 
-    local fn, err = loadstring(data)
+        if Fn then
+            local success, Error = pcall(Fn)
 
-    if not fn then
-        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(err))
-        LoadUI()
-        return
-    end
-
-    local list = fn()
-    local found = false
-
-    for _, g in ipairs(list) do
-        if tostring(g.PlaceId) == tostring(game.PlaceId) then
-            found = true
-            break
-        end
-    end
-
-    if found then
-        if QueueOnTP then
-            pcall(function()
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
-            end)
+            if not success then
+                warn("[Sanity.exe]: Game script execution error: " .. tostring(Error))
+            end
+        else
+            warn("[Sanity.exe]: Error loading game script: " .. tostring(Err))
         end
     else
-        if QueueOnTP then
-            pcall(function()
-                QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
-            end)
+        warn("[Sanity.exe]: Failed to download game script: " .. Path)
+
+        local Tab = UI:New("Tab", {
+            Text = "Main"
+        })
+
+        UI:New("Label", {
+            Text = "Error loading game!",
+            Parent = Tab
+        })
+    end
+end
+
+local function LoadList()
+    local ok, Data = pcall(function()
+        return Get(ListUrl)
+    end)
+
+    if not ok or not Data then
+        warn("[Sanity.exe]: Failed to load supported games list.")
+
+        UI:SetTitle("Sanity.exe")
+
+        local Tab = UI:New("Tab", {
+            Text = "Main"
+        })
+
+        UI:New("Label", {
+            Text = "Failed to load supported games list.",
+            Parent = Tab
+        })
+
+        return
+    end
+
+    local Fn, Err = loadstring(Data)
+
+    if not Fn then
+        warn("[Sanity.exe]: Error parsing supported games list: " .. tostring(Err))
+
+        UI:SetTitle("Sanity.exe")
+
+        local Tab = UI:New("Tab", {
+            Text = "Main"
+        })
+
+        UI:New("Label", {
+            Text = "Error parsing supported games list.",
+            Parent = Tab
+        })
+
+        return
+    end
+
+    local List = Fn()
+
+    for _, Game in ipairs(List) do
+        if tostring(Game.PlaceId) == tostring(PlaceId) then
+            UI:SetTitle("Sanity.exe • " .. Game.GameName)
+
+            if QueueOnTP then
+                pcall(function()
+                    QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
+                end)
+            end
+
+            if Game.FilePath then
+                LoadGame(Game.FilePath)
+            end
+
+            return
         end
     end
 
-    LoadUI()
+    UI:SetTitle("Sanity.exe")
+
+    local Tab = UI:New("Tab", {
+        Text = "Main"
+    })
+
+    UI:New("Label", {
+        Text = "Game not supported.",
+        Parent = Tab
+    })
+
+    UI:New("Divider", {
+        Parent = Tab
+    })
+
+    UI:New("Label", {
+        Text = "Supported Games:",
+        Parent = Tab
+    })
+
+    for _, Game in ipairs(List) do
+        UI:New("Button", {
+            Text = Game.GameName .. " (" .. tostring(Game.PlaceId) .. ")",
+            Parent = Tab,
+            Callback = function()
+                setclipboard(tostring(Game.PlaceId))
+                warn("[Sanity.exe]: Place ID copied: " .. tostring(Game.PlaceId))
+            end
+        })
+    end
 end
 
-LoadGames()
+LoadList()
