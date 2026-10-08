@@ -15,19 +15,16 @@ local Workspace = GetService("Workspace")
 local ReplicatedStorage = GetService("ReplicatedStorage")
 local StarterGui = GetService("StarterGui")
 
-local VoidUI = Env.__Sanity.VoidUI
+local UI = Env.__Sanity.VoidUI
 
-if not VoidUI then
+if not UI then
     warn("[Sanity.exe]: Failed to load VoidUI")
     return
 end
 
-VoidUI:SetTheme("Midnight")
-VoidUI:SetTitle("Egg Autofarm")
-
 local function Notify(Title, Text, Duration)
     if not pcall(function()
-        VoidUI:Notify(Title, Text, Duration)
+        UI:Notify(Title, Text, Duration)
     end) then
         pcall(function()
             StarterGui:SetCore("SendNotification", {
@@ -39,11 +36,11 @@ local function Notify(Title, Text, Duration)
     end
 end
 
-local MainTab = VoidUI:New("Tab", {
+local MainTab = UI:New("Tab", {
     Text = "Egg Farm"
 })
 
-local TeleportTab = VoidUI:New("Tab", {
+local TeleportTab = UI:New("Tab", {
     Text = "Teleports"
 })
 
@@ -604,12 +601,12 @@ local function StartAutofarm()
     end)
 end
 
-VoidUI:New("Section", {
+UI:New("Section", {
     Parent = MainTab,
     Text = "Controls"
 })
 
-VoidUI:New("Toggle", {
+UI:New("Toggle", {
     Parent = MainTab,
     Text = "Autofarm",
     Default = false,
@@ -622,7 +619,7 @@ VoidUI:New("Toggle", {
     end
 })
 
-VoidUI:New("Dropdown", {
+UI:New("Dropdown", {
     Parent = MainTab,
     Text = "Zone",
     Options = {
@@ -643,7 +640,7 @@ VoidUI:New("Dropdown", {
     end
 })
 
-VoidUI:New("Slider", {
+UI:New("Slider", {
     Parent = MainTab,
     Text = "Hit Delay",
     Min = 0,
@@ -654,7 +651,7 @@ VoidUI:New("Slider", {
     end
 })
 
-VoidUI:New("Slider", {
+UI:New("Slider", {
     Parent = MainTab,
     Text = "Placement Index",
     Min = 1,
@@ -665,16 +662,16 @@ VoidUI:New("Slider", {
     end
 })
 
-VoidUI:New("Divider", {
+UI:New("Divider", {
     Parent = TeleportTab
 })
 
-VoidUI:New("Section", {
+UI:New("Section", {
     Parent = TeleportTab,
     Text = "Teleports"
 })
 
-VoidUI:New("Button", {
+UI:New("Button", {
     Parent = TeleportTab,
     Text = "Teleport to Base",
     Callback = function()
@@ -689,7 +686,7 @@ VoidUI:New("Button", {
 for ZoneIndex = 1, 9 do
     local ZoneName = "Zone" .. ZoneIndex
 
-    VoidUI:New("Button", {
+    UI:New("Button", {
         Parent = TeleportTab,
         Text = "Teleport to " .. ZoneName,
         Callback = function()
