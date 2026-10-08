@@ -157,7 +157,7 @@ local function LoadList()
 
     for _, Game in ipairs(List) do
         if tostring(Game.PlaceId) == tostring(PlaceId) then
-            UI:SetTitle("Sanity.exe • " .. tostring(Game.GameName))
+            UI:SetTitle("Sanity.exe • " .. tostring(Game.Name))
 
             if QueueOnTP then
                 pcall(function()
