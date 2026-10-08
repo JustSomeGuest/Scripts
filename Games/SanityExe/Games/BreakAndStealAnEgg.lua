@@ -2036,7 +2036,7 @@ local CombatTab = UI:New("Tab", {
 })
 
 local OptionsTab = UI:New("Tab", {
-    Text = "Settings"
+    Text = "Options"
 })
 
 UI:New("Section", {
