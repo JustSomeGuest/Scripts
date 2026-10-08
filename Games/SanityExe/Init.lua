@@ -1,7 +1,7 @@
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
-
+ 
 local Env = (type(getgenv) == "function" and getgenv()) or _G
 
 local function GetService(Name)
