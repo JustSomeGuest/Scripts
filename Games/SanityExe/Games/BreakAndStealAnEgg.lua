@@ -1684,7 +1684,7 @@ function Upgrades.AllNow()
     end
 
     if not Bought then
-        Notify("Break and Steal an Egg", "Nothing to upgrade yet", 4)
+        Notify("Sanity.exe", "Nothing to upgrade yet", 4)
     end
 end
 
@@ -2039,28 +2039,28 @@ local OptionsTab = UI:New("Tab", {
     Text = "Settings"
 })
 
-local StatusPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = HomeTab,
     Text = "Status"
 })
 
 UI:New("Label", {
-    Parent = StatusPanel,
+    Parent = HomeTab,
     Text = "Break and Steal an Egg"
 })
 
 UI:New("Label", {
-    Parent = StatusPanel,
+    Parent = HomeTab,
     Text = "Status: Idle"
 })
 
-local StealPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = FarmingTab,
     Text = "Auto Steal"
 })
 
 UI:New("Toggle", {
-    Parent = StealPanel,
+    Parent = FarmingTab,
     Text = "Auto Steal",
     Default = false,
     Callback = function(Value)
@@ -2069,7 +2069,7 @@ UI:New("Toggle", {
 })
 
 UI:New("Dropdown", {
-    Parent = StealPanel,
+    Parent = FarmingTab,
     Text = "Take",
     Options = {
         "Upgrades Only",
@@ -2082,7 +2082,7 @@ UI:New("Dropdown", {
 })
 
 UI:New("Input", {
-    Parent = StealPanel,
+    Parent = FarmingTab,
     Text = "Min Cash/s",
     Placeholder = "0",
     Callback = function(Value)
@@ -2091,8 +2091,8 @@ UI:New("Input", {
 })
 
 UI:New("Button", {
-    Parent = StealPanel,
-    Text = "Steal Best Now",
+    Parent = FarmingTab,
+    Text = "Steal Best",
     Callback = function()
         local Folder = Workspace:FindFirstChild("AnimalPickups")
         local Best
@@ -2114,25 +2114,16 @@ UI:New("Button", {
 })
 
 UI:New("Button", {
-    Parent = StealPanel,
-    Text = "Bank Now",
+    Parent = FarmingTab,
+    Text = "Bank",
     Callback = function()
         Plot.Deposit()
     end
 })
 
-local BreakPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = FarmingTab,
     Text = "Auto Break"
-})
-
-UI:New("Toggle", {
-    Parent = BreakPanel,
-    Text = "Auto Break Eggs",
-    Default = false,
-    Callback = function(Value)
-        Runtime.Opt.AutoBreak = Value
-    end
 })
 
 local ZoneOptions = {"Best"}
@@ -2141,8 +2132,17 @@ for _, Zone in ipairs(WorldZones) do
     ZoneOptions[#ZoneOptions + 1] = Zone.Name
 end
 
+UI:New("Toggle", {
+    Parent = FarmingTab,
+    Text = "Auto Break Eggs",
+    Default = false,
+    Callback = function(Value)
+        Runtime.Opt.AutoBreak = Value
+    end
+})
+
 UI:New("Dropdown", {
-    Parent = BreakPanel,
+    Parent = FarmingTab,
     Text = "Zone",
     Options = ZoneOptions,
     Default = "Best",
@@ -2152,7 +2152,7 @@ UI:New("Dropdown", {
 })
 
 UI:New("Slider", {
-    Parent = BreakPanel,
+    Parent = FarmingTab,
     Text = "Max Hits Per Egg",
     Min = 1,
     Max = 200,
@@ -2162,13 +2162,13 @@ UI:New("Slider", {
     end
 })
 
-local RobPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = FarmingTab,
     Text = "Rob Players"
 })
 
 UI:New("Toggle", {
-    Parent = RobPanel,
+    Parent = FarmingTab,
     Text = "Rob Carriers",
     Default = false,
     Callback = function(Value)
@@ -2176,13 +2176,13 @@ UI:New("Toggle", {
     end
 })
 
-local AnimalPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = PlotTab,
     Text = "Animals"
 })
 
 UI:New("Toggle", {
-    Parent = AnimalPanel,
+    Parent = PlotTab,
     Text = "Auto Place Best",
     Default = false,
     Callback = function(Value)
@@ -2191,20 +2191,20 @@ UI:New("Toggle", {
 })
 
 UI:New("Button", {
-    Parent = AnimalPanel,
-    Text = "Place Best Now",
+    Parent = PlotTab,
+    Text = "Place Best",
     Callback = function()
         Inventory.PlaceBest()
     end
 })
 
-local SellPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = PlotTab,
     Text = "Sell"
 })
 
 UI:New("Toggle", {
-    Parent = SellPanel,
+    Parent = PlotTab,
     Text = "Auto Sell Leftovers",
     Default = false,
     Callback = function(Value)
@@ -2213,21 +2213,21 @@ UI:New("Toggle", {
 })
 
 UI:New("Button", {
-    Parent = SellPanel,
-    Text = "Sell All Now",
+    Parent = PlotTab,
+    Text = "Sell All",
     Callback = function()
         local Count = Inventory.SellLeftovers()
-        Notify("Break and Steal an Egg", "Sold " .. tostring(Count) .. " animals", 4)
+        Notify("Sanity.exe", "Sold " .. tostring(Count) .. " animals", 4)
     end
 })
 
-local UpgradePanel = UI:New("Section", {
+UI:New("Section", {
     Parent = PlotTab,
     Text = "Upgrades"
 })
 
 UI:New("Toggle", {
-    Parent = UpgradePanel,
+    Parent = PlotTab,
     Text = "Auto Upgrade",
     Default = false,
     Callback = function(Value)
@@ -2237,7 +2237,7 @@ UI:New("Toggle", {
 })
 
 UI:New("Dropdown", {
-    Parent = UpgradePanel,
+    Parent = PlotTab,
     Text = "Upgrade",
     Options = {
         "Pickaxe",
@@ -2262,7 +2262,7 @@ UI:New("Dropdown", {
 })
 
 UI:New("Input", {
-    Parent = UpgradePanel,
+    Parent = PlotTab,
     Text = "Keep Cash",
     Placeholder = "0",
     Callback = function(Value)
@@ -2271,20 +2271,20 @@ UI:New("Input", {
 })
 
 UI:New("Button", {
-    Parent = UpgradePanel,
-    Text = "Upgrade Now",
+    Parent = PlotTab,
+    Text = "Upgrade",
     Callback = function()
         Upgrades.AllNow()
     end
 })
 
-local HatchPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = PlotTab,
     Text = "Eggs"
 })
 
 UI:New("Toggle", {
-    Parent = HatchPanel,
+    Parent = PlotTab,
     Text = "Auto Hatch Eggs",
     Default = false,
     Callback = function(Value)
@@ -2293,20 +2293,20 @@ UI:New("Toggle", {
 })
 
 UI:New("Button", {
-    Parent = HatchPanel,
-    Text = "Hatch Eggs Now",
+    Parent = PlotTab,
+    Text = "Hatch Eggs",
     Callback = function()
         Hatching.Process()
     end
 })
 
-local RewardPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = PlotTab,
     Text = "Rewards"
 })
 
 UI:New("Toggle", {
-    Parent = RewardPanel,
+    Parent = PlotTab,
     Text = "Auto Claim",
     Default = false,
     Callback = function(Value)
@@ -2315,20 +2315,20 @@ UI:New("Toggle", {
 })
 
 UI:New("Button", {
-    Parent = RewardPanel,
-    Text = "Claim Now",
+    Parent = PlotTab,
+    Text = "Claim",
     Callback = function()
         Claiming.All()
     end
 })
 
-local MovementPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = MovementTab,
     Text = "Movement"
 })
 
 UI:New("Toggle", {
-    Parent = MovementPanel,
+    Parent = MovementTab,
     Text = "Speed",
     Default = false,
     Callback = function(Value)
@@ -2338,7 +2338,7 @@ UI:New("Toggle", {
 })
 
 UI:New("Slider", {
-    Parent = MovementPanel,
+    Parent = MovementTab,
     Text = "Walk Speed",
     Min = 16,
     Max = 300,
@@ -2353,7 +2353,7 @@ UI:New("Slider", {
 })
 
 UI:New("Toggle", {
-    Parent = MovementPanel,
+    Parent = MovementTab,
     Text = "Infinite Jump",
     Default = false,
     Callback = function(Value)
@@ -2362,7 +2362,7 @@ UI:New("Toggle", {
 })
 
 UI:New("Toggle", {
-    Parent = MovementPanel,
+    Parent = MovementTab,
     Text = "Noclip",
     Default = false,
     Callback = function(Value)
@@ -2374,13 +2374,13 @@ UI:New("Toggle", {
     end
 })
 
-local TravelPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = MovementTab,
     Text = "Teleport"
 })
 
 UI:New("Dropdown", {
-    Parent = TravelPanel,
+    Parent = MovementTab,
     Text = "Zone",
     Options = Travel.ZoneNames(),
     Callback = function(Value)
@@ -2391,7 +2391,7 @@ UI:New("Dropdown", {
 })
 
 UI:New("Dropdown", {
-    Parent = TravelPanel,
+    Parent = MovementTab,
     Text = "Place",
     Options = Travel.Destinations(),
     Callback = function(Value)
@@ -2401,13 +2401,13 @@ UI:New("Dropdown", {
     end
 })
 
-local EspPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = EspTab,
     Text = "ESP"
 })
 
 UI:New("Toggle", {
-    Parent = EspPanel,
+    Parent = EspTab,
     Text = "Animals",
     Default = false,
     Callback = function(Value)
@@ -2416,7 +2416,7 @@ UI:New("Toggle", {
 })
 
 UI:New("Toggle", {
-    Parent = EspPanel,
+    Parent = EspTab,
     Text = "Eggs",
     Default = false,
     Callback = function(Value)
@@ -2425,7 +2425,7 @@ UI:New("Toggle", {
 })
 
 UI:New("Toggle", {
-    Parent = EspPanel,
+    Parent = EspTab,
     Text = "Players",
     Default = false,
     Callback = function(Value)
@@ -2434,7 +2434,7 @@ UI:New("Toggle", {
 })
 
 UI:New("Dropdown", {
-    Parent = EspPanel,
+    Parent = EspTab,
     Text = "Min Rarity",
     Options = Rarities,
     Default = Rarities[1] or "Common",
@@ -2443,7 +2443,7 @@ UI:New("Dropdown", {
     end
 })
 
-local CombatPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = CombatTab,
     Text = "Bat"
 })
@@ -2463,7 +2463,7 @@ local function GetPlayerNames()
 end
 
 UI:New("Dropdown", {
-    Parent = CombatPanel,
+    Parent = CombatTab,
     Text = "Target",
     Options = GetPlayerNames(),
     Callback = function(Value)
@@ -2472,7 +2472,7 @@ UI:New("Dropdown", {
 })
 
 UI:New("Toggle", {
-    Parent = CombatPanel,
+    Parent = CombatTab,
     Text = "Loop Bat Target",
     Default = false,
     Callback = function(Value)
@@ -2481,8 +2481,8 @@ UI:New("Toggle", {
 })
 
 UI:New("Button", {
-    Parent = CombatPanel,
-    Text = "Bat Target Now",
+    Parent = CombatTab,
+    Text = "Bat Target",
     Callback = function()
         Club.Hit(
             Players:FindFirstChild(Runtime.Opt.BatTarget or ""),
@@ -2492,7 +2492,7 @@ UI:New("Button", {
 })
 
 UI:New("Toggle", {
-    Parent = CombatPanel,
+    Parent = CombatTab,
     Text = "Bat Aura",
     Default = false,
     Callback = function(Value)
@@ -2500,14 +2500,14 @@ UI:New("Toggle", {
     end
 })
 
-local SessionPanel = UI:New("Section", {
+UI:New("Section", {
     Parent = OptionsTab,
     Text = "Session"
 })
 
 UI:New("Toggle", {
-    Parent = SessionPanel,
-    Text = "Anti AFK",
+    Parent = OptionsTab,
+    Text = "AntiAFK",
     Default = false,
     Callback = function(Value)
         Runtime.Opt.AntiAfk = Value
@@ -2515,7 +2515,7 @@ UI:New("Toggle", {
 })
 
 UI:New("Toggle", {
-    Parent = SessionPanel,
+    Parent = OptionsTab,
     Text = "Auto Rejoin",
     Default = false,
     Callback = function(Value)
@@ -2524,8 +2524,8 @@ UI:New("Toggle", {
 })
 
 UI:New("Button", {
-    Parent = SessionPanel,
-    Text = "Rejoin Now",
+    Parent = OptionsTab,
+    Text = "Rejoin",
     Callback = function()
         Connection.Rejoin()
     end
