@@ -166,15 +166,22 @@ local function LoadList()
         Parent = Tab
     })
 
-    for _, Game in ipairs(List) do
-        UI:New("Button", {
-            Text = Game.GameName .. " (" .. tostring(Game.PlaceId) .. ")",
-            Parent = Tab,
-            Callback = function()
-                setclipboard(tostring(Game.PlaceId))
-                warn("[Sanity.exe]: Place ID copied: " .. tostring(Game.PlaceId))
+        for _, Game in ipairs(List) do
+        if tostring(Game.PlaceId) == tostring(PlaceId) then
+            UI:SetTitle("Sanity.exe • " .. Game.Name)
+
+            if QueueOnTP then
+                pcall(function()
+                    QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
+                end)
             end
-        })
+
+            if Game.File then
+                LoadGame(Game.File)
+            end
+
+            return
+        end
     end
 end
 
