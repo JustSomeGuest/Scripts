@@ -13,7 +13,7 @@ return {
 
     {
         Name = "Break And Steal An Egg",
-        PlaceId = 123, --Placeholder
+        PlaceId = 114326934417838,
         File = "BreakAndStealAnEgg.lua"
     }
 }
