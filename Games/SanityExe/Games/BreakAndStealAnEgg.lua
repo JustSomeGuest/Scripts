@@ -176,12 +176,12 @@ end
 local function Go(Pos)
     local Root = GetRoot()
 
-    if Root then
-        Root.CFrame = CFrame.new(Pos)
-        return true
+    if not Root then
+        return false
     end
 
-    return false
+    Root.CFrame = CFrame.new(Pos)
+    return true
 end
 
 local function GoToBase()
@@ -194,50 +194,98 @@ local function GoToBase()
     return Go(Position + Vector3.new(0, 3, 0))
 end
 
-local function GetZoneEggs()
-    local Result = {}
-
+local function GetZone(ZoneName)
     local Build = Workspace:FindFirstChild("Build")
-    local ZoneBuilds = Build and Build:FindFirstChild("ZoneBuilds")
+
+    if not Build then
+        return nil
+    end
+
+    local ZoneBuilds = Build:FindFirstChild("ZoneBuilds")
 
     if not ZoneBuilds then
+        return nil
+    end
+
+    return ZoneBuilds:FindFirstChild(ZoneName)
+end
+
+local function GetZoneEggs(ZoneName)
+    local Result = {}
+
+    if ZoneName == "All Zones" then
+        for ZoneIndex = 1, 9 do
+            local Zone = GetZone("Zone" .. ZoneIndex)
+            local Eggs = Zone and Zone:FindFirstChild("Eggs")
+
+            if Eggs then
+                for _, EggFolder in ipairs(Eggs:GetChildren()) do
+                    local Egg = EggFolder:FindFirstChild("Egg")
+
+                    if Egg and Egg:IsA("BasePart") then
+                        table.insert(Result, Egg)
+                    end
+                end
+            end
+        end
+
         return Result
     end
 
-    local function CollectZone(ZoneName)
-        local Zone = ZoneBuilds:FindFirstChild(ZoneName)
+    local Zone = GetZone(ZoneName)
 
-        if not Zone then
-            return
-        end
-
-        local Eggs = Zone:FindFirstChild("Eggs")
-
-        if not Eggs then
-            return
-        end
-
-        for _, EggFolder in ipairs(Eggs:GetChildren()) do
-            local Egg = EggFolder:FindFirstChild("Egg")
-
-            if Egg and Egg:IsA("BasePart") then
-                table.insert(Result, Egg)
-            end
-        end
+    if not Zone then
+        return Result
     end
 
-    if SelectedZone == "All Zones" then
-        for ZoneIndex = 1, 9 do
-            CollectZone("Zone" .. ZoneIndex)
+    local Eggs = Zone:FindFirstChild("Eggs")
+
+    if not Eggs then
+        return Result
+    end
+
+    for _, EggFolder in ipairs(Eggs:GetChildren()) do
+        local Egg = EggFolder:FindFirstChild("Egg")
+
+        if Egg and Egg:IsA("BasePart") then
+            table.insert(Result, Egg)
         end
-    else
-        CollectZone(SelectedZone)
     end
 
     return Result
 end
 
-local function GetNextEgg()
+local function IsValidEgg(Egg, ZoneName)
+    if not Egg or not Egg.Parent then
+        return false
+    end
+
+    if ZoneName == "All Zones" then
+        for _, ZoneEgg in ipairs(GetZoneEggs("All Zones")) do
+            if ZoneEgg == Egg then
+                return true
+            end
+        end
+
+        return false
+    end
+
+    local Zone = GetZone(ZoneName)
+
+    if not Zone then
+        return false
+    end
+
+    local Eggs = Zone:FindFirstChild("Eggs")
+
+    if not Eggs then
+        return false
+    end
+
+    return Egg:IsDescendantOf(Eggs)
+end
+
+local function GetNextEgg(ZoneName)
     local Root = GetRoot()
 
     if not Root then
@@ -247,8 +295,8 @@ local function GetNextEgg()
     local Closest = nil
     local ClosestDistance = math.huge
 
-    for _, Egg in ipairs(GetZoneEggs()) do
-        if Egg.Parent then
+    for _, Egg in ipairs(GetZoneEggs(ZoneName)) do
+        if IsValidEgg(Egg, ZoneName) then
             local Broken = Egg:GetAttribute("Broken")
             local Health = Egg:GetAttribute("Health")
 
@@ -266,43 +314,30 @@ local function GetNextEgg()
     return Closest
 end
 
-local function SnapshotPickups()
-    local AnimalPickups = Workspace:FindFirstChild("AnimalPickups")
-    local Snapshot = {}
-
-    if not AnimalPickups then
-        return Snapshot
-    end
-
-    for _, Object in ipairs(AnimalPickups:GetDescendants()) do
-        Snapshot[Object] = true
-    end
-
-    return Snapshot
-end
-
-local function GetPickup(Snapshot, Origin)
+local function GetPickupParts(Origin)
     local AnimalPickups = Workspace:FindFirstChild("AnimalPickups")
 
     if not AnimalPickups then
-        return nil
+        return {}
     end
 
-    local Closest = nil
-    local ClosestDistance = math.huge
+    local Result = {}
 
     for _, Object in ipairs(AnimalPickups:GetDescendants()) do
-        if Object:IsA("BasePart") and not Snapshot[Object] then
+        if Object:IsA("BasePart") then
             local Distance = (Object.Position - Origin).Magnitude
 
-            if Distance <= 150 and Distance < ClosestDistance then
-                ClosestDistance = Distance
-                Closest = Object
+            if Distance <= 35 then
+                table.insert(Result, Object)
             end
         end
     end
 
-    return Closest
+    table.sort(Result, function(A, B)
+        return (A.Position - Origin).Magnitude < (B.Position - Origin).Magnitude
+    end)
+
+    return Result
 end
 
 local function SnapshotAnimals()
@@ -327,10 +362,10 @@ local function GetNewAnimal(Snapshot)
     end
 
     for _, Object in ipairs(getnilinstances()) do
-        if Object:IsA("Model") and Object:GetAttribute("AnimalName") then
-            if not Snapshot[Object] then
-                return Object
-            end
+        if Object:IsA("Model")
+            and Object:GetAttribute("AnimalName")
+            and not Snapshot[Object] then
+            return Object
         end
     end
 
@@ -371,16 +406,12 @@ local function WaitForPrompt(Pickup)
 
         local PromptAnchor, Prompt = GetStealPrompt()
 
-        if PromptAnchor and Prompt then
-            local CloseEnough = true
-
+        if PromptAnchor and Prompt and Prompt.Enabled then
             if PromptAnchor:IsA("BasePart") then
-                CloseEnough = (
-                    PromptAnchor.Position - Pickup.Position
-                ).Magnitude <= 15
-            end
-
-            if CloseEnough and Prompt.Enabled then
+                if (PromptAnchor.Position - Pickup.Position).Magnitude <= 20 then
+                    return Prompt
+                end
+            else
                 return Prompt
             end
         end
@@ -391,7 +422,7 @@ local function WaitForPrompt(Pickup)
     return nil
 end
 
-local function Hold(Prompt, Duration)
+local function Hold(Prompt)
     if not Prompt then
         return false
     end
@@ -402,15 +433,17 @@ local function Hold(Prompt, Duration)
         Fired = true
     end)
 
-    pcall(function()
+    local Duration = Prompt.HoldDuration or 0.5
+
+    local Success = pcall(function()
         Prompt:InputHoldBegin()
-        task.wait((Duration or Prompt.HoldDuration or 0.5) + 0.15)
+        task.wait(Duration + 0.2)
         Prompt:InputHoldEnd()
     end)
 
     Connection:Disconnect()
 
-    return Fired
+    return Success and Fired
 end
 
 local function StealPickup(Pickup)
@@ -425,33 +458,36 @@ local function StealPickup(Pickup)
         return nil
     end
 
-    Hold(Prompt, Prompt.HoldDuration or 0.5)
+    if not Hold(Prompt) then
+        return nil
+    end
 
     GoToBase()
 
     local Deadline = os.clock() + 8
 
-    repeat
+    while Enabled and os.clock() < Deadline do
         local Animal = GetNewAnimal(AnimalSnapshot)
 
         if Animal then
             return Animal
         end
 
-        task.wait(0.02)
-    until not Enabled or os.clock() >= Deadline
+        task.wait(0.03)
+    end
 
     return nil
 end
 
-local function BreakEgg(Egg)
-    local Root = GetRoot()
-
-    if not Root or not Egg or not Egg.Parent then
+local function BreakEgg(Egg, ZoneName)
+    if not IsValidEgg(Egg, ZoneName) then
         return false
     end
 
-    Go(Egg.Position + Vector3.new(0, 3, 0))
+    if not Go(Egg.Position + Vector3.new(0, 3, 0)) then
+        return false
+    end
+
     task.wait(0.05)
 
     if not EquipPickaxe() then
@@ -459,8 +495,8 @@ local function BreakEgg(Egg)
     end
 
     for Counter = 1, 20 do
-        if not Enabled or not Egg.Parent then
-            break
+        if not Enabled or not IsValidEgg(Egg, ZoneName) then
+            return false
         end
 
         local Broken = Egg:GetAttribute("Broken")
@@ -479,15 +515,9 @@ local function BreakEgg(Egg)
 
     local Deadline = os.clock() + 3
 
-    repeat
-        task.wait(0.03)
-
-        if not Enabled then
+    while Enabled and os.clock() < Deadline do
+        if not IsValidEgg(Egg, ZoneName) then
             return false
-        end
-
-        if not Egg.Parent then
-            return true
         end
 
         local Broken = Egg:GetAttribute("Broken")
@@ -496,7 +526,9 @@ local function BreakEgg(Egg)
         if Broken == true or (Health and Health <= 0) then
             return true
         end
-    until os.clock() >= Deadline
+
+        task.wait(0.03)
+    end
 
     return false
 end
@@ -526,22 +558,25 @@ end
 
 local function CollectEggPets(Egg)
     local Origin = Egg.Position
-    local PickupSnapshot = SnapshotPickups()
+    local LastPickup = nil
     local EmptySince = nil
 
     while Enabled do
-        local Pickup = GetPickup(PickupSnapshot, Origin)
+        local Pickups = GetPickupParts(Origin)
+        local Pickup = Pickups[1]
 
-        if Pickup then
+        if Pickup and Pickup ~= LastPickup then
             EmptySince = nil
+            LastPickup = Pickup
 
             local Animal = StealPickup(Pickup)
 
             if Animal then
                 PlaceAnimal(Animal)
-                PickupSnapshot = SnapshotPickups()
+                LastPickup = nil
                 task.wait(0.05)
             else
+                LastPickup = nil
                 task.wait(0.1)
             end
         else
@@ -549,29 +584,33 @@ local function CollectEggPets(Egg)
                 EmptySince = os.clock()
             end
 
-            if os.clock() - EmptySince >= 3 then
+            if os.clock() - EmptySince >= 5 then
                 break
             end
 
-            task.wait(0.03)
+            task.wait(0.05)
         end
     end
 end
 
 local function FarmCycle()
-    local Root = GetRoot()
+    local ZoneName = SelectedZone
 
-    if not Root then
-        return false
-    end
-
-    local Egg = GetNextEgg()
+    local Egg = GetNextEgg(ZoneName)
 
     if not Egg then
         return false
     end
 
-    if not BreakEgg(Egg) then
+    if not IsValidEgg(Egg, ZoneName) then
+        return false
+    end
+
+    if not BreakEgg(Egg, ZoneName) then
+        return false
+    end
+
+    if not IsValidEgg(Egg, ZoneName) then
         return false
     end
 
@@ -592,7 +631,7 @@ local function StartAutofarm()
             local Success = FarmCycle()
 
             if not Success then
-                task.wait(0.15)
+                task.wait(0.2)
             end
         end
 
@@ -678,20 +717,13 @@ for ZoneIndex = 1, 9 do
         Parent = TeleportTab,
         Text = "Teleport to " .. ZoneName,
         Callback = function()
-            local Build = Workspace:FindFirstChild("Build")
-            local ZoneBuilds = Build and Build:FindFirstChild("ZoneBuilds")
-            local Zone = ZoneBuilds and ZoneBuilds:FindFirstChild(ZoneName)
-            local Eggs = Zone and Zone:FindFirstChild("Eggs")
+            local Eggs = GetZoneEggs(ZoneName)
+            local Egg = Eggs[1]
 
-            if Eggs then
-                local EggFolder = Eggs:GetChildren()[1]
-                local Egg = EggFolder and EggFolder:FindFirstChild("Egg")
-
-                if Egg and Egg:IsA("BasePart") then
-                    Go(Egg.Position + Vector3.new(0, 3, 0))
-                    Notify("Sanity.exe", "Teleported to " .. ZoneName, 3)
-                    return
-                end
+            if Egg then
+                Go(Egg.Position + Vector3.new(0, 3, 0))
+                Notify("Sanity.exe", "Teleported to " .. ZoneName, 3)
+                return
             end
 
             Notify("Sanity.exe", ZoneName .. " not found", 3)
