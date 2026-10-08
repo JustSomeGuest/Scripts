@@ -23,29 +23,15 @@ if not UI then
 end
 
 local function Notify(Title, Text, Duration)
-    local Success = pcall(function()
-        if type(UI.Notify) == "function" then
-            UI:Notify(
-                Title or "Sanity.exe",
-                Text or "",
-                Duration or 4
-            )
-        else
-            error("VoidUI Notify unavailable")
-        end
-    end)
-
-    if Success then
-        return
+    if not pcall(function() UI:Notify(Title, Text, Duration) end) then
+        pcall(function()
+            StarterGui:SetCore("SendNotification", {
+                Title = Title,
+                Text = Text,
+                Duration = Duration
+            })
+        end)
     end
-
-    pcall(function()
-        StarterGui:SetCore("SendNotification", {
-            Title = Title or "Sanity.exe",
-            Text = Text or "",
-            Duration = Duration or 4
-        })
-    end)
 end
 
 local MainTab = UI:New("Tab", {
