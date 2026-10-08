@@ -2081,7 +2081,7 @@ UI:New("Dropdown", {
     end
 })
 
-UI:New("Input", {
+UI:New("Inputbox", {
     Parent = FarmingTab,
     Text = "Min Cash/s",
     Placeholder = "0",
@@ -2261,7 +2261,7 @@ UI:New("Dropdown", {
     end
 })
 
-UI:New("Input", {
+UI:New("Inputbox", {
     Parent = PlotTab,
     Text = "Keep Cash",
     Placeholder = "0",
