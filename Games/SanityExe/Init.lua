@@ -11,7 +11,7 @@ end
 
 local function HttpGet(Url)
     local Get = game.HttpGetAsync or game.HttpGet
-    return loadstring(Get(game, Url))()
+    return Get(game, Url)
 end
 
 pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
@@ -35,7 +35,15 @@ if qok then
     QueueOnTP = qres
 end
 
-local VoidUI = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.lua")
+local VoidSource = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.lua")
+local VoidFn, VoidErr = loadstring(VoidSource)
+
+if not VoidFn then
+    warn("[Sanity.exe]: Failed to parse VoidUI: " .. tostring(VoidErr))
+    return
+end
+
+local VoidUI = VoidFn()
 
 if not VoidUI then
     warn("[Sanity.exe]: Failed to load VoidUI")
@@ -58,19 +66,7 @@ local function LoadGame(Path)
         return HttpGet(Url)
     end)
 
-    if ok and Scr then
-        local Fn, Err = loadstring(Scr)
-
-        if Fn then
-            local success, Error = pcall(Fn)
-
-            if not success then
-                warn("[Sanity.exe]: Game script execution error: " .. tostring(Error))
-            end
-        else
-            warn("[Sanity.exe]: Error loading game script: " .. tostring(Err))
-        end
-    else
+    if not ok or not Scr then
         warn("[Sanity.exe]: Failed to download game script: " .. Path)
 
         local Tab = UI:New("Tab", {
@@ -81,6 +77,21 @@ local function LoadGame(Path)
             Text = "Error loading game!",
             Parent = Tab
         })
+
+        return
+    end
+
+    local Fn, Err = loadstring(Scr)
+
+    if not Fn then
+        warn("[Sanity.exe]: Error loading game script: " .. tostring(Err))
+        return
+    end
+
+    local Success, Error = pcall(Fn)
+
+    if not Success then
+        warn("[Sanity.exe]: Game script execution error: " .. tostring(Error))
     end
 end
 
@@ -125,11 +136,28 @@ local function LoadList()
         return
     end
 
-    local List = Fn()
+    local Success, List = pcall(Fn)
+
+    if not Success or type(List) ~= "table" then
+        warn("[Sanity.exe]: Supported games list returned invalid data.")
+
+        UI:SetTitle("Sanity.exe")
+
+        local Tab = UI:New("Tab", {
+            Text = "Main"
+        })
+
+        UI:New("Label", {
+            Text = "Invalid supported games list.",
+            Parent = Tab
+        })
+
+        return
+    end
 
     for _, Game in ipairs(List) do
         if tostring(Game.PlaceId) == tostring(PlaceId) then
-            UI:SetTitle("Sanity.exe • " .. Game.GameName)
+            UI:SetTitle("Sanity.exe • " .. tostring(Game.GameName))
 
             if QueueOnTP then
                 pcall(function()
@@ -166,22 +194,11 @@ local function LoadList()
         Parent = Tab
     })
 
-        for _, Game in ipairs(List) do
-        if tostring(Game.PlaceId) == tostring(PlaceId) then
-            UI:SetTitle("Sanity.exe • " .. Game.Name)
-
-            if QueueOnTP then
-                pcall(function()
-                    QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
-                end)
-            end
-
-            if Game.File then
-                LoadGame(Game.File)
-            end
-
-            return
-        end
+    for _, Game in ipairs(List) do
+        UI:New("Label", {
+            Text = tostring(Game.GameName),
+            Parent = Tab
+        })
     end
 end
 
