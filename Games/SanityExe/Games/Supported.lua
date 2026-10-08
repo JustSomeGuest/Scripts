@@ -1,18 +1,18 @@
 return {
     {
-        GameName = "Pole Obby for Brainrots",
+        Name = "Pole Obby for Brainrots",
         PlaceId = 105215477731035,
         File = "PoleObby4Brainrots.lua"
     },
   
     {
-        GameName = "+1 Wings for Brainrots",
+        Name = "+1 Wings for Brainrots",
         PlaceId = 84332574190497,
         File = "Plus1Wings4Brainrots.lua"
     },
 
     {
-        GameName = "Break And Steal An Egg",
+        Name = "Break And Steal An Egg",
         PlaceId = 123, --Placeholder
         File = "BreakAndStealAnEgg.lua"
     }
