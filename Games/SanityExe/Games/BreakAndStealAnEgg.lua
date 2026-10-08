@@ -50,7 +50,6 @@ local PlaceAnimalRemote = ReplicatedStorage:FindFirstChild("PlaceAnimalRemote")
 local Enabled = false
 local Running = false
 local HitDelay = 0.05
-local PlacementIndex = 19
 local SelectedZone = "All Zones"
 
 local function GetRoot()
@@ -520,7 +519,7 @@ local function PlaceAnimal(Animal)
         PlaceAnimalRemote:FireServer(
             Animal,
             BasePosition,
-            PlacementIndex
+            0
         )
     end)
 end
@@ -648,17 +647,6 @@ UI:New("Slider", {
     Default = 0.05,
     Callback = function(Value)
         HitDelay = Value
-    end
-})
-
-UI:New("Slider", {
-    Parent = MainTab,
-    Text = "Placement Index",
-    Min = 1,
-    Max = 50,
-    Default = 19,
-    Callback = function(Value)
-        PlacementIndex = math.floor(Value)
     end
 })
 
