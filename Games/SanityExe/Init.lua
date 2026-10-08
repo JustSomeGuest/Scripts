@@ -14,7 +14,7 @@ local function HttpGet(Url)
     return loadstring(Get(game, Url))()
 end
 
-pcall(loadstring, HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
+pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
 Env.__Sanity = Env.__Sanity or {}
 
@@ -35,7 +35,7 @@ if qok then
     QueueOnTP = qres
 end
 
-local VoidUI = loadstring(HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.lua"))()
+local VoidUI = HttpGet("https://raw.githubusercontent.com/JustSomeGuest/VoidUI/Main/Source/Init.lua")
 
 if not VoidUI then
     warn("[Sanity.exe]: Failed to load VoidUI")
@@ -133,7 +133,7 @@ local function LoadList()
 
             if QueueOnTP then
                 pcall(function()
-                    QueueOnTP('loadstring(game:HttpHttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
+                    QueueOnTP('loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Games/SanityExe/Init.lua"))()')
                 end)
             end
 
