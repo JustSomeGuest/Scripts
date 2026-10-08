@@ -196,7 +196,7 @@ local function LoadList()
 
     for _, Game in ipairs(List) do
         UI:New("Label", {
-            Text = tostring(Game.GameName),
+            Text = tostring(Game.Name),
             Parent = Tab
         })
     end
