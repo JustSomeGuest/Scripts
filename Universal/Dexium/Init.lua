@@ -35,11 +35,9 @@ end
 
 local isFsSupported = readfile and writefile and isfile and isfolder and listfiles and delfile and delfolder
 
--- Main vars
-local Main, Explorer, Properties, ScriptViewer, Console, SaveInstance, ModelViewer, SettingsWindow--[[, SecretServicePanel]], DefaultSettings, Notebook, Serializer, Lib local ggv = getgenv or nil
+local Main, Explorer, Properties, ScriptViewer, Console, SaveInstance, ModelViewer, SettingsWindow, DefaultSettings, Notebook, Serializer, Lib local ggv = getgenv or nil
 local API, RMD
 
--- Default Settings
 DefaultSettings = (function()
 	local rgb = Color3.fromRGB	
 	
@@ -50,7 +48,7 @@ DefaultSettings = (function()
 			TeleportToOffset = Vector3.new(0,0,0),
 			ClickToRename = true,
 			AutoUpdateSearch = true,
-			AutoUpdateMode = 0, -- 0 Default, 1 no tree update, 2 no descendant events, 3 frozen
+			AutoUpdateMode = 0,
 			PartSelectionBox = true,
 			GuiSelectionBox = true,
 			CopyPathUseGetChildren = true
@@ -65,18 +63,17 @@ DefaultSettings = (function()
 			NumberRounding = 3,
 			ShowAttributes = true,
 			MaxAttributes = 50,
-			ScaleType = 0 -- 0 Full Name Shown, 1 Equal Halves
+			ScaleType = 0
 		},
 		Theme = {
 			_Recurse = true,
-			-- Dexium modern dark v2 (Fluent-inspired deep navy + electric blue)
 			Main1 = rgb(19,19,28),
 			Main2 = rgb(14,14,21),
-			Outline1 = rgb(10,10,17), -- Mainly frames
-			Outline2 = rgb(58,58,82), -- Mainly button
-			Outline3 = rgb(24,24,35), -- Mainly textbox
+			Outline1 = rgb(10,10,17),
+			Outline2 = rgb(58,58,82),
+			Outline3 = rgb(24,24,35),
 			TextBox = rgb(24,24,35),
-			SearchBar = rgb(28,34,56), -- blue-tinted input bg, only for search bars
+			SearchBar = rgb(28,34,56),
 			Menu = rgb(17,17,26),
 			ListSelection = rgb(51,125,255),
 			Button = rgb(33,33,47),
@@ -127,22 +124,17 @@ DefaultSettings = (function()
 			Transparency = 0
 		},
 		Decompiler = {
-			DecompilerFallback = "Konstant", --Konstant, Shiny, AdvancedDecompiler
+			DecompilerFallback = "Konstant",
 			PreferDecompilerFallback = false,
 			ShinyDecompilerPort = 3000,
 		},
 		
-		RemoteBlockWriteAttribute = false, -- writes attribute to remote instance if remote is blocked/unblocked
+		RemoteBlockWriteAttribute = false,
 		ClassIcon = "NewDark",
 		
-		-- What available icons:
-		-- > Vanilla3
-		-- > Old
-		-- > NewDark
 	}
 end)()
 
--- Vars
 local Settings = DefaultSettings or {}
 local Apps = {}
 local env = {}
@@ -192,16 +184,13 @@ Main = (function()
 	Main.AppControls = {}
 	Main.Apps = Apps
 	Main.MenuApps = {}
-	-- Dexium repo location (you will push this folder here later)
 	Main.GitName = "JustSomeGuest"
 	Main.RepoName = "Scripts"
 	Main.Branch = "Main"
 	Main.Folder = "Universal/Dexium"
 	Main.BaseUrl = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Dexium"
 	Main.GitRepoName = Main.GitName.."/"..Main.RepoName
-	-- Local dev folder: if DexiumSRC/ exists with Modules/ + Header.lua, use readfile instead of HttpGet
 	Main.LocalBase = "DexiumSRC"
-	-- All Dexium files live in dexium/ alongside rbx_api.dat etc.
 	Main.DataFolder = "dexium"
 	Main.SettingsPath = Main.DataFolder.."/settings.json"
 
@@ -213,71 +202,6 @@ Main = (function()
 	}
 	
 	Main.Plugins = {}
-	
-	--[[Main.LoadAdonisBypass = function()
-		-- skidded off reddit :pensive:
-		local getinfo = getinfo or debug.getinfo
-		local DEBUG = false
-		local Hooked = {}
-
-		local Detected, Kill
-
-		setthreadidentity(2)
-
-		for i, v in getgc(true) do
-			if typeof(v) == "table" then
-				local DetectFunc = rawget(v, "Detected")
-				local KillFunc = rawget(v, "Kill")
-
-				if typeof(DetectFunc) == "function" and not Detected then
-					Detected = DetectFunc
-
-					local Old; Old = hookfunction(Detected, function(Action, Info, NoCrash)
-						if Action ~= "_" then
-							if DEBUG then
-								warn(`Adonis AntiCheat flagged\nMethod: {Action}\nInfo: {Info}`)
-							end
-						end
-
-						return true
-					end)
-
-					table.insert(Hooked, Detected)
-				end
-
-				if rawget(v, "Variables") and rawget(v, "Process") and typeof(KillFunc) == "function" and not Kill then
-					Kill = KillFunc
-					local Old; Old = hookfunction(Kill, function(Info)
-						if DEBUG then
-							warn(`Adonis AntiCheat tried to kill (fallback): {Info}`)
-						end
-					end)
-
-					table.insert(Hooked, Kill)
-				end
-			end
-		end
-
-		local Old; Old = hookfunction(getrenv().debug.info, newcclosure(function(...)
-			local LevelOrFunc, Info = ...
-
-			if Detected and LevelOrFunc == Detected then
-				if DEBUG then
-					warn(`Adonis AntiCheat sanity check detected and broken`)
-				end
-
-				return coroutine.yield(coroutine.running())
-			end
-
-			return Old(...)
-		end))
-		-- setthreadidentity(9)
-		setthreadidentity(7)
-	end
-	
-	Main.LoadGCBypass = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/secretisadev/Babyhamsta_Backup/main/Universal/Bypasses.lua", true))()
-	end]]
 	
 	Main.GetRandomString = function()
 		local output = ""
@@ -297,9 +221,7 @@ Main = (function()
 	end
 	
 	Main.SecureGui = function(gui)
-		--warn("Secured: "..gui.Name)
 		gui.Name = "_DXM_".. Main.GetRandomString()
-		-- service already using cloneref
 		if gethui then
 			gui.Parent = gethui()
 		elseif syn and syn.protect_gui then
@@ -343,7 +265,6 @@ Main = (function()
 			rconsoleprint(msg.."\n")
 		end
 		warn(msg)
-		-- don't infinite-hang anymore; show it on the intro if possible then error out
 		if Main._Intro then
 			pcall(function()
 				Main._Intro.SetProgress("Error: "..tostring(str):sub(1, 80), 1)
@@ -361,8 +282,6 @@ Main = (function()
 		end
 	end
 
-	-- GothamSSm is the real modern Gotham (old Font 7/8 were Bodoni/Garamond, and
-	-- Enum Gotham/GothamBold now map to Montserrat). Apply via FontFace.
 	Main.GetGothamSSm = function(weight)
 		local ok, f = pcall(Font.new, "rbxasset://fonts/families/GothamSSm.json", weight or Enum.FontWeight.Medium)
 		if ok and f then return f end
@@ -404,9 +323,6 @@ Main = (function()
 		if Main._HasLocalSrcCached ~= nil then
 			return Main._HasLocalSrcCached
 		end
-		-- Detects local dev files. Supports both:
-		--  a) executor CWD = workspace/ with DexiumSRC/Modules/...
-		--  b) executor CWD = workspace/DexiumSRC/ with Modules/...
 		local _isfile = (env and env.isfile) or isfile
 		local _isfolder = (env and env.isfolder) or isfolder
 		local function existsFile(p)
@@ -440,20 +356,18 @@ Main = (function()
 	end
 
 	Main.LoadModule = function(name)
-		if Main.Elevated then -- If you don't have filesystem api then ur outta luck tbh
+		if Main.Elevated then
 			local control
 
-			if EmbeddedModules then -- Offline Modules
+			if EmbeddedModules then
 				control = EmbeddedModules[name]()
 
-				-- TODO: Remove when open source
 				if gethsfuncs then
 					control = _G.moduleData
 				end
 
 				if not control then Main.Error("Missing Embedded Module: "..name) end
 			else
-				-- 1) Try local files first (no HttpGet, instant). Supports running from workspace/ or workspace/DexiumSRC/
 				local localPaths = {
 					Main.LocalBase.."/Modules/"..name..".lua",
 					"Modules/"..name..".lua",
@@ -478,12 +392,10 @@ Main = (function()
 						Main.Error("Failed to run local module "..name.." ("..tostring(usedLocalPath).."): "..tostring(res))
 					end
 					control = res
-					-- keep cache in sync for offline use (don't block on it)
 					if env.writefile then
 						pcall(env.writefile, "dexium/ModuleCache/"..name..".lua", moduleStr)
 					end
 				else
-					-- 2) Try cached copy (fast, no web)
 					local filePath = "dexium/ModuleCache/"..name..".lua"
 					local cached = Main.TryReadLocal(filePath)
 					if cached and #cached > 100 then
@@ -493,16 +405,14 @@ Main = (function()
 							if okCall and res then
 								control = res
 							else
-								cached = nil -- bad cache, force re-download below
+								cached = nil
 							end
 							if control then
-								-- got it from cache, skip slow HttpGet entirely when offline/dev
 								if rconsoleprint then rconsoleprint("[Dexium] using cache "..name.."\n") end
 							end
 						end
 					end
 
-					-- 3) Download from GitHub raw (slow, only if no local/cache)
 					if not control then
 						local remoteUrl = Main.BaseUrl.."/Modules/"..name..".lua"
 						local ok, remoteStr = pcall(oldgame.HttpGet, game, remoteUrl)
@@ -593,14 +503,12 @@ Main = (function()
 				warn("[Dexium] FAILED LOADING "..tostring(v).." CAUSE "..tostring(e))
 				if rconsoleprint then rconsoleprint("[Dexium] FAILED LOADING "..tostring(v).." CAUSE "..tostring(e).."\n") end
 				table.insert(Main._FailedModules, v)
-				-- don't halt everything; keep going so you still get a usable Dexium
 			end
 		end
 		if #Main._FailedModules > 0 then
 			warn("[Dexium] failed modules: "..table.concat(Main._FailedModules, ", "))
 		end
 
-		-- Init Major Apps and define them in modules
 		Explorer = Apps.Explorer
 		Properties = Apps.Properties
 		ScriptViewer = Apps.ScriptViewer
@@ -610,8 +518,6 @@ Main = (function()
 		Notebook = Apps.Notebook
 		SettingsWindow = Apps.SettingsWindow
 		
-		
-		--SecretServicePanel = Apps.SecretServicePanel
 		local appTable = {
 			Explorer = Explorer,
 			Properties = Properties,
@@ -621,11 +527,8 @@ Main = (function()
 			ModelViewer = ModelViewer,
 			Notebook = Notebook,
 			SettingsWindow = SettingsWindow
-			--SecretServicePanel = SecretServicePanel,
 		}
 		
-		
-
 		Main.AppControls.Lib.InitAfterMain(appTable)
 		for i,v in pairs(Main.ModuleList) do
 			local control = Main.AppControls[v]
@@ -645,7 +548,6 @@ Main = (function()
 		
 		env.loadstring = (pcall(loadstring,"local a = 1") and loadstring) or (game:GetService("RunService"):IsStudio() and script.Modules:FindFirstChild("Loadstring") and require(script.Modules:FindFirstChild("Loadstring")))
 
-		-- file
 		env.isfile = isfile
 		env.isfolder = isfolder
 		env.readfile = readfile
@@ -655,7 +557,6 @@ Main = (function()
 		env.listfiles = listfiles
 		env.loadfile = loadfile
 		env.saveinstance = saveinstance or (function()
-			--warn("No built-in saveinstance exists, using SynSaveInstance and wrapper...")
 			if game:GetService("RunService"):IsStudio() then return function() error("Cannot run in Roblox Studio!") end end
 			local Params = {
 				RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
@@ -665,7 +566,6 @@ Main = (function()
 		
 			local function wrappedsaveinstance(obj, filepath, options)
 				options["FilePath"] = filepath
-				--options["ReadMe"] = false
 				options["Object"] = obj
 				return synsaveinstance(options)
 			end
@@ -678,7 +578,6 @@ Main = (function()
 			return tostring(name):gsub("[*\\?:<>|]+", ""):sub(1, 175)
 		end
 
-		-- debug
 		env.getupvalues = debug.getupvalues or getupvalues or getupvals
 		env.getconstants = debug.getconstants or getconstants or getconsts
 		env.islclosure = islclosure or is_l_closure
@@ -686,11 +585,9 @@ Main = (function()
 		env.getreg = getreg
 		env.getgc = getgc
 		
-		-- hooks
 		env.hookfunction = hookfunction
 		env.hookmetamethod = hookmetamethod
 
-		-- other
 		env.getscriptbytecode = getscriptbytecode
 		env.setfflag = setfflag
 		env.protectgui = protect_gui or (syn and syn.protect_gui)
@@ -719,9 +616,6 @@ Main = (function()
 			return typeof(decompile) ~= "function" or typeof(getscriptbytecode) == "function" or false
 		end
 		
-		
-		-- DECOMPILERS
-		
 		local AdvancedDecompilerCache
 		pcall(function()
 			AdvancedDecompilerCache = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/Advanced-Decompiler-V3/main/init.lua"))()
@@ -730,9 +624,6 @@ Main = (function()
 		local konstant_last_call = 0
 		
 		local function KonstantDec(...)
-			-- by lovrewe
-			--warn("No built-in decompiler exists, using Konstant decompiler...")
-			--assert(getscriptbytecode, "Exploit not supported.")
 			local API = "http://api.plusgiant5.com"
 
 			local request = env.request
@@ -741,7 +632,7 @@ Main = (function()
 				local success, bytecode = pcall(env.getscriptbytecode, scriptPath)
 
 				if (not success) then
-					return `-- Failed to get script bytecode, error:\n\n--[[\n{bytecode}\n--]]`
+					return `
 				end
 
 				local time_elapsed = os.clock() - konstant_last_call
@@ -761,7 +652,7 @@ Main = (function()
 				konstant_last_call = os.clock()
 
 				if (httpResult.StatusCode ~= 200) then
-					return `-- Error occurred while requesting Konstant API, error:\n\n--[[\n{httpResult.Body}\n--]]`
+					return `
 				else
 					return httpResult.Body
 				end
@@ -808,11 +699,6 @@ Main = (function()
 			end
 		end
 		
-		--[[if Main.Elevated then
-			getgenv().decompile = env.decompile
-		end]]
-		
-
 		if identifyexecutor then
 			Main.Executor = identifyexecutor()
 		end
@@ -823,64 +709,6 @@ Main = (function()
 	end
 
 	Main.IncompatibleTest = function()
-		--[[local function incompatibleMessage(reason, tolerated)
-			local msg = Instance.new("ScreenGui")
-			msg.IgnoreGuiInset = true
-			local t = Instance.new("TextLabel",msg)
-			t.BackgroundColor3 = Color3.fromRGB(50,50,50)
-			t.Position = UDim2.new(0,0,0,0)
-			t.Size = UDim2.new(1,0,1,0)
-			t.TextColor3 = Color3.new(1,1,1)
-			t.TextWrapped = true
-			t.TextScaled = true
-			t.Text = "\n\n\n\n\n\n\n\nHello Skidsploit user,\nZinnia, Chillz and the Secret Service does not approve of Dex being used on your skidsploit.\nPlease consider getting something better.\n\nIncompatible Reason: "..reason.."\n\n\n\n\n\n\n\n"
-			
-			-- This sound wont work!!!
-			local sound = Instance.new("Sound",msg)
-			sound.SoundId = "rbxassetid://175964948"
-			sound.Volume = 1
-			sound.Looped = true
-			sound.Playing = true
-			
-			if not tolerated then
-				Lib.ShowGui(msg)
-				
-				if os and os.execute then pcall(os.execute,'explorer "https://weao.xyz"') end
-				if pcall(game.GetService, game,"MessageBusService") and game:GetService("MessageBusService").Publish then pcall(game:GetService("MessageBusService").Publish, game:GetService("MessageBusService"), game:GetService("MessageBusService"):GetMessageId("Linking", "openURLRequest"), {url = 'explorer "https://weao.xyz"'}) end
-			else
-				warn(msg)
-			end			
-		end
-		
-																																													local yummy, evilList = "\105\100\101\110\116\105\102\121\101\120\101\99\117\116\111\114", { "\120\101\110\111", "\115\111\108\97\114\97", "\119\97\118\101" }
-																																													if ggv and ggv()[yummy] then local wow = ggv()[yummy] if table.find(evilList, string.lower(wow)) then incompatibleMessage("\83\72\73\84\84\89\32\69\88\69\67\85\84\79\82") end end
-																																													
-		local t = {}
-		t[1] = t
-		local x = unpack(t) or incompatibleMessage("WRAPPER FAILED TO CYCLIC #1")
-		if x[1] ~= t then incompatibleMessage("WRAPPER FAILED TO CYCLIC #2") end
-		
-		if game ~= workspace.Parent then
-			incompatibleMessage("WRAPPER NO CACHE (game ≠ workspace.Parent)", true)
-			game = workspace.Parent
-		end
-		
-		if Main.Elevated and not loadstring("for i = 1,1 do continue end") then incompatibleMessage("CAN'T CONTINUE OR NO LOADSTRING")end
-		
-		local obj = newproxy(true)
-		local mt = getmetatable(obj)
-		mt.__index = function() incompatibleMessage("CAN'T NAMECALL (__index triggered instead of __namecall)") end
-		mt.__namecall = function() end
-		obj:No()
-		
-		local fEnv = setmetatable({zin = 5},{__index = getfenv()})
-		local caller = function(f) f() end
-		setfenv(caller,fEnv)
-		caller(function() if not getfenv(2).zin then incompatibleMessage("RERU WILL BE FILING A LAWSUIT AGAINST YOU SOON") end end)
-		
-		local second = false
-		coroutine.wrap(function() local start = tick() wait(5) if tick() - start < 0.1 or not second then incompatibleMessage("SKIDDED YIELDING") end end)()
-		second = true]]
 	end
 	
 	local function serialize(val)
@@ -922,7 +750,6 @@ Main = (function()
 			return newTbl
 		end
 
-		-- serialize color3 sebelum encode
 		local serializedData = recur(rawData)
 
 		local s, json = pcall(service.HttpService.JSONEncode, service.HttpService, serializedData)
@@ -930,9 +757,6 @@ Main = (function()
 			return json
 		end
 	end
-
-
-	--warn(Main.ExportSettings())
 
 	Main.LoadSettings = function()
 		local s, data = pcall(env.readfile or error, Main.SettingsPath)
@@ -964,9 +788,6 @@ Main = (function()
 			Main.ResetSettings()
 		end
 	end
-
-	
-	
 
 	Main.ResetSettings = function()
 		local function recur(t,res)
@@ -1001,13 +822,12 @@ Main = (function()
 				task.wait(10)
 				if not downloaded and callbackiflong then callbackiflong() end
 
-				task.wait(20) -- 30
+				task.wait(20)
 				if not downloaded and callbackiftoolong then callbackiftoolong() end
 
-				task.wait(30) -- 60
+				task.wait(30)
 				if not downloaded and XD then XD() end
 			end)
-			-- lmfao async makes it work to load big file
 			rawAPI = rawAPI or game:HttpGet("http://setup.roblox.com/"..Main.RobloxVersion.."-API-Dump.json")
 		else
 			if script:FindFirstChild("API") then
@@ -1265,7 +1085,6 @@ Main = (function()
 	Main.ShowGui = Main.SecureGui
 
 	Main.CreateIntro = function(initStatus)
-		-- Dexium v2 intro: glass card, logo mark, version pill, % counter, glow bar
 		local ACCENT = Color3.fromRGB(56,139,255)
 		local ACCENT_L = Color3.fromRGB(120,185,255)
 		local BG = Color3.fromRGB(15,15,22)
@@ -1328,7 +1147,6 @@ Main = (function()
 
 		statusText.Text = initStatus or "Loading Dexium..."
 
-		-- entrance: pop card (solid bg, no dim fade)
 		local ti = TweenInfo.new(0.35,Enum.EasingStyle.Quart,Enum.EasingDirection.Out)
 		mainFrame.Size = UDim2.new(0,400,0,220)
 		mainFrame.Position = UDim2.new(0.5,-200,0.5,-110)
@@ -1347,7 +1165,6 @@ Main = (function()
 		local progressTI = TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.Out)
 		fastwait(0.1)
 
-		-- subtle glow pulse + spinner dots
 		coroutine.wrap(function()
 			local frames = {"loading", "loading.", "loading..", "loading..."}
 			local i = 1
@@ -1389,7 +1206,7 @@ Main = (function()
 	end
 
 	Main.CreateApp = function(data)
-		if Main.MenuApps[data.Name] then return end -- TODO: Handle conflict
+		if Main.MenuApps[data.Name] then return end
 		local control = {}
 
 		local app = Main.AppTemplate:Clone()
@@ -1499,7 +1316,6 @@ Main = (function()
 
 		app.Visible = true
 		app.Parent = Main.AppsContainer
-		-- canvas auto-sizes (AutomaticCanvasSize), just re-apply search filter
 		if Main._SearchFilter and Main._SearchFilter ~= "" then
 			local q = string.lower(Main._SearchFilter)
 			app.Visible = string.find(string.lower(data.Name), q, 1, true) ~= nil
@@ -1520,7 +1336,6 @@ Main = (function()
 		if titleLbl then titleLbl.Text = val and "Close" or "Dexium" end
 		if chevLbl then chevLbl.Text = val and "^" or "v" end
 		if val then openBtn.MainFrame.Visible = true end
-		-- pop animation: scale only (no transparency fade, solid bg)
 		pcall(function()
 			local sc = openBtn.MainFrame:FindFirstChild("UIScale")
 			if sc then
@@ -1567,17 +1382,14 @@ Main = (function()
 			{7,"UICorner",{CornerRadius=UDim.new(0,16),Parent={6},}},
 			{8,"UIStroke",{Color=Color3.fromRGB(70,70,100),Thickness=1,Transparency=0.3,Parent={6},}},
 			{61,"UIGradient",{Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(26,26,38)),ColorSequenceKeypoint.new(1,Color3.fromRGB(15,15,24))}),Parent={6},Rotation=90,}},
-			-- header (no logo, Dexium has none)
 			{62,"Frame",{BackgroundTransparency=1,Name="Header",Parent={6},Position=UDim2.new(0,0,0,0),Size=UDim2.new(1,0,0,60),}},
 			{67,"TextLabel",{BackgroundTransparency=1,Font=8,Name="AppTitle",Parent={62},Position=UDim2.new(0,16,0,10),Size=UDim2.new(1,-28,0,22),Text="Dexium",TextColor3=Color3.fromRGB(242,242,250),TextSize=17,TextXAlignment=0,}},
 			{68,"TextLabel",{BackgroundTransparency=1,Font=7,Name="AppSub",Parent={62},Position=UDim2.new(0,17,0,31),Size=UDim2.new(1,-28,0,16),Text="v"..tostring(Main.Version).."  •  debugging suite",TextColor3=Color3.fromRGB(135,135,162),TextSize=11,TextXAlignment=0,}},
-			-- search
 			{70,"Frame",{BackgroundColor3=Settings.Theme.SearchBar or Color3.fromRGB(28,34,56),BorderSizePixel=0,Name="SearchBG",Parent={6},Position=UDim2.new(0,14,0,62),Size=UDim2.new(1,-28,0,32),}},
 			{71,"UICorner",{CornerRadius=UDim.new(0,10),Parent={70},}},
 			{72,"UIStroke",{Color=Color3.fromRGB(62,62,88),Thickness=1,Transparency=0.45,Parent={70},}},
 			{73,"TextLabel",{BackgroundTransparency=1,Font=7,Name="SearchIcon",Parent={70},Position=UDim2.new(0,10,0,0),Size=UDim2.new(0,18,1,0),Text="",TextColor3=Color3.fromRGB(135,135,162),TextSize=15,}},
 			{74,"TextBox",{BackgroundTransparency=1,ClearTextOnFocus=false,Font=7,Name="SearchBox",Parent={70},PlaceholderColor3=Color3.fromRGB(135,135,162),PlaceholderText="Search tools...",Position=UDim2.new(0,12,0,0),Size=UDim2.new(1,-22,1,0),Text="",TextColor3=Color3.fromRGB(240,240,248),TextSize=13,TextXAlignment=0,}},
-			-- grid
 			{9,"Frame",{BackgroundColor3=Color3.fromRGB(24,24,35),BackgroundTransparency=1,BorderSizePixel=0,Name="BottomFrame",Parent={6},Position=UDim2.new(0,0,1,-42),Size=UDim2.new(1,0,0,42),}},
 			{10,"UICorner",{CornerRadius=UDim.new(0,14),Parent={9},}},
 			{11,"Frame",{BackgroundColor3=Color3.fromRGB(24,24,35),BackgroundTransparency=1,BorderSizePixel=0,Name="CoverFrame",Parent={9},Size=UDim2.new(1,0,0,14),}},
@@ -1634,7 +1446,6 @@ Main = (function()
 			end
 		end)
 
-		-- search filter
 		Main._SearchFilter = ""
 		local searchBox = openButton.MainFrame.SearchBG.SearchBox
 		searchBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -1656,7 +1467,6 @@ Main = (function()
 			end
 		end)
 
-		-- footer icon hover states
 		for _, btnName in ipairs({"Settings", "Information"}) do
 			local b = openButton.MainFrame.BottomFrame:FindFirstChild(btnName)
 			if b then
@@ -1670,8 +1480,6 @@ Main = (function()
 		end
 		
 		local creditsWindow
-		
-		--openButton.MainFrame.BottomFrame.Settings.Visible = false
 		
 		openButton.MainFrame.BottomFrame.Settings.MouseButton1Click:Connect(function()
 			if not SettingsWindow.Window.Closed then
@@ -1810,7 +1618,6 @@ Main = (function()
 			end
 		end)
 
-		-- Create Main Apps
 		Main.CreateApp({Name = "Explorer", IconMap = Main.LargeIcons, Icon = "Explorer", Open = true, Window = Explorer.Window})
 
 		Main.CreateApp({Name = "Properties", IconMap = Main.LargeIcons, Icon = "Properties", Open = true, Window = Properties.Window})
@@ -1839,8 +1646,6 @@ Main = (function()
 		
 		Main.CreateApp({Name = "3D Viewer", IconMap = Main.LargeIcons, Icon = "Object", Window = ModelViewer.Window})
 
-		--Main.CreateApp({Name = "Secret Service Panel", IconMap = Main.LargeIcons, Icon = "Output", Window = SecretServicePanel.Window})
-		
 		for _, loadedplugin in pairs(Main.Plugins) do
 			Main.CreateApp({Name = loadedplugin.PluginData.FriendlyName, IconMap = Explorer.ClassIcons, Icon = "Attachment", Window = loadedplugin.Window})
 		end
@@ -1879,7 +1684,6 @@ Main = (function()
 		Main.InitEnv()
 		Main.SetupFilesystem()
 		
-		-- settings live at dexium/settings.json alongside rbx_api.dat etc.
 		do
 			local _isfile = env.isfile or isfile
 			if _isfile then
@@ -1889,18 +1693,15 @@ Main = (function()
 				end
 			end
 		end
-		Main.LoadSettings() -- loads the settings before init
+		Main.LoadSettings()
 
-		-- Load Lib
 		local intro = Main.CreateIntro("Initializing Library")
 		Main._Intro = intro
 		Lib = Main.LoadModule("Lib")
 		Lib.FastWait()
 
-		-- Init other stuff
 		Main.IncompatibleTest()
 
-		-- Init icons
 		Main.MiscIcons = Lib.IconMap.new("rbxassetid://6511490623",256,256,16,16)
 		Main.MiscIcons:SetDict({
 			Reference = 0,             Cut = 1,                         Cut_Disabled = 2,      Copy = 3,               Copy_Disabled = 4,    Paste = 5,                Paste_Disabled = 6,
@@ -1915,14 +1716,6 @@ Main = (function()
 			Explorer = 0, Properties = 1, Script_Viewer = 2, Watcher = 3, Output = 4, ScriptEdit = 5, Book = 6, Executor = 7, Object = 8, Honey = 9
 		})
 		
-		--[[ Loading bypasses
-		intro.SetProgress("Loading Adonis Bypass",0.1)
-		pcall(Main.LoadAdonisBypass)
-		
-		intro.SetProgress("Loading GC Bypass",0.2)
-		pcall(Main.LoadGCBypass)]]
-
-		-- Fetch version if needed
 		intro.SetProgress("Fetching Roblox Version",0.3)
 		if Main.Elevated then
 			local fileVer = Lib.ReadFile("dexium/deps_version.dat")
@@ -1937,7 +1730,6 @@ Main = (function()
 			Main.RobloxVersion = Main.RobloxVersion or oldgame:HttpGet("https://clientsettings.roblox.com/v2/client-version/WindowsStudio64/channel/LIVE"):match("(version%-[%w]+)")
 		end
 
-		-- Fetch external deps
 		intro.SetProgress("Fetching API",0.35)
 		API = Main.FetchAPI(
 			function()
@@ -1955,22 +1747,19 @@ Main = (function()
 		RMD = Main.FetchRMD()
 		Lib.FastWait()
 
-		-- Save external deps locally if needed
 		if Main.Elevated and env.writefile and not Main.LocalDepsUpToDate() then
 			env.writefile("dexium/deps_version.dat",Main.ClientVersion.."\n"..Main.RobloxVersion)
 			env.writefile("dexium/rbx_api.dat",Main.RawAPI)
 			env.writefile("dexium/rbx_rmd.dat",Main.RawRMD)
 		end
 
-		-- Load other modules (per-module progress so it doesn't look stuck)
 		intro.SetProgress("Loading Modules",0.75)
-		Main.AppControls.Lib.InitDeps(Main.GetInitDeps()) -- Missing deps now available
+		Main.AppControls.Lib.InitDeps(Main.GetInitDeps())
 		Main.LoadModules(function(modName, idx, total)
 			intro.SetProgress("Loading modules ("..tostring(idx).."/"..tostring(total)..")", 0.75 + (idx/total)*0.05)
 		end)
 		Lib.FastWait()
 
-		-- Init other modules
 		intro.SetProgress("Initializing Modules",0.8)
 		Explorer.Init()
 		Properties.Init()
@@ -1979,8 +1768,6 @@ Main = (function()
 		SaveInstance.Init()
 		ModelViewer.Init()
 		SettingsWindow.Init()
-		--SecretServicePanel.Init()
-		
 		
 		if env.readfile and listfiles then
 			if #listfiles("dexium/plugins") > 0 then
@@ -2004,17 +1791,14 @@ Main = (function()
 			end	
 		end
 		
-		
 		Lib.FastWait()
 
-		-- Done
 		intro.SetProgress("Complete",1)
 		coroutine.wrap(function()
 			Lib.FastWait(1.25)
 			intro.Close()
 		end)()
 
-		-- Init window system, create main menu, show explorer and properties
 		Lib.Window.Init()
 		Main.CreateMainGui()
 		Explorer.Window:Show({Align = "right", Pos = 1, Size = 0.5, Silent = true})
@@ -2028,7 +1812,7 @@ Main = (function()
 		Main.AppControls = {}
 		Main.Plugins = {}
 		for _, gui in pairs(Main.GetSecureContainer():GetChildren()) do
-			if string.sub(gui.Name,1,5) == "_DXM_" then -- DXM stands for Dexium
+			if string.sub(gui.Name,1,5) == "_DXM_" then
 				gui:Destroy()
 			end
 		end
@@ -2043,7 +1827,4 @@ Main = (function()
 	return Main
 end)()
 
--- Start
 Main.Init()
-
---for i,v in pairs(Main.MissingEnv) do print(i,v) end
