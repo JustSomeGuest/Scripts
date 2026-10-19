@@ -632,7 +632,7 @@ Main = (function()
 				local success, bytecode = pcall(env.getscriptbytecode, scriptPath)
 
 				if (not success) then
-					return `
+					return 
 				end
 
 				local time_elapsed = os.clock() - konstant_last_call
