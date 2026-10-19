@@ -523,8 +523,8 @@ function Funcs.ClearCache()
 end
 
 local BuiltInScripts = {
-	{Name="Dex++ (Built-In)", Description="Explore game instances.", Code='loadstring(game:HttpGet("https://github.com/AZYsGithub/DexPlusPlus/releases/latest/download/out.lua"))()'},
-	{Name="Keyboard (Built-In)", Description="Virtual keyboard for mobile.", Code='loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/DeltaKD.lua"))()'}
+	{Name="Dexium (Built-In)", Description="Explore game instances.", Code='loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/dexium"))()'},
+	{Name="Keyboard (Built-In)", Description="Virtual keyboard for mobile.", Code='loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/deltakd"))()'}
 }
 
 function Funcs.InitDefaultScripts()
