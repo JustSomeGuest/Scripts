@@ -652,7 +652,7 @@ Main = (function()
 				konstant_last_call = os.clock()
 
 				if (httpResult.StatusCode ~= 200) then
-					return `
+					return
 				else
 					return httpResult.Body
 				end
