@@ -2,15 +2,15 @@
 
 # CPanel
 
-**A centralized Roblox trolling and control panel.**
+**A centralized Roblox control panel.**
 
 CPanel is a Roblox control panel that allows developers to remotely interact with users running scripts that include the CPanel client.
 
 Developers integrate CPanel into their own scripts. Whenever someone executes one of those scripts, their client automatically connects to the developer's WebSocket server and registers as a participant.
 
-Authorized developers can then open the CPanel dashboard, view connected participants, join their servers, and trigger various actions and effects on their clients.
+Authorized developers can open the CPanel dashboard, view connected participants, join their game servers, and send actions and effects to their clients.
 
-From player actions to visual effects, audio playback, and camera effects, CPanel provides a centralized way to interact with everyone connected to your server.
+From player actions to visual effects, audio playback, and camera effects, CPanel provides a centralized way to interact with connected clients.
 
 ## How It Works
 
@@ -18,8 +18,8 @@ CPanel uses a centralized WebSocket backend to connect developers and participan
 
 1. **Developers integrate CPanel** into their Roblox scripts.
 2. **Users execute the script**, automatically connecting their client to the WebSocket server.
-3. **The server registers the connection** and identifies whether the client has developer access.
-4. **Developers open the dashboard** and see everyone currently connected.
+3. **The server registers the connection** and determines whether the client has developer access.
+4. **Authorized developers open the dashboard** and see currently connected participants.
 5. **Developers select participants** and send actions or effects to their clients.
 
 You host your own WebSocket backend using the official repository:
@@ -34,7 +34,7 @@ The backend can be deployed as a Web Service through [Render](https://render.com
 - Live participant list.
 - Search and refresh participants.
 - Select individual participants.
-- Join participants' exact game servers.
+- Join participants' game servers.
 - View connection and effect status.
 
 ### Player Actions
@@ -91,12 +91,12 @@ The backend can be deployed as a Web Service through [Render](https://render.com
 | --- | --- |
 | Gets access to the dashboard. | Automatically connects when executing an integrated script. |
 | Can view connected participants. | Appears in the participant list. |
-| Can select and interact with participants. | Receives actions and effects from developers. |
-| Can manage effects. | Can optionally block incoming effects. |
+| Can select connected participants. | Receives actions and effects. |
+| Can manage available effects. | Runs the CPanel client. |
 
 Developer access is controlled through the WebSocket server's `access.json` file.
 
-Only authorized UserIds receive the developer dashboard.
+Only authorized Roblox UserIds receive developer dashboard access.
 
 ---
 
@@ -130,8 +130,8 @@ Add your Roblox UserId to the array. Multiple developers can be authorized.
 3. Open [Render](https://render.com/).
 4. Create a new Web Service.
 5. Connect your repository.
-6. Configure the build command as `npm install`.
-7. Configure the start command as `npm start`.
+6. Set the build command to `npm install`.
+7. Set the start command to `npm start`.
 8. Deploy the service.
 
 Your WebSocket endpoint will look like:
@@ -146,8 +146,10 @@ Use this endpoint in your CPanel client configuration.
 
 ## Important
 
-CPanel only works with clients that have loaded a script containing the CPanel client.
+- CPanel only works with clients that have loaded a script containing the CPanel client.
+- It does not automatically connect to every player in a Roblox game.
+- Participants are automatically registered when their CPanel client connects.
+- Actions and effects are processed by the receiving client's CPanel instance.
+- Developer access is determined by the WebSocket server's `access.json` configuration.
 
-It does not automatically connect to every Roblox player in a game.
-
-Actions and effects are processed by the receiving client's own CPanel instance. Participants can also enable `CPanelBlockEffects` to refuse incoming effects while remaining connected.
+**CPanel does not control players who have not loaded a script containing its client.**
