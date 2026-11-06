@@ -27,7 +27,23 @@ local function FailBoot(message)
 	end)
 end
 
-if type(WebsocketUrl) ~= "string" or WebsocketUrl == "" or not WebsocketUrl:match("^wss?://") then
+local function ValidWs(url)
+	return type(url) == "string" and url:match("^wss?://") ~= nil
+end
+
+if not ValidWs(WebsocketUrl) and type(readfile) == "function" then
+	local okStored, stored = pcall(readfile, ".websocketUrl")
+	if okStored and ValidWs(stored) then
+		WebsocketUrl = tostring(stored):match("^%s*(.-)%s*$")
+		Env.CPanelWebsocket = WebsocketUrl
+	end
+end
+
+if ValidWs(WebsocketUrl) and type(writefile) == "function" then
+	pcall(writefile, ".websocketUrl", tostring(WebsocketUrl):match("^%s*(.-)%s*$"))
+end
+
+if not ValidWs(WebsocketUrl) then
 	FailBoot("Invalid configuration: set getgenv().CPanelWebsocket = \"wss://your-websocket-url.example.com\" before loading.")
 	return
 end
