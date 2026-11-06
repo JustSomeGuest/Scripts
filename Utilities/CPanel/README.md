@@ -12,6 +12,14 @@ Authorized developers can open the CPanel dashboard, view connected participants
 
 From player actions to visual effects, audio playback, and camera effects, CPanel provides a centralized way to interact with connected clients.
 
+## Loader
+```
+task.spawn(function()
+getgenv().CPanelWebsocket="wss://your-service.onrender.com"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/Init.lua"))()
+end)
+```
+
 ## How It Works
 
 CPanel uses a centralized WebSocket backend to connect developers and participants.
@@ -112,14 +120,14 @@ Clone the repository, configure `access.json`, and deploy it as a Web Service on
 
 Inside the WebSocket repository, edit `access.json`:
 
-\`\`\`json
+```json
 {
   "_comment": "Authorized CPanel developer UserIds.",
   "userids": [
     10951598942
   ]
 }
-\`\`\`
+```
 
 Add your Roblox UserId to the array. Multiple developers can be authorized.
 
@@ -136,9 +144,9 @@ Add your Roblox UserId to the array. Multiple developers can be authorized.
 
 Your WebSocket endpoint will look like:
 
-\`\`\`text
+```text
 wss://your-service.onrender.com
-\`\`\`
+```
 
 Use this endpoint in your CPanel client configuration.
 
