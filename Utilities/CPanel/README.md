@@ -13,7 +13,7 @@ Authorized developers can open the CPanel dashboard, view connected participants
 From player actions to visual effects, audio playback, and camera effects, CPanel provides a centralized way to interact with connected clients.
 
 ## Loader
-```
+```lua
 task.spawn(function()
 getgenv().CPanelWebsocket="wss://your-service.onrender.com"
 loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/Init.lua"))()
