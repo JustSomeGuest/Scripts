@@ -2704,54 +2704,57 @@ end
 
 local function Dragify(handle, target)
 	target = target or handle
+
 	local state = { Moved = false }
 	local dragging = false
 	local dragStart = nil
 	local startPos = nil
 	local startAbs = nil
+
 	local xPadding = 14
 	local yPadding = 10
 	local DRAG_THRESHOLD = 4
 
 	local function ScreenSize()
-		// Prefer the global UI.Screen if it exists (the main dashboard ScreenGui).
-		if UI and UI.Screen and UI.Screen.AbsoluteSize and UI.Screen.AbsoluteSize.X > 0 and UI.Screen.AbsoluteSize.Y > 0 then
+		if UI and UI.Screen and UI.Screen.AbsoluteSize then
 			return UI.Screen.AbsoluteSize
 		end
-		// Walk up from the target to find a ScreenGui ancestor.
+
 		local node = target
 		while node do
-			if node.ClassName == "ScreenGui" then
-				local size = node.AbsoluteSize
-				if size and size.X > 0 and size.Y > 0 then
-					return size
-				end
+			if node:IsA("ScreenGui") then
+				return node.AbsoluteSize
 			end
 			node = node.Parent
 		end
-		// Fallback to the camera viewport (should rarely be used after UI.Screen is set).
-		local camera = GetCamera()
-		return (camera and camera.ViewportSize) or Vector2.new(1280, 720)
+
+		local camera = workspace.CurrentCamera
+		return camera and camera.ViewportSize or Vector2.new(1280, 720)
 	end
 
 	local function OverHandle(input)
 		if not handle.Visible or not target.Visible then
 			return false
 		end
+
 		local pos = handle.AbsolutePosition
 		local size = handle.AbsoluteSize
 		local p = input.Position
+
 		return p.X >= pos.X and p.X <= pos.X + size.X
 			and p.Y >= pos.Y and p.Y <= pos.Y + size.Y
 	end
 
 	UserInputService.InputBegan:Connect(function(input)
-		if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch then
+		if input.UserInputType ~= Enum.UserInputType.MouseButton1
+			and input.UserInputType ~= Enum.UserInputType.Touch then
 			return
 		end
+
 		if OverHandle(input) then
 			dragging = true
 			state.Moved = false
+
 			dragStart = input.Position
 			startPos = target.Position
 			startAbs = target.AbsolutePosition
@@ -2762,28 +2765,47 @@ local function Dragify(handle, target)
 		if not dragging then
 			return
 		end
-		if input.UserInputType ~= Enum.UserInputType.MouseMovement and input.UserInputType ~= Enum.UserInputType.Touch then
+
+		if input.UserInputType ~= Enum.UserInputType.MouseMovement
+			and input.UserInputType ~= Enum.UserInputType.Touch then
 			return
 		end
+
 		local delta = input.Position - dragStart
-		if not state.Moved and (math.abs(delta.X) > DRAG_THRESHOLD or math.abs(delta.Y) > DRAG_THRESHOLD) then
+
+		if not state.Moved and (
+			math.abs(delta.X) > DRAG_THRESHOLD
+			or math.abs(delta.Y) > DRAG_THRESHOLD
+		) then
 			state.Moved = true
 		end
+
 		local viewport = ScreenSize()
 		local size = target.AbsoluteSize
+
 		local minX = xPadding
 		local maxX = math.max(minX, viewport.X - size.X - xPadding)
+
 		local minY = yPadding
 		local maxY = math.max(minY, viewport.Y - size.Y - yPadding)
+
 		local wantX = math.clamp(startAbs.X + delta.X, minX, maxX)
 		local wantY = math.clamp(startAbs.Y + delta.Y, minY, maxY)
+
 		local shiftX = wantX - startAbs.X
 		local shiftY = wantY - startAbs.Y
-		target.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + shiftX, startPos.Y.Scale, startPos.Y.Offset + shiftY)
+
+		target.Position = UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset + shiftX,
+			startPos.Y.Scale,
+			startPos.Y.Offset + shiftY
+		)
 	end)
 
 	UserInputService.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		if input.UserInputType == Enum.UserInputType.MouseButton1
+			or input.UserInputType == Enum.UserInputType.Touch then
 			dragging = false
 		end
 	end)
