@@ -1,9 +1,6 @@
 task.spawn(function()
-pcall(function()
-getgenv().CPanelWebsocket = "wss://cpanelwebsocket.onrender.com"
-
+getgenv().CPanelWebsocket="wss://cpanelwebsocket.onrender.com"
 loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/Init.lua"))()
-end)
 end)
 
 local oldgame = oldgame or game
