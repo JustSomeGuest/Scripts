@@ -2714,6 +2714,11 @@ local function Dragify(handle, target)
 	local DRAG_THRESHOLD = 4
 
 	local function ScreenSize()
+		// Prefer the global UI.Screen if it exists (the main dashboard ScreenGui).
+		if UI and UI.Screen and UI.Screen.AbsoluteSize and UI.Screen.AbsoluteSize.X > 0 and UI.Screen.AbsoluteSize.Y > 0 then
+			return UI.Screen.AbsoluteSize
+		end
+		// Walk up from the target to find a ScreenGui ancestor.
 		local node = target
 		while node do
 			if node.ClassName == "ScreenGui" then
@@ -2724,6 +2729,7 @@ local function Dragify(handle, target)
 			end
 			node = node.Parent
 		end
+		// Fallback to the camera viewport (should rarely be used after UI.Screen is set).
 		local camera = GetCamera()
 		return (camera and camera.ViewportSize) or Vector2.new(1280, 720)
 	end
