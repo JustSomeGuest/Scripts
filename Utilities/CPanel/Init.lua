@@ -5,13 +5,6 @@ end
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
 if Env.__CPanel and Env.__CPanel.IsLoaded then
-	pcall(function()
-		game:GetService("StarterGui"):SetCore("SendNotification", {
-			Title = "CPanel",
-			Text = "CPanel is already running!",
-			Duration = 3,
-		})
-	end)
 	warn("[CPanel] ignored duplicate load — already running")
 	return
 end
@@ -1099,7 +1092,7 @@ function Fun.Nameplate(args)
 	if not head then
 		return false, "character head not available"
 	end
-	local text = Funcs.SafeText(args.text, 48, "★ CPanel ★")
+	local text = Funcs.SafeText(args.text, 48, "CPanel")
 	local duration = Funcs.EffectDuration(args.duration, DEFAULT_DURATION)
 
 	local billboard = Instance.new("BillboardGui")
@@ -2085,9 +2078,14 @@ task.spawn(function()
 end)
 
 local function MkCorner(radius, parent)
-	local corner = Instance.new("UICorner")
+	-- Idempotent: reuse an existing UICorner instead of stacking a second
+	-- one (MkBtn now adds a default corner, callers may refine the radius).
+	local corner = parent:FindFirstChildOfClass("UICorner")
+	if not corner then
+		corner = Instance.new("UICorner")
+		corner.Parent = parent
+	end
 	corner.CornerRadius = UDim.new(0, radius)
-	corner.Parent = parent
 	return corner
 end
 
@@ -2175,6 +2173,7 @@ local function MkBtn(text, font, size, color, background, parent)
 	button.TextColor3 = color
 	button.AutoButtonColor = false
 	button.Parent = parent
+	MkCorner(8, button) -- every button is rounded by default; callers can override
 
 	local hovering = false
 	local tweenInfo = TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
@@ -2323,6 +2322,7 @@ function Gui.MakeSlider(parent, min, max, value, order, onChange)
 	local holder = MkFrame(BG3, UDim2.new(1, 0, 0, 30), parent)
 	holder.BorderSizePixel = 0
 	holder.LayoutOrder = order or 0
+	MkCorner(8, holder)
 
 	local track = MkFrame(Color3.fromRGB(45, 45, 56), UDim2.new(1, -8, 0, 6), holder)
 	track.BorderSizePixel = 0
@@ -2623,16 +2623,28 @@ local function Dragify(dragObject, handle)
 	local xPadding = 14
 	local yPadding = 10
 
-	handle.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+	-- Bounds check on the handle: relying on the handle's own InputBegan is
+	-- unreliable (child frames/labels can swallow the hit), so we test the
+	-- press position against the handle's absolute rectangle instead.
+	local function OverHandle(input)
+		if not dragObject.Visible then
+			return false
+		end
+		local pos = handle.AbsolutePosition
+		local size = handle.AbsoluteSize
+		local p = input.Position
+		return p.X >= pos.X and p.X <= pos.X + size.X
+			and p.Y >= pos.Y and p.Y <= pos.Y + size.Y
+	end
+
+	UserInputService.InputBegan:Connect(function(input)
+		if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch then
+			return
+		end
+		if OverHandle(input) then
 			dragging = true
 			dragStart = input.Position
 			startPos = dragObject.Position
-			input.Changed:Connect(function()
-				if input.UserInputState == Enum.UserInputState.End then
-					dragging = false
-				end
-			end)
 		end
 	end)
 
@@ -2649,6 +2661,12 @@ local function Dragify(dragObject, handle)
 		local newX = math.clamp(startPos.X.Offset + delta.X, xPadding, viewport.X - size.X - xPadding)
 		local newY = math.clamp(startPos.Y.Offset + delta.Y, yPadding, viewport.Y - size.Y - yPadding)
 		dragObject.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
+	end)
+
+	UserInputService.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = false
+		end
 	end)
 end
 
@@ -2782,7 +2800,7 @@ function Gui.Build()
 	toastHost.Parent = screen
 	UI.ToastHost = toastHost
 
-	local window = MkFrame(BG, UDim2.new(0.94, 0, 0.9, 0), screen)
+	local window = MkFrame(BG, UDim2.new(0.82, 0, 0.84, 0), screen)
 	window.Name = "CPN_Window"
 	window.AnchorPoint = Vector2.new(0.5, 0.5)
 	window.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -2791,8 +2809,8 @@ function Gui.Build()
 	MkCorner(16, window)
 	MkStroke(BORDER, 1, window)
 	local sizeConstraint = Instance.new("UISizeConstraint")
-	sizeConstraint.MinSize = Vector2.new(660, 460)
-	sizeConstraint.MaxSize = Vector2.new(1040, 670)
+	sizeConstraint.MinSize = Vector2.new(620, 440)
+	sizeConstraint.MaxSize = Vector2.new(900, 580)
 	sizeConstraint.Parent = window
 	UI.Window = window
 	Gui.ApplyTransparency()
@@ -2801,6 +2819,9 @@ function Gui.Build()
 	topbar.BorderSizePixel = 0
 	topbar.LayoutOrder = 1
 	UI.Topbar = topbar
+	-- Parent UICorner does not clip children: round the topbar too so its
+	-- corners don't poke outside the window's rounded silhouette.
+	MkCorner(16, topbar)
 
 	local logo = MkImg(Funcs.GetAsset("CPanel/CPN_Logo.png") or Assets["CPanel/CPN_Logo.png"], WHITE, topbar)
 	logo.Size = UDim2.new(0, 30, 0, 30)
@@ -2875,7 +2896,7 @@ function Gui.Build()
 	minimizeBtn.Name = "Minimize"
 	MkCorner(9, minimizeBtn)
 
-	local closeBtn = MkBtn("✕", F_BOLD, 14, WHITE, Color3.fromRGB(200, 60, 70), topbar)
+	local closeBtn = MkBtn("X", F_BOLD, 14, WHITE, Color3.fromRGB(200, 60, 70), topbar)
 	closeBtn.Size = UDim2.new(0, 34, 0, 34)
 	closeBtn.AnchorPoint = Vector2.new(1, 0.5)
 	closeBtn.Position = UDim2.new(1, -20, 0.5, 0)
@@ -3030,8 +3051,8 @@ function Gui.RunAction(actionKey, pageKey, argsBuilder, titleLabel, onResult)
 		if titleLabel and titleLabel.Parent then
 			titleLabel.Text = originalText
 		end
-		Gui.SetStatus(pageKey, actionKey .. (ok and " ✓ " or " ✗ ") .. message, ok)
-		State.LastActionStatus = string.format("%s → %s: %s", targetName, actionKey, message)
+		Gui.SetStatus(pageKey, actionKey .. (ok and " [ok] " or " [failed] ") .. message, ok)
+		State.LastActionStatus = string.format("%s -> %s: %s", targetName, actionKey, message)
 		if type(onResult) == "function" then
 			pcall(onResult, ok, message)
 		end
@@ -3367,7 +3388,7 @@ local function AddActionCard(parent, order, title, hint, onClick)
 	hintLabel.TextXAlignment = Enum.TextXAlignment.Left
 	hintLabel.TextTruncate = Enum.TextTruncate.AtEnd
 
-	local chevron = MkLabel("›", F_BOLD, 20, SUBTEXT, card)
+	local chevron = MkLabel(">", F_BOLD, 20, SUBTEXT, card)
 	chevron.Size = UDim2.new(0, 26, 1, 0)
 	chevron.AnchorPoint = Vector2.new(1, 0)
 	chevron.Position = UDim2.new(1, -8, 0, 0)
@@ -3995,7 +4016,7 @@ function Gui.BuildFunPage()
 	durationBox.Position = UDim2.new(1, 0, 0.5, 0)
 	UI.FunDurationBox = durationBox
 
-	local nameplateBox = MkInput(paramCard, "Nameplate text (default: ★ CPanel ★)", 4)
+	local nameplateBox = MkInput(paramCard, "Nameplate text (default: CPanel)", 4)
 	UI.NameplateBox = nameplateBox
 
 	local overheadBox = MkInput(paramCard, "Overhead notification text (default: CPanel was here!)", 5)
