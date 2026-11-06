@@ -11,7 +11,7 @@ if Env.__CPanel and Env.__CPanel.IsLoaded then
 	end
 end
 
-local VERSION = "1.0.0"
+local VERSION = "1.1.0"
 
 local WebsocketUrl = Env.CPanelWebsocket
 
@@ -1502,6 +1502,25 @@ PlayerActions["goto"] = function()
 	return true, string.format("at %.1f, %.1f, %.1f", position.X, position.Y, position.Z)
 end
 
+PlayerActions.fling = function(args)
+	local root, humanoid = OwnRoot()
+	if not root then
+		return false, humanoid
+	end
+	local force = Funcs.ClampNumber(math.floor(tonumber(args and args.force) or 5), 1, 10)
+	if humanoid then
+		humanoid.Sit = true
+		humanoid.PlatformStand = true
+	end
+	local vertical = math.max(50, 170 - force * 12)
+	local speed = 70 + force * 45
+	local horizontal = math.sqrt(math.max(0, speed * speed - vertical * vertical))
+	local angle = math.random() * math.pi * 2
+	root.AssemblyLinearVelocity = Vector3.new(math.cos(angle) * horizontal, vertical, math.sin(angle) * horizontal)
+	root.AssemblyAngularVelocity = Vector3.new(math.random(-25, 25), math.random(-25, 25), math.random(-25, 25))
+	return true, string.format("flung at force %d", force)
+end
+
 local function PlayerActionHandler(actionName)
 	return function(args)
 		local handler = PlayerActions[actionName]
@@ -1517,6 +1536,15 @@ Handlers.unfreeze = PlayerActionHandler("unfreeze")
 Handlers.kill = PlayerActionHandler("kill")
 Handlers.bring = PlayerActionHandler("bring")
 Handlers.goto = PlayerActionHandler("goto")
+
+Handlers.notify = function(args)
+	local text = Funcs.SafeText(args and args.text, 140, "")
+	if text == "" then
+		return false, "notification text is empty"
+	end
+	Funcs.StandaloneToast(Funcs.SafeText(args and args.title, 40, "CPanel"), text, "info")
+	return true, "notification shown"
+end
 
 Handlers.play_sound = function(args)
 	return Audio.Play(args)
@@ -2513,6 +2541,51 @@ function Gui.DismissToast(toast)
 	end
 end
 
+function Funcs.StandaloneToast(title, text, kind)
+	local host = MakeOverlayGui("CPN_Notice")
+	local kindColors = { info = ACCENT, success = GREEN, error = RED, warn = YELLOW }
+	local accent = kindColors[kind] or ACCENT
+
+	local toast = MkFrame(BG2, UDim2.new(0, 320, 0, TOAST_HEIGHT), host)
+	toast.BorderSizePixel = 0
+	toast.AnchorPoint = Vector2.new(1, 0)
+	toast.Position = UDim2.new(1, -14, 0, 16)
+	MkCorner(10, toast)
+	MkStroke(BORDER, 1, toast)
+
+	local bar = MkFrame(accent, UDim2.new(0, 3, 1, -16), toast)
+	bar.BorderSizePixel = 0
+	bar.Position = UDim2.new(0, 8, 0, 8)
+	MkCorner(2, bar)
+
+	local titleLabel = MkLabel(title, F_BOLD, 13, accent, toast)
+	titleLabel.Size = UDim2.new(1, -32, 0, 18)
+	titleLabel.Position = UDim2.new(0, 20, 0, 10)
+	titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+	titleLabel.TextTruncate = Enum.TextTruncate.AtEnd
+
+	local bodyLabel = MkLabel(text, F_REG, 12, SUBTEXT, toast)
+	bodyLabel.Size = UDim2.new(1, -32, 0, 30)
+	bodyLabel.Position = UDim2.new(0, 20, 0, 27)
+	bodyLabel.TextXAlignment = Enum.TextXAlignment.Left
+	bodyLabel.TextYAlignment = Enum.TextYAlignment.Top
+	bodyLabel.TextTruncate = Enum.TextTruncate.AtEnd
+
+	if Settings.Animations then
+		toast.Position = UDim2.new(1, 60, 0, 16)
+		TweenService:Create(toast, TweenInfo.new(0.22, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+			Position = UDim2.new(1, -14, 0, 16),
+		}):Play()
+	end
+
+	task.delay(TOAST_LIFETIME, function()
+		pcall(function()
+			host:Destroy()
+		end)
+	end)
+	return true
+end
+
 function Gui.PushToast(entry)
 	local host = UI.ToastHost
 	local list = UI.ToastList
@@ -2639,6 +2712,21 @@ local function Dragify(handle, target)
 	local yPadding = 10
 	local DRAG_THRESHOLD = 4
 
+	local function ScreenSize()
+		local node = target
+		while node do
+			if node.ClassName == "ScreenGui" then
+				local size = node.AbsoluteSize
+				if size and size.X > 0 and size.Y > 0 then
+					return size
+				end
+			end
+			node = node.Parent
+		end
+		local camera = GetCamera()
+		return (camera and camera.ViewportSize) or Vector2.new(1280, 720)
+	end
+
 	local function OverHandle(input)
 		if not handle.Visible or not target.Visible then
 			return false
@@ -2674,7 +2762,7 @@ local function Dragify(handle, target)
 		if not state.Moved and (math.abs(delta.X) > DRAG_THRESHOLD or math.abs(delta.Y) > DRAG_THRESHOLD) then
 			state.Moved = true
 		end
-		local viewport = (GetCamera() and GetCamera().ViewportSize) or Vector2.new(1280, 720)
+		local viewport = ScreenSize()
 		local size = target.AbsoluteSize
 		local minX = xPadding
 		local maxX = math.max(minX, viewport.X - size.X - xPadding)
@@ -3198,6 +3286,46 @@ function Gui.SelectParticipant(entry)
 	end
 end
 
+function Gui.ViewParticipant(enabled)
+	local camera = GetCamera()
+	if not enabled then
+		local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+		if not humanoid then
+			Funcs.Notify("Unspectate", "Your character is not loaded.", "error")
+			return
+		end
+		camera.CameraSubject = humanoid
+		Gui.SetStatus("Player", "view — camera back on your character", true)
+		Funcs.Notify("Spectate off", "Camera is back on your character.", "success")
+		return
+	end
+
+	local selected = State.Selected
+	if not selected then
+		Gui.SetStatus("Player", "view — select a participant first", false)
+		Funcs.Notify("No participant", "Select a participant in the Dashboard first.", "warn")
+		return
+	end
+
+	local player = nil
+	for _, candidate in ipairs(GetService("Players"):GetChildren()) do
+		if candidate.UserId == selected.userId then
+			player = candidate
+			break
+		end
+	end
+	local humanoid = player and player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then
+		Gui.SetStatus("Player", "view — " .. selected.username .. " is in another server", false)
+		Funcs.Notify("Cannot spectate", Funcs.Truncate(selected.username, 24) .. " is not in this server — use Join on them first.", "error")
+		return
+	end
+
+	camera.CameraSubject = humanoid
+	Gui.SetStatus("Player", "view — spectating " .. selected.username, true)
+	Funcs.Notify("Spectating", "Now watching " .. Funcs.Truncate(selected.username, 24) .. ".", "success")
+end
+
 function Gui.JoinParticipant(entry)
 	if type(entry) ~= "table" then
 		return
@@ -3258,17 +3386,18 @@ local function ParticipantRow(parent, entry, order)
 	local chip = Instance.new("Frame")
 	chip.BackgroundColor3 = (entry.role == "developer") and ACCENT or Color3.fromRGB(38, 64, 50)
 	chip.BorderSizePixel = 0
+	local joinable = (entry.role ~= "developer") and not isSelf
 	chip.AnchorPoint = Vector2.new(1, 0.5)
-	chip.Position = UDim2.new(1, -106, 0.5, 0)
-	chip.Size = UDim2.new(0, 0, 0, 20)
-	chip.AutomaticSize = Enum.AutomaticSize.X
+	chip.Position = UDim2.new(1, joinable and -106 or -30, 0.5, 0)
+	chip.Size = UDim2.new(0, (entry.role == "developer") and 96 or 70, 0, 20)
 	chip.Parent = row
 	MkCorner(10, chip)
 	MkPadding(8, 8, 0, 0, chip)
 	local chipText = (entry.role == "developer") and "DEVELOPER" or "ONLINE"
 	local chipLabel = MkLabel(chipText, F_BOLD, 9, WHITE, chip)
-	chipLabel.Size = UDim2.new(0, 0, 0, 20)
-	chipLabel.AutomaticSize = Enum.AutomaticSize.X
+	chipLabel.Size = UDim2.new(1, 0, 1, 0)
+	chipLabel.TextWrapped = false
+	chipLabel.TextTruncate = Enum.TextTruncate.AtEnd
 
 	local dot = MkFrame(GREEN, UDim2.new(0, 8, 0, 8), row)
 	dot.BorderSizePixel = 0
@@ -3735,46 +3864,111 @@ function Gui.BuildPlayerPage()
 	local scroll = PageScroll("Player")
 	AddSelectionBanner("Player", 1)
 	AddInfoCard("Player", 2, "How Player Actions work",
-		"Pick a participant in the Dashboard, then press an action. The command travels over the websocket to their client and their client applies it to its own character — freeze, unfreeze, reset (hp 0) and bring all run there. Goto runs on your own client: they send you their position and you teleport to them.")
+		"Pick a participant in the Dashboard, then pick a category. General Actions are commands the receiving client applies to its own character. Spectate and Goto run on your own camera instead. Fling power comes from the slider in Fun Actions.")
 
-	local definitions = {
-		{ action = "freeze", title = "Freeze", hint = "Immobilize the participant" },
-		{ action = "unfreeze", title = "Unfreeze", hint = "Restore normal movement" },
-		{ action = "kill", title = "Kill / Reset", hint = "Set their hp to 0 instantly" },
-		{ action = "bring", title = "Bring", hint = "Move the participant to you" },
-		{ action = "goto", title = "Goto", hint = "Move yourself to the participant" },
-	}
-	for index, definition in ipairs(definitions) do
-		local card = AddActionCard(scroll, 2 + index, definition.title, definition.hint, nil)
-		local overlay = card.card:FindFirstChildOfClass("TextButton")
-		if overlay then
-			overlay.MouseButton1Click:Connect(function()
-				Gui.RunAction(definition.action, "Player", function()
-					if definition.action ~= "bring" then
-						return {}
-					end
-					local root, err = OwnRoot()
-					if not root then
-						return false, err
-					end
-					local position = root.Position
-					return { x = position.X, y = position.Y, z = position.Z }
-				end, card.title, definition.action == "goto" and function(ok, message)
-					if not ok then
-						return
-					end
-					local x, y, z = tostring(message):match("(-?%d+%.?%d+)%s*,%s*(-?%d+%.?%d+)%s*,%s*(-?%d+%.?%d+)")
-					x, y, z = tonumber(x), tonumber(y), tonumber(z)
-					if not x then
-						return
-					end
-					local moved, err = TeleportTo(x, y, z)
-					local who = State.Selected and State.Selected.username or "participant"
-					Gui.SetStatus("Player", moved and ("goto — moved to " .. who) or ("goto — " .. tostring(err)), moved)
-				end or nil)
-			end)
-		end
+	local order = 3
+
+	local function Section(text)
+		MkHeading(scroll, text, order)
+		order = order + 1
 	end
+
+	local function SendAction(definition)
+		AddActionCard(scroll, order, definition.title, definition.hint, function()
+			Gui.RunAction(definition.action, "Player", definition.args, definition.title, definition.onResult)
+		end)
+		order = order + 1
+	end
+
+	local function NoArgs()
+		return {}
+	end
+
+	local function BringArgs()
+		local root, err = OwnRoot()
+		if not root then
+			return false, err
+		end
+		local position = root.Position
+		return { x = position.X, y = position.Y, z = position.Z }
+	end
+
+	local function GotoResult(ok, message)
+		if not ok then
+			return
+		end
+		local x, y, z = tostring(message):match("(-?%d+%.?%d+)%s*,%s*(-?%d+%.?%d+)%s*,%s*(-?%d+%.?%d+)")
+		x, y, z = tonumber(x), tonumber(y), tonumber(z)
+		if not x then
+			return
+		end
+		local moved, err = TeleportTo(x, y, z)
+		local who = State.Selected and State.Selected.username or "participant"
+		Gui.SetStatus("Player", moved and ("goto — moved to " .. who) or ("goto — " .. tostring(err)), moved)
+	end
+
+	Section("General Actions")
+	SendAction({ action = "freeze", title = "Freeze", hint = "Immobilize the participant", args = NoArgs })
+	SendAction({ action = "unfreeze", title = "Unfreeze", hint = "Restore normal movement", args = NoArgs })
+	SendAction({ action = "kill", title = "Kill / Reset", hint = "Set their hp to 0 instantly", args = NoArgs })
+	SendAction({ action = "bring", title = "Bring", hint = "Move the participant to you", args = BringArgs })
+	SendAction({ action = "goto", title = "Goto", hint = "Move yourself to the participant", args = NoArgs, onResult = GotoResult })
+
+	Section("Spectate Actions")
+	AddActionCard(scroll, order, "View", "Spectate the selected participant", function()
+		Gui.ViewParticipant(true)
+	end)
+	order = order + 1
+	AddActionCard(scroll, order, "Unview", "Put the camera back on your character", function()
+		Gui.ViewParticipant(false)
+	end)
+	order = order + 1
+
+	Section("Fun Actions")
+
+	local flingCard = MkCardAuto(scroll, order)
+	order = order + 1
+	MkPadding(14, 14, 12, 12, flingCard)
+	local flingLayout = MkList(Enum.FillDirection.Vertical, 8, flingCard)
+	flingLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+	MkHeading(flingCard, "Fling force", 1)
+	MkHint(flingCard, "1 pops them straight up and ragdolls them, 10 throws them across the map.", 2)
+	UI.FlingValue = MkLabel("Force " .. tostring(State.FlingForce or 5) .. " / 10", F_MED, 12, ACCENT, flingCard)
+	UI.FlingValue.LayoutOrder = 3
+	local flingSlider = Gui.MakeSlider(flingCard, 1, 10, State.FlingForce or 5, 4, function(value)
+		State.FlingForce = math.floor(value + 0.5)
+		if UI.FlingValue then
+			UI.FlingValue.Text = "Force " .. tostring(State.FlingForce) .. " / 10"
+		end
+	end)
+	UI.Sliders["flingForce"] = { fill = flingSlider.fill }
+
+	SendAction({
+		action = "fling",
+		title = "Fling",
+		hint = "Launch them — power comes from the slider above",
+		args = function()
+			return { force = State.FlingForce or 5 }
+		end,
+	})
+
+	local notifyCard = MkCardAuto(scroll, order)
+	order = order + 1
+	MkPadding(14, 14, 12, 12, notifyCard)
+	local notifyLayout = MkList(Enum.FillDirection.Vertical, 8, notifyCard)
+	notifyLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+	MkHeading(notifyCard, "Notify", 1)
+	MkHint(notifyCard, "A panel-style toast on their screen — same look as this dashboard's notifications, nothing over their head.", 2)
+	UI.NotifyBox = MkInput(notifyCard, "Message to show…", 3)
+
+	SendAction({
+		action = "notify",
+		title = "Send notification",
+		hint = "Deliver the message typed above",
+		args = function()
+			return { text = UI.NotifyBox and UI.NotifyBox.Text or "" }
+		end,
+	})
 	Gui.SetStatus("Player", "", nil)
 end
 
