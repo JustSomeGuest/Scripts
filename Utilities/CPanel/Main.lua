@@ -11,7 +11,7 @@ if Env.__CPanel and Env.__CPanel.IsLoaded then
 	end
 end
 
-local VERSION = "1.1.0"
+local VERSION = "1.0.0"
 
 local WebsocketUrl = Env.CPanelWebsocket
 
@@ -2549,7 +2549,7 @@ function Funcs.StandaloneToast(title, text, kind)
 	local toast = MkFrame(BG2, UDim2.new(0, 320, 0, TOAST_HEIGHT), host)
 	toast.BorderSizePixel = 0
 	toast.AnchorPoint = Vector2.new(1, 0)
-	toast.Position = UDim2.new(1, -14, 0, 16)
+	toast.Position = UDim2.new(1, 60, 0, 16)
 	MkCorner(10, toast)
 	MkStroke(BORDER, 1, toast)
 
@@ -2572,10 +2572,11 @@ function Funcs.StandaloneToast(title, text, kind)
 	bodyLabel.TextTruncate = Enum.TextTruncate.AtEnd
 
 	if Settings.Animations then
-		toast.Position = UDim2.new(1, 60, 0, 16)
 		TweenService:Create(toast, TweenInfo.new(0.22, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 			Position = UDim2.new(1, -14, 0, 16),
 		}):Play()
+	else
+		toast.Position = UDim2.new(1, -14, 0, 16)
 	end
 
 	task.delay(TOAST_LIFETIME, function()
