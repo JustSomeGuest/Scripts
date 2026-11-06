@@ -5,7 +5,7 @@ end
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
 if Env.__CPanel and Env.__CPanel.IsLoaded then
-	warn("[CPanel] ignored duplicate load — already running")
+	warn("[CPanel]: already running")
 	return
 end
 
@@ -48,7 +48,6 @@ local TweenService = GetService("TweenService")
 local SoundService = GetService("SoundService")
 local StarterGui = GetService("StarterGui")
 local UserInputService = GetService("UserInputService")
-local ReplicatedStorage = GetService("ReplicatedStorage")
 local Lighting = GetService("Lighting")
 
 local LocalPlayer = Players.LocalPlayer
@@ -123,7 +122,7 @@ local BG = Color3.fromRGB(15, 15, 18)
 local BG2 = Color3.fromRGB(22, 22, 27)
 local BG3 = Color3.fromRGB(30, 30, 36)
 local ACCENT = Color3.fromRGB(60, 130, 255)
-local BORDER = Color3.fromRGB(40, 40, 50)
+local BORDER = Color3.fromRGB(34, 34, 42)
 local TEXT = Color3.fromRGB(230, 230, 235)
 local SUBTEXT = Color3.fromRGB(140, 140, 150)
 local WHITE = Color3.fromRGB(255, 255, 255)
@@ -463,7 +462,7 @@ function Funcs.ResetSettings()
 end
 
 local UI_SOUNDS = {
-	ping = "rbxasset://sounds/electronicpingshort.wav",
+	ping = "rbxasset://sounds/snap.mp3",
 }
 
 local SoundPool = {}
@@ -515,9 +514,9 @@ function Funcs.Notify(title, text, kind)
 		end
 	end
 	if kind == "success" then
-		Funcs.PlaySound("ping", 0.18)
+		Funcs.PlaySound("ping", 0.26)
 	elseif kind == "error" then
-		Funcs.PlaySound("ping", 0.3)
+		Funcs.PlaySound("ping", 0.4)
 	end
 end
 
@@ -1406,92 +1405,101 @@ function Effects.StopAll(reason)
 	return count
 end
 
-local function DisconnectAll(connections)
-	for _, connection in ipairs(connections) do
-		pcall(function()
-			connection:Disconnect()
-		end)
+local function OwnRoot()
+	local character = LocalPlayer.Character
+	if not character then
+		return nil, "your character has not loaded yet"
 	end
+	local root = character:FindFirstChild("HumanoidRootPart")
+	if not root then
+		return nil, "your character has no root part"
+	end
+	return root, character:FindFirstChildOfClass("Humanoid")
 end
 
-local function ForwardPlayerAction(action, args, message)
-	local hook = Env.CPanelAuthorizePlayerActions
-	if type(hook) == "function" then
-		local ok, authorized, note = pcall(hook, action, args)
-		if not ok then
-			return false, "experience hook errored: " .. Funcs.Truncate(tostring(authorized), 100)
-		end
-		if authorized == true then
-			return true, Funcs.SafeText(note, 120, action .. " authorized by the experience")
-		end
-		return false, Funcs.SafeText(note, 120, "experience declined " .. action)
+local function TeleportTo(x, y, z)
+	local root, humanoid = OwnRoot()
+	if not root then
+		return false, humanoid
 	end
+	if humanoid then
+		humanoid.Sit = false
+	end
+	root.CFrame = CFrame.new(x, y + 3, z)
+	return true
+end
 
-	local bridge = ReplicatedStorage:FindFirstChild("CPanelBridge")
-	if not bridge or not bridge:IsA("RemoteEvent") then
-		return false, "experience does not authorize CPanel player actions"
-	end
+-- Player actions run on whichever client receives the command: the developer
+-- picks a session, the websocket delivers the action, and that client applies
+-- it to its own character. No experience bridge, no per-experience sign-off.
+local PlayerActions = {}
 
-	local requestId = Funcs.SafeText(args.requestId, 64, "")
-	if requestId == "" then
-		return false, "missing request id"
+function PlayerActions.freeze()
+	local root, humanoid = OwnRoot()
+	if not root then
+		return false, humanoid
 	end
+	if humanoid then
+		humanoid.WalkSpeed = 0
+	end
+	root.Anchored = true
+	return true, "character frozen"
+end
 
-	local result = { done = false, ok = false, message = "" }
-	local connections = {}
+function PlayerActions.unfreeze()
+	local root, humanoid = OwnRoot()
+	if not root then
+		return false, humanoid
+	end
+	if humanoid then
+		humanoid.WalkSpeed = 16
+	end
+	root.Anchored = false
+	return true, "character unfrozen"
+end
 
-	local function listen(source)
-		local connection = source.OnClientEvent:Connect(function(rid, okValue, messageValue)
-			if tostring(rid) == requestId then
-				result.done = true
-				result.ok = (okValue == true or okValue == "ok")
-				result.message = Funcs.SafeText(tostring(messageValue or ""), 120, "")
-			end
-		end)
-		connections[#connections + 1] = connection
+function PlayerActions.kill()
+	local root, humanoid = OwnRoot()
+	if not root then
+		return false, humanoid
 	end
+	if not humanoid then
+		return false, "your character has no humanoid"
+	end
+	humanoid.Health = 0
+	return true, "character reset"
+end
 
-	listen(bridge)
-	local resultEvent = ReplicatedStorage:FindFirstChild("CPanelBridgeResult")
-	if resultEvent and resultEvent:IsA("RemoteEvent") then
-		listen(resultEvent)
+function PlayerActions.bring(args)
+	local x, y, z = tonumber(args and args.x), tonumber(args and args.y), tonumber(args and args.z)
+	if not x or not y or not z then
+		return false, "developer did not send a position"
 	end
+	local ok, err = TeleportTo(x, y, z)
+	if not ok then
+		return false, err
+	end
+	return true, "moved to the developer"
+end
 
-	local payload = {}
-	for key, value in pairs(args) do
-		payload[key] = value
+-- `goto` is answered with this client's position; the developer's own client
+-- does the teleport.
+PlayerActions["goto"] = function()
+	local root, err = OwnRoot()
+	if not root then
+		return false, err
 	end
-	payload.requestId = requestId
-	if message and type(message.from) == "table" then
-		payload.initiatorUserId = tonumber(message.from.userId) or 0
-	end
-
-	local okFire = pcall(function()
-		bridge:FireServer(action, payload)
-	end)
-	if not okFire then
-		DisconnectAll(connections)
-		return false, "could not reach the experience bridge"
-	end
-
-	local deadline = os.clock() + 8
-	while not result.done and os.clock() < deadline do
-		task.wait(0.05)
-	end
-	DisconnectAll(connections)
-
-	if not result.done then
-		return false, "no response from the experience (8s timeout)"
-	end
-	if result.ok then
-		return true, result.message ~= "" and result.message or (action .. " applied")
-	end
-	return false, result.message ~= "" and result.message or (action .. " refused")
+	local position = root.Position
+	return true, string.format("at %.1f, %.1f, %.1f", position.X, position.Y, position.Z)
 end
 
 local function PlayerActionHandler(actionName)
-	return function(args, message)
-		return ForwardPlayerAction(actionName, args, message)
+	return function(args)
+		local handler = PlayerActions[actionName]
+		if type(handler) ~= "function" then
+			return false, "unsupported player action"
+		end
+		return handler(args or {})
 	end
 end
 
@@ -2616,18 +2624,27 @@ function Gui.ApplyTheme(presetName)
 	Funcs.SaveSettings()
 end
 
-local function Dragify(dragObject, handle)
+-- Dragify(handle, target?) — drags `target` (defaults to `handle` itself) when
+-- the user presses on `handle`. Returns a state table whose `Moved` field is
+-- true once the pointer has travelled past a small threshold, so callers can
+-- suppress the click that follows a drag (e.g. the restore button).
+local function Dragify(handle, target)
+	target = target or handle
+	local state = { Moved = false }
 	local dragging = false
 	local dragStart = nil
 	local startPos = nil
+	local startAbs = nil
 	local xPadding = 14
 	local yPadding = 10
+	local DRAG_THRESHOLD = 4
 
 	-- Bounds check on the handle: relying on the handle's own InputBegan is
 	-- unreliable (child frames/labels can swallow the hit), so we test the
-	-- press position against the handle's absolute rectangle instead.
+	-- press position against the handle's absolute rectangle instead. Both
+	-- objects must be visible (a hidden window keeps its children Visible=true).
 	local function OverHandle(input)
-		if not dragObject.Visible then
+		if not handle.Visible or not target.Visible then
 			return false
 		end
 		local pos = handle.AbsolutePosition
@@ -2643,8 +2660,10 @@ local function Dragify(dragObject, handle)
 		end
 		if OverHandle(input) then
 			dragging = true
+			state.Moved = false
 			dragStart = input.Position
-			startPos = dragObject.Position
+			startPos = target.Position
+			startAbs = target.AbsolutePosition
 		end
 	end)
 
@@ -2656,11 +2675,26 @@ local function Dragify(dragObject, handle)
 			return
 		end
 		local delta = input.Position - dragStart
+		if not state.Moved and (math.abs(delta.X) > DRAG_THRESHOLD or math.abs(delta.Y) > DRAG_THRESHOLD) then
+			state.Moved = true
+		end
+		-- Clamp in absolute screen space, then translate the allowed shift back
+		-- into the target's own scale/offset frame. Clamping the raw offsets
+		-- directly would be wrong for center-anchored, scale-based positions
+		-- (they could drift off the right edge and never reach the left one).
 		local viewport = (GetCamera() and GetCamera().ViewportSize) or Vector2.new(1280, 720)
-		local size = dragObject.AbsoluteSize
-		local newX = math.clamp(startPos.X.Offset + delta.X, xPadding, viewport.X - size.X - xPadding)
-		local newY = math.clamp(startPos.Y.Offset + delta.Y, yPadding, viewport.Y - size.Y - yPadding)
-		dragObject.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
+		local size = target.AbsoluteSize
+		local minX = xPadding
+		local maxX = math.max(minX, viewport.X - size.X - xPadding)
+		local minY = yPadding
+		local maxY = math.max(minY, viewport.Y - size.Y - yPadding)
+		local wantX = math.clamp(startAbs.X + delta.X, minX, maxX)
+		local wantY = math.clamp(startAbs.Y + delta.Y, minY, maxY)
+		-- The target's parent does not move or scale during the drag, so an
+		-- absolute shift equals an equal shift of the position offset.
+		local shiftX = wantX - startAbs.X
+		local shiftY = wantY - startAbs.Y
+		target.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + shiftX, startPos.Y.Scale, startPos.Y.Offset + shiftY)
 	end)
 
 	UserInputService.InputEnded:Connect(function(input)
@@ -2668,6 +2702,8 @@ local function Dragify(dragObject, handle)
 			dragging = false
 		end
 	end)
+
+	return state
 end
 
 local NAV_PAGES = {
@@ -2691,9 +2727,6 @@ function Gui.UpdateConnection()
 	UI.StatusDot.BackgroundColor3 = color
 	UI.StatusText.Text = labels[status] or "Disconnected"
 	UI.StatusText.TextColor3 = color
-	if UI.StatusStroke then
-		UI.StatusStroke.Color = Color3.fromRGB(50, 50, 65)
-	end
 	if UI.ConnStatusText then
 		UI.ConnStatusText.Text = (labels[status] or "Disconnected") .. (Net.rtt and ("  ·  " .. tostring(Net.rtt) .. " ms") or "")
 		UI.ConnStatusText.TextColor3 = color
@@ -2746,7 +2779,7 @@ function Gui.SwitchPage(pageKey)
 		Gui.RenderParticipants()
 		Gui.RenderSelection()
 	end
-	Funcs.PlaySound("ping", 0.12)
+	Funcs.PlaySound("ping", 0.18)
 end
 
 function Gui.Minimize()
@@ -2800,7 +2833,7 @@ function Gui.Build()
 	toastHost.Parent = screen
 	UI.ToastHost = toastHost
 
-	local window = MkFrame(BG, UDim2.new(0.82, 0, 0.84, 0), screen)
+	local window = MkFrame(BG, UDim2.new(0.82, 0, 0.74, 0), screen)
 	window.Name = "CPN_Window"
 	window.AnchorPoint = Vector2.new(0.5, 0.5)
 	window.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -2809,13 +2842,13 @@ function Gui.Build()
 	MkCorner(16, window)
 	MkStroke(BORDER, 1, window)
 	local sizeConstraint = Instance.new("UISizeConstraint")
-	sizeConstraint.MinSize = Vector2.new(620, 440)
-	sizeConstraint.MaxSize = Vector2.new(900, 580)
+	sizeConstraint.MinSize = Vector2.new(620, 380)
+	sizeConstraint.MaxSize = Vector2.new(900, 520)
 	sizeConstraint.Parent = window
 	UI.Window = window
 	Gui.ApplyTransparency()
 
-	local topbar = MkFrame(BG2, UDim2.new(1, 0, 0, 52), window)
+	local topbar = MkFrame(BG2, UDim2.new(1, 0, 0, 44), window)
 	topbar.BorderSizePixel = 0
 	topbar.LayoutOrder = 1
 	UI.Topbar = topbar
@@ -2824,82 +2857,51 @@ function Gui.Build()
 	MkCorner(16, topbar)
 
 	local logo = MkImg(Funcs.GetAsset("CPanel/CPN_Logo.png") or Assets["CPanel/CPN_Logo.png"], WHITE, topbar)
-	logo.Size = UDim2.new(0, 30, 0, 30)
-	logo.Position = UDim2.new(0, 14, 0.5, -15)
+	logo.Size = UDim2.new(0, 28, 0, 28)
+	logo.Position = UDim2.new(0, 12, 0.5, -14)
+	logo.ScaleType = Enum.ScaleType.Fit -- keep the mark at 1:1, never stretched
 	MkCorner(7, logo)
 
-	local title = MkLabel("CPanel", F_BOLD, 17, TEXT, topbar)
+	local title = MkLabel("CPanel", F_BOLD, 16, TEXT, topbar)
 	title.Size = UDim2.new(0, 74, 0, 22)
-	title.Position = UDim2.new(0, 52, 0, 8)
+	title.Position = UDim2.new(0, 48, 0.5, -11)
 	title.TextXAlignment = Enum.TextXAlignment.Left
 
-	local version = MkLabel("v" .. VERSION, F_REG, 11, SUBTEXT, topbar)
-	version.Size = UDim2.new(0, 74, 0, 14)
-	version.Position = UDim2.new(0, 52, 0, 29)
-	version.TextXAlignment = Enum.TextXAlignment.Left
+	-- Plain status readout: colored dot + label, no pill chrome.
+	local statusArea = MkFrame(BG2, UDim2.new(0, 0, 0, 20), topbar)
+	statusArea.BackgroundTransparency = 1
+	statusArea.AutomaticSize = Enum.AutomaticSize.X
+	statusArea.AnchorPoint = Vector2.new(1, 0.5)
+	statusArea.Position = UDim2.new(1, -98, 0.5, 0)
+	statusArea.BorderSizePixel = 0
+	local statusLayout = MkList(Enum.FillDirection.Horizontal, 7, statusArea)
+	statusLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	UI.StatusPill = statusArea
 
-	local statusPill = MkFrame(BG3, UDim2.new(0, 0, 0, 26), topbar)
-	statusPill.AutomaticSize = Enum.AutomaticSize.X
-	statusPill.AnchorPoint = Vector2.new(0.5, 0.5)
-	statusPill.Position = UDim2.new(0.32, 0, 0.5, 0)
-	statusPill.BorderSizePixel = 0
-	MkCorner(13, statusPill)
-	UI.StatusStroke = MkStroke(Color3.fromRGB(50, 50, 65), 1, statusPill)
-	local pillLayout = MkList(Enum.FillDirection.Horizontal, 7, statusPill)
-	pillLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-	pillLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-	MkPadding(11, 11, 0, 0, statusPill)
-	UI.StatusPill = statusPill
-
-	local statusDot = MkFrame(RED, UDim2.new(0, 8, 0, 8), statusPill)
+	local statusDot = MkFrame(RED, UDim2.new(0, 8, 0, 8), statusArea)
 	statusDot.BorderSizePixel = 0
 	statusDot.LayoutOrder = 1
 	MkCorner(4, statusDot)
 	UI.StatusDot = statusDot
 
-	local statusText = MkLabel("Connecting", F_MED, 12, RED, statusPill)
-	statusText.Size = UDim2.new(0, 0, 0, 26)
+	local statusText = MkLabel("Connecting", F_MED, 12, RED, statusArea)
+	statusText.Size = UDim2.new(0, 0, 0, 20)
 	statusText.AutomaticSize = Enum.AutomaticSize.X
 	statusText.LayoutOrder = 2
 	statusText.TextXAlignment = Enum.TextXAlignment.Left
 	UI.StatusText = statusText
 
-	local devChip = MkFrame(BG3, UDim2.new(0, 0, 0, 32), topbar)
-	devChip.AutomaticSize = Enum.AutomaticSize.X
-	devChip.AnchorPoint = Vector2.new(1, 0.5)
-	devChip.Position = UDim2.new(1, -104, 0.5, 0)
-	devChip.BorderSizePixel = 0
-	MkCorner(16, devChip)
-	local chipLayout = MkList(Enum.FillDirection.Horizontal, 8, devChip)
-	chipLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-	MkPadding(4, 12, 0, 0, devChip)
-
-	local devAvatar = Instance.new("ImageLabel")
-	devAvatar.BackgroundTransparency = 1
-	devAvatar.BorderSizePixel = 0
-	devAvatar.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. tostring(LocalPlayer.UserId) .. "&width=420&height=420&format=png"
-	devAvatar.Size = UDim2.new(0, 24, 0, 24)
-	devAvatar.LayoutOrder = 1
-	devAvatar.Parent = devChip
-	MkCorner(12, devAvatar)
-
-	local devName = MkLabel(Funcs.Truncate(LocalPlayer.DisplayName, 16) .. "  ·  Developer", F_MED, 12, TEXT, devChip)
-	devName.Size = UDim2.new(0, 0, 0, 32)
-	devName.AutomaticSize = Enum.AutomaticSize.X
-	devName.LayoutOrder = 2
-	devName.TextXAlignment = Enum.TextXAlignment.Left
-
 	local minimizeBtn = MkBtn("–", F_BOLD, 17, TEXT, BG3, topbar)
-	minimizeBtn.Size = UDim2.new(0, 34, 0, 34)
+	minimizeBtn.Size = UDim2.new(0, 32, 0, 32)
 	minimizeBtn.AnchorPoint = Vector2.new(1, 0.5)
-	minimizeBtn.Position = UDim2.new(1, -62, 0.5, 0)
+	minimizeBtn.Position = UDim2.new(1, -56, 0.5, 0)
 	minimizeBtn.Name = "Minimize"
 	MkCorner(9, minimizeBtn)
 
 	local closeBtn = MkBtn("X", F_BOLD, 14, WHITE, Color3.fromRGB(200, 60, 70), topbar)
-	closeBtn.Size = UDim2.new(0, 34, 0, 34)
+	closeBtn.Size = UDim2.new(0, 32, 0, 32)
 	closeBtn.AnchorPoint = Vector2.new(1, 0.5)
-	closeBtn.Position = UDim2.new(1, -20, 0.5, 0)
+	closeBtn.Position = UDim2.new(1, -16, 0.5, 0)
 	closeBtn.Name = "Close"
 	MkCorner(9, closeBtn)
 
@@ -2908,10 +2910,10 @@ function Gui.Build()
 		Funcs.Shutdown()
 	end)
 
-	Dragify(window, topbar)
+	Dragify(topbar, window)
 
-	local sidebar = MkFrame(BG2, UDim2.new(0, 176, 1, -52), window)
-	sidebar.Position = UDim2.new(0, 0, 0, 52)
+	local sidebar = MkFrame(BG2, UDim2.new(0, 176, 1, -44), window)
+	sidebar.Position = UDim2.new(0, 0, 0, 44)
 	sidebar.BorderSizePixel = 0
 	sidebar.LayoutOrder = 2
 	UI.Sidebar = sidebar
@@ -2931,8 +2933,8 @@ function Gui.Build()
 		end)
 	end
 
-	local content = MkFrame(BG, UDim2.new(1, -176, 1, -52), window)
-	content.Position = UDim2.new(0, 176, 0, 52)
+	local content = MkFrame(BG, UDim2.new(1, -176, 1, -44), window)
+	content.Position = UDim2.new(0, 176, 0, 44)
 	content.BackgroundTransparency = 1
 	content.BorderSizePixel = 0
 	content.LayoutOrder = 3
@@ -2971,7 +2973,7 @@ function Gui.Build()
 	showBtn.BackgroundTransparency = 0.05
 	showBtn.BorderSizePixel = 0
 	showBtn.Size = UDim2.new(0, 46, 0, 46)
-	showBtn.Position = UDim2.new(0, 16, 0, 72)
+	showBtn.Position = UDim2.new(0, 16, 0, 64)
 	showBtn.Visible = false
 	showBtn.Image = ""
 	showBtn.AutoButtonColor = false
@@ -2984,7 +2986,13 @@ function Gui.Build()
 	showIcon.AnchorPoint = Vector2.new(0.5, 0.5)
 	showIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 	showIcon.Size = UDim2.new(0.62, 0, 0.62, 0)
-	showBtn.MouseButton1Click:Connect(Gui.Restore)
+	local showDrag = Dragify(showBtn)
+	showBtn.MouseButton1Click:Connect(function()
+		if showDrag.Moved then
+			return -- it was a drag, not a click
+		end
+		Gui.Restore()
+	end)
 
 	Gui.BuildAllPages()
 	UI.ActiveNavName = nil
@@ -3194,7 +3202,7 @@ function Gui.SelectParticipant(entry)
 	Gui.RenderSelection()
 	if entry then
 		Gui.SetStatus("Dashboard", "Selected " .. entry.username, true)
-		Funcs.PlaySound("ping", 0.15)
+		Funcs.PlaySound("ping", 0.22)
 	end
 end
 
@@ -3472,13 +3480,13 @@ function Gui.BuildDashboardPage()
 	MkCorner(10, avatar)
 	MkStroke(ACCENT, 1.5, avatar)
 
-	local devLabel = MkLabel("Developer", F_BOLD, 15, TEXT, profileCard)
+	local devLabel = MkLabel(Funcs.Truncate(LocalPlayer.DisplayName, 20), F_BOLD, 15, TEXT, profileCard)
 	devLabel.Size = UDim2.new(1, -100, 0, 20)
 	devLabel.Position = UDim2.new(0, 90, 0, 24)
 	devLabel.TextXAlignment = Enum.TextXAlignment.Left
 	devLabel.TextTruncate = Enum.TextTruncate.AtEnd
 
-	local handleLabel = MkLabel("@" .. LocalPlayer.Name .. "  ·  Developer", F_MED, 12, ACCENT, profileCard)
+	local handleLabel = MkLabel("@" .. LocalPlayer.Name, F_MED, 12, ACCENT, profileCard)
 	handleLabel.Size = UDim2.new(1, -100, 0, 16)
 	handleLabel.Position = UDim2.new(0, 90, 0, 48)
 	handleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -3489,7 +3497,7 @@ function Gui.BuildDashboardPage()
 	idLabel.Position = UDim2.new(0, 90, 0, 68)
 	idLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-	local roleBadge = MkLabel("Authenticated via access.json on the WebSocket", F_REG, 10, SUBTEXT, profileCard)
+	local roleBadge = MkLabel("Developer · authenticated via access.json", F_REG, 10, SUBTEXT, profileCard)
 	roleBadge.Size = UDim2.new(1, -100, 0, 12)
 	roleBadge.Position = UDim2.new(0, 90, 0, 86)
 	roleBadge.TextXAlignment = Enum.TextXAlignment.Left
@@ -3700,15 +3708,15 @@ end
 function Gui.BuildPlayerPage()
 	local scroll = PageScroll("Player")
 	AddSelectionBanner("Player", 1)
-	AddInfoCard("Player", 2, "About Player Actions",
-		"These actions run on the experience's server and are only executed when the compatible experience explicitly authorizes them (CPanelBridge RemoteEvent or an experience hook). Without authorization the action is refused — no remote-event abuse, no forced character control.")
+	AddInfoCard("Player", 2, "How Player Actions work",
+		"Pick a participant in the Dashboard, then press an action. The command travels over the websocket to their client and their client applies it to its own character — freeze, unfreeze, reset (hp 0) and bring all run there. Goto runs on your own client: they send you their position and you teleport to them.")
 
 	local definitions = {
-		{ action = "freeze", title = "Freeze", hint = "Temporarily immobilize the participant" },
+		{ action = "freeze", title = "Freeze", hint = "Immobilize the participant" },
 		{ action = "unfreeze", title = "Unfreeze", hint = "Restore normal movement" },
-		{ action = "kill", title = "Kill / Reset", hint = "Reset the participant's character" },
-		{ action = "bring", title = "Bring", hint = "Move the participant to you (experience server)" },
-		{ action = "goto", title = "Goto", hint = "Move to the participant (experience server)" },
+		{ action = "kill", title = "Kill / Reset", hint = "Set their hp to 0 instantly" },
+		{ action = "bring", title = "Bring", hint = "Move the participant to you" },
+		{ action = "goto", title = "Goto", hint = "Move yourself to the participant" },
 	}
 	for index, definition in ipairs(definitions) do
 		local card = AddActionCard(scroll, 2 + index, definition.title, definition.hint, nil)
@@ -3716,8 +3724,28 @@ function Gui.BuildPlayerPage()
 		if overlay then
 			overlay.MouseButton1Click:Connect(function()
 				Gui.RunAction(definition.action, "Player", function()
-					return {}
-				end, card.title)
+					if definition.action ~= "bring" then
+						return {}
+					end
+					local root, err = OwnRoot()
+					if not root then
+						return false, err
+					end
+					local position = root.Position
+					return { x = position.X, y = position.Y, z = position.Z }
+				end, card.title, definition.action == "goto" and function(ok, message)
+					if not ok then
+						return
+					end
+					local x, y, z = tostring(message):match("(-?%d+%.?%d+)%s*,%s*(-?%d+%.?%d+)%s*,%s*(-?%d+%.?%d+)")
+					x, y, z = tonumber(x), tonumber(y), tonumber(z)
+					if not x then
+						return
+					end
+					local moved, err = TeleportTo(x, y, z)
+					local who = State.Selected and State.Selected.username or "participant"
+					Gui.SetStatus("Player", moved and ("goto — moved to " .. who) or ("goto — " .. tostring(err)), moved)
+				end or nil)
 			end)
 		end
 	end
@@ -4348,43 +4376,6 @@ function Gui.BuildSettingsPage()
 		Gui.ApplyTheme(Settings.Theme)
 		Funcs.Notify("Settings reset", "UI settings restored to defaults.", "info")
 	end)
-
-	local aboutCard = MkCardAuto(scroll, 4)
-	MkPadding(14, 14, 12, 12, aboutCard)
-	local aboutLayout = MkList(Enum.FillDirection.Vertical, 8, aboutCard)
-	aboutLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-	MkHeading(aboutCard, "About CPanel", 1)
-
-	local aboutText = Instance.new("TextLabel")
-	aboutText.BackgroundTransparency = 1
-	aboutText.BorderSizePixel = 0
-	aboutText.FontFace = F_REG
-	aboutText.TextSize = 12
-	aboutText.TextColor3 = SUBTEXT
-	aboutText.RichText = true
-	aboutText.TextWrapped = true
-	aboutText.TextXAlignment = Enum.TextXAlignment.Left
-	aboutText.TextYAlignment = Enum.TextYAlignment.Top
-	aboutText.Size = UDim2.new(1, 0, 0, 0)
-	aboutText.AutomaticSize = Enum.AutomaticSize.Y
-	aboutText.LayoutOrder = 2
-	aboutText.Parent = aboutCard
-	aboutText.Text = [[<b>CPanel</b> v]] .. VERSION .. [[ — executor-style control panel with a shared WebSocket backend.
-
-<b>How access works:</b> developer ids live in access.json on the WebSocket server (never in client code). Clients ask the socket who has access, and only listed UserIds get this dashboard.
-
-<b>Security note:</b> Roblox gives the server no way to verify who a client really is, so access checks are a soft gate — treat them as convenience, not as a security boundary.
-
-All effects are local, temporary and reversible. Player Actions only run in experiences that explicitly authorize them.]]
-
-	local aboutLogo = Instance.new("ImageLabel")
-	aboutLogo.BackgroundTransparency = 1
-	aboutLogo.BorderSizePixel = 0
-	aboutLogo.Image = Funcs.GetAsset("CPanel/CPN_Logo.png") or Assets["CPanel/CPN_Logo.png"]
-	aboutLogo.Size = UDim2.new(0, 44, 0, 44)
-	aboutLogo.LayoutOrder = 3
-	aboutLogo.Parent = aboutCard
-	MkCorner(9, aboutLogo)
 end
 
 function Gui.BuildAllPages()
