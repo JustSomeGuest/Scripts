@@ -14,7 +14,6 @@ end
 local VERSION = "1.0.0"
 
 local WebsocketUrl = Env.CPanelWebsocket
-local BlockEffects = (Env.CPanelBlockEffects == true)
 
 local function FailBoot(message)
 	warn("[CPanel] " .. message)
@@ -480,7 +479,7 @@ function Funcs.ResetSettings()
 end
 
 local UI_SOUNDS = {
-	ping = "rbxasset://sounds/snap.mp3",
+	ping = "rbxassetid://113397864512278",
 }
 
 local SoundPool = {}
@@ -786,9 +785,6 @@ function Audio.Play(args)
 	local volume = Funcs.ParseNumber(args.volume, 0.1, 10)
 	if not volume then
 		return false, "volume must be between 0.10 and 10.00"
-	end
-	if BlockEffects then
-		return false, "participant has blocked CPanel effects"
 	end
 
 	while CountSounds() >= MAX_ACTIVE_SOUNDS do
@@ -1661,9 +1657,6 @@ local function HandleCommand(message)
 	end
 	if State.Shutdown then
 		return SendAck(requestId, false, "session is shutting down")
-	end
-	if BlockEffects then
-		return SendAck(requestId, false, "participant has blocked CPanel effects")
 	end
 
 	local action = message.action
