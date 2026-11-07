@@ -11,7 +11,7 @@ if Env.__CPanel and Env.__CPanel.IsLoaded then
 	end
 end
 
-local VERSION = "1.0.0"
+local VERSION = "1.1.0"
 
 local WebsocketUrl = Env.CPanelWebsocket
 
@@ -192,6 +192,9 @@ local State = {
 	LastActionStatus = "Idle",
 	queuedToasts = {},
 	Shutdown = false,
+	ChatLogs = {},
+	ChatScopeUserId = nil,
+	ChatOnlyConnected = false,
 }
 
 Env.__CPanel = { IsLoaded = true, Version = VERSION, Job = tostring(game.JobId) }
@@ -1564,6 +1567,27 @@ Handlers.notify = function(args)
 	return true, "notification shown"
 end
 
+-- Runs on the selected participant's own client, so the message goes out as them.
+Handlers.chat_send = function(args)
+	local text = Funcs.SafeText(args and args.text, 200, "")
+	if text == "" then
+		return false, "message is empty"
+	end
+	local ok, err = pcall(function()
+		local TextChatService = game:GetService("TextChatService")
+		local channels = TextChatService:FindFirstChild("TextChannels")
+		local general = channels and channels:FindFirstChild("RBXGeneral")
+		if not general then
+			error("RBXGeneral channel not found")
+		end
+		general:SendAsync(text)
+	end)
+	if not ok then
+		return false, Funcs.Truncate(tostring(err), 120)
+	end
+	return true, "sent as " .. LocalPlayer.Name
+end
+
 Handlers.play_sound = function(args)
 	return Audio.Play(args)
 end
@@ -2831,12 +2855,17 @@ local function Dragify(handle, target)
 	return state
 end
 
+-- Flat tab list. Every tab is a single scroll of cards — no categories
+-- nested inside tabs. Promote a category to a tab by adding a key here and
+-- a matching Gui.Build<key>Page() in Gui.BuildAllPages().
 local NAV_PAGES = {
 	{ key = "Dashboard", label = "Dashboard" },
-	{ key = "Player", label = "Player Actions" },
+	{ key = "General", label = "General" },
+	{ key = "Spectate", label = "Spectate" },
 	{ key = "Audio", label = "Audio" },
-	{ key = "Visual", label = "Visual Effects" },
+	{ key = "Visual", label = "Visual" },
 	{ key = "Fun", label = "Fun" },
+	{ key = "Chat", label = "Chat Logs" },
 	{ key = "Settings", label = "Settings" },
 }
 
@@ -2903,6 +2932,8 @@ function Gui.SwitchPage(pageKey)
 	if pageKey == "Dashboard" then
 		Gui.RenderParticipants()
 		Gui.RenderSelection()
+	elseif pageKey == "Chat" then
+		Gui.RenderChatLogs()
 	end
 	Funcs.PlaySound("ping", 0.18)
 end
@@ -3040,17 +3071,25 @@ function Gui.Build()
 	-- Main window stays centered and is intentionally not draggable.
 	-- Only the floating show button drags (see Dragify(showBtn) below).
 
-	local sidebar = MkFrame(BG2, UDim2.new(0, 176, 1, -44), window)
+	-- Scrolling sidebar: the tab list is longer than a short window can show.
+	local sidebar = MkScroll(window, Enum.ScrollingDirection.Y)
+	sidebar.Name = "CPN_Sidebar"
+	sidebar.BackgroundColor3 = BG2
+	sidebar.BackgroundTransparency = 0
+	sidebar.Size = UDim2.new(0, 176, 1, -44)
 	sidebar.Position = UDim2.new(0, 0, 0, 44)
 	sidebar.BorderSizePixel = 0
 	sidebar.LayoutOrder = 2
+	-- Match the window's 16px corner so the sharp bottom-left doesn't poke out.
+	local sideCorner = MkCorner(0, sidebar)
+	sideCorner.BottomLeftRadius = UDim.new(0, 16)
 	UI.Sidebar = sidebar
 	MkList(Enum.FillDirection.Vertical, 6, sidebar)
 	MkPadding(10, 10, 12, 12, sidebar)
 
 	for order, page in ipairs(NAV_PAGES) do
 		local button = MkBtn(page.label, F_MED, 13, SUBTEXT, BG3, sidebar)
-		button.Size = UDim2.new(1, 0, 0, 38)
+		button.Size = UDim2.new(1, 0, 0, 34)
 		button.LayoutOrder = order
 		button.TextXAlignment = Enum.TextXAlignment.Left
 		MkCorner(9, button)
@@ -3343,14 +3382,14 @@ function Gui.ViewParticipant(enabled)
 			return
 		end
 		camera.CameraSubject = humanoid
-		Gui.SetStatus("Player", "view — camera back on your character", true)
+		Gui.SetStatus("Spectate", "view — camera back on your character", true)
 		Funcs.Notify("Spectate off", "Camera is back on your character.", "success")
 		return
 	end
 
 	local selected = State.Selected
 	if not selected then
-		Gui.SetStatus("Player", "view — select a participant first", false)
+		Gui.SetStatus("Spectate", "view — select a participant first", false)
 		Funcs.Notify("No participant", "Select a participant in the Dashboard first.", "warn")
 		return
 	end
@@ -3364,13 +3403,13 @@ function Gui.ViewParticipant(enabled)
 	end
 	local humanoid = player and player.Character and player.Character:FindFirstChildOfClass("Humanoid")
 	if not humanoid then
-		Gui.SetStatus("Player", "view — " .. selected.username .. " is in another server", false)
+		Gui.SetStatus("Spectate", "view — " .. selected.username .. " is in another server", false)
 		Funcs.Notify("Cannot spectate", Funcs.Truncate(selected.username, 24) .. " is not in this server — use Join on them first.", "error")
 		return
 	end
 
 	camera.CameraSubject = humanoid
-	Gui.SetStatus("Player", "view — spectating " .. selected.username, true)
+	Gui.SetStatus("Spectate", "view — spectating " .. selected.username, true)
 	Funcs.Notify("Spectating", "Now watching " .. Funcs.Truncate(selected.username, 24) .. ".", "success")
 end
 
@@ -3513,6 +3552,8 @@ function Gui.RenderParticipants()
 			and "No CPanel participants connected"
 			or "No participants match your search"
 	end
+
+	Gui.RefreshChatScopeOptions()
 end
 
 function Gui.RenderSelection()
@@ -3908,22 +3949,17 @@ function Gui.BuildDashboardPage()
 	end)
 end
 
-function Gui.BuildPlayerPage()
-	local scroll = PageScroll("Player")
-	AddSelectionBanner("Player", 1)
-	AddInfoCard("Player", 2, "How Player Actions work",
-		"Pick a participant in the Dashboard, then pick a category. General Actions are commands the receiving client applies to its own character. Spectate and Goto run on your own camera instead. Fling power comes from the slider in Fun Actions.")
+function Gui.BuildGeneralPage()
+	local scroll = PageScroll("General")
+	AddSelectionBanner("General", 1)
+	AddInfoCard("General", 2, "How General actions work",
+		"Pick a participant in the Dashboard, then fire an action. These are commands the receiving client applies to its own character. Camera moves live on the Spectate tab, launch power on the Fun tab.")
 
 	local order = 3
 
-	local function Section(text)
-		MkHeading(scroll, text, order)
-		order = order + 1
-	end
-
 	local function SendAction(definition)
 		AddActionCard(scroll, order, definition.title, definition.hint, function()
-			Gui.RunAction(definition.action, "Player", definition.args, definition.title, definition.onResult)
+			Gui.RunAction(definition.action, "General", definition.args, definition.title, definition.onResult)
 		end)
 		order = order + 1
 	end
@@ -3952,53 +3988,14 @@ function Gui.BuildPlayerPage()
 		end
 		local moved, err = TeleportTo(x, y, z)
 		local who = State.Selected and State.Selected.username or "participant"
-		Gui.SetStatus("Player", moved and ("goto — moved to " .. who) or ("goto — " .. tostring(err)), moved)
+		Gui.SetStatus("General", moved and ("goto — moved to " .. who) or ("goto — " .. tostring(err)), moved)
 	end
 
-	Section("General Actions")
 	SendAction({ action = "freeze", title = "Freeze", hint = "Immobilize the participant", args = NoArgs })
 	SendAction({ action = "unfreeze", title = "Unfreeze", hint = "Restore normal movement", args = NoArgs })
 	SendAction({ action = "kill", title = "Kill / Reset", hint = "Set their hp to 0 instantly", args = NoArgs })
 	SendAction({ action = "bring", title = "Bring", hint = "Move the participant to you", args = BringArgs })
 	SendAction({ action = "goto", title = "Goto", hint = "Move yourself to the participant", args = NoArgs, onResult = GotoResult })
-
-	Section("Spectate Actions")
-	AddActionCard(scroll, order, "View", "Spectate the selected participant", function()
-		Gui.ViewParticipant(true)
-	end)
-	order = order + 1
-	AddActionCard(scroll, order, "Unview", "Put the camera back on your character", function()
-		Gui.ViewParticipant(false)
-	end)
-	order = order + 1
-
-	Section("Fun Actions")
-
-	local flingCard = MkCardAuto(scroll, order)
-	order = order + 1
-	MkPadding(14, 14, 12, 12, flingCard)
-	local flingLayout = MkList(Enum.FillDirection.Vertical, 8, flingCard)
-	flingLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-	MkHeading(flingCard, "Fling force", 1)
-	MkHint(flingCard, "1 pops them straight up and ragdolls them, 10 throws them across the map.", 2)
-	UI.FlingValue = MkLabel("Force " .. tostring(State.FlingForce or 5) .. " / 10", F_MED, 12, ACCENT, flingCard)
-	UI.FlingValue.LayoutOrder = 3
-	local flingSlider = Gui.MakeSlider(flingCard, 1, 10, State.FlingForce or 5, 4, function(value)
-		State.FlingForce = math.floor(value + 0.5)
-		if UI.FlingValue then
-			UI.FlingValue.Text = "Force " .. tostring(State.FlingForce) .. " / 10"
-		end
-	end)
-	UI.Sliders["flingForce"] = { fill = flingSlider.fill }
-
-	SendAction({
-		action = "fling",
-		title = "Fling",
-		hint = "Launch them — power comes from the slider above",
-		args = function()
-			return { force = State.FlingForce or 5 }
-		end,
-	})
 
 	local notifyCard = MkCardAuto(scroll, order)
 	order = order + 1
@@ -4017,7 +4014,22 @@ function Gui.BuildPlayerPage()
 			return { text = UI.NotifyBox and UI.NotifyBox.Text or "" }
 		end,
 	})
-	Gui.SetStatus("Player", "", nil)
+	Gui.SetStatus("General", "", nil)
+end
+
+function Gui.BuildSpectatePage()
+	local scroll = PageScroll("Spectate")
+	AddSelectionBanner("Spectate", 1)
+	AddInfoCard("Spectate", 2, "How Spectate works",
+		"Pick a participant in the Dashboard, then View to point your camera at their character. Unview puts it back on yours. They need to be in this server — use Join on the Dashboard first if they are not.")
+
+	AddActionCard(scroll, 3, "View", "Spectate the selected participant", function()
+		Gui.ViewParticipant(true)
+	end)
+	AddActionCard(scroll, 4, "Unview", "Put the camera back on your character", function()
+		Gui.ViewParticipant(false)
+	end)
+	Gui.SetStatus("Spectate", "", nil)
 end
 
 function Gui.BuildAudioPage()
@@ -4289,7 +4301,31 @@ function Gui.BuildFunPage()
 	local scroll = PageScroll("Fun")
 	AddSelectionBanner("Fun", 1)
 
-	local paramCard = MkCardAuto(scroll, 2)
+	-- Fling power lives here now (promoted out of the old Player "Fun Actions").
+	local flingCard = MkCardAuto(scroll, 2)
+	MkPadding(14, 14, 12, 12, flingCard)
+	local flingLayout = MkList(Enum.FillDirection.Vertical, 8, flingCard)
+	flingLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+	MkHeading(flingCard, "Fling force", 1)
+	MkHint(flingCard, "1 pops them straight up and ragdolls them, 10 throws them across the map.", 2)
+	UI.FlingValue = MkLabel("Force " .. tostring(State.FlingForce or 5) .. " / 10", F_MED, 12, ACCENT, flingCard)
+	UI.FlingValue.LayoutOrder = 3
+	local flingSlider = Gui.MakeSlider(flingCard, 1, 10, State.FlingForce or 5, 4, function(value)
+		State.FlingForce = math.floor(value + 0.5)
+		if UI.FlingValue then
+			UI.FlingValue.Text = "Force " .. tostring(State.FlingForce) .. " / 10"
+		end
+	end)
+	UI.Sliders["flingForce"] = { fill = flingSlider.fill }
+
+	local flingAction
+	flingAction = AddActionCard(scroll, 3, "Fling", "Launch them — power comes from the slider above", function()
+		Gui.RunAction("fling", "Fun", function()
+			return { force = State.FlingForce or 5 }
+		end, flingAction.title)
+	end)
+
+	local paramCard = MkCardAuto(scroll, 4)
 	MkPadding(14, 14, 12, 12, paramCard)
 	local paramLayout = MkList(Enum.FillDirection.Vertical, 8, paramCard)
 	paramLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
@@ -4407,7 +4443,7 @@ function Gui.BuildFunPage()
 		{ action = "stop_all_effects", title = "Restore All Effects", hint = "Stop every active CPanel effect" },
 	}
 	for index, definition in ipairs(definitions) do
-		local card = AddActionCard(scroll, 2 + index, definition.title, definition.hint, nil)
+		local card = AddActionCard(scroll, 5 + index, definition.title, definition.hint, nil)
 		local overlay = card.card:FindFirstChildOfClass("TextButton")
 		if overlay then
 			overlay.MouseButton1Click:Connect(function()
@@ -4421,6 +4457,330 @@ function Gui.BuildFunPage()
 			end)
 		end
 	end
+end
+
+-- ---------------------------------------------------------------------------
+-- Chat Logs
+-- ---------------------------------------------------------------------------
+
+local CHAT_KEEP_MAX = 200 -- messages retained in memory
+local CHAT_RENDER_MAX = 40 -- messages drawn at once so the list stays light
+local CHAT_SEEN = {}
+local CHAT_SEEN_COUNT = 0
+local ChatScopeOptions = {}
+local ChatScopeUserIds = {}
+local chatHooked = false
+
+local function ChatStamp()
+	local ok, stamp = pcall(function()
+		return os.date("%H:%M:%S")
+	end)
+	return (ok and stamp) or ""
+end
+
+function Gui.ChatTargetJobId()
+	if State.ChatScopeUserId then
+		for _, entry in ipairs(State.Participants) do
+			if entry.userId == State.ChatScopeUserId then
+				return tostring(entry.jobId or ""), entry
+			end
+		end
+	end
+	return tostring(game.JobId or ""), nil
+end
+
+local function ConnectedUserIds()
+	local set = {}
+	for _, entry in ipairs(State.Participants) do
+		set[entry.userId] = true
+	end
+	return set
+end
+
+function Gui.FilteredChatLogs()
+	local jobId = Gui.ChatTargetJobId()
+	local connected = State.ChatOnlyConnected and ConnectedUserIds() or nil
+	local out = {}
+	for _, entry in ipairs(State.ChatLogs) do
+		if entry.jobId == jobId then
+			if not connected or connected[entry.userId] or entry.userId == LocalPlayer.UserId then
+				out[#out + 1] = entry
+			end
+		end
+	end
+	return out
+end
+
+function Gui.RecordChat(message)
+	if type(message) ~= "table" then
+		return
+	end
+	local textSource = message.TextSource
+	local userId = tonumber(textSource and textSource.UserId) or 0
+	local text = tostring(message.Text or "")
+	if text == "" or userId == 0 then
+		return
+	end
+
+	local messageId = tostring(message.MessageId or "")
+	if messageId ~= "" then
+		local key = messageId .. "|" .. userId
+		if CHAT_SEEN[key] then
+			return
+		end
+		CHAT_SEEN[key] = true
+		CHAT_SEEN_COUNT = CHAT_SEEN_COUNT + 1
+		if CHAT_SEEN_COUNT > 2000 then
+			table.clear(CHAT_SEEN)
+			CHAT_SEEN_COUNT = 0
+		end
+	end
+
+	local username = nil
+	if textSource then
+		local ok, name = pcall(function()
+			return textSource.Name
+		end)
+		if ok and type(name) == "string" and name ~= "" then
+			username = name
+		end
+	end
+	if not username then
+		local player = Players:GetPlayerByUserId(userId)
+		username = player and player.Name or ("user" .. tostring(userId))
+	end
+
+	local logs = State.ChatLogs
+	logs[#logs + 1] = {
+		userId = userId,
+		username = username,
+		text = text,
+		jobId = tostring(game.JobId or ""),
+		stamp = ChatStamp(),
+	}
+	while #logs > CHAT_KEEP_MAX do
+		table.remove(logs, 1)
+	end
+
+	if UI.ActivePage == "Chat" then
+		Gui.RenderChatLogs()
+	end
+end
+
+function Gui.StartChatCapture()
+	if chatHooked then
+		return
+	end
+	chatHooked = true
+	pcall(function()
+		game:GetService("TextChatService").MessageReceived:Connect(function(message)
+			pcall(function()
+				Gui.RecordChat(message)
+			end)
+		end)
+	end)
+end
+
+function Gui.RefreshChatScopeOptions()
+	local previous = State.ChatScopeUserId
+	table.clear(ChatScopeOptions)
+	table.clear(ChatScopeUserIds)
+	ChatScopeOptions[1] = "This server"
+	ChatScopeUserIds[1] = false -- sentinel: index 1 is "This server", not a user
+
+	local index = 1
+	for _, entry in ipairs(State.Participants) do
+		if entry.role ~= "developer" then
+			ChatScopeOptions[#ChatScopeOptions + 1] = entry.username
+			ChatScopeUserIds[#ChatScopeUserIds + 1] = entry.userId
+			if previous and entry.userId == previous then
+				index = #ChatScopeOptions
+			end
+		end
+	end
+
+	if previous and index == 1 then
+		State.ChatScopeUserId = nil
+	end
+
+	if UI.ChatScopeCycle then
+		UI.ChatScopeCycle.SetIndex(index)
+	end
+end
+
+function Gui.RenderChatLogs()
+	local list = UI.ChatList
+	if not list then
+		return
+	end
+
+	local filtered = Gui.FilteredChatLogs()
+	local jobId, scopeEntry = Gui.ChatTargetJobId()
+	local elsewhere = (scopeEntry ~= nil) and (jobId ~= tostring(game.JobId or ""))
+
+	if UI.ChatScopeLabel then
+		local scopeText
+		if elsewhere then
+			scopeText = "No logs — " .. Funcs.Truncate(scopeEntry.username, 20) .. " is in another server"
+		elseif scopeEntry then
+			scopeText = "Showing this server, scoped to " .. Funcs.Truncate(scopeEntry.username, 20)
+		else
+			scopeText = "Showing this server"
+		end
+		if State.ChatOnlyConnected then
+			scopeText = scopeText .. "  ·  connected only"
+		end
+		UI.ChatScopeLabel.Text = scopeText
+	end
+
+	for _, child in ipairs(list:GetChildren()) do
+		if child:IsA("TextLabel") then
+			child:Destroy()
+		end
+	end
+
+	if #filtered == 0 then
+		local emptyText
+		if elsewhere then
+			emptyText = "No logs — that server is not this client's server, so nothing was ever received from it."
+		elseif State.ChatOnlyConnected then
+			emptyText = "No messages from connected CPanel users in this server yet."
+		else
+			emptyText = "Nothing logged yet — messages appear here as this client receives them."
+		end
+		local empty = MkLabel(emptyText, F_MED, 12, SUBTEXT, list)
+		empty.Name = "ChatEmpty"
+		empty.Size = UDim2.new(1, 0, 0, 0)
+		empty.AutomaticSize = Enum.AutomaticSize.Y
+		empty.LayoutOrder = 1
+		empty.TextXAlignment = Enum.TextXAlignment.Left
+		empty.TextYAlignment = Enum.TextYAlignment.Top
+		empty.TextWrapped = true
+		return
+	end
+
+	local first = math.max(1, #filtered - CHAT_RENDER_MAX + 1)
+	for index = first, #filtered do
+		local entry = filtered[index]
+		local row = MkLabel("", F_REG, 12, TEXT, list)
+		row.Name = "ChatRow"
+		row.Size = UDim2.new(1, 0, 0, 0)
+		row.AutomaticSize = Enum.AutomaticSize.Y
+		row.LayoutOrder = index
+		row.TextXAlignment = Enum.TextXAlignment.Left
+		row.TextYAlignment = Enum.TextYAlignment.Top
+		row.TextWrapped = true
+		row.RichText = false
+		row.TextColor3 = (entry.userId == LocalPlayer.UserId) and ACCENT or TEXT
+		row.Text = string.format("[%s] %s: %s", entry.stamp, entry.username, entry.text)
+	end
+end
+
+function Gui.BuildChatLogsPage()
+	local scroll = PageScroll("Chat")
+
+	local headCard = MkCardAuto(scroll, 1)
+	MkPadding(14, 14, 12, 12, headCard)
+	local headLayout = MkList(Enum.FillDirection.Vertical, 8, headCard)
+	headLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+
+	MkHeading(headCard, "Chat Logs", 1)
+	MkHint(headCard, "Live messages this client can receive, grouped by the server they were said in. Only Connected Users narrows the list to messages from connected CPanel users instead of the whole server.", 2)
+
+	local scopeRow = Instance.new("Frame")
+	scopeRow.BackgroundTransparency = 1
+	scopeRow.BorderSizePixel = 0
+	scopeRow.Size = UDim2.new(1, 0, 0, 32)
+	scopeRow.LayoutOrder = 3
+	scopeRow.Parent = headCard
+
+	local scopeCaption = MkLabel("Show", F_MED, 12, SUBTEXT, scopeRow)
+	scopeCaption.Size = UDim2.new(0, 44, 1, 0)
+	scopeCaption.Position = UDim2.new(0, 0, 0, 0)
+	scopeCaption.TextXAlignment = Enum.TextXAlignment.Left
+
+	UI.ChatScopeCycle = Gui.MakeCycle(scopeRow, ChatScopeOptions, 1, 0, function(_, index)
+		State.ChatScopeUserId = ChatScopeUserIds[index] or nil
+		Gui.RenderChatLogs()
+	end)
+	UI.ChatScopeCycle.button.AnchorPoint = Vector2.new(1, 0.5)
+	UI.ChatScopeCycle.button.Position = UDim2.new(1, 0, 0.5, 0)
+	UI.ChatScopeCycle.button.Size = UDim2.new(0, 180, 0, 30)
+
+	UI.ChatScopeLabel = MkLabel("", F_REG, 11, SUBTEXT, headCard)
+	UI.ChatScopeLabel.Size = UDim2.new(1, 0, 0, 0)
+	UI.ChatScopeLabel.AutomaticSize = Enum.AutomaticSize.Y
+	UI.ChatScopeLabel.LayoutOrder = 4
+	UI.ChatScopeLabel.TextXAlignment = Enum.TextXAlignment.Left
+	UI.ChatScopeLabel.TextWrapped = true
+
+	local toggleRow = Instance.new("Frame")
+	toggleRow.BackgroundTransparency = 1
+	toggleRow.BorderSizePixel = 0
+	toggleRow.Size = UDim2.new(1, 0, 0, 30)
+	toggleRow.LayoutOrder = 5
+	toggleRow.Parent = headCard
+
+	local toggleLabel = MkLabel("Only Connected Users", F_MED, 13, TEXT, toggleRow)
+	toggleLabel.Size = UDim2.new(1, -60, 1, 0)
+	toggleLabel.Position = UDim2.new(0, 0, 0, 0)
+	toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+	local onlyToggle = Gui.MakeToggle(toggleRow, State.ChatOnlyConnected, function(value)
+		State.ChatOnlyConnected = value
+		Gui.RenderChatLogs()
+	end)
+	onlyToggle.holder.AnchorPoint = Vector2.new(1, 0.5)
+	onlyToggle.holder.Position = UDim2.new(1, 0, 0.5, 0)
+
+	local logScroll = MkScroll(headCard, Enum.ScrollingDirection.Y)
+	logScroll.Name = "ChatLogList"
+	logScroll.BackgroundColor3 = BG3
+	logScroll.BackgroundTransparency = 0
+	logScroll.BorderSizePixel = 0
+	logScroll.Size = UDim2.new(1, 0, 0, 236)
+	logScroll.LayoutOrder = 6
+	MkCorner(8, logScroll)
+	MkStroke(BORDER, 1, logScroll)
+	MkPadding(10, 10, 10, 10, logScroll)
+	MkList(Enum.FillDirection.Vertical, 6, logScroll)
+	UI.ChatList = logScroll
+
+	local sendCard = MkCardAuto(scroll, 2)
+	MkPadding(14, 14, 12, 12, sendCard)
+	local sendLayout = MkList(Enum.FillDirection.Vertical, 8, sendCard)
+	sendLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+
+	MkHeading(sendCard, "Send as selected user", 1)
+	MkHint(sendCard, "Sends TextChatService.TextChannels.RBXGeneral:SendAsync(text) on the selected participant's own client, so it goes out under their name. Pick someone in the Dashboard first.", 2)
+
+	local sendRow = Instance.new("Frame")
+	sendRow.BackgroundTransparency = 1
+	sendRow.BorderSizePixel = 0
+	sendRow.Size = UDim2.new(1, 0, 0, 34)
+	sendRow.LayoutOrder = 3
+	sendRow.Parent = sendCard
+
+	local sendBox = MkInput(sendRow, "Message to send…", 0)
+	sendBox.Size = UDim2.new(1, -118, 0, 34)
+	sendBox.Position = UDim2.new(0, 0, 0, 0)
+	UI.ChatSendBox = sendBox
+
+	local sendBtn = MkBtn("Send", F_BOLD, 13, WHITE, ACCENT, sendRow)
+	sendBtn.Size = UDim2.new(0, 106, 0, 34)
+	sendBtn.AnchorPoint = Vector2.new(1, 0.5)
+	sendBtn.Position = UDim2.new(1, 0, 0.5, 0)
+	MkCorner(8, sendBtn)
+
+	sendBtn.MouseButton1Click:Connect(function()
+		Gui.RunAction("chat_send", "Chat", function()
+			return { text = sendBox.Text }
+		end, sendBtn)
+	end)
+
+	Gui.RefreshChatScopeOptions()
+	Gui.RenderChatLogs()
+	Gui.SetStatus("Chat", "", nil)
 end
 
 function Gui.BuildSettingsPage()
@@ -4648,10 +5008,12 @@ end
 
 function Gui.BuildAllPages()
 	Gui.BuildDashboardPage()
-	Gui.BuildPlayerPage()
+	Gui.BuildGeneralPage()
+	Gui.BuildSpectatePage()
 	Gui.BuildAudioPage()
 	Gui.BuildVisualPage()
 	Gui.BuildFunPage()
+	Gui.BuildChatLogsPage()
 	Gui.BuildSettingsPage()
 end
 
@@ -4696,6 +5058,7 @@ end
 
 Funcs.LoadSettings()
 Gui.ApplyTheme(Settings.Theme)
+Gui.StartChatCapture()
 
 task.spawn(function()
 	Funcs.GetAsset("CPanel/CPN_Logo.png")
