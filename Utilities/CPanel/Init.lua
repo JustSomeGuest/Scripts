@@ -1,7 +1,8 @@
 local BASE = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/"
 local MAIN_URL = BASE .. "Main.lua"
 local INIT_URL = BASE .. "Init.lua"
-local WS_PATH = ".websocketUrl"
+local WS_PATH = "CPanel/.websocketUrl"
+local LEGACY_WS_PATH = ".websocketUrl"
 
 local function ValidWs(url)
 	return type(url) == "string" and url:match("^wss?://") ~= nil
@@ -22,14 +23,17 @@ local function LoadUrl()
 	if type(readfile) ~= "function" then
 		return nil
 	end
-	local ok, stored = pcall(readfile, WS_PATH)
-	if not ok then
-		return nil
+
+	for _, path in ipairs({ WS_PATH, LEGACY_WS_PATH }) do
+		local ok, stored = pcall(readfile, path)
+		if ok then
+			stored = Trim(stored)
+			if ValidWs(stored) then
+				return stored
+			end
+		end
 	end
-	stored = Trim(stored)
-	if ValidWs(stored) then
-		return stored
-	end
+
 	return nil
 end
 
