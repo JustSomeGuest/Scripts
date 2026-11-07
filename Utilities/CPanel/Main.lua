@@ -26,20 +26,38 @@ local function FailBoot(message)
 	end)
 end
 
+local WS_PATH = "CPanel/.websocketUrl"
+local LEGACY_WS_PATH = ".websocketUrl"
+
 local function ValidWs(url)
 	return type(url) == "string" and url:match("^wss?://") ~= nil
 end
 
-if not ValidWs(WebsocketUrl) and type(readfile) == "function" then
-	local okStored, stored = pcall(readfile, ".websocketUrl")
-	if okStored and ValidWs(stored) then
-		WebsocketUrl = tostring(stored):match("^%s*(.-)%s*$")
+local function ReadWs(path)
+	if type(readfile) ~= "function" then
+		return nil
+	end
+	local ok, stored = pcall(readfile, path)
+	if not ok then
+		return nil
+	end
+	stored = tostring(stored):match("^%s*(.-)%s*$")
+	if ValidWs(stored) then
+		return stored
+	end
+	return nil
+end
+
+if not ValidWs(WebsocketUrl) then
+	local stored = ReadWs(WS_PATH) or ReadWs(LEGACY_WS_PATH)
+	if stored then
+		WebsocketUrl = stored
 		Env.CPanelWebsocket = WebsocketUrl
 	end
 end
 
 if ValidWs(WebsocketUrl) and type(writefile) == "function" then
-	pcall(writefile, ".websocketUrl", tostring(WebsocketUrl):match("^%s*(.-)%s*$"))
+	pcall(writefile, WS_PATH, tostring(WebsocketUrl):match("^%s*(.-)%s*$"))
 end
 
 if not ValidWs(WebsocketUrl) then
@@ -3019,7 +3037,8 @@ function Gui.Build()
 		Funcs.Shutdown()
 	end)
 
-	Dragify(topbar, window)
+	-- Main window stays centered and is intentionally not draggable.
+	-- Only the floating show button drags (see Dragify(showBtn) below).
 
 	local sidebar = MkFrame(BG2, UDim2.new(0, 176, 1, -44), window)
 	sidebar.Position = UDim2.new(0, 0, 0, 44)
