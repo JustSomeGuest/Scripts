@@ -2858,9 +2858,10 @@ function Gui.ApplyTheme(presetName)
 	Funcs.SaveSettings()
 end
 
-local function Dragify(obj)
-	local XPadding = 16
-	local YPadding = 12
+local function Dragify(handle, target)
+	target = target or handle
+	local paddingX = 16
+	local paddingY = 12
 	local dragging = false
 	local dragInput = nil
 	local dragStart = nil
@@ -2868,13 +2869,14 @@ local function Dragify(obj)
 	local moved = false
 	local suppressClick = false
 
-	obj.InputBegan:Connect(function(input)
+	handle.Active = true
+	handle.InputBegan:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1
 			or input.UserInputType == Enum.UserInputType.Touch then
 			dragging = true
 			dragInput = input
 			dragStart = input.Position
-			startPosition = obj.AbsolutePosition
+			startPosition = target.AbsolutePosition
 			moved = false
 		end
 	end)
@@ -2897,15 +2899,15 @@ local function Dragify(obj)
 			end
 
 			local viewport = camera.ViewportSize
-			local size = obj.AbsoluteSize
-			local anchor = obj.AnchorPoint
+			local size = target.AbsoluteSize
+			local anchor = target.AnchorPoint
 			local left = startPosition.X + delta.X
 			local top = startPosition.Y + delta.Y
 
-			left = math.clamp(left, XPadding, math.max(XPadding, viewport.X - size.X - XPadding))
-			top = math.clamp(top, YPadding, math.max(YPadding, viewport.Y - size.Y - YPadding))
+			left = math.clamp(left, paddingX, math.max(paddingX, viewport.X - size.X - paddingX))
+			top = math.clamp(top, paddingY, math.max(paddingY, viewport.Y - size.Y - paddingY))
 
-			obj.Position = UDim2.fromOffset(
+			target.Position = UDim2.fromOffset(
 				left + size.X * anchor.X,
 				top + size.Y * anchor.Y
 			)
@@ -2913,17 +2915,16 @@ local function Dragify(obj)
 	end)
 
 	UserInputService.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			if dragging then
-				dragging = false
-				dragInput = nil
-				if moved then
-					suppressClick = true
-					task.delay(0.2, function()
-						suppressClick = false
-					end)
-				end
+		local isMouseRelease = input.UserInputType == Enum.UserInputType.MouseButton1
+		local isTouchRelease = dragInput and input == dragInput
+		if dragging and (isMouseRelease or isTouchRelease) then
+			dragging = false
+			dragInput = nil
+			if moved then
+				suppressClick = true
+				task.delay(0.2, function()
+					suppressClick = false
+				end)
 			end
 		end
 	end)
@@ -3221,6 +3222,7 @@ function Gui.Build()
 	topbar.BorderSizePixel = 0
 	topbar.LayoutOrder = 1
 	UI.Topbar = topbar
+	Dragify(topbar, window)
 	local topCorner = MkCorner(16, topbar)
 	topCorner.CornerRadius = UDim.new(0, 0)
 	topCorner.TopLeftRadius = UDim.new(0, 16)
@@ -3408,9 +3410,9 @@ function Gui.Build()
 	showIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 	showIcon.Size = UDim2.new(0, 36, 0, 36)
 	showIcon:SetAttribute("CPN_Immutable", true)
-	local showBtnWasDragged = Dragify(showBtn)
+	local showBtnDragged = Dragify(showBtn)
 	showBtn.MouseButton1Click:Connect(function()
-		if showBtnWasDragged() then
+		if showBtnDragged() then
 			return
 		end
 		Gui.Restore()
