@@ -11,7 +11,7 @@ if Env.__CPanel and Env.__CPanel.IsLoaded then
 	end
 end
 
-local VERSION = "1.1.0"
+local VERSION = "1.1.1"
 
 local WebsocketUrl = Env.CPanelWebsocket
 
@@ -1567,7 +1567,6 @@ Handlers.notify = function(args)
 	return true, "notification shown"
 end
 
--- Runs on the selected participant's own client, so the message goes out as them.
 Handlers.chat_send = function(args)
 	local text = Funcs.SafeText(args and args.text, 200, "")
 	if text == "" then
@@ -2236,11 +2235,15 @@ local function MkScroll(parent, direction)
 	local scroll = Instance.new("ScrollingFrame")
 	scroll.BackgroundTransparency = 1
 	scroll.BorderSizePixel = 0
-	scroll.ScrollBarThickness = 4
-	scroll.ScrollBarImageColor3 = Color3.fromRGB(60, 60, 70)
+	scroll.ScrollBarThickness = 3
+	scroll.ScrollBarImageColor3 = BG3:Lerp(WHITE, 0.35)
+	scroll.ScrollBarImageTransparency = 0.45
 	scroll.ScrollingDirection = direction or Enum.ScrollingDirection.Y
 	scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
 	scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	scroll.ScrollingEnabled = true
+	scroll.ScrollBarFadeTransparency = 0.55
+	scroll:SetAttribute("CPN_ThemedBar", true)
 	scroll.Parent = parent
 	return scroll
 end
@@ -2255,36 +2258,70 @@ local function MkBtn(text, font, size, color, background, parent)
 	button.TextColor3 = color
 	button.AutoButtonColor = false
 	button.Parent = parent
+	button:SetAttribute("CPN_BaseBg", background)
 	MkCorner(8, button)
 
 	local hovering = false
-	local tweenInfo = TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	local hoverColor = background:Lerp(WHITE, 0.1)
-	if background.R + background.G + background.B < 0.2 then
-		hoverColor = BG3
+	local tweenInfo = TweenInfo.new(0.14, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+	local function baseBg()
+		local stored = button:GetAttribute("CPN_BaseBg")
+		if typeof(stored) == "Color3" then
+			return stored
+		end
+		return background
 	end
-	local pressColor = background:Lerp(OVERLAY_BG, 0.2)
+
+	local function isSelected()
+		return button:GetAttribute("CPN_Selected") == true
+	end
+
+	local function hoverOf()
+		local bg = baseBg()
+		if bg.R + bg.G + bg.B < 0.2 then
+			return BG3
+		end
+		return bg:Lerp(WHITE, 0.1)
+	end
+
+	local function restOf()
+		if isSelected() then
+			return ACCENT
+		end
+		if hovering then
+			return hoverOf()
+		end
+		return baseBg()
+	end
+
+	local function paint(target)
+		TweenService:Create(button, tweenInfo, { BackgroundColor3 = target }):Play()
+	end
 
 	button.MouseEnter:Connect(function()
 		hovering = true
-		TweenService:Create(button, tweenInfo, { BackgroundColor3 = hoverColor }):Play()
+		paint(isSelected() and ACCENT:Lerp(WHITE, 0.1) or hoverOf())
 	end)
 	button.MouseLeave:Connect(function()
 		hovering = false
-		TweenService:Create(button, tweenInfo, { BackgroundColor3 = background }):Play()
+		paint(restOf())
 	end)
 	button.InputBegan:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			TweenService:Create(button, tweenInfo, { BackgroundColor3 = pressColor }):Play()
+			paint(isSelected() and ACCENT:Lerp(OVERLAY_BG, 0.18) or baseBg():Lerp(OVERLAY_BG, 0.2))
 		end
 	end)
 	button.InputEnded:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			TweenService:Create(button, tweenInfo, { BackgroundColor3 = hovering and hoverColor or background }):Play()
+			paint(restOf())
 		end
 	end)
 
 	return button
+end
+
+local function SetButtonSelected(button, selected)
+	button:SetAttribute("CPN_Selected", selected == true)
 end
 
 local function MkCard(parent, order, height)
@@ -2292,7 +2329,8 @@ local function MkCard(parent, order, height)
 	card.LayoutOrder = order or 0
 	card.BorderSizePixel = 0
 	MkCorner(10, card)
-	MkStroke(BORDER, 1, card)
+	local stroke = MkStroke(BORDER, 1, card)
+	stroke.Transparency = 0.4
 	return card
 end
 
@@ -2302,7 +2340,8 @@ local function MkCardAuto(parent, order)
 	card.BorderSizePixel = 0
 	card.AutomaticSize = Enum.AutomaticSize.Y
 	MkCorner(10, card)
-	MkStroke(BORDER, 1, card)
+	local stroke = MkStroke(BORDER, 1, card)
+	stroke.Transparency = 0.4
 	return card
 end
 
@@ -2593,7 +2632,8 @@ function Funcs.StandaloneToast(title, text, kind)
 	toast.AnchorPoint = Vector2.new(1, 0)
 	toast.Position = UDim2.new(1, 60, 0, 16)
 	MkCorner(10, toast)
-	MkStroke(BORDER, 1, toast)
+	local toastStroke1 = MkStroke(BORDER, 1, toast)
+	toastStroke1.Transparency = 0.4
 
 	local bar = MkFrame(accent, UDim2.new(0, 3, 1, -16), toast)
 	bar.BorderSizePixel = 0
@@ -2647,7 +2687,8 @@ function Gui.PushToast(entry)
 	toast.AnchorPoint = Vector2.new(1, 0)
 	toast.Position = UDim2.new(1, 40, 0, #list * (TOAST_HEIGHT + TOAST_GAP))
 	MkCorner(10, toast)
-	MkStroke(BORDER, 1, toast)
+	local toastStroke2 = MkStroke(BORDER, 1, toast)
+	toastStroke2.Transparency = 0.4
 
 	local bar = MkFrame(accent, UDim2.new(0, 3, 1, -16), toast)
 	bar.BorderSizePixel = 0
@@ -2710,23 +2751,55 @@ function Gui.ApplyTheme(presetName)
 
 	if UI.Screen then
 		for _, object in ipairs(UI.Screen:GetDescendants()) do
-			if object:IsA("GuiObject") then
-				if object.BackgroundColor3 == oldBG then
-					object.BackgroundColor3 = BG
-				elseif object.BackgroundColor3 == oldBG2 then
-					object.BackgroundColor3 = BG2
-				elseif object.BackgroundColor3 == oldBG3 then
-					object.BackgroundColor3 = BG3
-				elseif object.BackgroundColor3 == oldAccent then
-					object.BackgroundColor3 = ACCENT
+			if object:GetAttribute("CPN_Immutable") ~= true then
+				if object:IsA("TextLabel") or object:IsA("TextButton") then
+					if object.TextColor3 == oldAccent then
+						object.TextColor3 = ACCENT
+					elseif object.TextColor3 == oldBG3 then
+						object.TextColor3 = BG3
+					elseif object.TextColor3 == oldBG2 then
+						object.TextColor3 = BG2
+					end
 				end
-			elseif object:IsA("UIStroke") then
-				if object.Color == oldAccent then
-					object.Color = ACCENT
-				end
-			elseif object:IsA("TextLabel") or object:IsA("TextButton") then
-				if object.TextColor3 == oldAccent then
-					object.TextColor3 = ACCENT
+
+				if object:IsA("GuiObject") then
+					if object:IsA("ScrollingFrame") and object:GetAttribute("CPN_ThemedBar") then
+						object.ScrollBarImageColor3 = BG3:Lerp(WHITE, 0.35)
+					end
+
+					local stored = object:GetAttribute("CPN_BaseBg")
+					if typeof(stored) == "Color3" then
+						local mapped = stored
+						if stored == oldAccent then
+							mapped = ACCENT
+						elseif stored == oldBG3 then
+							mapped = BG3
+						elseif stored == oldBG2 then
+							mapped = BG2
+						elseif stored == oldBG then
+							mapped = BG
+						end
+						if mapped ~= stored then
+							object:SetAttribute("CPN_BaseBg", mapped)
+							if object:GetAttribute("CPN_Selected") ~= true then
+								object.BackgroundColor3 = mapped
+							end
+						end
+					elseif object.BackgroundColor3 == oldBG then
+						object.BackgroundColor3 = BG
+					elseif object.BackgroundColor3 == oldBG2 then
+						object.BackgroundColor3 = BG2
+					elseif object.BackgroundColor3 == oldBG3 then
+						object.BackgroundColor3 = BG3
+					elseif object.BackgroundColor3 == oldAccent then
+						object.BackgroundColor3 = ACCENT
+					end
+				elseif object:IsA("UIStroke") then
+					if object.Color == oldAccent then
+						object.Color = ACCENT
+					elseif object.Color == oldBG3 then
+						object.Color = BG3
+					end
 				end
 			end
 		end
@@ -2855,9 +2928,6 @@ local function Dragify(handle, target)
 	return state
 end
 
--- Flat tab list. Every tab is a single scroll of cards — no categories
--- nested inside tabs. Promote a category to a tab by adding a key here and
--- a matching Gui.Build<key>Page() in Gui.BuildAllPages().
 local NAV_PAGES = {
 	{ key = "Dashboard", label = "Dashboard" },
 	{ key = "General", label = "General" },
@@ -2904,6 +2974,56 @@ function Gui.UpdateConnection()
 	end
 end
 
+function Gui.RefreshSessionInfo()
+	if not UI.SessionGame then
+		return
+	end
+
+	local okName, placeName = pcall(function()
+		return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId, Enum.InfoType.Asset).Name
+	end)
+	UI.SessionGame.Text = (okName and type(placeName) == "string" and placeName ~= "") and placeName
+		or ("Place " .. tostring(game.PlaceId))
+
+	if UI.SessionIds then
+		UI.SessionIds.Text = "Place ID: " .. tostring(game.PlaceId) .. "   ·   Universe ID: " .. tostring(game.GameId)
+	end
+	if UI.SessionJob then
+		UI.SessionJob.Text = "Job ID: " .. tostring(game.JobId or "unknown")
+	end
+	if UI.SessionPlayers then
+		local names = {}
+		for _, player in ipairs(Players:GetPlayers()) do
+			names[#names + 1] = player.Name
+		end
+		table.sort(names)
+		if #names == 0 then
+			UI.SessionPlayers.Text = "—"
+		else
+			UI.SessionPlayers.Text = table.concat(names, ", ")
+		end
+	end
+end
+
+function Gui.RevealPage(page)
+	local fade = UI.PageFade
+	if not fade or not page then
+		return
+	end
+	if Settings.Animations == false then
+		fade.BackgroundTransparency = 1
+		return
+	end
+	fade.BackgroundColor3 = BG
+	fade.BackgroundTransparency = 0.55
+	fade.Visible = true
+	TweenService:Create(
+		fade,
+		TweenInfo.new(0.26, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+		{ BackgroundTransparency = 1 }
+	):Play()
+end
+
 function Gui.SwitchPage(pageKey)
 	if UI.ActivePage == pageKey then
 		return
@@ -2915,14 +3035,24 @@ function Gui.SwitchPage(pageKey)
 	end
 	local oldNav = UI.NavButtons and UI.NavButtons[UI.ActivePage]
 	local newNav = UI.NavButtons and UI.NavButtons[pageKey]
-	if oldNav then
-		oldNav.button.BackgroundColor3 = BG3
-		oldNav.label.TextColor3 = SUBTEXT
+
+	local function paintNav(entry, active)
+		if not entry then
+			return
+		end
+		SetButtonSelected(entry.button, active)
+		local target = active and ACCENT or BG3
+		TweenService:Create(
+			entry.button,
+			TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+			{ BackgroundColor3 = target }
+		):Play()
+		entry.label.TextColor3 = active and WHITE or SUBTEXT
 	end
-	if newNav then
-		newNav.button.BackgroundColor3 = ACCENT
-		newNav.label.TextColor3 = WHITE
-	end
+
+	paintNav(oldNav, false)
+	paintNav(newNav, true)
+
 	if oldPage then
 		oldPage.Visible = false
 	end
@@ -2935,6 +3065,13 @@ function Gui.SwitchPage(pageKey)
 	elseif pageKey == "Chat" then
 		Gui.RenderChatLogs()
 	end
+
+	local scroll = UI.PageScrolls and UI.PageScrolls[pageKey]
+	if scroll then
+		scroll.CanvasPosition = Vector2.zero
+	end
+	Gui.RevealPage(newPage)
+
 	Funcs.PlaySound("ping", 0.18)
 end
 
@@ -2943,6 +3080,9 @@ function Gui.Minimize()
 		return
 	end
 	UI.Window.Visible = false
+	if UI.Shadow then
+		UI.Shadow.Visible = false
+	end
 	if UI.ShowBtn then
 		UI.ShowBtn.Visible = true
 	end
@@ -2954,6 +3094,9 @@ function Gui.Restore()
 	end
 	if UI.ShowBtn then
 		UI.ShowBtn.Visible = false
+	end
+	if UI.Shadow then
+		UI.Shadow.Visible = true
 	end
 	UI.Window.Visible = true
 end
@@ -2986,8 +3129,35 @@ function Gui.Build()
 	toastHost.AnchorPoint = Vector2.new(1, 0)
 	toastHost.Position = UDim2.new(1, -14, 0, 16)
 	toastHost.Size = UDim2.new(0, 300, 1, -32)
+	toastHost.ZIndex = 50
 	toastHost.Parent = screen
 	UI.ToastHost = toastHost
+
+	local shadow = Instance.new("Frame")
+	shadow.Name = "CPN_Shadow"
+	shadow.AnchorPoint = Vector2.new(0.5, 0.5)
+	shadow.Position = UDim2.new(0.5, 0, 0.5, 6)
+	shadow.Size = UDim2.new(0.82, 0, 0.74, 0)
+	shadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	shadow.BackgroundTransparency = 0.82
+	shadow.BorderSizePixel = 0
+	shadow.ZIndex = 0
+	shadow.Parent = screen
+	for _, layer in ipairs({ { 10, 0.9 }, { 20, 0.94 }, { 34, 0.97 } }) do
+		local pad = layer[1]
+		local pane = Instance.new("Frame")
+		pane.AnchorPoint = Vector2.new(0.5, 0.5)
+		pane.Position = UDim2.new(0.5, 0, 0.5, 0)
+		pane.Size = UDim2.new(1, pad * 2, 1, pad * 2)
+		pane.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+		pane.BackgroundTransparency = layer[2]
+		pane.BorderSizePixel = 0
+		pane.ZIndex = 0
+		pane.Parent = shadow
+		MkCorner(16 + pad, pane)
+	end
+	UI.Shadow = shadow
+	MkCorner(16, shadow)
 
 	local window = MkFrame(BG, UDim2.new(0.82, 0, 0.74, 0), screen)
 	window.Name = "CPN_Window"
@@ -3030,7 +3200,7 @@ function Gui.Build()
 	statusArea.BackgroundTransparency = 1
 	statusArea.AutomaticSize = Enum.AutomaticSize.X
 	statusArea.AnchorPoint = Vector2.new(1, 0.5)
-	statusArea.Position = UDim2.new(1, -98, 0.5, 0)
+	statusArea.Position = UDim2.new(1, -62, 0.5, 0)
 	statusArea.BorderSizePixel = 0
 	local statusLayout = MkList(Enum.FillDirection.Horizontal, 7, statusArea)
 	statusLayout.VerticalAlignment = Enum.VerticalAlignment.Center
@@ -3049,29 +3219,46 @@ function Gui.Build()
 	statusText.TextXAlignment = Enum.TextXAlignment.Left
 	UI.StatusText = statusText
 
-	local minimizeBtn = MkBtn("–", F_BOLD, 17, TEXT, BG3, topbar)
-	minimizeBtn.Size = UDim2.new(0, 32, 0, 32)
-	minimizeBtn.AnchorPoint = Vector2.new(1, 0.5)
-	minimizeBtn.Position = UDim2.new(1, -56, 0.5, 0)
-	minimizeBtn.Name = "Minimize"
-	MkCorner(9, minimizeBtn)
+	local traffic = Instance.new("Frame")
+	traffic.Name = "Traffic"
+	traffic.BackgroundTransparency = 1
+	traffic.BorderSizePixel = 0
+	traffic.Size = UDim2.new(0, 32, 0, 12)
+	traffic.AnchorPoint = Vector2.new(1, 0.5)
+	traffic.Position = UDim2.new(1, -16, 0.5, 0)
+	traffic.Parent = topbar
+	MkList(Enum.FillDirection.Horizontal, 8, traffic)
 
-	local closeBtn = MkBtn("X", F_BOLD, 14, WHITE, Color3.fromRGB(200, 60, 70), topbar)
-	closeBtn.Size = UDim2.new(0, 32, 0, 32)
-	closeBtn.AnchorPoint = Vector2.new(1, 0.5)
-	closeBtn.Position = UDim2.new(1, -16, 0.5, 0)
-	closeBtn.Name = "Close"
-	MkCorner(9, closeBtn)
+	local function TrafficDot(name, color, glyph, onClick)
+		local dot = Instance.new("TextButton")
+		dot.Name = name
+		dot.BackgroundColor3 = color
+		dot.BorderSizePixel = 0
+		dot.AutoButtonColor = false
+		dot.Text = ""
+		dot.FontFace = F_BOLD
+		dot.TextSize = 9
+		dot.TextColor3 = Color3.fromRGB(40, 40, 44)
+		dot.Size = UDim2.new(0, 12, 0, 12)
+		dot.LayoutOrder = name == "Close" and 2 or 1
+		dot.Parent = traffic
+		dot:SetAttribute("CPN_Immutable", true)
+		MkCorner(6, dot)
 
-	minimizeBtn.MouseButton1Click:Connect(Gui.Minimize)
-	closeBtn.MouseButton1Click:Connect(function()
-		Funcs.Shutdown()
-	end)
+		local dim = color:Lerp(Color3.fromRGB(20, 20, 24), 0.18)
+		dot.MouseEnter:Connect(function()
+			TweenService:Create(dot, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = dim, Text = glyph }):Play()
+		end)
+		dot.MouseLeave:Connect(function()
+			TweenService:Create(dot, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = color, Text = "" }):Play()
+		end)
+		dot.MouseButton1Click:Connect(onClick)
+		return dot
+	end
 
-	-- Main window stays centered and is intentionally not draggable.
-	-- Only the floating show button drags (see Dragify(showBtn) below).
+	TrafficDot("Minimize", Color3.fromRGB(255, 189, 46), "–", Gui.Minimize)
+	TrafficDot("Close", Color3.fromRGB(255, 95, 86), "×", Funcs.Shutdown)
 
-	-- Scrolling sidebar: the tab list is longer than a short window can show.
 	local sidebar = MkScroll(window, Enum.ScrollingDirection.Y)
 	sidebar.Name = "CPN_Sidebar"
 	sidebar.BackgroundColor3 = BG2
@@ -3080,7 +3267,6 @@ function Gui.Build()
 	sidebar.Position = UDim2.new(0, 0, 0, 44)
 	sidebar.BorderSizePixel = 0
 	sidebar.LayoutOrder = 2
-	-- Match the window's 16px corner so the sharp bottom-left doesn't poke out.
 	local sideCorner = MkCorner(0, sidebar)
 	sideCorner.BottomLeftRadius = UDim.new(0, 16)
 	UI.Sidebar = sidebar
@@ -3097,6 +3283,16 @@ function Gui.Build()
 		UI.NavButtons[page.key] = { button = button, label = button }
 		button.MouseButton1Click:Connect(function()
 			Gui.SwitchPage(page.key)
+		end)
+		button.MouseEnter:Connect(function()
+			if button:GetAttribute("CPN_Selected") ~= true then
+				button.TextColor3 = TEXT
+			end
+		end)
+		button.MouseLeave:Connect(function()
+			if button:GetAttribute("CPN_Selected") ~= true then
+				button.TextColor3 = SUBTEXT
+			end
 		end)
 	end
 
@@ -3134,25 +3330,38 @@ function Gui.Build()
 		UI.PageStatus[page.key] = status
 	end
 
+	local pageFade = Instance.new("Frame")
+	pageFade.Name = "CPN_PageFade"
+	pageFade.BackgroundColor3 = BG
+	pageFade.BackgroundTransparency = 1
+	pageFade.BorderSizePixel = 0
+	pageFade.Size = UDim2.new(1, 0, 1, 0)
+	pageFade.ZIndex = 40
+	pageFade.Active = false
+	pageFade.Parent = content
+	UI.PageFade = pageFade
+
 	local showBtn = Instance.new("ImageButton")
 	showBtn.Name = "CPN_ShowBtn"
-	showBtn.BackgroundColor3 = BG2
-	showBtn.BackgroundTransparency = 0.05
+	showBtn.BackgroundColor3 = Color3.fromRGB(18, 18, 21)
+	showBtn.BackgroundTransparency = 0.08
 	showBtn.BorderSizePixel = 0
-	showBtn.Size = UDim2.new(0, 46, 0, 46)
+	showBtn.Size = UDim2.new(0, 44, 0, 44)
 	showBtn.Position = UDim2.new(0, 16, 0, 64)
 	showBtn.Visible = false
 	showBtn.Image = ""
 	showBtn.AutoButtonColor = false
 	showBtn.Parent = screen
-	MkCorner(23, showBtn)
-	MkStroke(BORDER, 1, showBtn)
+	showBtn:SetAttribute("CPN_Immutable", true)
+	MkCorner(22, showBtn)
+	MkStroke(Color3.fromRGB(44, 44, 52), 1, showBtn)
 	UI.ShowBtn = showBtn
 
 	local showIcon = MkImg(Funcs.GetAsset("CPanel/CPN_Logo.png") or Assets["CPanel/CPN_Logo.png"], WHITE, showBtn)
 	showIcon.AnchorPoint = Vector2.new(0.5, 0.5)
 	showIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-	showIcon.Size = UDim2.new(0.62, 0, 0.62, 0)
+	showIcon.Size = UDim2.new(0, 36, 0, 36)
+	showIcon:SetAttribute("CPN_Immutable", true)
 	local showDrag = Dragify(showBtn)
 	showBtn.MouseButton1Click:Connect(function()
 		if showDrag.Moved then
@@ -3417,11 +3626,42 @@ function Gui.JoinParticipant(entry)
 	if type(entry) ~= "table" then
 		return
 	end
-	if type(entry.jobId) ~= "string" or entry.jobId == "" or entry.jobId == "unknown" then
-		Funcs.Notify("Join failed", "That session did not report a job id.", "error")
+	local placeId = tonumber(entry.placeId) or 0
+	if placeId == 0 then
+		Funcs.Notify("Join failed", "That session did not report a place id.", "error")
 		return
 	end
-	if entry.jobId == game.JobId and entry.placeId == game.PlaceId then
+	if placeId == game.PlaceId and entry.jobId == game.JobId then
+		Funcs.Notify("Already there", "You are already in that server.", "info")
+		return
+	end
+	local ok, err = pcall(function()
+		GetService("TeleportService"):Teleport(placeId, LocalPlayer)
+	end)
+	if ok then
+		Funcs.Notify("Joining game", "Teleporting to " .. Funcs.Truncate(entry.username, 24) .. "'s game.", "success")
+	else
+		Funcs.Notify("Join failed", Funcs.Truncate(tostring(err), 120), "error")
+	end
+end
+
+function Gui.HopToParticipant(entry)
+	if type(entry) ~= "table" then
+		return
+	end
+	if type(entry.jobId) ~= "string" or entry.jobId == "" or entry.jobId == "unknown" then
+		Funcs.Notify("Server hop failed", "That session did not report a job id.", "error")
+		return
+	end
+	if tonumber(entry.placeId) ~= game.PlaceId then
+		Funcs.Notify(
+			"Join that game first",
+			Funcs.Truncate(entry.username, 20) .. " is in a different game — use Join to get into it, then server hop.",
+			"warn"
+		)
+		return
+	end
+	if entry.jobId == game.JobId then
 		Funcs.Notify("Already there", "You are already in that server.", "info")
 		return
 	end
@@ -3429,15 +3669,20 @@ function Gui.JoinParticipant(entry)
 		GetService("TeleportService"):TeleportToPlaceInstance(entry.placeId, entry.jobId, LocalPlayer)
 	end)
 	if ok then
-		Funcs.Notify("Joining server", "Teleporting to " .. Funcs.Truncate(entry.username, 24) .. "'s server.", "success")
+		Funcs.Notify("Server hopping", "Joining " .. Funcs.Truncate(entry.username, 24) .. "'s server.", "success")
 	else
-		Funcs.Notify("Join failed", Funcs.Truncate(tostring(err), 120), "error")
+		Funcs.Notify("Server hop failed", Funcs.Truncate(tostring(err), 120), "error")
 	end
 end
 
 local function ParticipantRow(parent, entry, order)
 	local isSelf = (entry.sessionId == Net.sessionId)
 	local isSelected = (State.Selected and State.Selected.sessionId == entry.sessionId)
+	local joinable = (entry.role ~= "developer") and not isSelf
+
+	local chipWidth = (entry.role == "developer") and 96 or 70
+	local chipRight = joinable and 158 or 30
+	local labelGutter = 55 + chipRight + chipWidth + 10
 
 	local row = MkFrame(BG3, UDim2.new(1, 0, 0, 56), parent)
 	row.BorderSizePixel = 0
@@ -3459,13 +3704,13 @@ local function ParticipantRow(parent, entry, order)
 		usernameText = usernameText .. " (you)"
 	end
 	local nameLabel = MkLabel(usernameText, F_BOLD, 13, TEXT, row)
-	nameLabel.Size = UDim2.new(1, -190, 0, 17)
+	nameLabel.Size = UDim2.new(1, -labelGutter, 0, 17)
 	nameLabel.Position = UDim2.new(0, 55, 0, 9)
 	nameLabel.TextXAlignment = Enum.TextXAlignment.Left
 	nameLabel.TextTruncate = Enum.TextTruncate.AtEnd
 
 	local detailLabel = MkLabel(entry.displayName .. "  ·  " .. tostring(entry.userId) .. "  ·  " .. entry.jobId:sub(1, 8), F_REG, 11, SUBTEXT, row)
-	detailLabel.Size = UDim2.new(1, -190, 0, 15)
+	detailLabel.Size = UDim2.new(1, -labelGutter, 0, 15)
 	detailLabel.Position = UDim2.new(0, 55, 0, 30)
 	detailLabel.TextXAlignment = Enum.TextXAlignment.Left
 	detailLabel.TextTruncate = Enum.TextTruncate.AtEnd
@@ -3473,10 +3718,9 @@ local function ParticipantRow(parent, entry, order)
 	local chip = Instance.new("Frame")
 	chip.BackgroundColor3 = (entry.role == "developer") and ACCENT or Color3.fromRGB(38, 64, 50)
 	chip.BorderSizePixel = 0
-	local joinable = (entry.role ~= "developer") and not isSelf
 	chip.AnchorPoint = Vector2.new(1, 0.5)
-	chip.Position = UDim2.new(1, joinable and -106 or -30, 0.5, 0)
-	chip.Size = UDim2.new(0, (entry.role == "developer") and 96 or 70, 0, 20)
+	chip.Position = UDim2.new(1, -chipRight, 0.5, 0)
+	chip.Size = UDim2.new(0, chipWidth, 0, 20)
 	chip.Parent = row
 	MkCorner(10, chip)
 	MkPadding(8, 8, 0, 0, chip)
@@ -3503,15 +3747,26 @@ local function ParticipantRow(parent, entry, order)
 		Gui.SelectParticipant(entry)
 	end)
 
-	if entry.role ~= "developer" and not isSelf then
+	if joinable then
 		local joinBtn = MkBtn("Join", F_BOLD, 11, WHITE, ACCENT, row)
 		joinBtn.Name = "Join"
 		joinBtn.Size = UDim2.new(0, 56, 0, 26)
 		joinBtn.AnchorPoint = Vector2.new(1, 0.5)
-		joinBtn.Position = UDim2.new(1, -40, 0.5, 0)
+		joinBtn.Position = UDim2.new(1, -28, 0.5, 0)
 		MkCorner(8, joinBtn)
 		joinBtn.MouseButton1Click:Connect(function()
 			Gui.JoinParticipant(entry)
+		end)
+
+		local hopBtn = MkBtn("Hop", F_BOLD, 11, TEXT, BG2, row)
+		hopBtn.Name = "Hop"
+		hopBtn.Size = UDim2.new(0, 46, 0, 26)
+		hopBtn.AnchorPoint = Vector2.new(1, 0.5)
+		hopBtn.Position = UDim2.new(1, -90, 0.5, 0)
+		MkCorner(8, hopBtn)
+		MkStroke(BORDER, 1, hopBtn)
+		hopBtn.MouseButton1Click:Connect(function()
+			Gui.HopToParticipant(entry)
 		end)
 	end
 
@@ -3712,7 +3967,8 @@ function Gui.BuildDashboardPage()
 	local profileCard = MkFrame(BG2, UDim2.new(0.56, -6, 1, 0), row)
 	profileCard.BorderSizePixel = 0
 	MkCorner(10, profileCard)
-	MkStroke(BORDER, 1, profileCard)
+	local profileCardStroke = MkStroke(BORDER, 1, profileCard)
+	profileCardStroke.Transparency = 0.4
 
 	local avatar = Instance.new("ImageLabel")
 	avatar.BackgroundTransparency = 1
@@ -3750,7 +4006,8 @@ function Gui.BuildDashboardPage()
 	local connCard = MkFrame(BG2, UDim2.new(0.44, -6, 1, 0), row)
 	connCard.BorderSizePixel = 0
 	MkCorner(10, connCard)
-	MkStroke(BORDER, 1, connCard)
+	local connCardStroke = MkStroke(BORDER, 1, connCard)
+	connCardStroke.Transparency = 0.4
 
 	local connHeading = MkLabel("Connection", F_BOLD, 13, TEXT, connCard)
 	connHeading.Size = UDim2.new(1, -24, 0, 16)
@@ -3784,11 +4041,63 @@ function Gui.BuildDashboardPage()
 	connCounts.TextXAlignment = Enum.TextXAlignment.Left
 	UI.ConnCounts = connCounts
 
+	local sessionCard = MkFrame(BG2, UDim2.new(1, 0, 0, 0), scroll)
+	sessionCard.BorderSizePixel = 0
+	sessionCard.LayoutOrder = 2
+	sessionCard.AutomaticSize = Enum.AutomaticSize.Y
+	MkCorner(10, sessionCard)
+	local sessionCardStroke = MkStroke(BORDER, 1, sessionCard)
+	sessionCardStroke.Transparency = 0.4
+	MkPadding(14, 14, 12, 12, sessionCard)
+	local sessionLayout = MkList(Enum.FillDirection.Vertical, 5, sessionCard)
+	sessionLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+
+	MkHeading(sessionCard, "Session", 1)
+
+	local gameLine = MkLabel("—", F_BOLD, 13, TEXT, sessionCard)
+	gameLine.LayoutOrder = 2
+	gameLine.Size = UDim2.new(1, 0, 0, 0)
+	gameLine.AutomaticSize = Enum.AutomaticSize.Y
+	gameLine.TextXAlignment = Enum.TextXAlignment.Left
+	gameLine.TextWrapped = true
+	UI.SessionGame = gameLine
+
+	local idLine = MkLabel("—", F_REG, 11, SUBTEXT, sessionCard)
+	idLine.LayoutOrder = 3
+	idLine.Size = UDim2.new(1, 0, 0, 0)
+	idLine.AutomaticSize = Enum.AutomaticSize.Y
+	idLine.TextXAlignment = Enum.TextXAlignment.Left
+	idLine.TextWrapped = true
+	UI.SessionIds = idLine
+
+	local jobLine = MkLabel("—", F_REG, 11, SUBTEXT, sessionCard)
+	jobLine.LayoutOrder = 4
+	jobLine.Size = UDim2.new(1, 0, 0, 0)
+	jobLine.AutomaticSize = Enum.AutomaticSize.Y
+	jobLine.TextXAlignment = Enum.TextXAlignment.Left
+	jobLine.TextWrapped = true
+	UI.SessionJob = jobLine
+
+	local playersCaption = MkLabel("Players in this server", F_MED, 11, SUBTEXT, sessionCard)
+	playersCaption.LayoutOrder = 5
+	playersCaption.Size = UDim2.new(1, 0, 0, 0)
+	playersCaption.AutomaticSize = Enum.AutomaticSize.Y
+	playersCaption.TextXAlignment = Enum.TextXAlignment.Left
+
+	local playersLine = MkLabel("—", F_REG, 12, TEXT, sessionCard)
+	playersLine.LayoutOrder = 6
+	playersLine.Size = UDim2.new(1, 0, 0, 0)
+	playersLine.AutomaticSize = Enum.AutomaticSize.Y
+	playersLine.TextXAlignment = Enum.TextXAlignment.Left
+	playersLine.TextWrapped = true
+	UI.SessionPlayers = playersLine
+
 	local partCard = MkFrame(BG2, UDim2.new(1, 0, 0, 288), scroll)
 	partCard.BorderSizePixel = 0
-	partCard.LayoutOrder = 2
+	partCard.LayoutOrder = 3
 	MkCorner(10, partCard)
-	MkStroke(BORDER, 1, partCard)
+	local partCardStroke = MkStroke(BORDER, 1, partCard)
+	partCardStroke.Transparency = 0.4
 
 	local partHeading = MkLabel("Participants", F_BOLD, 14, TEXT, partCard)
 	partHeading.Size = UDim2.new(0, 110, 0, 20)
@@ -3835,9 +4144,10 @@ function Gui.BuildDashboardPage()
 
 	local selCard = MkFrame(BG2, UDim2.new(1, 0, 0, 100), scroll)
 	selCard.BorderSizePixel = 0
-	selCard.LayoutOrder = 3
+	selCard.LayoutOrder = 4
 	MkCorner(10, selCard)
-	MkStroke(BORDER, 1, selCard)
+	local selCardStroke = MkStroke(BORDER, 1, selCard)
+	selCardStroke.Transparency = 0.4
 
 	local selName = MkLabel("No participant selected", F_BOLD, 14, TEXT, selCard)
 	selName.Size = UDim2.new(1, -130, 0, 20)
@@ -3877,7 +4187,7 @@ function Gui.BuildDashboardPage()
 	end)
 	UI.DeselectBtn = deselectBtn
 
-	local mgmtCard = MkCardAuto(scroll, 4)
+	local mgmtCard = MkCardAuto(scroll, 5)
 	MkPadding(14, 14, 12, 12, mgmtCard)
 	local mgmtLayout = MkList(Enum.FillDirection.Vertical, 8, mgmtCard)
 	mgmtLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
@@ -3947,6 +4257,10 @@ function Gui.BuildDashboardPage()
 	refreshStatusBtn.MouseButton1Click:Connect(function()
 		Gui.RunAction("query_effects", "Dashboard", nil, refreshStatusBtn, EffectResult)
 	end)
+
+	Gui.RefreshSessionInfo()
+	Players.PlayerAdded:Connect(Gui.RefreshSessionInfo)
+	Players.PlayerRemoving:Connect(Gui.RefreshSessionInfo)
 end
 
 function Gui.BuildGeneralPage()
@@ -4301,7 +4615,6 @@ function Gui.BuildFunPage()
 	local scroll = PageScroll("Fun")
 	AddSelectionBanner("Fun", 1)
 
-	-- Fling power lives here now (promoted out of the old Player "Fun Actions").
 	local flingCard = MkCardAuto(scroll, 2)
 	MkPadding(14, 14, 12, 12, flingCard)
 	local flingLayout = MkList(Enum.FillDirection.Vertical, 8, flingCard)
@@ -4459,12 +4772,8 @@ function Gui.BuildFunPage()
 	end
 end
 
--- ---------------------------------------------------------------------------
--- Chat Logs
--- ---------------------------------------------------------------------------
-
-local CHAT_KEEP_MAX = 200 -- messages retained in memory
-local CHAT_RENDER_MAX = 40 -- messages drawn at once so the list stays light
+local CHAT_KEEP_MAX = 200
+local CHAT_RENDER_MAX = 40
 local CHAT_SEEN = {}
 local CHAT_SEEN_COUNT = 0
 local ChatScopeOptions = {}
@@ -4586,7 +4895,7 @@ function Gui.RefreshChatScopeOptions()
 	table.clear(ChatScopeOptions)
 	table.clear(ChatScopeUserIds)
 	ChatScopeOptions[1] = "This server"
-	ChatScopeUserIds[1] = false -- sentinel: index 1 is "This server", not a user
+	ChatScopeUserIds[1] = false
 
 	local index = 1
 	for _, entry in ipairs(State.Participants) do
