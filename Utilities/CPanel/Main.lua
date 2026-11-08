@@ -4,7 +4,7 @@ end
 
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local VERSION = "1.1.2"
+local VERSION = "1.0.0"
 
 local WebsocketUrl = nil
 
@@ -2859,36 +2859,78 @@ function Gui.ApplyTheme(presetName)
 end
 
 local function Dragify(obj)
-    local XPadding = 16
-    local YPadding = 12
-    local dragging, dragStart, startPos = false, nil, nil
+	local XPadding = 16
+	local YPadding = 12
+	local dragging = false
+	local dragInput = nil
+	local dragStart = nil
+	local startPosition = nil
+	local moved = false
+	local suppressClick = false
 
-    obj.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = input.Position
-            startPos = obj.Position
+	obj.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1
+			or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragInput = input
+			dragStart = input.Position
+			startPosition = obj.AbsolutePosition
+			moved = false
+		end
+	end)
 
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
+	UserInputService.InputChanged:Connect(function(input)
+		if not dragging then
+			return
+		end
 
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-            local delta = input.Position - dragStart
-            local vp = workspace.CurrentCamera.ViewportSize
-            local sz = obj.AbsoluteSize
+		if input.UserInputType == Enum.UserInputType.MouseMovement
+			or (dragInput and input == dragInput) then
+			local delta = input.Position - dragStart
+			if math.abs(delta.X) + math.abs(delta.Y) > 4 then
+				moved = true
+			end
 
-            local nx = math.clamp(startPos.X.Offset + delta.X, XPadding, vp.X - sz.X - XPadding)
-            local ny = math.clamp(startPos.Y.Offset + delta.Y, YPadding, vp.Y - sz.Y - YPadding)
+			local camera = workspace.CurrentCamera
+			if not camera then
+				return
+			end
 
-            obj.Position = UDim2.new(startPos.X.Scale, nx, startPos.Y.Scale, ny)
-        end
-    end)
+			local viewport = camera.ViewportSize
+			local size = obj.AbsoluteSize
+			local anchor = obj.AnchorPoint
+			local left = startPosition.X + delta.X
+			local top = startPosition.Y + delta.Y
+
+			left = math.clamp(left, XPadding, math.max(XPadding, viewport.X - size.X - XPadding))
+			top = math.clamp(top, YPadding, math.max(YPadding, viewport.Y - size.Y - YPadding))
+
+			obj.Position = UDim2.fromOffset(
+				left + size.X * anchor.X,
+				top + size.Y * anchor.Y
+			)
+		end
+	end)
+
+	UserInputService.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1
+			or input.UserInputType == Enum.UserInputType.Touch then
+			if dragging then
+				dragging = false
+				dragInput = nil
+				if moved then
+					suppressClick = true
+					task.delay(0.2, function()
+						suppressClick = false
+					end)
+				end
+			end
+		end
+	end)
+
+	return function()
+		return suppressClick
+	end
 end
 
 local NAV_PAGES = {
@@ -3366,8 +3408,11 @@ function Gui.Build()
 	showIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 	showIcon.Size = UDim2.new(0, 36, 0, 36)
 	showIcon:SetAttribute("CPN_Immutable", true)
-	Dragify(showBtn)
+	local showBtnWasDragged = Dragify(showBtn)
 	showBtn.MouseButton1Click:Connect(function()
+		if showBtnWasDragged() then
+			return
+		end
 		Gui.Restore()
 	end)
 
