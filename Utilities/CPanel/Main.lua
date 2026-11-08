@@ -4,7 +4,7 @@ end
 
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local VERSION = "1.1.3"
+local VERSION = "1.0.0"
 
 local WebsocketUrl = nil
 
