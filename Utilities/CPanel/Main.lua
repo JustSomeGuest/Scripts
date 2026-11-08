@@ -4,7 +4,7 @@ end
 
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local VERSION = "1.1.3"
+local VERSION = "1.1.2"
 
 local WebsocketUrl = nil
 
@@ -3444,11 +3444,8 @@ function Gui.Build()
 	showIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 	showIcon.Size = UDim2.new(0, 36, 0, 36)
 	showIcon:SetAttribute("CPN_Immutable", true)
-	local showDrag = Dragify(showBtn, nil, 0)
+	Dragify(showBtn, 0)
 	showBtn.MouseButton1Click:Connect(function()
-		if showDrag.Moved then
-			return
-		end
 		Gui.Restore()
 	end)
 
