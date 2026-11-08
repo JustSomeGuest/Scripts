@@ -11,7 +11,7 @@ if Env.__CPanel and Env.__CPanel.IsLoaded then
 	end
 end
 
-local VERSION = "1.1.1"
+local VERSION = "1.1.2"
 
 local WebsocketUrl = Env.CPanelWebsocket
 
@@ -2242,7 +2242,6 @@ local function MkScroll(parent, direction)
 	scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
 	scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
 	scroll.ScrollingEnabled = true
-	scroll.ScrollBarFadeTransparency = 0.55
 	scroll:SetAttribute("CPN_ThemedBar", true)
 	scroll.Parent = parent
 	return scroll
@@ -3247,10 +3246,12 @@ function Gui.Build()
 
 		local dim = color:Lerp(Color3.fromRGB(20, 20, 24), 0.18)
 		dot.MouseEnter:Connect(function()
-			TweenService:Create(dot, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = dim, Text = glyph }):Play()
+			dot.Text = glyph
+			TweenService:Create(dot, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = dim }):Play()
 		end)
 		dot.MouseLeave:Connect(function()
-			TweenService:Create(dot, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = color, Text = "" }):Play()
+			dot.Text = ""
+			TweenService:Create(dot, TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = color }):Play()
 		end)
 		dot.MouseButton1Click:Connect(onClick)
 		return dot
@@ -3258,6 +3259,7 @@ function Gui.Build()
 
 	TrafficDot("Minimize", Color3.fromRGB(255, 189, 46), "–", Gui.Minimize)
 	TrafficDot("Close", Color3.fromRGB(255, 95, 86), "×", Funcs.Shutdown)
+
 
 	local sidebar = MkScroll(window, Enum.ScrollingDirection.Y)
 	sidebar.Name = "CPN_Sidebar"
@@ -4771,6 +4773,7 @@ function Gui.BuildFunPage()
 		end
 	end
 end
+
 
 local CHAT_KEEP_MAX = 200
 local CHAT_RENDER_MAX = 40
