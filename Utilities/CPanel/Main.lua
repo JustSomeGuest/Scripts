@@ -3395,7 +3395,7 @@ function Gui.Build()
 	showBtn.BackgroundTransparency = 0.08
 	showBtn.BorderSizePixel = 0
 	showBtn.Size = UDim2.new(0, 44, 0, 44)
-	showBtn.Position = UDim2.new(0, 16, 0, 0)
+	showBtn.Position = UDim2.new(0, 16, 0, 60)
 	showBtn.Visible = false
 	showBtn.Image = ""
 	showBtn.AutoButtonColor = false
