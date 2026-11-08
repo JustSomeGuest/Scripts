@@ -3402,7 +3402,6 @@ function Gui.Build()
 	showBtn.Parent = screen
 	showBtn:SetAttribute("CPN_Immutable", true)
 	MkCorner(22, showBtn)
-	MkStroke(Color3.fromRGB(44, 44, 52), 1, showBtn)
 	UI.ShowBtn = showBtn
 
 	local showIcon = MkImg(Funcs.GetAsset("CPanel/CPN_Logo.png") or Assets["CPanel/CPN_Logo.png"], WHITE, showBtn)
