@@ -4,16 +4,9 @@ end
 
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-if Env.__CPanel and Env.__CPanel.IsLoaded then
-	if Env.__CPanel.Job == tostring(game.JobId) then
-		warn("[CPanel]: already running")
-		return
-	end
-end
+local VERSION = "1.1.3"
 
-local VERSION = "1.1.2"
-
-local WebsocketUrl = Env.CPanelWebsocket
+local WebsocketUrl = nil
 
 local function FailBoot(message)
 	warn("[CPanel] " .. message)
@@ -33,6 +26,10 @@ local function ValidWs(url)
 	return type(url) == "string" and url:match("^wss?://") ~= nil
 end
 
+local function Trim(url)
+	return tostring(url):match("^%s*(.-)%s*$")
+end
+
 local function ReadWs(path)
 	if type(readfile) ~= "function" then
 		return nil
@@ -48,11 +45,18 @@ local function ReadWs(path)
 	return nil
 end
 
-if not ValidWs(WebsocketUrl) then
-	local stored = ReadWs(WS_PATH) or ReadWs(LEGACY_WS_PATH)
-	if stored then
-		WebsocketUrl = stored
-		Env.CPanelWebsocket = WebsocketUrl
+WebsocketUrl = ReadWs(WS_PATH) or ReadWs(LEGACY_WS_PATH)
+
+do
+	local seeded = nil
+	pcall(function()
+		seeded = Env.CPanelWebsocket
+	end)
+	pcall(function()
+		Env.CPanelWebsocket = nil
+	end)
+	if not ValidWs(WebsocketUrl) and ValidWs(seeded) then
+		WebsocketUrl = Trim(seeded)
 	end
 end
 
@@ -60,9 +64,65 @@ if ValidWs(WebsocketUrl) and type(writefile) == "function" then
 	pcall(writefile, WS_PATH, tostring(WebsocketUrl):match("^%s*(.-)%s*$"))
 end
 
+local function PersistWsFile()
+	if not ValidWs(WebsocketUrl) or type(writefile) ~= "function" then
+		return
+	end
+	local expected = tostring(WebsocketUrl):match("^%s*(.-)%s*$")
+
+	local ok, current = pcall(readfile, WS_PATH)
+	if ok and Trim(current) == expected then
+		return
+	end
+
+	pcall(writefile, WS_PATH, expected)
+end
+
 if not ValidWs(WebsocketUrl) then
-	FailBoot("Invalid configuration: set getgenv().CPanelWebsocket = \"wss://your-websocket-url.example.com\" before loading.")
+	FailBoot("Invalid configuration: no websocket url found in " .. WS_PATH .. ".")
 	return
+end
+
+local DEV_TOKEN_PATH = "CPanel/.devToken"
+
+local function ReadToken(path)
+	if type(readfile) ~= "function" then
+		return nil
+	end
+	local ok, stored = pcall(readfile, path)
+	if not ok then
+		return nil
+	end
+	stored = tostring(stored):match("^%s*(.-)%s*$")
+	if stored == "" then
+		return nil
+	end
+	return stored
+end
+
+local DevToken = ReadToken(DEV_TOKEN_PATH)
+
+do
+	local seeded = nil
+	pcall(function()
+		seeded = Env.CPanelDevToken
+	end)
+	pcall(function()
+		Env.CPanelDevToken = nil
+	end)
+	if not DevToken and type(seeded) == "string" then
+		seeded = seeded:match("^%s*(.-)%s*$")
+		if seeded ~= "" then
+			DevToken = seeded
+			if type(writefile) == "function" then
+				pcall(writefile, DEV_TOKEN_PATH, DevToken)
+			end
+		end
+	end
+end
+
+if not DevToken then
+	warn("[CPanel] no developer token configured — this session registers as a participant (set getgenv().CPanelDevToken before loading, or create " .. DEV_TOKEN_PATH .. ")")
 end
 
 local function GetService(name)
@@ -196,8 +256,6 @@ local State = {
 	ChatScopeUserId = nil,
 	ChatOnlyConnected = false,
 }
-
-Env.__CPanel = { IsLoaded = true, Version = VERSION, Job = tostring(game.JobId) }
 
 function Funcs.UID(length)
 	length = length or 16
@@ -1762,7 +1820,6 @@ Net.socket = nil
 Net.open = false
 Net.sessionId = nil
 Net.role = nil
-Net.accessList = {}
 Net.pending = {}
 Net.pendingTimers = {}
 Net.waiters = {}
@@ -1913,28 +1970,19 @@ function Net.SendCommand(action, args, callback)
 	return true
 end
 
-function Funcs.IsAccessListed(userId)
-	for _, id in ipairs(Net.accessList) do
-		if tonumber(id) == userId then
-			return true
-		end
-	end
-	return false
-end
-
 function Funcs.ApplyRole()
-	local listed = Funcs.IsAccessListed(LocalPlayer.UserId)
-	if listed and not State.IsDeveloper then
+	local dev = (Net.role == "developer")
+	if dev and not State.IsDeveloper then
 		State.IsDeveloper = true
 		if not UI.Window then
 			Gui.Build()
 		end
 		Funcs.Notify("Developer access", "Authenticated as a CPanel developer.", "success")
 		Gui.RequestParticipants(true)
-	elseif not listed and State.IsDeveloper then
+	elseif not dev and State.IsDeveloper then
 		State.IsDeveloper = false
 		Gui.CloseDashboard("Developer access was removed on the server.")
-	elseif listed and State.IsDeveloper then
+	elseif dev and State.IsDeveloper then
 		Gui.RequestParticipants(true)
 	end
 end
@@ -1942,11 +1990,9 @@ end
 function Net.OnWelcome(message)
 	Net.sessionId = message.sessionId
 	Net.role = message.role
-	if type(message.access) == "table" then
-		Net.accessList = message.access
-	end
-	if message.role == "developer" and not Funcs.IsAccessListed(LocalPlayer.UserId) then
-		warn("[CPanel] server claims developer role but our id is not in the returned access list — refusing developer UI")
+	if message.role == "developer" and not DevToken then
+		warn("[CPanel] server granted a developer role but no developer token is configured — refusing developer UI")
+		Net.role = "participant"
 	end
 	Funcs.ApplyRole()
 end
@@ -1963,12 +2009,6 @@ function Net.Route(text)
 	local msgType = message.type
 	if msgType == "welcome" then
 		Net.OnWelcome(message)
-	elseif msgType == "access" then
-		if type(message.userids) == "table" then
-			Net.accessList = message.userids
-		end
-		ResolveWaiters("access", message)
-		Funcs.ApplyRole()
 	elseif msgType == "participants" then
 		ResolveWaiters("participants", message)
 		if State.IsDeveloper then
@@ -2066,8 +2106,10 @@ function Net.TryConnectOnce()
 		username = LocalPlayer.Name,
 		displayName = LocalPlayer.DisplayName,
 		placeId = game.PlaceId,
+		gameId = game.GameId,
 		jobId = (type(game.JobId) == "string" and game.JobId ~= "") and game.JobId or "unknown",
 		placeVersion = game.PlaceVersion,
+		devToken = DevToken,
 	})
 	if not registered then
 		Net.HandleClose()
@@ -2816,8 +2858,9 @@ function Gui.ApplyTheme(presetName)
 	Funcs.SaveSettings()
 end
 
-local function Dragify(handle, target)
+local function Dragify(handle, target, yPadding)
 	target = target or handle
+	local yPadding = (type(yPadding) == 'number' and yPadding) or 10
 
 	local state = { Moved = false }
 	local dragging = false
@@ -2826,7 +2869,6 @@ local function Dragify(handle, target)
 	local startAbs = nil
 
 	local xPadding = 14
-	local yPadding = 10
 	local DRAG_THRESHOLD = 4
 
 	local function ScreenSize()
@@ -2973,6 +3015,43 @@ function Gui.UpdateConnection()
 	end
 end
 
+local ProductNameCache = {}
+
+function Funcs.ProductName(id, infoType, callback)
+	id = tonumber(id) or 0
+	if id == 0 then
+		callback(nil)
+		return
+	end
+	local key = tostring(infoType) .. ":" .. id
+	if ProductNameCache[key] then
+		callback(ProductNameCache[key])
+		return
+	end
+	task.spawn(function()
+		local name = nil
+		pcall(function()
+			local info = game:GetService("MarketplaceService"):GetProductInfo(id, infoType)
+			if type(info) == "table" and type(info.Name) == "string" and info.Name ~= "" then
+				name = info.Name
+			end
+		end)
+		ProductNameCache[key] = name
+		callback(name)
+	end)
+end
+
+function Funcs.PlaceName(placeId, callback)
+	placeId = tonumber(placeId) or 0
+	if placeId == 0 then
+		callback("Unknown place")
+		return
+	end
+	Funcs.ProductName(placeId, Enum.InfoType.Asset, function(name)
+		callback(name or ("Place " .. tostring(placeId)))
+	end)
+end
+
 function Gui.RefreshSessionInfo()
 	if not UI.SessionGame then
 		return
@@ -2989,18 +3068,6 @@ function Gui.RefreshSessionInfo()
 	end
 	if UI.SessionJob then
 		UI.SessionJob.Text = "Job ID: " .. tostring(game.JobId or "unknown")
-	end
-	if UI.SessionPlayers then
-		local names = {}
-		for _, player in ipairs(Players:GetPlayers()) do
-			names[#names + 1] = player.Name
-		end
-		table.sort(names)
-		if #names == 0 then
-			UI.SessionPlayers.Text = "—"
-		else
-			UI.SessionPlayers.Text = table.concat(names, ", ")
-		end
 	end
 end
 
@@ -3104,6 +3171,15 @@ function Gui.Build()
 	if UI.Window then
 		return
 	end
+
+	for _, child in ipairs(Hui:GetChildren()) do
+		if child:IsA("ScreenGui") and child:GetAttribute("CPN_Root") == true then
+			pcall(function()
+				child:Destroy()
+			end)
+		end
+	end
+
 	UI.Pages = UI.Pages or {}
 	UI.PageScrolls = UI.PageScrolls or {}
 	UI.NavButtons = UI.NavButtons or {}
@@ -3114,12 +3190,29 @@ function Gui.Build()
 
 	local screen = Instance.new("ScreenGui")
 	screen.Name = Funcs.UID(20)
+	screen:SetAttribute("CPN_Root", true)
 	screen.DisplayOrder = 2147483646
 	screen.IgnoreGuiInset = true
 	screen.ResetOnSpawn = false
 	screen.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	screen.Parent = Hui
 	UI.Screen = screen
+
+	screen.AncestryChanged:Connect(function()
+		if screen.Parent or State.Shutdown then
+			return
+		end
+		local replaced = false
+		for _, child in ipairs(Hui:GetChildren()) do
+			if child ~= screen and child:IsA("ScreenGui") and child:GetAttribute("CPN_Root") == true then
+				replaced = true
+				break
+			end
+		end
+		if replaced then
+			Funcs.Shutdown()
+		end
+	end)
 
 	local toastHost = Instance.new("Frame")
 	toastHost.Name = "CPN_Toasts"
@@ -3135,28 +3228,15 @@ function Gui.Build()
 	local shadow = Instance.new("Frame")
 	shadow.Name = "CPN_Shadow"
 	shadow.AnchorPoint = Vector2.new(0.5, 0.5)
-	shadow.Position = UDim2.new(0.5, 0, 0.5, 6)
-	shadow.Size = UDim2.new(0.82, 0, 0.74, 0)
+	shadow.Position = UDim2.new(0.5, 1, 0.5, 6)
+	shadow.Size = UDim2.new(0.82, 2, 0.74, 12)
 	shadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	shadow.BackgroundTransparency = 0.82
+	shadow.BackgroundTransparency = 0.85
 	shadow.BorderSizePixel = 0
 	shadow.ZIndex = 0
 	shadow.Parent = screen
-	for _, layer in ipairs({ { 10, 0.9 }, { 20, 0.94 }, { 34, 0.97 } }) do
-		local pad = layer[1]
-		local pane = Instance.new("Frame")
-		pane.AnchorPoint = Vector2.new(0.5, 0.5)
-		pane.Position = UDim2.new(0.5, 0, 0.5, 0)
-		pane.Size = UDim2.new(1, pad * 2, 1, pad * 2)
-		pane.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-		pane.BackgroundTransparency = layer[2]
-		pane.BorderSizePixel = 0
-		pane.ZIndex = 0
-		pane.Parent = shadow
-		MkCorner(16 + pad, pane)
-	end
-	UI.Shadow = shadow
 	MkCorner(16, shadow)
+	UI.Shadow = shadow
 
 	local window = MkFrame(BG, UDim2.new(0.82, 0, 0.74, 0), screen)
 	window.Name = "CPN_Window"
@@ -3349,7 +3429,7 @@ function Gui.Build()
 	showBtn.BackgroundTransparency = 0.08
 	showBtn.BorderSizePixel = 0
 	showBtn.Size = UDim2.new(0, 44, 0, 44)
-	showBtn.Position = UDim2.new(0, 16, 0, 64)
+	showBtn.Position = UDim2.new(0, 16, 0, 0)
 	showBtn.Visible = false
 	showBtn.Image = ""
 	showBtn.AutoButtonColor = false
@@ -3364,7 +3444,7 @@ function Gui.Build()
 	showIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 	showIcon.Size = UDim2.new(0, 36, 0, 36)
 	showIcon:SetAttribute("CPN_Immutable", true)
-	local showDrag = Dragify(showBtn)
+	local showDrag = Dragify(showBtn, nil, 0)
 	showBtn.MouseButton1Click:Connect(function()
 		if showDrag.Moved then
 			return
@@ -3457,6 +3537,7 @@ local function BuildEntry(item)
 		username = Funcs.SafeText(item.username, 64, "Unknown"),
 		displayName = Funcs.SafeText(item.displayName, 64, "Unknown"),
 		placeId = tonumber(item.placeId) or 0,
+		gameId = tonumber(item.gameId) or 0,
 		jobId = Funcs.SafeText(item.jobId, 64, "unknown"),
 		role = (item.role == "developer") and "developer" or "participant",
 		connectedAt = tonumber(item.connectedAt) or 0,
@@ -3641,7 +3722,14 @@ function Gui.JoinParticipant(entry)
 		GetService("TeleportService"):Teleport(placeId, LocalPlayer)
 	end)
 	if ok then
-		Funcs.Notify("Joining game", "Teleporting to " .. Funcs.Truncate(entry.username, 24) .. "'s game.", "success")
+		Funcs.PlaceName(placeId, function(name)
+			Funcs.Notify(
+				"Joining game",
+				"Teleporting to " .. Funcs.Truncate(entry.username, 24) .. "'s game — "
+					.. Funcs.Truncate(name or ("place " .. tostring(placeId)), 34) .. ".",
+				"success"
+			)
+		end)
 	else
 		Funcs.Notify("Join failed", Funcs.Truncate(tostring(err), 120), "error")
 	end
@@ -3656,11 +3744,14 @@ function Gui.HopToParticipant(entry)
 		return
 	end
 	if tonumber(entry.placeId) ~= game.PlaceId then
-		Funcs.Notify(
-			"Join that game first",
-			Funcs.Truncate(entry.username, 20) .. " is in a different game — use Join to get into it, then server hop.",
-			"warn"
-		)
+		Funcs.PlaceName(entry.placeId, function(name)
+			Funcs.Notify(
+				"Join that game first",
+				Funcs.Truncate(entry.username, 20) .. " is in " .. Funcs.Truncate(name or ("place " .. tostring(entry.placeId)), 34)
+					.. " (Place ID " .. tostring(entry.placeId) .. ") — server hop only works from inside that game. Use Join first.",
+				"warn"
+			)
+		end)
 		return
 	end
 	if entry.jobId == game.JobId then
@@ -3671,7 +3762,14 @@ function Gui.HopToParticipant(entry)
 		GetService("TeleportService"):TeleportToPlaceInstance(entry.placeId, entry.jobId, LocalPlayer)
 	end)
 	if ok then
-		Funcs.Notify("Server hopping", "Joining " .. Funcs.Truncate(entry.username, 24) .. "'s server.", "success")
+		Funcs.PlaceName(entry.placeId, function(name)
+			Funcs.Notify(
+				"Server hopping",
+				"Joining " .. Funcs.Truncate(entry.username, 24) .. "'s server in "
+					.. Funcs.Truncate(name or ("place " .. tostring(entry.placeId)), 34) .. ".",
+				"success"
+			)
+		end)
 	else
 		Funcs.Notify("Server hop failed", Funcs.Truncate(tostring(err), 120), "error")
 	end
@@ -3813,8 +3911,12 @@ function Gui.RenderParticipants()
 	Gui.RefreshChatScopeOptions()
 end
 
+local selectionToken = 0
+
 function Gui.RenderSelection()
 	local selected = State.Selected
+	selectionToken = selectionToken + 1
+	local token = selectionToken
 
 	for _, label in pairs(UI.BannerLabels or {}) do
 		if selected then
@@ -3826,28 +3928,70 @@ function Gui.RenderSelection()
 		end
 	end
 
-	if UI.SelectionName then
-		if selected then
-			UI.SelectionName.Text = Funcs.Truncate(selected.username, 44)
-			UI.SelectionDetails.Text = Funcs.Truncate(selected.displayName, 50) .. "  ·  UserId " .. tostring(selected.userId)
-			UI.SelectionMeta.Text = "Place " .. tostring(selected.placeId) .. "  ·  Job " .. Funcs.Truncate(selected.jobId, 38) .. "  ·  Session " .. Funcs.Truncate(selected.sessionId, 12)
-			UI.SelectionStatus.Text = (selected.role == "developer")
-				and "Connected · DEVELOPER session (cannot be targeted)"
-				or "Connected · ready for interactions"
-			UI.SelectionStatus.TextColor3 = (selected.role == "developer") and YELLOW or GREEN
-			if UI.DeselectBtn then
-				UI.DeselectBtn.Visible = true
-			end
-		else
-			UI.SelectionName.Text = "No participant selected"
-			UI.SelectionDetails.Text = "Pick a participant from the list above to enable the action tabs."
-			UI.SelectionMeta.Text = ""
-			UI.SelectionStatus.Text = ""
-			if UI.DeselectBtn then
-				UI.DeselectBtn.Visible = false
-			end
-		end
+	if not UI.SelectionName then
+		return
 	end
+
+	if not selected then
+		UI.SelectionName.Text = "No participant selected"
+		UI.SelectionDetails.Text = "Pick a participant from the list above to enable the action tabs."
+		if UI.SelectionGame then
+			UI.SelectionGame.Text = ""
+		end
+		if UI.SelectionPlace then
+			UI.SelectionPlace.Text = ""
+		end
+		UI.SelectionMeta.Text = ""
+		UI.SelectionStatus.Text = ""
+		if UI.DeselectBtn then
+			UI.DeselectBtn.Visible = false
+		end
+		return
+	end
+
+	UI.SelectionName.Text = Funcs.Truncate(selected.username, 44)
+	UI.SelectionDetails.Text = Funcs.Truncate(selected.displayName, 50) .. "  ·  UserId " .. tostring(selected.userId)
+
+	UI.SelectionMeta.Text = "Place ID " .. tostring(selected.placeId)
+		.. "  ·  Universe ID " .. tostring(selected.gameId ~= 0 and selected.gameId or game.GameId)
+		.. "  ·  Job " .. Funcs.Truncate(selected.jobId, 14)
+		.. "  ·  Session " .. Funcs.Truncate(selected.sessionId, 10)
+
+	UI.SelectionStatus.Text = (selected.role == "developer")
+		and "Connected · DEVELOPER session (cannot be targeted)"
+		or "Connected · ready for interactions"
+	UI.SelectionStatus.TextColor3 = (selected.role == "developer") and YELLOW or GREEN
+
+	if UI.DeselectBtn then
+		UI.DeselectBtn.Visible = true
+	end
+
+	if not UI.SelectionGame or not UI.SelectionPlace then
+		return
+	end
+
+	local here = (selected.placeId == game.PlaceId)
+	local gameId = here and game.GameId or selected.gameId
+	UI.SelectionGame.Text = "Game: resolving…"
+	UI.SelectionPlace.Text = "Place: resolving…"
+
+	if gameId ~= 0 then
+		Funcs.ProductName(gameId, Enum.InfoType.Game, function(name)
+			if token ~= selectionToken or not UI.SelectionGame then
+				return
+			end
+			UI.SelectionGame.Text = "Game: " .. Funcs.Truncate(name or ("Universe " .. tostring(gameId)), 56)
+		end)
+	else
+		UI.SelectionGame.Text = "Game: —"
+	end
+
+	Funcs.ProductName(selected.placeId, Enum.InfoType.Asset, function(name)
+		if token ~= selectionToken or not UI.SelectionPlace then
+			return
+		end
+		UI.SelectionPlace.Text = "Place: " .. Funcs.Truncate(name or ("Place " .. tostring(selected.placeId)), 56)
+	end)
 end
 
 local function PageScroll(key)
@@ -4080,20 +4224,6 @@ function Gui.BuildDashboardPage()
 	jobLine.TextWrapped = true
 	UI.SessionJob = jobLine
 
-	local playersCaption = MkLabel("Players in this server", F_MED, 11, SUBTEXT, sessionCard)
-	playersCaption.LayoutOrder = 5
-	playersCaption.Size = UDim2.new(1, 0, 0, 0)
-	playersCaption.AutomaticSize = Enum.AutomaticSize.Y
-	playersCaption.TextXAlignment = Enum.TextXAlignment.Left
-
-	local playersLine = MkLabel("—", F_REG, 12, TEXT, sessionCard)
-	playersLine.LayoutOrder = 6
-	playersLine.Size = UDim2.new(1, 0, 0, 0)
-	playersLine.AutomaticSize = Enum.AutomaticSize.Y
-	playersLine.TextXAlignment = Enum.TextXAlignment.Left
-	playersLine.TextWrapped = true
-	UI.SessionPlayers = playersLine
-
 	local partCard = MkFrame(BG2, UDim2.new(1, 0, 0, 288), scroll)
 	partCard.BorderSizePixel = 0
 	partCard.LayoutOrder = 3
@@ -4144,7 +4274,7 @@ function Gui.BuildDashboardPage()
 	emptyLabel.ZIndex = 4
 	UI.ParticipantEmpty = emptyLabel
 
-	local selCard = MkFrame(BG2, UDim2.new(1, 0, 0, 100), scroll)
+	local selCard = MkFrame(BG2, UDim2.new(1, 0, 0, 146), scroll)
 	selCard.BorderSizePixel = 0
 	selCard.LayoutOrder = 4
 	MkCorner(10, selCard)
@@ -4160,21 +4290,35 @@ function Gui.BuildDashboardPage()
 
 	local selDetails = MkLabel("Pick a participant from the list above to enable the action tabs.", F_MED, 12, SUBTEXT, selCard)
 	selDetails.Size = UDim2.new(1, -130, 0, 16)
-	selDetails.Position = UDim2.new(0, 14, 0, 36)
+	selDetails.Position = UDim2.new(0, 14, 0, 34)
 	selDetails.TextXAlignment = Enum.TextXAlignment.Left
 	selDetails.TextTruncate = Enum.TextTruncate.AtEnd
 	UI.SelectionDetails = selDetails
 
+	local selGame = MkLabel("", F_MED, 12, TEXT, selCard)
+	selGame.Size = UDim2.new(1, -130, 0, 15)
+	selGame.Position = UDim2.new(0, 14, 0, 56)
+	selGame.TextXAlignment = Enum.TextXAlignment.Left
+	selGame.TextTruncate = Enum.TextTruncate.AtEnd
+	UI.SelectionGame = selGame
+
+	local selPlace = MkLabel("", F_MED, 12, TEXT, selCard)
+	selPlace.Size = UDim2.new(1, -130, 0, 15)
+	selPlace.Position = UDim2.new(0, 14, 0, 74)
+	selPlace.TextXAlignment = Enum.TextXAlignment.Left
+	selPlace.TextTruncate = Enum.TextTruncate.AtEnd
+	UI.SelectionPlace = selPlace
+
 	local selMeta = MkLabel("", F_REG, 11, SUBTEXT, selCard)
 	selMeta.Size = UDim2.new(1, -130, 0, 14)
-	selMeta.Position = UDim2.new(0, 14, 0, 56)
+	selMeta.Position = UDim2.new(0, 14, 0, 94)
 	selMeta.TextXAlignment = Enum.TextXAlignment.Left
 	selMeta.TextTruncate = Enum.TextTruncate.AtEnd
 	UI.SelectionMeta = selMeta
 
 	local selStatus = MkLabel("", F_REG, 11, SUBTEXT, selCard)
 	selStatus.Size = UDim2.new(1, -130, 0, 14)
-	selStatus.Position = UDim2.new(0, 14, 0, 74)
+	selStatus.Position = UDim2.new(0, 14, 0, 114)
 	selStatus.TextXAlignment = Enum.TextXAlignment.Left
 	selStatus.TextTruncate = Enum.TextTruncate.AtEnd
 	UI.SelectionStatus = selStatus
@@ -5362,9 +5506,6 @@ function Funcs.Shutdown()
 		end
 	end)
 
-	if Env.__CPanel then
-		Env.__CPanel.IsLoaded = false
-	end
 	warn("[CPanel] shut down")
 end
 
@@ -5374,6 +5515,16 @@ Gui.StartChatCapture()
 
 task.spawn(function()
 	Funcs.GetAsset("CPanel/CPN_Logo.png")
+end)
+
+task.spawn(function()
+	while not State.Shutdown do
+		task.wait(3)
+		if State.Shutdown then
+			return
+		end
+		pcall(PersistWsFile)
+	end
 end)
 
 task.spawn(function()
