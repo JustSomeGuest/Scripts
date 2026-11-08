@@ -4,7 +4,7 @@ end
 
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local VERSION = "1.0.0"
+local VERSION = "1.1.2"
 
 local WebsocketUrl = nil
 
@@ -2858,115 +2858,37 @@ function Gui.ApplyTheme(presetName)
 	Funcs.SaveSettings()
 end
 
-local function Dragify(handle, target, yPadding)
-	target = target or handle
-	local yPadding = (type(yPadding) == 'number' and yPadding) or 10
+local function Dragify(obj)
+    local XPadding = 16
+    local YPadding = 12
+    local dragging, dragStart, startPos = false, nil, nil
 
-	local state = { Moved = false }
-	local dragging = false
-	local dragStart = nil
-	local startPos = nil
-	local startAbs = nil
+    obj.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = obj.Position
 
-	local xPadding = 14
-	local DRAG_THRESHOLD = 4
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
 
-	local function ScreenSize()
-		if UI and UI.Screen and UI.Screen.AbsoluteSize then
-			return UI.Screen.AbsoluteSize
-		end
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            local vp = workspace.CurrentCamera.ViewportSize
+            local sz = obj.AbsoluteSize
 
-		local node = target
-		while node do
-			if node:IsA("ScreenGui") then
-				return node.AbsoluteSize
-			end
-			node = node.Parent
-		end
+            local nx = math.clamp(startPos.X.Offset + delta.X, XPadding, vp.X - sz.X - XPadding)
+            local ny = math.clamp(startPos.Y.Offset + delta.Y, YPadding, vp.Y - sz.Y - YPadding)
 
-		local camera = workspace.CurrentCamera
-		return camera and camera.ViewportSize or Vector2.new(1280, 720)
-	end
-
-	local function OverHandle(input)
-		if not handle.Visible or not target.Visible then
-			return false
-		end
-
-		local pos = handle.AbsolutePosition
-		local size = handle.AbsoluteSize
-		local p = input.Position
-
-		return p.X >= pos.X and p.X <= pos.X + size.X
-			and p.Y >= pos.Y and p.Y <= pos.Y + size.Y
-	end
-
-	UserInputService.InputBegan:Connect(function(input)
-		if input.UserInputType ~= Enum.UserInputType.MouseButton1
-			and input.UserInputType ~= Enum.UserInputType.Touch then
-			return
-		end
-
-		if OverHandle(input) then
-			dragging = true
-			state.Moved = false
-
-			dragStart = input.Position
-			startPos = target.Position
-			startAbs = target.AbsolutePosition
-		end
-	end)
-
-	UserInputService.InputChanged:Connect(function(input)
-		if not dragging then
-			return
-		end
-
-		if input.UserInputType ~= Enum.UserInputType.MouseMovement
-			and input.UserInputType ~= Enum.UserInputType.Touch then
-			return
-		end
-
-		local delta = input.Position - dragStart
-
-		if not state.Moved and (
-			math.abs(delta.X) > DRAG_THRESHOLD
-			or math.abs(delta.Y) > DRAG_THRESHOLD
-		) then
-			state.Moved = true
-		end
-
-		local viewport = ScreenSize()
-		local size = target.AbsoluteSize
-
-		local minX = xPadding
-		local maxX = math.max(minX, viewport.X - size.X - xPadding)
-
-		local minY = yPadding
-		local maxY = math.max(minY, viewport.Y - size.Y - yPadding)
-
-		local wantX = math.clamp(startAbs.X + delta.X, minX, maxX)
-		local wantY = math.clamp(startAbs.Y + delta.Y, minY, maxY)
-
-		local shiftX = wantX - startAbs.X
-		local shiftY = wantY - startAbs.Y
-
-		target.Position = UDim2.new(
-			startPos.X.Scale,
-			startPos.X.Offset + shiftX,
-			startPos.Y.Scale,
-			startPos.Y.Offset + shiftY
-		)
-	end)
-
-	UserInputService.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			dragging = false
-		end
-	end)
-
-	return state
+            obj.Position = UDim2.new(startPos.X.Scale, nx, startPos.Y.Scale, ny)
+        end
+    end)
 end
 
 local NAV_PAGES = {
@@ -3444,7 +3366,7 @@ function Gui.Build()
 	showIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 	showIcon.Size = UDim2.new(0, 36, 0, 36)
 	showIcon:SetAttribute("CPN_Immutable", true)
-	Dragify(showBtn, 0)
+	Dragify(showBtn)
 	showBtn.MouseButton1Click:Connect(function()
 		Gui.Restore()
 	end)
