@@ -38,20 +38,23 @@ local function LoadUrl()
 end
 
 local function ResolveUrl()
-	local current = (type(getgenv) == "function" and getgenv().CPanelWebsocket) or nil
-	if ValidWs(current) then
-		SaveUrl(current)
-		return Trim(current)
+	local seeded = nil
+	if type(getgenv) == "function" then
+		pcall(function()
+			seeded = getgenv().CPanelWebsocket
+		end)
+	end
+	if ValidWs(seeded) then
+		SaveUrl(seeded)
 	end
 
-	local stored = LoadUrl()
-	if stored then
-		if type(getgenv) == "function" then
-			getgenv().CPanelWebsocket = stored
-		end
-		return stored
+	if type(getgenv) == "function" then
+		pcall(function()
+			getgenv().CPanelWebsocket = nil
+		end)
 	end
-	return nil
+
+	return LoadUrl()
 end
 
 ResolveUrl()
