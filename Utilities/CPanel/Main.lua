@@ -3150,9 +3150,6 @@ function Gui.Minimize()
 		return
 	end
 	UI.Window.Visible = false
-	if UI.Shadow then
-		UI.Shadow.Visible = false
-	end
 	if UI.ShowBtn then
 		UI.ShowBtn.Visible = true
 	end
@@ -3164,10 +3161,7 @@ function Gui.Restore()
 	end
 	if UI.ShowBtn then
 		UI.ShowBtn.Visible = false
-	end
-	if UI.Shadow then
-		UI.Shadow.Visible = true
-	end
+  end
 	UI.Window.Visible = true
 end
 
@@ -3228,19 +3222,6 @@ function Gui.Build()
 	toastHost.ZIndex = 50
 	toastHost.Parent = screen
 	UI.ToastHost = toastHost
-
-	local shadow = Instance.new("Frame")
-	shadow.Name = "CPN_Shadow"
-	shadow.AnchorPoint = Vector2.new(0.5, 0.5)
-	shadow.Position = UDim2.new(0.5, 1, 0.5, 6)
-	shadow.Size = UDim2.new(0.82, 2, 0.74, 12)
-	shadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	shadow.BackgroundTransparency = 0.85
-	shadow.BorderSizePixel = 0
-	shadow.ZIndex = 0
-	shadow.Parent = screen
-	MkCorner(16, shadow)
-	UI.Shadow = shadow
 
 	local window = MkFrame(BG, UDim2.new(0.82, 0, 0.74, 0), screen)
 	window.Name = "CPN_Window"
