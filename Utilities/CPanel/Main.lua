@@ -704,13 +704,26 @@ function Funcs.PlaySound(kind, volume)
 	end)
 end
 
-function Funcs.Notify(title, text, kind)
+function Funcs.Notify(title, text, kind, suppressDuplicate)
 	if not State.IsDeveloper then
 		return
 	end
 	if not Settings.Notifications then
 		return
 	end
+	
+	if suppressDuplicate then
+		if not Funcs.lastNotification or Funcs.lastNotification.title ~= title or Funcs.lastNotification.text ~= text or Funcs.lastNotification.kind ~= kind then
+			Funcs.lastNotification = { title = title, text = text, kind = kind }
+		else
+			local now = os.clock()
+			if Funcs.lastNotificationTime and (now - Funcs.lastNotificationTime) < 2 then
+				return
+			end
+			Funcs.lastNotificationTime = now
+		end
+	end
+	
 	local entry = {
 		title = Funcs.SafeText(title, 40, "CPanel"),
 		text = Funcs.SafeText(text, 160, ""),
@@ -3057,15 +3070,14 @@ function Funcs.PlaceName(placeId, callback)
 end
 
 function Gui.RefreshSessionInfo()
-	if not UI.SessionGame then
-		return
-	end
-
 	local okName, placeName = pcall(function()
 		return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId, Enum.InfoType.Asset).Name
 	end)
-	UI.SessionGame.Text = (okName and type(placeName) == "string" and placeName ~= "") and placeName
-		or ("Place " .. tostring(game.PlaceId))
+	
+	if UI.SessionGame then
+		UI.SessionGame.Text = (okName and type(placeName) == "string" and placeName ~= "") and placeName
+			or ("Place " .. tostring(game.PlaceId))
+	end
 
 	if UI.SessionIds then
 		UI.SessionIds.Text = "Place ID: " .. tostring(game.PlaceId) .. "   ·   Universe ID: " .. tostring(game.GameId)
