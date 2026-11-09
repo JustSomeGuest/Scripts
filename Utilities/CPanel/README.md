@@ -16,7 +16,7 @@ Add the following to your script:
 
 ```lua
 task.spawn(function()
-getgenv().CPanelWebsocket = "wss://cpanelwebsocket.onrender.com"
+getgenv().CPanelWebsocket = "wss://your-websocket.onrender.com"
 loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/Init.lua"))()
 end)
 ```
@@ -122,7 +122,7 @@ The backend can be deployed as a Web Service on [Render](https://render.com/).
 Your WebSocket endpoint will look like:
 
 ```text
-wss://your-service.onrender.com
+wss://your-websocket.onrender.com
 ```
 
 Set this endpoint in the CPanel loader.
@@ -169,7 +169,7 @@ Developers use a separate loader that supplies the developer token:
 
 ```lua
 getgenv().CPanelDevToken = "YOUR_PRIVATE_TOKEN"
-getgenv().CPanelWebsocket = "wss://your-service.onrender.com"
+getgenv().CPanelWebsocket = "wss://your-websocket.onrender.com"
 loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/Init.lua"))()
 ```
 
