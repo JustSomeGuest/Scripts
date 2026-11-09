@@ -278,6 +278,113 @@ function Funcs.ClampNumber(value, min, max)
 	return value
 end
 
+function Funcs.Dragify(handle, target)
+	target = target or handle
+
+	local paddingX = 16
+	local paddingY = 12
+
+	local dragging = false
+	local dragInput = nil
+	local dragStart = nil
+	local startPosition = nil
+	local moved = false
+	local suppressClick = false
+
+	handle.Active = true
+
+	handle.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1
+			or input.UserInputType == Enum.UserInputType.Touch then
+
+			dragging = true
+			dragInput = input
+			dragStart = input.Position
+			startPosition = target.Position
+			moved = false
+		end
+	end)
+
+	UserInputService.InputChanged:Connect(function(input)
+		if not dragging then
+			return
+		end
+
+		if input.UserInputType == Enum.UserInputType.MouseMovement
+			or (dragInput and input == dragInput) then
+
+			local delta = input.Position - dragStart
+
+			if math.abs(delta.X) + math.abs(delta.Y) > 4 then
+				moved = true
+			end
+
+			local camera = workspace.CurrentCamera
+			if not camera then return end
+
+			local parent = target.Parent
+			if not parent then return end
+
+			local viewport = camera.ViewportSize
+			local size = target.AbsoluteSize
+			local anchor = target.AnchorPoint
+			local parentPosition = parent.AbsolutePosition
+			local parentSize = parent.AbsoluteSize
+
+			local left = startPosition.X.Scale * parentSize.X
+				+ startPosition.X.Offset + delta.X
+
+			local top = startPosition.Y.Scale * parentSize.Y
+				+ startPosition.Y.Offset + delta.Y
+
+			local absoluteLeft = parentPosition.X + left - size.X * anchor.X
+			local absoluteTop = parentPosition.Y + top - size.Y * anchor.Y
+
+			absoluteLeft = math.clamp(
+				absoluteLeft,
+				paddingX,
+				math.max(paddingX, viewport.X - size.X - paddingX)
+			)
+
+			absoluteTop = math.clamp(
+				absoluteTop,
+				paddingY,
+				math.max(paddingY, viewport.Y - size.Y - paddingY)
+			)
+
+			left = absoluteLeft - parentPosition.X + size.X * anchor.X
+			top = absoluteTop - parentPosition.Y + size.Y * anchor.Y
+
+			target.Position = UDim2.fromOffset(left, top)
+		end
+	end)
+
+	UserInputService.InputEnded:Connect(function(input)
+		local isMouseRelease =
+			input.UserInputType == Enum.UserInputType.MouseButton1
+
+		local isTouchRelease =
+			dragInput and input == dragInput
+
+		if dragging and (isMouseRelease or isTouchRelease) then
+			dragging = false
+			dragInput = nil
+
+			if moved then
+				suppressClick = true
+
+				task.delay(0.2, function()
+					suppressClick = false
+				end)
+			end
+		end
+	end)
+
+	return function()
+		return suppressClick
+	end
+end
+
 function Funcs.ParseNumber(raw, min, max)
 	if type(raw) == "number" then
 		raw = tostring(raw)
@@ -2858,82 +2965,6 @@ function Gui.ApplyTheme(presetName)
 	Funcs.SaveSettings()
 end
 
-local function Dragify(handle, target)
-	target = target or handle
-	local paddingX = 16
-	local paddingY = 12
-	local dragging = false
-	local dragInput = nil
-	local dragStart = nil
-	local startPosition = nil
-	local moved = false
-	local suppressClick = false
-
-	handle.Active = true
-	handle.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			dragging = true
-			dragInput = input
-			dragStart = input.Position
-			startPosition = target.AbsolutePosition
-			moved = false
-		end
-	end)
-
-	UserInputService.InputChanged:Connect(function(input)
-		if not dragging then
-			return
-		end
-
-		if input.UserInputType == Enum.UserInputType.MouseMovement
-			or (dragInput and input == dragInput) then
-			local delta = input.Position - dragStart
-			if math.abs(delta.X) + math.abs(delta.Y) > 4 then
-				moved = true
-			end
-
-			local camera = workspace.CurrentCamera
-			if not camera then
-				return
-			end
-
-			local viewport = camera.ViewportSize
-			local size = target.AbsoluteSize
-			local anchor = target.AnchorPoint
-			local left = startPosition.X + delta.X
-			local top = startPosition.Y + delta.Y
-
-			left = math.clamp(left, paddingX, math.max(paddingX, viewport.X - size.X - paddingX))
-			top = math.clamp(top, paddingY, math.max(paddingY, viewport.Y - size.Y - paddingY))
-
-			target.Position = UDim2.fromOffset(
-				left + size.X * anchor.X,
-				top + size.Y * anchor.Y
-			)
-		end
-	end)
-
-	UserInputService.InputEnded:Connect(function(input)
-		local isMouseRelease = input.UserInputType == Enum.UserInputType.MouseButton1
-		local isTouchRelease = dragInput and input == dragInput
-		if dragging and (isMouseRelease or isTouchRelease) then
-			dragging = false
-			dragInput = nil
-			if moved then
-				suppressClick = true
-				task.delay(0.2, function()
-					suppressClick = false
-				end)
-			end
-		end
-	end)
-
-	return function()
-		return suppressClick
-	end
-end
-
 local NAV_PAGES = {
 	{ key = "Dashboard", label = "Dashboard" },
 	{ key = "General", label = "General" },
@@ -3222,7 +3253,7 @@ function Gui.Build()
 	topbar.BorderSizePixel = 0
 	topbar.LayoutOrder = 1
 	UI.Topbar = topbar
-	Dragify(topbar, window)
+	Funcs.Dragify(topbar, window)
 	local topCorner = MkCorner(16, topbar)
 	topCorner.CornerRadius = UDim.new(0, 0)
 	topCorner.TopLeftRadius = UDim.new(0, 16)
@@ -3409,7 +3440,7 @@ function Gui.Build()
 	showIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 	showIcon.Size = UDim2.new(0.6, 0, 0.6, 0)
 	showIcon:SetAttribute("CPN_Immutable", true)
-	local showBtnDragged = Dragify(showBtn)
+	local showBtnDragged = Funcs.Dragify(showBtn)
 	showBtn.MouseButton1Click:Connect(function()
 		if showBtnDragged() then
 			return
