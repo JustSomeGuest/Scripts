@@ -334,13 +334,13 @@ function Funcs.Dragify(handle, target)
 			left = math.clamp(
 				left,
 				paddingX,
-				math.max(paddingX, screen.AbsoluteSize.X - size.X - paddingX)
+				math.max(paddingX, UI.Screen.AbsoluteSize.X - size.X - paddingX)
 			)
 
 			top = math.clamp(
 				top,
 				paddingY,
-				math.max(paddingY, screen.AbsoluteSize.Y - size.Y - paddingY)
+				math.max(paddingY, UI.Screen.AbsoluteSize.Y - size.Y - paddingY)
 			)
 
 			target.Position = UDim2.fromOffset(
