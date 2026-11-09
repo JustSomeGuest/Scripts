@@ -3586,7 +3586,6 @@ function Gui.OnParticipantJoined(participant)
 		State.ParticipantMap[entry.sessionId] = entry
 		State.Participants[#State.Participants + 1] = entry
 		SortParticipants(State.Participants)
-		Funcs.Notify("Participant connected", entry.username .. " connected.", "info")
 	end
 	Gui.RenderParticipants()
 	Gui.UpdateConnection()
@@ -3614,7 +3613,7 @@ function Gui.OnParticipantLeft(message)
 		State.Selected = nil
 		Funcs.Notify("Selection cleared", "The selected participant disconnected.", "warn")
 	end
-	Funcs.Notify("Participant disconnected", entry.username .. " disconnected.", "warn")
+
 	Gui.RenderParticipants()
 	Gui.RenderSelection()
 	Gui.UpdateConnection()
