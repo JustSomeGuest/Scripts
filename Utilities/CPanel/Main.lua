@@ -300,7 +300,7 @@ function Funcs.Dragify(handle, target)
 			dragging = true
 			dragInput = input
 			dragStart = input.Position
-			startPosition = target.Position
+			startPosition = target.AbsolutePosition
 			moved = false
 		end
 	end)
@@ -319,51 +319,37 @@ function Funcs.Dragify(handle, target)
 				moved = true
 			end
 
-			local camera = workspace.CurrentCamera
-			if not camera then return end
-
-			local parent = target.Parent
-			if not parent then return end
-
-			local viewport = camera.ViewportSize
 			local size = target.AbsoluteSize
 			local anchor = target.AnchorPoint
-			local parentPosition = parent.AbsolutePosition
-			local parentSize = parent.AbsoluteSize
+			local parent = target.Parent
 
-			local gui = target:FindFirstAncestorWhichIsA("ScreenGui")
-			local inset = Vector2.zero
+			if not parent then return end
 
-			if gui and not gui.IgnoreGuiInset then
-				local topLeftInset = UserInputService:GetGuiInset()
-				inset = topLeftInset
+			local parentPosition = Vector2.zero
+
+			if parent:IsA("GuiObject") then
+				parentPosition = parent.AbsolutePosition
 			end
 
-			local left = startPosition.X.Scale * parentSize.X
-				+ startPosition.X.Offset + delta.X
+			local left = startPosition.X + delta.X
+			local top = startPosition.Y + delta.Y
 
-			local top = startPosition.Y.Scale * parentSize.Y
-				+ startPosition.Y.Offset + delta.Y
-
-			local absoluteLeft = parentPosition.X + left - size.X * anchor.X
-			local absoluteTop = parentPosition.Y + top - size.Y * anchor.Y
-
-			absoluteLeft = math.clamp(
-				absoluteLeft,
-				paddingX + inset.X,
-				math.max(paddingX + inset.X, viewport.X - size.X - paddingX)
+			left = math.clamp(
+				left,
+				paddingX,
+				math.max(paddingX, screen.AbsoluteSize.X - size.X - paddingX)
 			)
 
-			absoluteTop = math.clamp(
-				absoluteTop,
-				paddingY + inset.Y,
-				math.max(paddingY + inset.Y, viewport.Y - size.Y - paddingY)
+			top = math.clamp(
+				top,
+				paddingY,
+				math.max(paddingY, screen.AbsoluteSize.Y - size.Y - paddingY)
 			)
 
-			left = absoluteLeft - parentPosition.X + size.X * anchor.X
-			top = absoluteTop - parentPosition.Y + size.Y * anchor.Y
-
-			target.Position = UDim2.fromOffset(left, top)
+			target.Position = UDim2.fromOffset(
+				left - parentPosition.X + size.X * anchor.X,
+				top - parentPosition.Y + size.Y * anchor.Y
+			)
 		end
 	end)
 
