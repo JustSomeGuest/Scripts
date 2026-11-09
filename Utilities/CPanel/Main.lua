@@ -283,6 +283,7 @@ function Funcs.Dragify(handle, target)
 
 	local paddingX = 16
 	local paddingY = 12
+	local yCorrection = 10
 
 	local dragging = false
 	local dragInput = nil
@@ -306,9 +307,7 @@ function Funcs.Dragify(handle, target)
 	end)
 
 	UserInputService.InputChanged:Connect(function(input)
-		if not dragging then
-			return
-		end
+		if not dragging then return end
 
 		if input.UserInputType == Enum.UserInputType.MouseMovement
 			or (dragInput and input == dragInput) then
@@ -321,18 +320,9 @@ function Funcs.Dragify(handle, target)
 
 			local size = target.AbsoluteSize
 			local anchor = target.AnchorPoint
-			local parent = target.Parent
-
-			if not parent then return end
-
-			local parentPosition = Vector2.zero
-
-			if parent:IsA("GuiObject") then
-				parentPosition = parent.AbsolutePosition
-			end
 
 			local left = startPosition.X + delta.X
-			local top = startPosition.Y + delta.Y
+			local top = startPosition.Y + delta.Y + yCorrection
 
 			left = math.clamp(
 				left,
@@ -347,8 +337,8 @@ function Funcs.Dragify(handle, target)
 			)
 
 			target.Position = UDim2.fromOffset(
-				left - parentPosition.X + size.X * anchor.X,
-				top - parentPosition.Y + size.Y * anchor.Y
+				left + size.X * anchor.X,
+				top + size.Y * anchor.Y
 			)
 		end
 	end)
