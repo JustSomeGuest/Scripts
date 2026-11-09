@@ -331,6 +331,14 @@ function Funcs.Dragify(handle, target)
 			local parentPosition = parent.AbsolutePosition
 			local parentSize = parent.AbsoluteSize
 
+			local gui = target:FindFirstAncestorWhichIsA("ScreenGui")
+			local inset = Vector2.zero
+
+			if gui and not gui.IgnoreGuiInset then
+				local topLeftInset = UserInputService:GetGuiInset()
+				inset = topLeftInset
+			end
+
 			local left = startPosition.X.Scale * parentSize.X
 				+ startPosition.X.Offset + delta.X
 
@@ -342,14 +350,14 @@ function Funcs.Dragify(handle, target)
 
 			absoluteLeft = math.clamp(
 				absoluteLeft,
-				paddingX,
-				math.max(paddingX, viewport.X - size.X - paddingX)
+				paddingX + inset.X,
+				math.max(paddingX + inset.X, viewport.X - size.X - paddingX)
 			)
 
 			absoluteTop = math.clamp(
 				absoluteTop,
-				paddingY,
-				math.max(paddingY, viewport.Y - size.Y - paddingY)
+				paddingY + inset.Y,
+				math.max(paddingY + inset.Y, viewport.Y - size.Y - paddingY)
 			)
 
 			left = absoluteLeft - parentPosition.X + size.X * anchor.X
