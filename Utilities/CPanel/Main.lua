@@ -279,7 +279,14 @@ function Funcs.ClampNumber(value, min, max)
 end
 
 function Funcs.Dragify(handle, target)
-	target = target or handle
+	local targetValid = target or handle
+	if not targetValid or not targetValid.IsA or not targetValid:IsA("GuiObject") or not targetValid.AbsolutePosition or not targetValid.AbsoluteSize or not targetValid.AnchorPoint then
+		warn("[CPanel] Dragify called with an invalid target")
+		return function()
+			return false
+		end
+	end
+	target = targetValid
 
 	local paddingX = 16
 	local paddingY = 12
