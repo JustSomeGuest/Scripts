@@ -52,38 +52,62 @@ local HighlightColors = {
     Boolean = "#569CD6"
 }
 
-Env.Lucid = {
-    UI = {},
-    Funcs = {},
-    Assets = {
-        ["Lucid/Assets/Lucid_Logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Logo.png",
-        ["Lucid/Assets/Lucid_Home.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Home.png",
-        ["Lucid/Assets/Lucid_Executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Controller.png",
-        ["Lucid/Assets/Lucid_Search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Search.png",
-        ["Lucid/Assets/Lucid_Scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/LocalFile.png",
-        ["Lucid/Assets/Lucid_Music.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Music.png",
-        ["Lucid/Assets/Lucid_Settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Settings.png",
-        ["Lucid/Assets/Lucid_Close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Close.png",
-        ["Lucid/Assets/Lucid_Execute.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Execute.png",
-        ["Lucid/Assets/Lucid_Clear.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clear.png",
-        ["Lucid/Assets/Lucid_Clipboard.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clipboard.png",
-        ["Lucid/Assets/Lucid_Star.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Star.png",
-        ["Lucid/Assets/Lucid_Discord.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Discord.png",
-    },
-    Settings = {
-        Animations = true,
-        BackgroundColor = Color3.fromRGB(0, 0, 0),
-        SecondaryBackgroundColor = Color3.fromRGB(10, 10, 10),
-        AccentColor = Color3.fromRGB(0, 99, 255),
-        SecondaryAccentColor = Color3.fromRGB(0, 64, 180)
-    },
-    IsLoaded = false
+local function MkCorner(r, p) local c = Instance.new("UICorner") c.CornerRadius = UDim.new(0, r or 0) c.Parent = p return c end
+local function MkStroke(col, p) local s = Instance.new("UIStroke") s.Color = col s.Parent = p return s end
+local function MkPad(l, r, t, b, p) local pad = Instance.new("UIPadding") pad.PaddingLeft = UDim.new(0, l or 0) pad.PaddingRight = UDim.new(0, r or 0) pad.PaddingTop = UDim.new(0, t or 0) pad.PaddingBottom = UDim.new(0, b or 0) pad.Parent = p return pad end
+local function MkList(dir, pad, p) local l = Instance.new("UIListLayout") l.FillDirection = dir or Enum.FillDirection.Vertical l.Padding = UDim.new(0, pad or 0) l.SortOrder = Enum.SortOrder.LayoutOrder l.Parent = p return l end
+local function MkSize(minV, maxV, p) local s = Instance.new("UISizeConstraint") if minV then s.MinSize = minV end if maxV then s.MaxSize = maxV end s.Parent = p return s end
+local function MkAspect(ratio, p) local a = Instance.new("UIAspectRatioConstraint") a.AspectRatio = ratio or 1 a.Parent = p return a end
+local function MkEl(class, props, parent) local o = Instance.new(class) for k, v in pairs(props) do o[k] = v end o.Parent = parent return o end
+
+local UI = {}
+local Funcs = {}
+local Assets = {
+    ["Lucid/Assets/Lucid_Logo.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Logo.png",
+    ["Lucid/Assets/Lucid_Home.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Home.png",
+    ["Lucid/Assets/Lucid_Executor.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Controller.png",
+    ["Lucid/Assets/Lucid_Search.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Search.png",
+    ["Lucid/Assets/Lucid_Scripts.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/LocalFile.png",
+    ["Lucid/Assets/Lucid_Music.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Music.png",
+    ["Lucid/Assets/Lucid_Settings.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Settings.png",
+    ["Lucid/Assets/Lucid_Close.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Close.png",
+    ["Lucid/Assets/Lucid_Execute.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Execute.png",
+    ["Lucid/Assets/Lucid_Clear.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clear.png",
+    ["Lucid/Assets/Lucid_Clipboard.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clipboard.png",
+    ["Lucid/Assets/Lucid_Star.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Star.png",
+    ["Lucid/Assets/Lucid_Discord.png"] = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Discord.png",
+}
+local Settings = {
+    Animations = true,
+    BackgroundColor = Color3.fromRGB(0, 0, 0),
+    SecondaryBackgroundColor = Color3.fromRGB(10, 10, 10),
+    AccentColor = Color3.fromRGB(0, 99, 255),
+    SecondaryAccentColor = Color3.fromRGB(0, 64, 180)
 }
 
-local UI = Env.Lucid.UI
-local Funcs = Env.Lucid.Funcs
-local Assets = Env.Lucid.Assets
-local Settings = Env.Lucid.Settings
+local LucidLoaded = false
+do
+    local prev = Env.__Lucid or Env.Lucid
+    if prev ~= nil then
+        local ok, wasLoaded = pcall(function() return prev.IsLoaded end)
+        if ok and wasLoaded == true then LucidLoaded = true end
+    end
+    Env.Lucid = nil
+    local proxy
+    if type(newproxy) == "function" then
+        local ok, pr = pcall(newproxy, true)
+        if ok and type(pr) == "userdata" then
+            local mt = getmetatable(pr)
+            mt.__index = function(_, k) if k == "IsLoaded" then return LucidLoaded end return nil end
+            mt.__newindex = function() end
+            proxy = pr
+        end
+    end
+    Env.__Lucid = proxy or setmetatable({}, {
+        __index = function(_, k) if k == "IsLoaded" then return LucidLoaded end return nil end,
+        __newindex = function() end
+    })
+end
 local currentPage = 1
 local totalPages = 1
 local currentQuery = ""
@@ -368,39 +392,127 @@ function Funcs.ClearCache()
     end
 end
 
+local ScriptsFolder = "Lucid/Scripts"
+local BuiltInFolder = ScriptsFolder .. "/BuiltIn"
+
+local BuiltInScripts = {
+    {
+        Name        = "Dexium (Built-In)",
+        File        = "Dexium.json",
+        Description = "A fast instance viewer that lets you browse, inspect and search every object in the game in real time.",
+        Source      = 'loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/dexium"))()'
+    },
+    {
+        Name        = "Mobile Keyboard (Built-In)",
+        File        = "Keyboard.json",
+        Description = "An on-screen keyboard that lets mobile users send keyboard inputs by clicking the corresponding keys on the UI.",
+        Source      = 'loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/deltakd"))()'
+    },
+    {
+        Name        = "Cobalt (Built-In)",
+        File        = "Cobalt.json",
+        Description = "A remote spy that shows every remote you fire and every remote you receive.",
+        Source      = 'loadstring(game:HttpGet("https://gitlab.com/upio/cobalt/-/releases/permalink/latest/downloads/Cobalt.luau"))()'
+    },
+    {
+        Name        = "IY Reborn (Built-In)",
+        File        = "IYReborn.json",
+        Description = "Infinite Yield Reborn, an admin script packed with 500+ admin commands.",
+        Source      = 'loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/infinite-yield-reborn"))()'
+    },
+    {
+        Name        = "PShade Ultimate (Built-In)",
+        File        = "PShadeUltimate.json",
+        Description = "One of the best shader scripts you could find.",
+        Source      = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/randomstring0/pshade-ultimate/main/src/cd.lua"))()'
+    }
+}
+for _, scriptData in ipairs(BuiltInScripts) do
+    scriptData.File = scriptData.File or scriptData.Name:gsub("[^%w]", "_") .. ".json"
+end
+
+local function EncodeScriptJSON(scriptData)
+    return "{\n"
+        .. '    "Name": ' .. HttpService:JSONEncode(tostring(scriptData.Name or "")) .. ",\n"
+        .. '    "Description": ' .. HttpService:JSONEncode(tostring(scriptData.Description or "")) .. ",\n"
+        .. '    "Source": ' .. HttpService:JSONEncode(tostring(scriptData.Source or "")) .. "\n"
+        .. "}"
+end
+
+local function NormalizeScript(data)
+    return {
+        Name = tostring(data.Name or ""),
+        Description = tostring(data.Description or ""),
+        Source = tostring(data.Source or data.Code or data.Script or "")
+    }
+end
+
 function Funcs.LoadSavedScripts()
-    if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts"); return {} end
-    local files = ListFiles("Lucid/Scripts")
+    Funcs.InitDefaultScripts()
     local scripts = {}
-    for _, file in ipairs(files) do
-        local content = ReadFile(file)
-        local success, data = pcall(function() return HttpService:JSONDecode(content) end)
-        if success and data then table.insert(scripts, data) end
+    local function ReadFolder(folder, builtIn)
+        if not IsFolder(folder) then return end
+        for _, file in ipairs(ListFiles(folder) or {}) do
+            local readOk, content = pcall(ReadFile, file)
+            if readOk then
+                local success, data = pcall(function() return HttpService:JSONDecode(content) end)
+                if success and type(data) == "table" and data.Name then
+                    local scriptData = NormalizeScript(data)
+                    if builtIn then scriptData.BuiltIn = true end
+                    local encoded = EncodeScriptJSON(scriptData)
+                    if content ~= encoded then pcall(WriteFile, file, encoded) end
+                    table.insert(scripts, scriptData)
+                end
+            end
+        end
     end
+    ReadFolder(ScriptsFolder, false)
+    ReadFolder(BuiltInFolder, true)
     return scripts
 end
 
+local function StripBuiltIn(name)
+    name = tostring(name or "")
+    name = name:gsub("%f[%a][Bb]uilt[%s%-_]*[Ii]n%f[%A]", "")
+    name = name:gsub("%(%s*%)", "")
+    name = name:gsub("%s+", " ")
+    name = name:gsub("^%s+", ""):gsub("%s+$", "")
+    return name ~= "" and name or "Untitled Script"
+end
+
 function Funcs.SaveScript(scriptData)
-    if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") end
-    local fileName = "Lucid/Scripts/" .. scriptData.Name:gsub("[^%w]", "_") .. ".json"
-    WriteFile(fileName, HttpService:JSONEncode(scriptData))
+    if not IsFolder(ScriptsFolder) then MakeFolder(ScriptsFolder) end
+    local sd = NormalizeScript(scriptData)
+    sd.Name = StripBuiltIn(sd.Name)
+    WriteFile(ScriptsFolder .. "/" .. sd.Name:gsub("[^%w]", "_") .. ".json", EncodeScriptJSON(sd))
 end
 
 function Funcs.DeleteScript(scriptName)
-    local fileName = "Lucid/Scripts/" .. scriptName:gsub("[^%w]", "_") .. ".json"
+    local fileName = ScriptsFolder .. "/" .. scriptName:gsub("[^%w]", "_") .. ".json"
     if IsFile(fileName) then DelFile(fileName) end
+    for _, scriptData in ipairs(BuiltInScripts) do
+        if scriptData.Name == scriptName then
+            local path = BuiltInFolder .. "/" .. scriptData.File
+            if IsFile(path) then DelFile(path) end
+        end
+    end
 end
 
-local BuiltInScripts = {
-	{Name="Dexium (Built-In)", Description="Explore game instances.", Code='loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/dexium"))()'},
-	{Name="Keyboard (Built-In)", Description="Virtual keyboard for mobile.", Code='loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/deltakd"))()'}
-}
-
 function Funcs.InitDefaultScripts()
-    if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") end
+    if not IsFolder(ScriptsFolder) then MakeFolder(ScriptsFolder) end
+    if not IsFolder(BuiltInFolder) then MakeFolder(BuiltInFolder) end
+    for _, file in ipairs(ListFiles(ScriptsFolder) or {}) do
+        local base = file:match("([^/\\]+)$") or file
+        if base:find("_Built_In_%.json$") or base:find("Built%-In") then pcall(DelFile, file) end
+    end
     for _, scriptData in ipairs(BuiltInScripts) do
-        local fileName = "Lucid/Scripts/" .. scriptData.Name:gsub("[^%w]", "_") .. ".json"
-        if not IsFile(fileName) then Funcs.SaveScript(scriptData) end
+        local path = BuiltInFolder .. "/" .. scriptData.File
+        local expected = EncodeScriptJSON(scriptData)
+        local readOk, content = pcall(ReadFile, path)
+        if not readOk or content ~= expected then
+            pcall(DelFile, path)
+            WriteFile(path, expected)
+        end
     end
 end
 
@@ -420,7 +532,21 @@ function Funcs.SaveSettings()
         AccentColor = {R = math.floor(Settings.AccentColor.R * 255), G = math.floor(Settings.AccentColor.G * 255), B = math.floor(Settings.AccentColor.B * 255)},
         SecondaryAccentColor = {R = math.floor(Settings.SecondaryAccentColor.R * 255), G = math.floor(Settings.SecondaryAccentColor.G * 255), B = math.floor(Settings.SecondaryAccentColor.B * 255)}
     }
+    local ok, existing = pcall(function()
+        if not IsFile("Lucid/Settings.json") then return nil end
+        return HttpService:JSONDecode(ReadFile("Lucid/Settings.json"))
+    end)
+    if ok and type(existing) == "table" then
+        for k, v in pairs(existing) do
+            if data[k] == nil then data[k] = v end
+        end
+    end
     WriteFile("Lucid/Settings.json", HttpService:JSONEncode(data))
+end
+
+local function DeriveSecondaryAccent(accent)
+    local k = 0.65
+    return Color3.fromRGB(accent.R * 255 * k, accent.G * 255 * k, accent.B * 255 * k)
 end
 
 function Funcs.LoadSettings()
@@ -430,10 +556,16 @@ function Funcs.LoadSettings()
     local success, data = pcall(function() return HttpService:JSONDecode(content) end)
     if success and data then
         if data.Animations ~= nil then Settings.Animations = data.Animations end
-        if data.BackgroundColor then Settings.BackgroundColor = Color3.fromRGB(data.BackgroundColor.R or 10, data.BackgroundColor.G or 10, data.BackgroundColor.B or 10) end
-        if data.SecondaryBackgroundColor then Settings.SecondaryBackgroundColor = Color3.fromRGB(data.SecondaryBackgroundColor.R or 18, data.SecondaryBackgroundColor.G or 18, data.SecondaryBackgroundColor.B or 18) end
+        local bg = data.BackgroundColor or data.BGColor
+        if bg then Settings.BackgroundColor = Color3.fromRGB(bg.R or 10, bg.G or 10, bg.B or 10) end
+        local bg2 = data.SecondaryBackgroundColor or data.BG2Color
+        if bg2 then Settings.SecondaryBackgroundColor = Color3.fromRGB(bg2.R or 18, bg2.G or 18, bg2.B or 18) end
         if data.AccentColor then Settings.AccentColor = Color3.fromRGB(data.AccentColor.R or 0, data.AccentColor.G or 99, data.AccentColor.B or 255) end
-        if data.SecondaryAccentColor then Settings.SecondaryAccentColor = Color3.fromRGB(data.SecondaryAccentColor.R or 0, data.SecondaryAccentColor.G or 64, data.SecondaryAccentColor.B or 180) end
+        if data.SecondaryAccentColor then
+            Settings.SecondaryAccentColor = Color3.fromRGB(data.SecondaryAccentColor.R or 0, data.SecondaryAccentColor.G or 64, data.SecondaryAccentColor.B or 180)
+        elseif data.AccentColor then
+            Settings.SecondaryAccentColor = DeriveSecondaryAccent(Settings.AccentColor)
+        end
     end
 end
 
@@ -568,7 +700,7 @@ function Funcs.CreateResultCard(data, parent)
             saveBtn.MouseButton1Click:Connect(function()
                 local code = ResolveCode()
                 if code then
-                    local scriptData = { Name = title, Description = data.description or "", Code = code }
+                    local scriptData = { Name = title, Description = data.description or "", Source = code }
                     Funcs.SaveScript(scriptData)
                     saveBtn.Text = "Saved!"
                     task.delay(1, function() saveBtn.Text = "Save" end)
@@ -730,6 +862,7 @@ function Funcs.ApplyTheme()
     UI.MusicPlayBtnStroke.Color = Settings.SecondaryAccentColor
     UI.MusicPrevBtnStroke.Color = Settings.SecondaryAccentColor
     UI.MusicNextBtnStroke.Color = Settings.SecondaryAccentColor
+    UI.MusicNowPlayingStroke.Color = Settings.SecondaryAccentColor
     UI.MusicSliderBar.BackgroundColor3 = Settings.SecondaryBackgroundColor
     UI.MusicSliderFill.BackgroundColor3 = Settings.AccentColor
     UI.MusicSliderKnob.BackgroundColor3 = Settings.AccentColor
@@ -822,7 +955,7 @@ function Funcs.RefreshSavedScripts(searchQuery)
     local builtInScripts = {}
     local normalScripts = {}
     for _, scriptData in ipairs(scripts) do
-        if scriptData.Name:find("%(Built%-In%)") then
+        if scriptData.BuiltIn then
             table.insert(builtInScripts, scriptData)
         else
             table.insert(normalScripts, scriptData)
@@ -857,7 +990,7 @@ function Funcs.RefreshSavedScripts(searchQuery)
             end
             if runBtn then
                 runBtn.MouseButton1Click:Connect(function()
-                    local fn, loadErr = loadstring(scriptData.Code or "")
+                    local fn, loadErr = loadstring(scriptData.Source or "")
                     if not fn then error(loadErr) end
                     local success, runErr = pcall(fn)
                     if not success then error(runErr) end
@@ -1027,85 +1160,41 @@ function Funcs.CloseUI()
 end
 
 function Funcs.CreateTab(iconPath, labelText, content, layoutOrder, underlineKey)
-    local tab = Instance.new("TextButton")
-    tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    tab.BackgroundTransparency = 1
-    tab.BorderSizePixel = 0
-    tab.LayoutOrder = layoutOrder or 1
-    tab.Name = labelText .. "Tab"
-    tab.Size = UDim2.new(0, 30, 0, 58)
-    tab.Text = ""
-    tab.Parent = UI.Sidebar
+    local tab = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        BackgroundTransparency = 1, BorderSizePixel = 0,
+        LayoutOrder = layoutOrder or 1, Name = labelText .. "Tab",
+        Size = UDim2.new(0, 30, 0, 58), Text = ""}, UI.Sidebar)
 
-    local tabLayout = Instance.new("UIListLayout")
-    tabLayout.Padding = UDim.new(0, 4)
-    tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    local tabLayout = MkList(Enum.FillDirection.Vertical, 4, tab)
     tabLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-    tabLayout.Parent = tab
 
-    local tabSizeCons = Instance.new("UISizeConstraint")
-    tabSizeCons.MaxSize = Vector2.new(2147483647, 34)
-    tabSizeCons.MinSize = Vector2.new(0, 28)
-    tabSizeCons.Parent = tab
+    MkSize(Vector2.new(0, 28), Vector2.new(2147483647, 34), tab)
 
-    local tabPadding = Instance.new("UIPadding")
-    tabPadding.PaddingBottom = UDim.new(0, 3)
-    tabPadding.PaddingTop = UDim.new(0, 3)
-    tabPadding.Parent = tab
+    MkPad(0, 0, 3, 3, tab)
 
-    local container = Instance.new("Frame")
-    container.BackgroundTransparency = 1
-    container.BorderSizePixel = 0
-    container.LayoutOrder = 1
-    container.Name = "TabContainer"
-    container.Size = UDim2.new(1, 0, 0, 22)
-    container.Parent = tab
+    local container = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 1,
+        Name = "TabContainer", Size = UDim2.new(1, 0, 0, 22)}, tab)
 
-    local containerLayout = Instance.new("UIListLayout")
-    containerLayout.FillDirection = Enum.FillDirection.Horizontal
+    local containerLayout = MkList(Enum.FillDirection.Horizontal, 4, container)
     containerLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-    containerLayout.Padding = UDim.new(0, 4)
-    containerLayout.SortOrder = Enum.SortOrder.LayoutOrder
     containerLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-    containerLayout.Parent = container
 
-    local icon = Instance.new("ImageLabel")
-    icon.BackgroundTransparency = 1
-    icon.BorderSizePixel = 0
-    icon.Image = Funcs.GetAsset(iconPath)
-    icon.LayoutOrder = 1
-    icon.Name = "TabIcon"
-    icon.Size = UDim2.new(0, 30, 0, 30)
-    icon.Parent = container
+    local icon = MkEl("ImageLabel", {BackgroundTransparency = 1, BorderSizePixel = 0,
+        Image = Funcs.GetAsset(iconPath), LayoutOrder = 1, Name = "TabIcon",
+        Size = UDim2.new(0, 30, 0, 30)}, container)
 
-    local iconRatio = Instance.new("UIAspectRatioConstraint")
-    iconRatio.Parent = icon
+    MkAspect(1, icon)
 
-    local label = Instance.new("TextLabel")
-    label.BackgroundTransparency = 1
-    label.BorderSizePixel = 0
-    label.FontFace = BuilderSans
-    label.LayoutOrder = 2
-    label.Name = "TabLabel"
-    label.Size = UDim2.new(0, 60, 0, 30)
-    label.Text = labelText
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.TextScaled = true
-    label.TextWrapped = true
-    label.TextXAlignment = Enum.TextXAlignment.Left
-    label.Parent = container
+    MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = BuilderSans,
+        LayoutOrder = 2, Name = "TabLabel", Size = UDim2.new(0, 60, 0, 30), Text = labelText,
+        TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true, TextWrapped = true,
+        TextXAlignment = Enum.TextXAlignment.Left}, container)
 
-    local underline = Instance.new("Frame")
-    underline.BackgroundColor3 = Settings.AccentColor
-    underline.BorderSizePixel = 0
-    underline.LayoutOrder = 2
-    underline.Name = underlineKey or "TabUnderline"
-    underline.Size = UDim2.new(0, 0, 0, 1)
-    underline.Parent = tab
+    local underline = MkEl("Frame", {BackgroundColor3 = Settings.AccentColor, BorderSizePixel = 0,
+        LayoutOrder = 2, Name = underlineKey or "TabUnderline",
+        Size = UDim2.new(0, 0, 0, 1)}, tab)
 
-    local underlineCorner = Instance.new("UICorner")
-    underlineCorner.CornerRadius = UDim.new(0, 6)
-    underlineCorner.Parent = underline
+    MkCorner(6, underline)
 
     UI[labelText .. "Tab"] = tab
     UI[underlineKey or "TabUnderline"] = underline
@@ -1123,80 +1212,38 @@ function Funcs.CreateTab(iconPath, labelText, content, layoutOrder, underlineKey
 end
 
 function Funcs.CreateSettingsInputbox(labelText, placeholderText, settingKey, layoutOrder)
-    local frame = Instance.new("Frame")
-    frame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-    frame.BorderSizePixel = 0
-    frame.LayoutOrder = layoutOrder or 2
-    frame.Name = labelText:gsub(" ", "")
-    frame.Size = UDim2.new(1, 0, 0, 38)
-    frame.Parent = UI.SettingsFrame
+    local frame = MkEl("Frame", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+        LayoutOrder = layoutOrder or 2, Name = labelText:gsub(" ", ""),
+        Size = UDim2.new(1, 0, 0, 38)}, UI.SettingsFrame)
 
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 6)
-    corner.Parent = frame
+    MkCorner(6, frame)
 
-    local stroke = Instance.new("UIStroke")
+    local stroke = MkStroke(Color3.fromRGB(36, 36, 36), frame)
     stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    stroke.Color = Color3.fromRGB(36, 36, 36)
-    stroke.Parent = frame
 
-    local layout = Instance.new("UIListLayout")
-    layout.FillDirection = Enum.FillDirection.Horizontal
+    local layout = MkList(Enum.FillDirection.Horizontal, 6, frame)
     layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-    layout.Padding = UDim.new(0, 6)
-    layout.SortOrder = Enum.SortOrder.LayoutOrder
     layout.VerticalFlex = Enum.UIFlexAlignment.Fill
-    layout.Parent = frame
 
-    local padding = Instance.new("UIPadding")
-    padding.PaddingBottom = UDim.new(0, 8)
-    padding.PaddingLeft = UDim.new(0, 8)
-    padding.PaddingRight = UDim.new(0, 8)
-    padding.PaddingTop = UDim.new(0, 8)
-    padding.Parent = frame
+    MkPad(8, 8, 8, 8, frame)
 
-    local lbl = Instance.new("TextLabel")
-    lbl.BackgroundTransparency = 1
-    lbl.BorderSizePixel = 0
-    lbl.FontFace = GothamMedium
-    lbl.LayoutOrder = 1
-    lbl.Size = UDim2.new(0.8, 0, 1, 0)
-    lbl.Text = labelText
-    lbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-    lbl.TextScaled = true
-    lbl.TextWrapped = true
-    lbl.TextXAlignment = Enum.TextXAlignment.Left
-    lbl.Parent = frame
+    local lbl = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium,
+        LayoutOrder = 1, Size = UDim2.new(0.8, 0, 1, 0), Text = labelText,
+        TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+        TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left}, frame)
 
-    local input = Instance.new("TextBox")
-    input.BackgroundTransparency = 1
-    input.BorderSizePixel = 0
-    input.FontFace = GothamMedium
-    input.LayoutOrder = 2
-    input.PlaceholderColor3 = Color3.fromRGB(221, 221, 221)
-    input.PlaceholderText = placeholderText
-    input.Size = UDim2.new(0.2, 0, 1, 0)
-    input.Text = ""
-    input.TextColor3 = Color3.fromRGB(255, 255, 255)
-    input.TextScaled = true
-    input.TextWrapped = true
-    input.Parent = frame
+    local input = MkEl("TextBox", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium,
+        LayoutOrder = 2, PlaceholderColor3 = Color3.fromRGB(221, 221, 221),
+        PlaceholderText = placeholderText, Size = UDim2.new(0.2, 0, 1, 0),
+        Text = "", TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+        TextWrapped = true}, frame)
 
-    local inputCorner = Instance.new("UICorner")
-    inputCorner.CornerRadius = UDim.new(0, 6)
-    inputCorner.Parent = input
+    MkCorner(6, input)
 
-    local inputStroke = Instance.new("UIStroke")
+    local inputStroke = MkStroke(Color3.fromRGB(36, 36, 36), input)
     inputStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    inputStroke.Color = Color3.fromRGB(36, 36, 36)
-    inputStroke.Parent = input
 
-    local inputPadding = Instance.new("UIPadding")
-    inputPadding.PaddingBottom = UDim.new(0, 4)
-    inputPadding.PaddingLeft = UDim.new(0, 4)
-    inputPadding.PaddingRight = UDim.new(0, 4)
-    inputPadding.PaddingTop = UDim.new(0, 4)
-    inputPadding.Parent = input
+    MkPad(4, 4, 4, 4, input)
 
     if settingKey then
         input.FocusLost:Connect(function(enterPressed)
@@ -1249,160 +1296,79 @@ function Funcs.CreateExeTab(name)
     tabData.name = name or Funcs.GetNextTabName()
     tabData.code = ""
 
-    local tabBtn = Instance.new("Frame")
-    tabBtn.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-    tabBtn.BorderSizePixel = 0
-    tabBtn.Name = "ExeTabBtn_" .. tabData.name
-    tabBtn.Size = UDim2.new(0, 90, 1, 0)
-    tabBtn.Parent = UI.ExeTabBarScroll
+    local tabBtn = MkEl("Frame", {BackgroundColor3 = Color3.fromRGB(22, 22, 22), BorderSizePixel = 0,
+        Name = "ExeTabBtn_" .. tabData.name, Size = UDim2.new(0, 90, 1, 0)}, UI.ExeTabBarScroll)
 
-    local tabBtnCorner = Instance.new("UICorner")
-    tabBtnCorner.CornerRadius = UDim.new(0, 5)
-    tabBtnCorner.Parent = tabBtn
+    MkCorner(5, tabBtn)
 
-    local tabBtnStroke = Instance.new("UIStroke")
+    local tabBtnStroke = MkStroke(Color3.fromRGB(36, 36, 36), tabBtn)
     tabBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    tabBtnStroke.Color = Color3.fromRGB(36, 36, 36)
-    tabBtnStroke.Parent = tabBtn
 
-    local activeLine = Instance.new("Frame")
-    activeLine.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    activeLine.BorderSizePixel = 0
-    activeLine.Name = "ActiveLine"
-    activeLine.Size = UDim2.new(1, 0, 0, 2)
-    activeLine.AnchorPoint = Vector2.new(0, 1)
-    activeLine.Position = UDim2.new(0, 0, 1, 0)
-    activeLine.Parent = tabBtn
+    local activeLine = MkEl("Frame", {BackgroundColor3 = Color3.fromRGB(40, 40, 40), BorderSizePixel = 0,
+        Name = "ActiveLine", Size = UDim2.new(1, 0, 0, 2),
+        AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 0)}, tabBtn)
 
-    local activeLineCorner = Instance.new("UICorner")
-    activeLineCorner.CornerRadius = UDim.new(0, 2)
-    activeLineCorner.Parent = activeLine
+    MkCorner(2, activeLine)
 
-    local tabInnerLayout = Instance.new("UIListLayout")
-    tabInnerLayout.FillDirection = Enum.FillDirection.Horizontal
+    local tabInnerLayout = MkList(Enum.FillDirection.Horizontal, 2, tabBtn)
     tabInnerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
     tabInnerLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-    tabInnerLayout.Padding = UDim.new(0, 2)
-    tabInnerLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    tabInnerLayout.Parent = tabBtn
 
-    local tabInnerPadding = Instance.new("UIPadding")
-    tabInnerPadding.PaddingLeft = UDim.new(0, 6)
-    tabInnerPadding.PaddingRight = UDim.new(0, 4)
-    tabInnerPadding.PaddingTop = UDim.new(0, 2)
-    tabInnerPadding.PaddingBottom = UDim.new(0, 4)
-    tabInnerPadding.Parent = tabBtn
+    MkPad(6, 4, 2, 4, tabBtn)
 
-    local tabNameBtn = Instance.new("TextButton")
-    tabNameBtn.BackgroundTransparency = 1
-    tabNameBtn.BorderSizePixel = 0
-    tabNameBtn.FontFace = GothamMedium
-    tabNameBtn.LayoutOrder = 1
-    tabNameBtn.Name = "TabNameBtn"
-    tabNameBtn.Size = UDim2.new(1, -20, 1, 0)
-    tabNameBtn.Text = tabData.name
-    tabNameBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    tabNameBtn.TextScaled = true
-    tabNameBtn.TextTruncate = Enum.TextTruncate.AtEnd
-    tabNameBtn.TextXAlignment = Enum.TextXAlignment.Left
-    tabNameBtn.Parent = tabBtn
+    local tabNameBtn = MkEl("TextButton", {BackgroundTransparency = 1, BorderSizePixel = 0,
+        FontFace = GothamMedium, LayoutOrder = 1, Name = "TabNameBtn",
+        Size = UDim2.new(1, -20, 1, 0), Text = tabData.name,
+        TextColor3 = Color3.fromRGB(200, 200, 200), TextScaled = true,
+        TextTruncate = Enum.TextTruncate.AtEnd,
+        TextXAlignment = Enum.TextXAlignment.Left}, tabBtn)
 
-    local tabNameBox = Instance.new("TextBox")
-    tabNameBox.BackgroundTransparency = 1
-    tabNameBox.BorderSizePixel = 0
-    tabNameBox.FontFace = GothamMedium
-    tabNameBox.LayoutOrder = 1
-    tabNameBox.Name = "TabNameBox"
-    tabNameBox.Size = UDim2.new(1, -20, 1, 0)
-    tabNameBox.Text = tabData.name
-    tabNameBox.TextColor3 = Color3.fromRGB(200, 200, 200)
-    tabNameBox.TextScaled = true
-    tabNameBox.TextXAlignment = Enum.TextXAlignment.Left
-    tabNameBox.Visible = false
-    tabNameBox.ClearTextOnFocus = false
-    tabNameBox.Parent = tabBtn
+    local tabNameBox = MkEl("TextBox", {BackgroundTransparency = 1, BorderSizePixel = 0,
+        FontFace = GothamMedium, LayoutOrder = 1, Name = "TabNameBox",
+        Size = UDim2.new(1, -20, 1, 0), Text = tabData.name,
+        TextColor3 = Color3.fromRGB(200, 200, 200), TextScaled = true,
+        TextXAlignment = Enum.TextXAlignment.Left, Visible = false,
+        ClearTextOnFocus = false}, tabBtn)
 
-    local closeBtn = Instance.new("TextButton")
-    closeBtn.BackgroundTransparency = 1
-    closeBtn.BorderSizePixel = 0
-    closeBtn.FontFace = GothamBold
-    closeBtn.LayoutOrder = 2
-    closeBtn.Name = "CloseExeTab"
-    closeBtn.Size = UDim2.new(0, 16, 0, 16)
-    closeBtn.Text = "X"
-    closeBtn.TextColor3 = Color3.fromRGB(160, 160, 160)
-    closeBtn.TextScaled = true
-    closeBtn.Parent = tabBtn
+    local closeBtn = MkEl("TextButton", {BackgroundTransparency = 1, BorderSizePixel = 0,
+        FontFace = GothamBold, LayoutOrder = 2, Name = "CloseExeTab",
+        Size = UDim2.new(0, 16, 0, 16), Text = "X",
+        TextColor3 = Color3.fromRGB(160, 160, 160), TextScaled = true}, tabBtn)
 
-    local inputFrame = Instance.new("ScrollingFrame")
-    inputFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    inputFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-    inputFrame.BorderSizePixel = 0
-    inputFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-    inputFrame.Name = "ExeInputFrame_" .. tabData.name
-    inputFrame.ScrollingDirection = Enum.ScrollingDirection.Y
-    inputFrame.ScrollBarThickness = 6
-    inputFrame.Size = UDim2.new(1, 0, 1, 0)
-    inputFrame.Visible = false
-    inputFrame.Parent = UI.ExeEditorArea
+    local inputFrame = MkEl("ScrollingFrame", {AutomaticCanvasSize = Enum.AutomaticSize.Y,
+        BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+        BorderSizePixel = 0, CanvasSize = UDim2.new(0, 0, 0, 0),
+        Name = "ExeInputFrame_" .. tabData.name,
+        ScrollingDirection = Enum.ScrollingDirection.Y,
+        ScrollBarThickness = 6, Size = UDim2.new(1, 0, 1, 0),
+        Visible = false}, UI.ExeEditorArea)
 
-    local inputFramePadding = Instance.new("UIPadding")
-    inputFramePadding.PaddingBottom = UDim.new(0, 6)
-    inputFramePadding.PaddingLeft = UDim.new(0, 6)
-    inputFramePadding.PaddingRight = UDim.new(0, 6)
-    inputFramePadding.PaddingTop = UDim.new(0, 6)
-    inputFramePadding.Parent = inputFrame
+    MkPad(6, 6, 6, 6, inputFrame)
 
-    local inputFrameStroke = Instance.new("UIStroke")
+    local inputFrameStroke = MkStroke(Color3.fromRGB(36, 36, 36), inputFrame)
     inputFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    inputFrameStroke.Color = Color3.fromRGB(36, 36, 36)
-    inputFrameStroke.Parent = inputFrame
 
-    local inputFrameCorner = Instance.new("UICorner")
-    inputFrameCorner.CornerRadius = UDim.new(0, 6)
-    inputFrameCorner.Parent = inputFrame
+    MkCorner(6, inputFrame)
 
-    local highlight = Instance.new("TextLabel")
-    highlight.AutomaticSize = Enum.AutomaticSize.Y
-    highlight.BackgroundTransparency = 1
-    highlight.FontFace = Inconsolata
-    highlight.Name = "Highlight"
-    highlight.RichText = true
-    highlight.Size = UDim2.new(1, 0, 0, 0)
-    highlight.Text = ""
-    highlight.TextColor3 = Color3.fromRGB(255, 255, 255)
-    highlight.TextSize = 18
-    highlight.TextWrapped = true
-    highlight.TextXAlignment = Enum.TextXAlignment.Left
-    highlight.TextYAlignment = Enum.TextYAlignment.Top
-    highlight.Active = false
-    highlight.Selectable = false
-    highlight.Parent = inputFrame
+    local highlight = MkEl("TextLabel", {AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
+        FontFace = Inconsolata, Name = "Highlight", RichText = true,
+        Size = UDim2.new(1, 0, 0, 0), Text = "",
+        TextColor3 = Color3.fromRGB(255, 255, 255), TextSize = 18,
+        TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Top, Active = false,
+        Selectable = false}, inputFrame)
 
-    local inputBox = Instance.new("TextBox")
-    inputBox.AutomaticSize = Enum.AutomaticSize.Y
-    inputBox.BackgroundTransparency = 1
-    inputBox.BorderSizePixel = 0
-    inputBox.ClearTextOnFocus = false
-    inputBox.FontFace = Inconsolata
-    inputBox.MultiLine = true
-    inputBox.Name = "InputBox"
-    inputBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
-    inputBox.PlaceholderText = "Enter code here..."
-    inputBox.Size = UDim2.new(1, 0, 0, 0)
-    inputBox.Text = ""
-    inputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    inputBox.TextSize = 18
-    inputBox.TextTransparency = 1
-    inputBox.TextWrapped = true
-    inputBox.TextXAlignment = Enum.TextXAlignment.Left
-    inputBox.TextYAlignment = Enum.TextYAlignment.Top
-    inputBox.Parent = inputFrame
+    local inputBox = MkEl("TextBox", {AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
+        BorderSizePixel = 0, ClearTextOnFocus = false, FontFace = Inconsolata,
+        MultiLine = true, Name = "InputBox",
+        PlaceholderColor3 = Color3.fromRGB(255, 255, 255),
+        PlaceholderText = "Enter code here...", Size = UDim2.new(1, 0, 0, 0),
+        Text = "", TextColor3 = Color3.fromRGB(255, 255, 255), TextSize = 18,
+        TextTransparency = 1, TextWrapped = true,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Top}, inputFrame)
 
-    local inputBoxSizeCons = Instance.new("UISizeConstraint")
-    inputBoxSizeCons.MaxSize = Vector2.new(2147483647, 2147483647)
-    inputBoxSizeCons.MinSize = Vector2.new(0, 200)
-    inputBoxSizeCons.Parent = inputBox
+    MkSize(Vector2.new(0, 200), Vector2.new(2147483647, 2147483647), inputBox)
 
     inputBox:GetPropertyChangedSignal("Text"):Connect(function()
         tabData.code = inputBox.Text
@@ -1512,16 +1478,13 @@ function Funcs.LoadAndPlayMusic(index)
         return
     end
 
-    MusicSound = Instance.new("Sound")
-    MusicSound.SoundId = assetId
-    MusicSound.Volume = tonumber(UI.MusicVolumeBox.Text) or 1
-    MusicSound.PlaybackSpeed = tonumber(UI.MusicSpeedBox.Text) or 1
-    MusicSound.Looped = UI.MusicLoopToggle:FindFirstChild("LoopState") and UI.MusicLoopToggle.LoopState.BackgroundColor3 == Color3.fromRGB(0, 255, 0) or false
-    MusicSound.Parent = Workspace
+    MusicSound = MkEl("Sound", {SoundId = assetId, Volume = tonumber(UI.MusicVolumeBox.Text) or 1,
+        PlaybackSpeed = tonumber(UI.MusicSpeedBox.Text) or 1,
+        Looped = UI.MusicLoopToggle:FindFirstChild("LoopState") and UI.MusicLoopToggle.LoopState.BackgroundColor3 == Color3.fromRGB(0, 255, 0) or false}, Workspace)
 
     MusicSound:Play()
     MusicPlaying = true
-    UI.MusicPlayBtn.Text = "⏸"
+    UI.MusicPlayBtn.Text = "I I"
     UI.MusicNowPlaying.Text = Funcs.GetMusicDisplayName(filePath)
 
     MusicSound.Ended:Connect(function()
@@ -1557,59 +1520,30 @@ function Funcs.RefreshMusicList()
         local displayName = Funcs.GetMusicDisplayName(filePath)
         local isActive = (i == MusicIndex and MusicPlaying)
 
-        local row = Instance.new("TextButton")
-        row.BackgroundColor3 = isActive and Settings.AccentColor or Color3.fromRGB(22, 22, 22)
-        row.BackgroundTransparency = isActive and 0.5 or 0
-        row.BorderSizePixel = 0
-        row.Name = "MusicRow_" .. i
-        row.Size = UDim2.new(1, 0, 0, 32)
-        row.Text = ""
-        row.Parent = scroll
+        local row = MkEl("TextButton", {BackgroundColor3 = isActive and Settings.AccentColor or Color3.fromRGB(22, 22, 22),
+            BackgroundTransparency = isActive and 0.5 or 0, BorderSizePixel = 0,
+            Name = "MusicRow_" .. i, Size = UDim2.new(1, 0, 0, 32), Text = ""}, scroll)
 
-        local rowCorner = Instance.new("UICorner")
-        rowCorner.CornerRadius = UDim.new(0, 5)
-        rowCorner.Parent = row
+        MkCorner(5, row)
 
-        local rowStroke = Instance.new("UIStroke")
+        local rowStroke = MkStroke(isActive and Settings.AccentColor or Color3.fromRGB(36, 36, 36), row)
         rowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-        rowStroke.Color = isActive and Settings.AccentColor or Color3.fromRGB(36, 36, 36)
-        rowStroke.Parent = row
 
-        local rowLayout = Instance.new("UIListLayout")
-        rowLayout.FillDirection = Enum.FillDirection.Horizontal
+        local rowLayout = MkList(Enum.FillDirection.Horizontal, 6, row)
         rowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-        rowLayout.Padding = UDim.new(0, 6)
-        rowLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        rowLayout.Parent = row
 
-        local rowPadding = Instance.new("UIPadding")
-        rowPadding.PaddingLeft = UDim.new(0, 10)
-        rowPadding.PaddingRight = UDim.new(0, 10)
-        rowPadding.Parent = row
+        MkPad(10, 10, 0, 0, row)
 
-        local indexLabel = Instance.new("TextLabel")
-        indexLabel.BackgroundTransparency = 1
-        indexLabel.BorderSizePixel = 0
-        indexLabel.FontFace = GothamMedium
-        indexLabel.LayoutOrder = 1
-        indexLabel.Size = UDim2.new(0, 20, 1, 0)
-        indexLabel.Text = tostring(i)
-        indexLabel.TextColor3 = isActive and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(120, 120, 120)
-        indexLabel.TextScaled = true
-        indexLabel.Parent = row
+        MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium,
+            LayoutOrder = 1, Size = UDim2.new(0, 20, 1, 0), Text = tostring(i),
+            TextColor3 = isActive and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(120, 120, 120),
+            TextScaled = true}, row)
 
-        local nameLabel = Instance.new("TextLabel")
-        nameLabel.BackgroundTransparency = 1
-        nameLabel.BorderSizePixel = 0
-        nameLabel.FontFace = GothamMedium
-        nameLabel.LayoutOrder = 2
-        nameLabel.Size = UDim2.new(1, -30, 1, 0)
-        nameLabel.Text = displayName
-        nameLabel.TextColor3 = isActive and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(200, 200, 200)
-        nameLabel.TextScaled = true
-        nameLabel.TextTruncate = Enum.TextTruncate.AtEnd
-        nameLabel.TextXAlignment = Enum.TextXAlignment.Left
-        nameLabel.Parent = row
+        MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium,
+            LayoutOrder = 2, Size = UDim2.new(1, -30, 1, 0), Text = displayName,
+            TextColor3 = isActive and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(200, 200, 200),
+            TextScaled = true, TextTruncate = Enum.TextTruncate.AtEnd,
+            TextXAlignment = Enum.TextXAlignment.Left}, row)
 
         local capturedIndex = i
         row.MouseButton1Click:Connect(function()
@@ -1620,7 +1554,7 @@ end
 
 Funcs.PreloadAssets()
 
-if Env.Lucid.IsLoaded then
+if Env.__Lucid.IsLoaded then
     StarterGui:SetCore("SendNotification", {
         Title = "Lucid Executor",
         Text = "Lucid is already running!",
@@ -1630,226 +1564,112 @@ if Env.Lucid.IsLoaded then
     return
 end
 
-Env.Lucid.IsLoaded = true
+LucidLoaded = true
 
-UI.ScreenGui = Instance.new("ScreenGui")
-UI.ScreenGui.DisplayOrder = 2147483647
-UI.ScreenGui.IgnoreGuiInset = true
-UI.ScreenGui.Name = Funcs.UID()
-UI.ScreenGui.ResetOnSpawn = false
-UI.ScreenGui.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
-UI.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-UI.ScreenGui.Parent = Hui
+UI.ScreenGui = MkEl("ScreenGui", {DisplayOrder = 2147483647, IgnoreGuiInset = true, Name = Funcs.UID(),
+    ResetOnSpawn = false, ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets,
+    ZIndexBehavior = Enum.ZIndexBehavior.Sibling}, Hui)
 
-UI.Show = Instance.new("ImageButton")
-UI.Show.BackgroundColor3 = Color3.fromRGB(19, 19, 22)
-UI.Show.BackgroundTransparency = 0.08
-UI.Show.BorderSizePixel = 0
-UI.Show.Name = "Show"
-UI.Show.Position = UDim2.new(0, 16, 0, 60)
-UI.Show.Size = UDim2.new(0, 44, 0, 44)
-UI.Show.Visible = true
-UI.Show.ZIndex = 3
-UI.Show.Parent = UI.ScreenGui
+UI.Show = MkEl("ImageButton", {BackgroundColor3 = Color3.fromRGB(19, 19, 22), BackgroundTransparency = 0.08,
+    BorderSizePixel = 0, Name = "Show", Position = UDim2.new(0, 16, 0, 60),
+    Size = UDim2.new(0, 44, 0, 44), Visible = true, ZIndex = 3}, UI.ScreenGui)
 
-UI.ShowRatio = Instance.new("UIAspectRatioConstraint")
+UI.ShowRatio = MkAspect(1, UI.Show)
 UI.ShowRatio.Name = "ShowRatio"
-UI.ShowRatio.Parent = UI.Show
 
-UI.ShowCorner = Instance.new("UICorner")
+UI.ShowCorner = MkCorner(0, UI.Show)
 UI.ShowCorner.CornerRadius = UDim.new(1, 0)
-UI.ShowCorner.Parent = UI.Show
 
-UI.ShowIcon = Instance.new("ImageLabel")
-UI.ShowIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-UI.ShowIcon.BackgroundTransparency = 1
-UI.ShowIcon.BorderSizePixel = 0
-UI.ShowIcon.Image = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png")
-UI.ShowIcon.Name = "ShowIcon"
-UI.ShowIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-UI.ShowIcon.Size = UDim2.new(0, 28, 0, 28)
-UI.ShowIcon.Parent = UI.Show
+MkEl("ImageLabel", {AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1, BorderSizePixel = 0,
+    Image = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png"), Name = "ShowIcon",
+    Position = UDim2.new(0.5, 0, 0.5, 0), Size = UDim2.new(0, 28, 0, 28)}, UI.Show)
 
-UI.MainFrame = Instance.new("Frame")
-UI.MainFrame.AutoLocalize = false
-UI.MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-UI.MainFrame.BackgroundTransparency = 0.35
-UI.MainFrame.BorderSizePixel = 0
-UI.MainFrame.Name = "MainFrame"
-UI.MainFrame.Size = UDim2.new(1, 0, 1, 0)
-UI.MainFrame.Visible = false
-UI.MainFrame.Parent = UI.ScreenGui
+UI.MainFrame = MkEl("Frame", {AutoLocalize = false, BackgroundColor3 = Color3.fromRGB(10, 10, 10),
+    BackgroundTransparency = 0.35, BorderSizePixel = 0, Name = "MainFrame",
+    Size = UDim2.new(1, 0, 1, 0), Visible = false}, UI.ScreenGui)
 
-UI.MainFrameLayout = Instance.new("UIListLayout")
-UI.MainFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.MainFrameLayout = MkList(Enum.FillDirection.Horizontal, 0, UI.MainFrame)
 UI.MainFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
 UI.MainFrameLayout.Name = "MainFrameLayout"
-UI.MainFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.MainFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.MainFrameLayout.Parent = UI.MainFrame
 
-UI.Pages = Instance.new("Frame")
-UI.Pages.BackgroundTransparency = 1
-UI.Pages.BorderSizePixel = 0
-UI.Pages.LayoutOrder = 1
-UI.Pages.Name = "Pages"
-UI.Pages.Size = UDim2.new(0, 576, 0, 116)
-UI.Pages.Parent = UI.MainFrame
+UI.Pages = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 1, Name = "Pages",
+    Size = UDim2.new(0, 576, 0, 116)}, UI.MainFrame)
 
-UI.PagesPadding = Instance.new("UIPadding")
+UI.PagesPadding = MkPad(8, 0, 60, 8, UI.Pages)
 UI.PagesPadding.Name = "PagesPadding"
-UI.PagesPadding.PaddingBottom = UDim.new(0, 8)
-UI.PagesPadding.PaddingLeft = UDim.new(0, 8)
-UI.PagesPadding.PaddingTop = UDim.new(0, 60)
-UI.PagesPadding.Parent = UI.Pages
 
-UI.HomeContent = Instance.new("CanvasGroup")
-UI.HomeContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-UI.HomeContent.BorderSizePixel = 0
-UI.HomeContent.LayoutOrder = 1
-UI.HomeContent.Name = "HomeContent"
-UI.HomeContent.Size = UDim2.new(1, 0, 1, 0)
-UI.HomeContent.Visible = false
-UI.HomeContent.Parent = UI.Pages
+UI.HomeContent = MkEl("CanvasGroup", {BackgroundColor3 = Color3.fromRGB(18, 18, 18), BorderSizePixel = 0,
+    LayoutOrder = 1, Name = "HomeContent", Size = UDim2.new(1, 0, 1, 0),
+    Visible = false}, UI.Pages)
 
-UI.HomeContentCorner = Instance.new("UICorner")
-UI.HomeContentCorner.CornerRadius = UDim.new(0, 6)
-UI.HomeContentCorner.Parent = UI.HomeContent
+MkCorner(6, UI.HomeContent)
 
-UI.HomeContentStroke = Instance.new("UIStroke")
+UI.HomeContentStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.HomeContent)
 UI.HomeContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.HomeContentStroke.Color = Color3.fromRGB(0, 99, 255)
 UI.HomeContentStroke.Name = "HomeContentStroke"
-UI.HomeContentStroke.Parent = UI.HomeContent
 
-UI.HomeContentLayout = Instance.new("UIListLayout")
+UI.HomeContentLayout = MkList(Enum.FillDirection.Vertical, 6, UI.HomeContent)
 UI.HomeContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.HomeContentLayout.Padding = UDim.new(0, 6)
-UI.HomeContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.HomeContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.HomeContentLayout.Parent = UI.HomeContent
 
-UI.HomeInfo = Instance.new("ScrollingFrame")
-UI.HomeInfo.AutomaticCanvasSize = Enum.AutomaticSize.Y
-UI.HomeInfo.BackgroundTransparency = 1
-UI.HomeInfo.BorderSizePixel = 0
-UI.HomeInfo.CanvasSize = UDim2.new(0, 0, 0, 0)
-UI.HomeInfo.Name = "HomeInfo"
-UI.HomeInfo.ScrollBarThickness = 0
-UI.HomeInfo.ScrollingDirection = Enum.ScrollingDirection.Y
-UI.HomeInfo.Size = UDim2.new(1, 0, 1, 0)
-UI.HomeInfo.Parent = UI.HomeContent
+UI.HomeInfo = MkEl("ScrollingFrame", {AutomaticCanvasSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
+    BorderSizePixel = 0, CanvasSize = UDim2.new(0, 0, 0, 0),
+    Name = "HomeInfo", ScrollBarThickness = 0,
+    ScrollingDirection = Enum.ScrollingDirection.Y,
+    Size = UDim2.new(1, 0, 1, 0)}, UI.HomeContent)
 
-UI.HomeInfoPadding = Instance.new("UIPadding")
-UI.HomeInfoPadding.PaddingBottom = UDim.new(0, 5)
-UI.HomeInfoPadding.PaddingLeft = UDim.new(0, 5)
-UI.HomeInfoPadding.PaddingRight = UDim.new(0, 5)
-UI.HomeInfoPadding.PaddingTop = UDim.new(0, 5)
-UI.HomeInfoPadding.Parent = UI.HomeInfo
+MkPad(5, 5, 5, 5, UI.HomeInfo)
 
-UI.HomeInfoLayout = Instance.new("UIListLayout")
+UI.HomeInfoLayout = MkList(Enum.FillDirection.Vertical, 6, UI.HomeInfo)
 UI.HomeInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.HomeInfoLayout.Padding = UDim.new(0, 6)
-UI.HomeInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UI.HomeInfoLayout.Parent = UI.HomeInfo
 
-UI.PlayerStats = Instance.new("Frame")
-UI.PlayerStats.BackgroundTransparency = 1
-UI.PlayerStats.BorderSizePixel = 0
-UI.PlayerStats.LayoutOrder = 1
-UI.PlayerStats.Name = "PlayerStats"
-UI.PlayerStats.Size = UDim2.new(1, 0, 0, 400)
-UI.PlayerStats.Parent = UI.HomeInfo
+UI.PlayerStats = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 1,
+    Name = "PlayerStats", Size = UDim2.new(1, 0, 0, 400)}, UI.HomeInfo)
 
-UI.PlayerStatsLayout = Instance.new("UIListLayout")
-UI.PlayerStatsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.PlayerStatsLayout = MkList(Enum.FillDirection.Horizontal, 6, UI.PlayerStats)
 UI.PlayerStatsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.PlayerStatsLayout.Padding = UDim.new(0, 6)
-UI.PlayerStatsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.PlayerStatsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.PlayerStatsLayout.Parent = UI.PlayerStats
 
-UI.Avatar = Instance.new("Frame")
-UI.Avatar.BackgroundTransparency = 1
-UI.Avatar.BorderSizePixel = 0
-UI.Avatar.LayoutOrder = 1
-UI.Avatar.Name = "Avatar"
-UI.Avatar.Size = UDim2.new(0, 0, 1, 0)
-UI.Avatar.Parent = UI.PlayerStats
+UI.Avatar = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 1, Name = "Avatar",
+    Size = UDim2.new(0, 0, 1, 0)}, UI.PlayerStats)
 
-UI.PlayerHeadshot = Instance.new("ImageLabel")
-UI.PlayerHeadshot.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.PlayerHeadshot.BorderSizePixel = 0
-UI.PlayerHeadshot.Interactable = false
-UI.PlayerHeadshot.Name = "PlayerHeadshot"
-UI.PlayerHeadshot.ScaleType = Enum.ScaleType.Fit
-UI.PlayerHeadshot.Size = UDim2.new(1, 0, 1, 0)
-UI.PlayerHeadshot.Parent = UI.Avatar
+UI.PlayerHeadshot = MkEl("ImageLabel", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+    Interactable = false, Name = "PlayerHeadshot",
+    ScaleType = Enum.ScaleType.Fit, Size = UDim2.new(1, 0, 1, 0)}, UI.Avatar)
 
-UI.PlayerHeadshotRatio = Instance.new("UIAspectRatioConstraint")
-UI.PlayerHeadshotRatio.Parent = UI.PlayerHeadshot
+MkAspect(1, UI.PlayerHeadshot)
 
-UI.PlayerHeadshotCorner = Instance.new("UICorner")
-UI.PlayerHeadshotCorner.CornerRadius = UDim.new(0, 6)
-UI.PlayerHeadshotCorner.Parent = UI.PlayerHeadshot
+MkCorner(6, UI.PlayerHeadshot)
 
-UI.PlayerHeadshotStroke = Instance.new("UIStroke")
-UI.PlayerHeadshotStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.PlayerHeadshotStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.PlayerHeadshot)
 UI.PlayerHeadshotStroke.Name = "PlayerHeadshotStroke"
-UI.PlayerHeadshotStroke.Parent = UI.PlayerHeadshot
 
-UI.PlayerInfo = Instance.new("Frame")
-UI.PlayerInfo.BackgroundTransparency = 1
-UI.PlayerInfo.BorderSizePixel = 0
-UI.PlayerInfo.LayoutOrder = 2
-UI.PlayerInfo.Name = "PlayerInfo"
-UI.PlayerInfo.Size = UDim2.new(0.75, 0, 1, 0)
-UI.PlayerInfo.Parent = UI.PlayerStats
+UI.PlayerInfo = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 2,
+    Name = "PlayerInfo", Size = UDim2.new(0.75, 0, 1, 0)}, UI.PlayerStats)
 
-UI.PlayerInfoLayout = Instance.new("UIListLayout")
+UI.PlayerInfoLayout = MkList(Enum.FillDirection.Vertical, 6, UI.PlayerInfo)
 UI.PlayerInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.PlayerInfoLayout.Padding = UDim.new(0, 6)
-UI.PlayerInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.PlayerInfoLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.PlayerInfoLayout.Parent = UI.PlayerInfo
 
-UI.WelcomeLabel = Instance.new("TextLabel")
-UI.WelcomeLabel.BackgroundTransparency = 1
-UI.WelcomeLabel.BorderSizePixel = 0
-UI.WelcomeLabel.FontFace = GothamMedium
-UI.WelcomeLabel.Name = "WelcomeLabel"
-UI.WelcomeLabel.Size = UDim2.new(0, 432, 0, 0)
-UI.WelcomeLabel.Text = "Welcome to Lucid, DisplayName!"
-UI.WelcomeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.WelcomeLabel.TextScaled = true
-UI.WelcomeLabel.TextSize = 20
-UI.WelcomeLabel.TextWrapped = true
-UI.WelcomeLabel.Parent = UI.PlayerInfo
+UI.WelcomeLabel = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0,
+    FontFace = GothamMedium, Name = "WelcomeLabel",
+    Size = UDim2.new(0, 432, 0, 0), Text = "Welcome to Lucid, DisplayName!",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextSize = 20, TextWrapped = true}, UI.PlayerInfo)
 
-UI.WelcomeLabelStroke = Instance.new("UIStroke")
-UI.WelcomeLabelStroke.Color = Color3.fromRGB(0, 94, 255)
+UI.WelcomeLabelStroke = MkStroke(Color3.fromRGB(0, 94, 255), UI.WelcomeLabel)
 UI.WelcomeLabelStroke.Name = "WelcomeLabelStroke"
-UI.WelcomeLabelStroke.Parent = UI.WelcomeLabel
 
-UI.InfoLabel = Instance.new("TextLabel")
-UI.InfoLabel.BackgroundTransparency = 1
-UI.InfoLabel.BorderSizePixel = 0
-UI.InfoLabel.FontFace = GothamMedium
-UI.InfoLabel.Name = "InfoLabel"
-UI.InfoLabel.RichText = true
-UI.InfoLabel.Size = UDim2.new(1, 0, 0.75, 0)
-UI.InfoLabel.Text = "Loading..."
-UI.InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.InfoLabel.TextScaled = true
-UI.InfoLabel.TextWrapped = true
-UI.InfoLabel.TextXAlignment = Enum.TextXAlignment.Left
-UI.InfoLabel.TextYAlignment = Enum.TextYAlignment.Top
-UI.InfoLabel.Parent = UI.PlayerInfo
+UI.InfoLabel = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium,
+    Name = "InfoLabel", RichText = true, Size = UDim2.new(1, 0, 0.75, 0),
+    Text = "Loading...", TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true, TextWrapped = true,
+    TextXAlignment = Enum.TextXAlignment.Left,
+    TextYAlignment = Enum.TextYAlignment.Top}, UI.PlayerInfo)
 
-UI.InfoLabelStroke = Instance.new("UIStroke")
-UI.InfoLabelStroke.Color = Color3.fromRGB(0, 64, 180)
+UI.InfoLabelStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.InfoLabel)
 UI.InfoLabelStroke.Name = "InfoLabelStroke"
-UI.InfoLabelStroke.Parent = UI.InfoLabel
 
 UI.InfoLabel2 = Instance.new("TextLabel")
 UI.InfoLabel2.AutomaticSize = Enum.AutomaticSize.Y
@@ -1903,7 +1723,7 @@ Use the search bar to quickly find saved scripts, or create a new one with:
 
 • <b>Title</b>
 • <b>Description</b>
-• <b>Code</b>
+• <b>Source</b>
 
 Saved scripts can be <b>executed</b> or <b>deleted</b> whenever you want.
 
@@ -1934,1276 +1754,603 @@ UI.InfoLabel2.TextSize = 14
 UI.InfoLabel2.TextWrapped = true
 UI.InfoLabel2.Parent = UI.HomeInfo
 
-UI.InfoLabel2Stroke = Instance.new("UIStroke")
-UI.InfoLabel2Stroke.Color = Color3.fromRGB(0, 64, 180)
+UI.InfoLabel2Stroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.InfoLabel2)
 UI.InfoLabel2Stroke.Name = "InfoLabel2Stroke"
-UI.InfoLabel2Stroke.Parent = UI.InfoLabel2
 
-UI.ExeContent = Instance.new("CanvasGroup")
-UI.ExeContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-UI.ExeContent.BorderSizePixel = 0
-UI.ExeContent.LayoutOrder = 1
-UI.ExeContent.Name = "ExeContent"
-UI.ExeContent.Size = UDim2.new(1, 0, 1, 0)
-UI.ExeContent.Visible = false
-UI.ExeContent.Parent = UI.Pages
+UI.ExeContent = MkEl("CanvasGroup", {BackgroundColor3 = Color3.fromRGB(18, 18, 18), BorderSizePixel = 0,
+    LayoutOrder = 1, Name = "ExeContent", Size = UDim2.new(1, 0, 1, 0),
+    Visible = false}, UI.Pages)
 
-UI.ExeContentCorner = Instance.new("UICorner")
-UI.ExeContentCorner.CornerRadius = UDim.new(0, 6)
-UI.ExeContentCorner.Parent = UI.ExeContent
+MkCorner(6, UI.ExeContent)
 
-UI.ExeContentStroke = Instance.new("UIStroke")
+UI.ExeContentStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.ExeContent)
 UI.ExeContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.ExeContentStroke.Color = Color3.fromRGB(0, 99, 255)
 UI.ExeContentStroke.Name = "ExeContentStroke"
-UI.ExeContentStroke.Parent = UI.ExeContent
 
-UI.ExeContentLayout = Instance.new("UIListLayout")
+UI.ExeContentLayout = MkList(Enum.FillDirection.Vertical, 4, UI.ExeContent)
 UI.ExeContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.ExeContentLayout.Padding = UDim.new(0, 4)
-UI.ExeContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.ExeContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.ExeContentLayout.Parent = UI.ExeContent
 
-UI.ExeContentPadding = Instance.new("UIPadding")
-UI.ExeContentPadding.PaddingBottom = UDim.new(0, 5)
-UI.ExeContentPadding.PaddingLeft = UDim.new(0, 5)
-UI.ExeContentPadding.PaddingRight = UDim.new(0, 5)
-UI.ExeContentPadding.PaddingTop = UDim.new(0, 5)
-UI.ExeContentPadding.Parent = UI.ExeContent
+MkPad(5, 5, 5, 5, UI.ExeContent)
 
-UI.ExeTabBarWrapper = Instance.new("Frame")
-UI.ExeTabBarWrapper.BackgroundTransparency = 1
-UI.ExeTabBarWrapper.BorderSizePixel = 0
-UI.ExeTabBarWrapper.LayoutOrder = 1
-UI.ExeTabBarWrapper.Name = "ExeTabBarWrapper"
-UI.ExeTabBarWrapper.Size = UDim2.new(1, 0, 0, 30)
-UI.ExeTabBarWrapper.Parent = UI.ExeContent
+UI.ExeTabBarWrapper = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 1,
+    Name = "ExeTabBarWrapper", Size = UDim2.new(1, 0, 0, 30)}, UI.ExeContent)
 
-UI.ExeTabBarWrapperLayout = Instance.new("UIListLayout")
-UI.ExeTabBarWrapperLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ExeTabBarWrapperLayout = MkList(Enum.FillDirection.Horizontal, 4, UI.ExeTabBarWrapper)
 UI.ExeTabBarWrapperLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.ExeTabBarWrapperLayout.Padding = UDim.new(0, 4)
-UI.ExeTabBarWrapperLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.ExeTabBarWrapperLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.ExeTabBarWrapperLayout.Parent = UI.ExeTabBarWrapper
 
-UI.ExeTabBarSizeCons = Instance.new("UISizeConstraint")
-UI.ExeTabBarSizeCons.MaxSize = Vector2.new(2147483647, 30)
-UI.ExeTabBarSizeCons.MinSize = Vector2.new(0, 30)
-UI.ExeTabBarSizeCons.Parent = UI.ExeTabBarWrapper
+MkSize(Vector2.new(0, 30), Vector2.new(2147483647, 30), UI.ExeTabBarWrapper)
 
-UI.ExeTabBarScroll = Instance.new("ScrollingFrame")
-UI.ExeTabBarScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
-UI.ExeTabBarScroll.BackgroundTransparency = 1
-UI.ExeTabBarScroll.BorderSizePixel = 0
-UI.ExeTabBarScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-UI.ExeTabBarScroll.LayoutOrder = 1
-UI.ExeTabBarScroll.Name = "ExeTabBarScroll"
-UI.ExeTabBarScroll.ScrollBarThickness = 3
-UI.ExeTabBarScroll.ScrollingDirection = Enum.ScrollingDirection.X
-UI.ExeTabBarScroll.Size = UDim2.new(1, -38, 1, 0)
-UI.ExeTabBarScroll.Parent = UI.ExeTabBarWrapper
+UI.ExeTabBarScroll = MkEl("ScrollingFrame", {AutomaticCanvasSize = Enum.AutomaticSize.X,
+    BackgroundTransparency = 1, BorderSizePixel = 0,
+    CanvasSize = UDim2.new(0, 0, 0, 0), LayoutOrder = 1,
+    Name = "ExeTabBarScroll", ScrollBarThickness = 3,
+    ScrollingDirection = Enum.ScrollingDirection.X,
+    Size = UDim2.new(1, -38, 1, 0)}, UI.ExeTabBarWrapper)
 
-UI.ExeTabBarScrollLayout = Instance.new("UIListLayout")
-UI.ExeTabBarScrollLayout.FillDirection = Enum.FillDirection.Horizontal
-UI.ExeTabBarScrollLayout.Padding = UDim.new(0, 4)
-UI.ExeTabBarScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.ExeTabBarScrollLayout = MkList(Enum.FillDirection.Horizontal, 4, UI.ExeTabBarScroll)
 UI.ExeTabBarScrollLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-UI.ExeTabBarScrollLayout.Parent = UI.ExeTabBarScroll
 
-UI.ExeTabBarScrollPadding = Instance.new("UIPadding")
-UI.ExeTabBarScrollPadding.PaddingLeft = UDim.new(0, 2)
-UI.ExeTabBarScrollPadding.Parent = UI.ExeTabBarScroll
+MkPad(2, 0, 0, 0, UI.ExeTabBarScroll)
 
-UI.AddExeTabBtn = Instance.new("TextButton")
-UI.AddExeTabBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.AddExeTabBtn.BorderSizePixel = 0
-UI.AddExeTabBtn.FontFace = GothamBold
-UI.AddExeTabBtn.LayoutOrder = 2
-UI.AddExeTabBtn.Name = "AddExeTabBtn"
-UI.AddExeTabBtn.Size = UDim2.new(0, 30, 1, 0)
-UI.AddExeTabBtn.Text = "+"
-UI.AddExeTabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.AddExeTabBtn.TextScaled = true
-UI.AddExeTabBtn.Parent = UI.ExeTabBarWrapper
+UI.AddExeTabBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamBold, LayoutOrder = 2, Name = "AddExeTabBtn",
+    Size = UDim2.new(0, 30, 1, 0), Text = "+",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true}, UI.ExeTabBarWrapper)
 
-UI.AddExeTabBtnCorner = Instance.new("UICorner")
-UI.AddExeTabBtnCorner.CornerRadius = UDim.new(0, 5)
-UI.AddExeTabBtnCorner.Parent = UI.AddExeTabBtn
+MkCorner(5, UI.AddExeTabBtn)
 
-UI.AddExeTabBtnStroke = Instance.new("UIStroke")
+UI.AddExeTabBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.AddExeTabBtn)
 UI.AddExeTabBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.AddExeTabBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.AddExeTabBtnStroke.Name = "AddExeTabBtnStroke"
-UI.AddExeTabBtnStroke.Parent = UI.AddExeTabBtn
 
-UI.AddExeTabBtnRatio = Instance.new("UIAspectRatioConstraint")
-UI.AddExeTabBtnRatio.Parent = UI.AddExeTabBtn
+MkAspect(1, UI.AddExeTabBtn)
   
-UI.ExeEditorArea = Instance.new("Frame")
-UI.ExeEditorArea.BackgroundTransparency = 1
-UI.ExeEditorArea.BorderSizePixel = 0
-UI.ExeEditorArea.LayoutOrder = 2
-UI.ExeEditorArea.Name = "ExeEditorArea"
-UI.ExeEditorArea.Size = UDim2.new(1, 0, 1, 0)
-UI.ExeEditorArea.Parent = UI.ExeContent
+UI.ExeEditorArea = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 2,
+    Name = "ExeEditorArea", Size = UDim2.new(1, 0, 1, 0)}, UI.ExeContent)
 
-UI.ExeBottomButtons = Instance.new("Frame")
-UI.ExeBottomButtons.BackgroundTransparency = 1
-UI.ExeBottomButtons.BorderSizePixel = 0
-UI.ExeBottomButtons.LayoutOrder = 3
-UI.ExeBottomButtons.Name = "ExeBottomButtons"
-UI.ExeBottomButtons.Size = UDim2.new(1, 0, 0, 38)
-UI.ExeBottomButtons.Visible = false
-UI.ExeBottomButtons.Parent = UI.ExeContent
+UI.ExeBottomButtons = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 3,
+    Name = "ExeBottomButtons", Size = UDim2.new(1, 0, 0, 38),
+    Visible = false}, UI.ExeContent)
 
-UI.ExeBottomButtonsSizeCons = Instance.new("UISizeConstraint")
-UI.ExeBottomButtonsSizeCons.MaxSize = Vector2.new(2147483647, 38)
-UI.ExeBottomButtonsSizeCons.Parent = UI.ExeBottomButtons
+MkSize(nil, Vector2.new(2147483647, 38), UI.ExeBottomButtons)
 
-UI.ExeBottomButtonsLayout = Instance.new("UIListLayout")
-UI.ExeBottomButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ExeBottomButtonsLayout = MkList(Enum.FillDirection.Horizontal, 6, UI.ExeBottomButtons)
 UI.ExeBottomButtonsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.ExeBottomButtonsLayout.Padding = UDim.new(0, 6)
-UI.ExeBottomButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.ExeBottomButtonsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.ExeBottomButtonsLayout.Parent = UI.ExeBottomButtons
 
-UI.ExeBtn = Instance.new("TextButton")
-UI.ExeBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.ExeBtn.BorderSizePixel = 0
-UI.ExeBtn.FontFace = BuilderSans
-UI.ExeBtn.LayoutOrder = 1
-UI.ExeBtn.Name = "ExeBtn"
-UI.ExeBtn.Size = UDim2.new(0.2, 0, 1, 0)
-UI.ExeBtn.Text = "Execute"
-UI.ExeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.ExeBtn.TextScaled = true
-UI.ExeBtn.TextWrapped = true
-UI.ExeBtn.Parent = UI.ExeBottomButtons
+UI.ExeBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = BuilderSans, LayoutOrder = 1, Name = "ExeBtn",
+    Size = UDim2.new(0.2, 0, 1, 0), Text = "Execute",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.ExeBottomButtons)
 
-UI.ExeBtnCorner = Instance.new("UICorner")
-UI.ExeBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.ExeBtnCorner.Parent = UI.ExeBtn
+MkCorner(6, UI.ExeBtn)
 
-UI.ExeBtnStroke = Instance.new("UIStroke")
+UI.ExeBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.ExeBtn)
 UI.ExeBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.ExeBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.ExeBtnStroke.Name = "ExeBtnStroke"
-UI.ExeBtnStroke.Parent = UI.ExeBtn
 
-UI.ExeBtnPadding = Instance.new("UIPadding")
-UI.ExeBtnPadding.PaddingBottom = UDim.new(0, 4)
-UI.ExeBtnPadding.PaddingLeft = UDim.new(0, 4)
-UI.ExeBtnPadding.PaddingRight = UDim.new(0, 4)
-UI.ExeBtnPadding.PaddingTop = UDim.new(0, 4)
-UI.ExeBtnPadding.Parent = UI.ExeBtn
+MkPad(4, 4, 4, 4, UI.ExeBtn)
 
-UI.ClrBtn = Instance.new("TextButton")
-UI.ClrBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.ClrBtn.BorderSizePixel = 0
-UI.ClrBtn.FontFace = BuilderSans
-UI.ClrBtn.LayoutOrder = 2
-UI.ClrBtn.Name = "ClrBtn"
-UI.ClrBtn.Size = UDim2.new(0.2, 0, 1, 0)
-UI.ClrBtn.Text = "Clear"
-UI.ClrBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.ClrBtn.TextScaled = true
-UI.ClrBtn.TextWrapped = true
-UI.ClrBtn.Parent = UI.ExeBottomButtons
+UI.ClrBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = BuilderSans, LayoutOrder = 2, Name = "ClrBtn",
+    Size = UDim2.new(0.2, 0, 1, 0), Text = "Clear",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.ExeBottomButtons)
 
-UI.ClrBtnCorner = Instance.new("UICorner")
-UI.ClrBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.ClrBtnCorner.Parent = UI.ClrBtn
+MkCorner(6, UI.ClrBtn)
 
-UI.ClrBtnStroke = Instance.new("UIStroke")
+UI.ClrBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.ClrBtn)
 UI.ClrBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.ClrBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.ClrBtnStroke.Name = "ClrBtnStroke"
-UI.ClrBtnStroke.Parent = UI.ClrBtn
 
-UI.ClrBtnPadding = Instance.new("UIPadding")
-UI.ClrBtnPadding.PaddingBottom = UDim.new(0, 4)
-UI.ClrBtnPadding.PaddingLeft = UDim.new(0, 4)
-UI.ClrBtnPadding.PaddingRight = UDim.new(0, 4)
-UI.ClrBtnPadding.PaddingTop = UDim.new(0, 4)
-UI.ClrBtnPadding.Parent = UI.ClrBtn
+MkPad(4, 4, 4, 4, UI.ClrBtn)
 
-UI.CopyBtn = Instance.new("TextButton")
-UI.CopyBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.CopyBtn.BorderSizePixel = 0
-UI.CopyBtn.FontFace = BuilderSans
-UI.CopyBtn.LayoutOrder = 3
-UI.CopyBtn.Name = "CopyBtn"
-UI.CopyBtn.Size = UDim2.new(0.2, 0, 1, 0)
-UI.CopyBtn.Text = "Copy"
-UI.CopyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.CopyBtn.TextScaled = true
-UI.CopyBtn.TextWrapped = true
-UI.CopyBtn.Parent = UI.ExeBottomButtons
+UI.CopyBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = BuilderSans, LayoutOrder = 3, Name = "CopyBtn",
+    Size = UDim2.new(0.2, 0, 1, 0), Text = "Copy",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.ExeBottomButtons)
 
-UI.CopyBtnCorner = Instance.new("UICorner")
-UI.CopyBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.CopyBtnCorner.Parent = UI.CopyBtn
+MkCorner(6, UI.CopyBtn)
 
-UI.CopyBtnStroke = Instance.new("UIStroke")
+UI.CopyBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.CopyBtn)
 UI.CopyBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.CopyBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.CopyBtnStroke.Name = "CopyBtnStroke"
-UI.CopyBtnStroke.Parent = UI.CopyBtn
 
-UI.CopyBtnPadding = Instance.new("UIPadding")
-UI.CopyBtnPadding.PaddingBottom = UDim.new(0, 4)
-UI.CopyBtnPadding.PaddingLeft = UDim.new(0, 4)
-UI.CopyBtnPadding.PaddingRight = UDim.new(0, 4)
-UI.CopyBtnPadding.PaddingTop = UDim.new(0, 4)
-UI.CopyBtnPadding.Parent = UI.CopyBtn
+MkPad(4, 4, 4, 4, UI.CopyBtn)
 
-UI.SearchContent = Instance.new("CanvasGroup")
-UI.SearchContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-UI.SearchContent.BorderSizePixel = 0
-UI.SearchContent.LayoutOrder = 2
-UI.SearchContent.Name = "SearchContent"
-UI.SearchContent.Size = UDim2.new(1, 0, 1, 0)
-UI.SearchContent.Visible = false
-UI.SearchContent.Parent = UI.Pages
+UI.SearchContent = MkEl("CanvasGroup", {BackgroundColor3 = Color3.fromRGB(18, 18, 18), BorderSizePixel = 0,
+    LayoutOrder = 2, Name = "SearchContent",
+    Size = UDim2.new(1, 0, 1, 0), Visible = false}, UI.Pages)
 
-UI.SearchContentPadding = Instance.new("UIPadding")
-UI.SearchContentPadding.PaddingBottom = UDim.new(0, 6)
-UI.SearchContentPadding.PaddingLeft = UDim.new(0, 6)
-UI.SearchContentPadding.PaddingRight = UDim.new(0, 6)
-UI.SearchContentPadding.PaddingTop = UDim.new(0, 6)
-UI.SearchContentPadding.Parent = UI.SearchContent
+MkPad(6, 6, 6, 6, UI.SearchContent)
 
-UI.SearchContentLayout = Instance.new("UIListLayout")
+UI.SearchContentLayout = MkList(Enum.FillDirection.Vertical, 6, UI.SearchContent)
 UI.SearchContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SearchContentLayout.Padding = UDim.new(0, 6)
-UI.SearchContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.SearchContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.SearchContentLayout.Parent = UI.SearchContent
 
-UI.SearchContentCorner = Instance.new("UICorner")
-UI.SearchContentCorner.CornerRadius = UDim.new(0, 6)
-UI.SearchContentCorner.Parent = UI.SearchContent
+MkCorner(6, UI.SearchContent)
 
-UI.SearchContentStroke = Instance.new("UIStroke")
+UI.SearchContentStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.SearchContent)
 UI.SearchContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.SearchContentStroke.Color = Color3.fromRGB(0, 99, 255)
 UI.SearchContentStroke.Name = "SearchContentStroke"
-UI.SearchContentStroke.Parent = UI.SearchContent
 
-UI.SearchFrame = Instance.new("Frame")
-UI.SearchFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.SearchFrame.BorderSizePixel = 0
-UI.SearchFrame.LayoutOrder = 1
-UI.SearchFrame.Name = "SearchFrame"
-UI.SearchFrame.Size = UDim2.new(1, 0, 0, 30)
-UI.SearchFrame.Parent = UI.SearchContent
+UI.SearchFrame = MkEl("Frame", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+    LayoutOrder = 1, Name = "SearchFrame", Size = UDim2.new(1, 0, 0, 30)}, UI.SearchContent)
 
-UI.SearchFrameLayout = Instance.new("UIListLayout")
-UI.SearchFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.SearchFrameLayout = MkList(Enum.FillDirection.Horizontal, 2, UI.SearchFrame)
 UI.SearchFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SearchFrameLayout.Padding = UDim.new(0, 2)
-UI.SearchFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.SearchFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.SearchFrameLayout.Parent = UI.SearchFrame
 
-UI.SearchFrameSizeCons = Instance.new("UISizeConstraint")
-UI.SearchFrameSizeCons.MaxSize = Vector2.new(2147483647, 30)
-UI.SearchFrameSizeCons.MinSize = Vector2.new(0, 30)
-UI.SearchFrameSizeCons.Parent = UI.SearchFrame
+MkSize(Vector2.new(0, 30), Vector2.new(2147483647, 30), UI.SearchFrame)
 
-UI.SearchFrameCorner = Instance.new("UICorner")
-UI.SearchFrameCorner.CornerRadius = UDim.new(0, 6)
-UI.SearchFrameCorner.Parent = UI.SearchFrame
+MkCorner(6, UI.SearchFrame)
 
-UI.SearchFrameStroke = Instance.new("UIStroke")
+UI.SearchFrameStroke = MkStroke(Color3.fromRGB(36, 36, 36), UI.SearchFrame)
 UI.SearchFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.SearchFrameStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.SearchFrameStroke.Parent = UI.SearchFrame
 
-UI.SourceBtn = Instance.new("TextButton")
-UI.SourceBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.SourceBtn.BorderSizePixel = 0
-UI.SourceBtn.FontFace = BuilderSans
-UI.SourceBtn.LayoutOrder = 1
-UI.SourceBtn.Name = "SourceBtn"
-UI.SourceBtn.Size = UDim2.new(0.24, 0, 1, 0)
-UI.SourceBtn.Text = "🟢 Source: RScripts"
-UI.SourceBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.SourceBtn.TextScaled = true
-UI.SourceBtn.TextWrapped = true
-UI.SourceBtn.Parent = UI.SearchFrame
+UI.SourceBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = BuilderSans, LayoutOrder = 1, Name = "SourceBtn",
+    Size = UDim2.new(0.24, 0, 1, 0), Text = "🟢 Source: RScripts",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.SearchFrame)
 
-UI.SourceBtnCorner = Instance.new("UICorner")
-UI.SourceBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.SourceBtnCorner.Parent = UI.SourceBtn
+MkCorner(6, UI.SourceBtn)
 
-UI.SourceBtnStroke = Instance.new("UIStroke")
+UI.SourceBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.SourceBtn)
 UI.SourceBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.SourceBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.SourceBtnStroke.Name = "SourceBtnStroke"
-UI.SourceBtnStroke.Parent = UI.SourceBtn
 
-UI.SourceBtnPadding = Instance.new("UIPadding")
-UI.SourceBtnPadding.PaddingBottom = UDim.new(0, 4)
-UI.SourceBtnPadding.PaddingLeft = UDim.new(0, 4)
-UI.SourceBtnPadding.PaddingRight = UDim.new(0, 4)
-UI.SourceBtnPadding.PaddingTop = UDim.new(0, 4)
-UI.SourceBtnPadding.Parent = UI.SourceBtn
+MkPad(4, 4, 4, 4, UI.SourceBtn)
 
-UI.SearchBox = Instance.new("TextBox")
-UI.SearchBox.BackgroundTransparency = 1
-UI.SearchBox.BorderSizePixel = 0
-UI.SearchBox.FontFace = GothamMedium
-UI.SearchBox.LayoutOrder = 2
-UI.SearchBox.Name = "SearchBox"
-UI.SearchBox.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
-UI.SearchBox.PlaceholderText = "Search for scripts..."
-UI.SearchBox.Size = UDim2.new(0.52, 0, 1, 0)
-UI.SearchBox.Text = ""
-UI.SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.SearchBox.TextScaled = true
-UI.SearchBox.TextWrapped = true
-UI.SearchBox.TextXAlignment = Enum.TextXAlignment.Left
-UI.SearchBox.Parent = UI.SearchFrame
+UI.SearchBox = MkEl("TextBox", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium,
+    LayoutOrder = 2, Name = "SearchBox",
+    PlaceholderColor3 = Color3.fromRGB(255, 255, 255),
+    PlaceholderText = "Search for scripts...", Size = UDim2.new(0.52, 0, 1, 0),
+    Text = "", TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left}, UI.SearchFrame)
 
-UI.SearchBoxPadding = Instance.new("UIPadding")
-UI.SearchBoxPadding.PaddingBottom = UDim.new(0, 6)
-UI.SearchBoxPadding.PaddingLeft = UDim.new(0, 6)
-UI.SearchBoxPadding.PaddingRight = UDim.new(0, 6)
-UI.SearchBoxPadding.PaddingTop = UDim.new(0, 6)
-UI.SearchBoxPadding.Parent = UI.SearchBox
+MkPad(6, 6, 6, 6, UI.SearchBox)
 
-UI.FilterBtn = Instance.new("TextButton")
-UI.FilterBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.FilterBtn.BorderSizePixel = 0
-UI.FilterBtn.FontFace = BuilderSans
-UI.FilterBtn.LayoutOrder = 3
-UI.FilterBtn.Name = "FilterBtn"
-UI.FilterBtn.Size = UDim2.new(0.24, 0, 1, 0)
-UI.FilterBtn.Text = "Filter: All"
-UI.FilterBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.FilterBtn.TextScaled = true
-UI.FilterBtn.TextWrapped = true
-UI.FilterBtn.Parent = UI.SearchFrame
+UI.FilterBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = BuilderSans, LayoutOrder = 3, Name = "FilterBtn",
+    Size = UDim2.new(0.24, 0, 1, 0), Text = "Filter: All",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.SearchFrame)
 
-UI.FilterBtnCorner = Instance.new("UICorner")
-UI.FilterBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.FilterBtnCorner.Parent = UI.FilterBtn
+MkCorner(6, UI.FilterBtn)
 
-UI.FilterBtnStroke = Instance.new("UIStroke")
+UI.FilterBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.FilterBtn)
 UI.FilterBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.FilterBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.FilterBtnStroke.Name = "FilterBtnStroke"
-UI.FilterBtnStroke.Parent = UI.FilterBtn
 
-UI.FilterBtnPadding = Instance.new("UIPadding")
-UI.FilterBtnPadding.PaddingBottom = UDim.new(0, 4)
-UI.FilterBtnPadding.PaddingLeft = UDim.new(0, 4)
-UI.FilterBtnPadding.PaddingRight = UDim.new(0, 4)
-UI.FilterBtnPadding.PaddingTop = UDim.new(0, 4)
-UI.FilterBtnPadding.Parent = UI.FilterBtn
+MkPad(4, 4, 4, 4, UI.FilterBtn)
 
-UI.SearchResults = Instance.new("ScrollingFrame")
-UI.SearchResults.AutomaticCanvasSize = Enum.AutomaticSize.Y
-UI.SearchResults.BackgroundTransparency = 1
-UI.SearchResults.BorderSizePixel = 0
-UI.SearchResults.LayoutOrder = 2
-UI.SearchResults.Name = "SearchResults"
-UI.SearchResults.ScrollBarThickness = 0
-UI.SearchResults.ScrollingDirection = Enum.ScrollingDirection.Y
-UI.SearchResults.Size = UDim2.new(1, 0, 1, 0)
-UI.SearchResults.Parent = UI.SearchContent
+UI.SearchResults = MkEl("ScrollingFrame", {AutomaticCanvasSize = Enum.AutomaticSize.Y,
+    BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 2,
+    Name = "SearchResults", ScrollBarThickness = 0,
+    ScrollingDirection = Enum.ScrollingDirection.Y,
+    Size = UDim2.new(1, 0, 1, 0)}, UI.SearchContent)
 
-UI.SearchResultsPadding = Instance.new("UIPadding")
-UI.SearchResultsPadding.PaddingBottom = UDim.new(0, 2)
-UI.SearchResultsPadding.PaddingLeft = UDim.new(0, 2)
-UI.SearchResultsPadding.PaddingRight = UDim.new(0, 2)
-UI.SearchResultsPadding.PaddingTop = UDim.new(0, 2)
-UI.SearchResultsPadding.Parent = UI.SearchResults
+UI.SearchResultsPadding = MkPad(2, 2, 2, 2, UI.SearchResults)
 
-UI.SearchResultsLayout = Instance.new("UIListLayout")
+UI.SearchResultsLayout = MkList(Enum.FillDirection.Vertical, 8, UI.SearchResults)
 UI.SearchResultsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SearchResultsLayout.Padding = UDim.new(0, 8)
-UI.SearchResultsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UI.SearchResultsLayout.Parent = UI.SearchResults
 
-UI.NoResultsLabel = Instance.new("TextLabel")
-UI.NoResultsLabel.BackgroundTransparency = 1
-UI.NoResultsLabel.BorderSizePixel = 0
-UI.NoResultsLabel.FontFace = GothamMedium
-UI.NoResultsLabel.Name = "NoResultsLabel"
-UI.NoResultsLabel.Size = UDim2.new(1, 0, 0, 30)
-UI.NoResultsLabel.Text = "No scripts found matching your query."
-UI.NoResultsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.NoResultsLabel.TextScaled = true
-UI.NoResultsLabel.TextWrapped = true
-UI.NoResultsLabel.Visible = false
-UI.NoResultsLabel.Parent = UI.SearchResults
+UI.NoResultsLabel = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0,
+    FontFace = GothamMedium, Name = "NoResultsLabel",
+    Size = UDim2.new(1, 0, 0, 30),
+    Text = "No scripts found matching your query.",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true, Visible = false}, UI.SearchResults)
 
-UI.NoResultsLabelStroke = Instance.new("UIStroke")
-UI.NoResultsLabelStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.NoResultsLabelStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.NoResultsLabel)
 UI.NoResultsLabelStroke.Name = "NoResultsLabelStroke"
-UI.NoResultsLabelStroke.Parent = UI.NoResultsLabel
 
-UI.SearchResultTemplate = Instance.new("CanvasGroup")
-UI.SearchResultTemplate.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.SearchResultTemplate.BorderSizePixel = 0
-UI.SearchResultTemplate.Name = "SearchResultTemplate"
-UI.SearchResultTemplate.Size = UDim2.new(0, 358, 0, 132)
-UI.SearchResultTemplate.Visible = false
-UI.SearchResultTemplate.Parent = UI.SearchResults
+UI.SearchResultTemplate = MkEl("CanvasGroup", {BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+    BorderSizePixel = 0, Name = "SearchResultTemplate",
+    Size = UDim2.new(0, 358, 0, 132), Visible = false}, UI.SearchResults)
 
-UI.SearchResultTemplateCorner = Instance.new("UICorner")
-UI.SearchResultTemplateCorner.CornerRadius = UDim.new(0, 6)
-UI.SearchResultTemplateCorner.Parent = UI.SearchResultTemplate
+MkCorner(6, UI.SearchResultTemplate)
 
-UI.SearchResultTemplateStroke = Instance.new("UIStroke")
+UI.SearchResultTemplateStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.SearchResultTemplate)
 UI.SearchResultTemplateStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.SearchResultTemplateStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.SearchResultTemplateStroke.Name = "SearchResultTemplateStroke"
-UI.SearchResultTemplateStroke.Parent = UI.SearchResultTemplate
 
-UI.ScriptImage = Instance.new("ImageLabel")
-UI.ScriptImage.BackgroundTransparency = 1
-UI.ScriptImage.BorderSizePixel = 0
-UI.ScriptImage.LayoutOrder = 1
-UI.ScriptImage.Name = "ScriptImage"
-UI.ScriptImage.ScaleType = Enum.ScaleType.Crop
-UI.ScriptImage.Size = UDim2.new(1, 0, 0.7, -2)
-UI.ScriptImage.Parent = UI.SearchResultTemplate
+MkEl("ImageLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 1, Name = "ScriptImage",
+    ScaleType = Enum.ScaleType.Crop, Size = UDim2.new(1, 0, 0.7, -2)}, UI.SearchResultTemplate)
 
-UI.Container = Instance.new("Frame")
-UI.Container.BackgroundTransparency = 1
-UI.Container.BorderSizePixel = 0
-UI.Container.LayoutOrder = 2
-UI.Container.Name = "Container"
-UI.Container.Size = UDim2.new(1, 0, 1, 0)
-UI.Container.Parent = UI.SearchResultTemplate
+UI.Container = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 2,
+    Name = "Container", Size = UDim2.new(1, 0, 1, 0)}, UI.SearchResultTemplate)
 
-UI.ScriptName = Instance.new("TextLabel")
-UI.ScriptName.BackgroundTransparency = 1
-UI.ScriptName.BorderSizePixel = 0
-UI.ScriptName.FontFace = GothamMedium
-UI.ScriptName.Name = "ScriptName"
-UI.ScriptName.Position = UDim2.new(0, 4, 0, 0)
-UI.ScriptName.Size = UDim2.new(0, 350, 0, 30)
-UI.ScriptName.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.ScriptName.TextScaled = true
-UI.ScriptName.TextWrapped = true
-UI.ScriptName.TextXAlignment = Enum.TextXAlignment.Left
-UI.ScriptName.Parent = UI.Container
+UI.ScriptName = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium,
+    Name = "ScriptName", Position = UDim2.new(0, 4, 0, 0),
+    Size = UDim2.new(0, 350, 0, 30),
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left}, UI.Container)
 
-UI.ScriptNameStroke = Instance.new("UIStroke")
-UI.ScriptNameStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.ScriptNameStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.ScriptName)
 UI.ScriptNameStroke.Name = "ScriptNameStroke"
-UI.ScriptNameStroke.Parent = UI.ScriptName
 
-UI.ScriptNameCorner = Instance.new("UICorner")
-UI.ScriptNameCorner.CornerRadius = UDim.new(0, 6)
-UI.ScriptNameCorner.Parent = UI.ScriptName
+MkCorner(6, UI.ScriptName)
 
-UI.ScriptActions = Instance.new("Frame")
-UI.ScriptActions.BackgroundTransparency = 1
-UI.ScriptActions.BorderSizePixel = 0
-UI.ScriptActions.Name = "ScriptActions"
-UI.ScriptActions.Position = UDim2.new(0, 0, 0, 92)
-UI.ScriptActions.Size = UDim2.new(1, 0, 0.3, 0)
-UI.ScriptActions.Parent = UI.Container
+UI.ScriptActions = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, Name = "ScriptActions",
+    Position = UDim2.new(0, 0, 0, 92), Size = UDim2.new(1, 0, 0.3, 0)}, UI.Container)
 
-UI.ScriptActionsPadding = Instance.new("UIPadding")
-UI.ScriptActionsPadding.PaddingBottom = UDim.new(0, 6)
-UI.ScriptActionsPadding.PaddingLeft = UDim.new(0, 6)
-UI.ScriptActionsPadding.PaddingRight = UDim.new(0, 6)
-UI.ScriptActionsPadding.PaddingTop = UDim.new(0, 4)
-UI.ScriptActionsPadding.Parent = UI.ScriptActions
+MkPad(6, 6, 4, 6, UI.ScriptActions)
 
-UI.ScriptActionsLayout = Instance.new("UIListLayout")
-UI.ScriptActionsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ScriptActionsLayout = MkList(Enum.FillDirection.Horizontal, 6, UI.ScriptActions)
 UI.ScriptActionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.ScriptActionsLayout.Padding = UDim.new(0, 6)
-UI.ScriptActionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.ScriptActionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.ScriptActionsLayout.Parent = UI.ScriptActions
 
-UI.RunScript = Instance.new("TextButton")
-UI.RunScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.RunScript.BorderSizePixel = 0
-UI.RunScript.FontFace = GothamMedium
-UI.RunScript.LayoutOrder = 1
-UI.RunScript.Name = "RunScript"
-UI.RunScript.Size = UDim2.new(0.2, 0, 0.3, 0)
-UI.RunScript.Text = "Run"
-UI.RunScript.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.RunScript.TextScaled = true
-UI.RunScript.TextWrapped = true
-UI.RunScript.Parent = UI.ScriptActions
+UI.RunScript = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 1, Name = "RunScript",
+    Size = UDim2.new(0.2, 0, 0.3, 0), Text = "Run",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.ScriptActions)
 
-UI.RunScriptStroke = Instance.new("UIStroke")
+UI.RunScriptStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.RunScript)
 UI.RunScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.RunScriptStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.RunScriptStroke.Name = "RunScriptStroke"
-UI.RunScriptStroke.Parent = UI.RunScript
 
-UI.RunScriptCorner = Instance.new("UICorner")
-UI.RunScriptCorner.CornerRadius = UDim.new(0, 6)
-UI.RunScriptCorner.Parent = UI.RunScript
+MkCorner(6, UI.RunScript)
 
-UI.RunScriptPadding = Instance.new("UIPadding")
-UI.RunScriptPadding.PaddingBottom = UDim.new(0, 2)
-UI.RunScriptPadding.PaddingLeft = UDim.new(0, 2)
-UI.RunScriptPadding.PaddingRight = UDim.new(0, 2)
-UI.RunScriptPadding.PaddingTop = UDim.new(0, 2)
-UI.RunScriptPadding.Parent = UI.RunScript
+MkPad(2, 2, 2, 2, UI.RunScript)
 
-UI.CopyScriptBtn = Instance.new("TextButton")
-UI.CopyScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.CopyScriptBtn.BorderSizePixel = 0
-UI.CopyScriptBtn.FontFace = GothamMedium
-UI.CopyScriptBtn.LayoutOrder = 2
-UI.CopyScriptBtn.Name = "CopyScriptBtn"
-UI.CopyScriptBtn.Size = UDim2.new(0.2, 0, 0.3, 0)
-UI.CopyScriptBtn.Text = "Copy"
-UI.CopyScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.CopyScriptBtn.TextScaled = true
-UI.CopyScriptBtn.TextWrapped = true
-UI.CopyScriptBtn.Parent = UI.ScriptActions
+UI.CopyScriptBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 2, Name = "CopyScriptBtn",
+    Size = UDim2.new(0.2, 0, 0.3, 0), Text = "Copy",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.ScriptActions)
 
-UI.CopyScriptBtnCorner = Instance.new("UICorner")
-UI.CopyScriptBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.CopyScriptBtnCorner.Parent = UI.CopyScriptBtn
+MkCorner(6, UI.CopyScriptBtn)
 
-UI.CopyScriptBtnStroke = Instance.new("UIStroke")
+UI.CopyScriptBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.CopyScriptBtn)
 UI.CopyScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.CopyScriptBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.CopyScriptBtnStroke.Name = "CopyScriptBtnStroke"
-UI.CopyScriptBtnStroke.Parent = UI.CopyScriptBtn
 
-UI.CopyScriptBtnPadding = Instance.new("UIPadding")
-UI.CopyScriptBtnPadding.PaddingBottom = UDim.new(0, 2)
-UI.CopyScriptBtnPadding.PaddingLeft = UDim.new(0, 2)
-UI.CopyScriptBtnPadding.PaddingRight = UDim.new(0, 2)
-UI.CopyScriptBtnPadding.PaddingTop = UDim.new(0, 2)
-UI.CopyScriptBtnPadding.Parent = UI.CopyScriptBtn
+MkPad(2, 2, 2, 2, UI.CopyScriptBtn)
 
-UI.SaveScriptBtn = Instance.new("TextButton")
-UI.SaveScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.SaveScriptBtn.BorderSizePixel = 0
-UI.SaveScriptBtn.FontFace = GothamMedium
-UI.SaveScriptBtn.LayoutOrder = 3
-UI.SaveScriptBtn.Name = "SaveScriptBtn"
-UI.SaveScriptBtn.Size = UDim2.new(0.2, 0, 0.3, 0)
-UI.SaveScriptBtn.Text = "Save"
-UI.SaveScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.SaveScriptBtn.TextScaled = true
-UI.SaveScriptBtn.TextWrapped = true
-UI.SaveScriptBtn.Parent = UI.ScriptActions
+UI.SaveScriptBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 3, Name = "SaveScriptBtn",
+    Size = UDim2.new(0.2, 0, 0.3, 0), Text = "Save",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.ScriptActions)
 
-UI.SaveScriptBtnCorner = Instance.new("UICorner")
-UI.SaveScriptBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.SaveScriptBtnCorner.Parent = UI.SaveScriptBtn
+MkCorner(6, UI.SaveScriptBtn)
 
-UI.SaveScriptBtnPadding = Instance.new("UIPadding")
-UI.SaveScriptBtnPadding.PaddingBottom = UDim.new(0, 2)
-UI.SaveScriptBtnPadding.PaddingLeft = UDim.new(0, 2)
-UI.SaveScriptBtnPadding.PaddingRight = UDim.new(0, 2)
-UI.SaveScriptBtnPadding.PaddingTop = UDim.new(0, 2)
-UI.SaveScriptBtnPadding.Parent = UI.SaveScriptBtn
+MkPad(2, 2, 2, 2, UI.SaveScriptBtn)
 
-UI.SaveScriptBtnStroke = Instance.new("UIStroke")
+UI.SaveScriptBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.SaveScriptBtn)
 UI.SaveScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.SaveScriptBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.SaveScriptBtnStroke.Name = "SaveScriptBtnStroke"
-UI.SaveScriptBtnStroke.Parent = UI.SaveScriptBtn
 
-UI.PageButtons = Instance.new("Frame")
-UI.PageButtons.BackgroundTransparency = 1
-UI.PageButtons.BorderSizePixel = 0
-UI.PageButtons.LayoutOrder = 3
-UI.PageButtons.Name = "PageButtons"
-UI.PageButtons.Size = UDim2.new(1, 0, 0, 38)
-UI.PageButtons.Parent = UI.SearchContent
+UI.PageButtons = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 3,
+    Name = "PageButtons", Size = UDim2.new(1, 0, 0, 38)}, UI.SearchContent)
 
-UI.PageButtonsLayout = Instance.new("UIListLayout")
-UI.PageButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.PageButtonsLayout = MkList(Enum.FillDirection.Horizontal, 6, UI.PageButtons)
 UI.PageButtonsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.PageButtonsLayout.Padding = UDim.new(0, 6)
-UI.PageButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.PageButtonsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.PageButtonsLayout.Parent = UI.PageButtons
 
-UI.PageButtonsSizeCons = Instance.new("UISizeConstraint")
-UI.PageButtonsSizeCons.MaxSize = Vector2.new(2147483647, 38)
-UI.PageButtonsSizeCons.Parent = UI.PageButtons
+MkSize(nil, Vector2.new(2147483647, 38), UI.PageButtons)
 
-UI.PrevBtn = Instance.new("TextButton")
-UI.PrevBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.PrevBtn.BorderSizePixel = 0
-UI.PrevBtn.FontFace = BuilderSans
-UI.PrevBtn.LayoutOrder = 1
-UI.PrevBtn.Name = "PrevBtn"
-UI.PrevBtn.Size = UDim2.new(0.25, 0, 1, 0)
-UI.PrevBtn.Text = "Previous"
-UI.PrevBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.PrevBtn.TextScaled = true
-UI.PrevBtn.TextWrapped = true
-UI.PrevBtn.Parent = UI.PageButtons
+UI.PrevBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = BuilderSans, LayoutOrder = 1, Name = "PrevBtn",
+    Size = UDim2.new(0.25, 0, 1, 0), Text = "Previous",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.PageButtons)
 
-UI.PrevBtnCorner = Instance.new("UICorner")
-UI.PrevBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.PrevBtnCorner.Parent = UI.PrevBtn
+MkCorner(6, UI.PrevBtn)
 
-UI.PrevBtnStroke = Instance.new("UIStroke")
+UI.PrevBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.PrevBtn)
 UI.PrevBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.PrevBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.PrevBtnStroke.Name = "PrevBtnStroke"
-UI.PrevBtnStroke.Parent = UI.PrevBtn
 
-UI.PrevBtnPadding = Instance.new("UIPadding")
-UI.PrevBtnPadding.PaddingBottom = UDim.new(0, 4)
-UI.PrevBtnPadding.PaddingLeft = UDim.new(0, 4)
-UI.PrevBtnPadding.PaddingRight = UDim.new(0, 4)
-UI.PrevBtnPadding.PaddingTop = UDim.new(0, 4)
-UI.PrevBtnPadding.Parent = UI.PrevBtn
+MkPad(4, 4, 4, 4, UI.PrevBtn)
 
-UI.PageFiller = Instance.new("Frame")
-UI.PageFiller.BackgroundTransparency = 1
-UI.PageFiller.BorderSizePixel = 0
-UI.PageFiller.LayoutOrder = 2
-UI.PageFiller.Name = "PageFiller"
-UI.PageFiller.Size = UDim2.new(0.5, 0, 1, 0)
-UI.PageFiller.Parent = UI.PageButtons
+MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 2, Name = "PageFiller",
+    Size = UDim2.new(0.5, 0, 1, 0)}, UI.PageButtons)
 
-UI.NextBtn = Instance.new("TextButton")
-UI.NextBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.NextBtn.BorderSizePixel = 0
-UI.NextBtn.FontFace = BuilderSans
-UI.NextBtn.LayoutOrder = 3
-UI.NextBtn.Name = "NextBtn"
-UI.NextBtn.Size = UDim2.new(0.25, 0, 1, 0)
-UI.NextBtn.Text = "Next"
-UI.NextBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.NextBtn.TextScaled = true
-UI.NextBtn.TextWrapped = true
-UI.NextBtn.Parent = UI.PageButtons
+UI.NextBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = BuilderSans, LayoutOrder = 3, Name = "NextBtn",
+    Size = UDim2.new(0.25, 0, 1, 0), Text = "Next",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.PageButtons)
 
-UI.NextBtnCorner = Instance.new("UICorner")
-UI.NextBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.NextBtnCorner.Parent = UI.NextBtn
+MkCorner(6, UI.NextBtn)
 
-UI.NextBtnStroke = Instance.new("UIStroke")
+UI.NextBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.NextBtn)
 UI.NextBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.NextBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.NextBtnStroke.Name = "NextBtnStroke"
-UI.NextBtnStroke.Parent = UI.NextBtn
 
-UI.NextBtnPadding = Instance.new("UIPadding")
-UI.NextBtnPadding.PaddingBottom = UDim.new(0, 4)
-UI.NextBtnPadding.PaddingLeft = UDim.new(0, 4)
-UI.NextBtnPadding.PaddingRight = UDim.new(0, 4)
-UI.NextBtnPadding.PaddingTop = UDim.new(0, 4)
-UI.NextBtnPadding.Parent = UI.NextBtn
+MkPad(4, 4, 4, 4, UI.NextBtn)
 
-UI.ScriptsContent = Instance.new("CanvasGroup")
-UI.ScriptsContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-UI.ScriptsContent.BorderSizePixel = 0
-UI.ScriptsContent.LayoutOrder = 3
-UI.ScriptsContent.Name = "ScriptsContent"
-UI.ScriptsContent.Size = UDim2.new(1, 0, 1, 0)
-UI.ScriptsContent.Visible = false
-UI.ScriptsContent.Parent = UI.Pages
+UI.ScriptsContent = MkEl("CanvasGroup", {BackgroundColor3 = Color3.fromRGB(18, 18, 18), BorderSizePixel = 0,
+    LayoutOrder = 3, Name = "ScriptsContent",
+    Size = UDim2.new(1, 0, 1, 0), Visible = false}, UI.Pages)
 
-UI.ScriptsContentCorner = Instance.new("UICorner")
-UI.ScriptsContentCorner.CornerRadius = UDim.new(0, 6)
-UI.ScriptsContentCorner.Parent = UI.ScriptsContent
+MkCorner(6, UI.ScriptsContent)
 
-UI.ScriptsContentStroke = Instance.new("UIStroke")
+UI.ScriptsContentStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.ScriptsContent)
 UI.ScriptsContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.ScriptsContentStroke.Color = Color3.fromRGB(0, 99, 255)
 UI.ScriptsContentStroke.Name = "ScriptsContentStroke"
-UI.ScriptsContentStroke.Parent = UI.ScriptsContent
 
-UI.ScriptsContentLayout = Instance.new("UIListLayout")
+UI.ScriptsContentLayout = MkList(Enum.FillDirection.Vertical, 6, UI.ScriptsContent)
 UI.ScriptsContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.ScriptsContentLayout.Padding = UDim.new(0, 6)
-UI.ScriptsContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.ScriptsContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.ScriptsContentLayout.Parent = UI.ScriptsContent
 
-UI.ScriptsContentPadding = Instance.new("UIPadding")
-UI.ScriptsContentPadding.PaddingBottom = UDim.new(0, 6)
-UI.ScriptsContentPadding.PaddingLeft = UDim.new(0, 6)
-UI.ScriptsContentPadding.PaddingRight = UDim.new(0, 6)
-UI.ScriptsContentPadding.PaddingTop = UDim.new(0, 6)
-UI.ScriptsContentPadding.Parent = UI.ScriptsContent
+MkPad(6, 6, 6, 6, UI.ScriptsContent)
 
-UI.SavedScriptsSearchFrame = Instance.new("Frame")
-UI.SavedScriptsSearchFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.SavedScriptsSearchFrame.BorderSizePixel = 0
-UI.SavedScriptsSearchFrame.LayoutOrder = 1
-UI.SavedScriptsSearchFrame.Name = "SavedScriptsSearchFrame"
-UI.SavedScriptsSearchFrame.Size = UDim2.new(1, 0, 0, 30)
-UI.SavedScriptsSearchFrame.Parent = UI.ScriptsContent
+UI.SavedScriptsSearchFrame = MkEl("Frame", {BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+    BorderSizePixel = 0, LayoutOrder = 1,
+    Name = "SavedScriptsSearchFrame", Size = UDim2.new(1, 0, 0, 30)}, UI.ScriptsContent)
 
-UI.SavedScriptsSearchFrameLayout = Instance.new("UIListLayout")
-UI.SavedScriptsSearchFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.SavedScriptsSearchFrameLayout = MkList(Enum.FillDirection.Horizontal, 2, UI.SavedScriptsSearchFrame)
 UI.SavedScriptsSearchFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SavedScriptsSearchFrameLayout.Padding = UDim.new(0, 2)
-UI.SavedScriptsSearchFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.SavedScriptsSearchFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.SavedScriptsSearchFrameLayout.Parent = UI.SavedScriptsSearchFrame
 
-UI.SavedScriptsSearchFrameSizeCons = Instance.new("UISizeConstraint")
-UI.SavedScriptsSearchFrameSizeCons.MaxSize = Vector2.new(2147483647, 30)
-UI.SavedScriptsSearchFrameSizeCons.MinSize = Vector2.new(0, 30)
-UI.SavedScriptsSearchFrameSizeCons.Parent = UI.SavedScriptsSearchFrame
+MkSize(Vector2.new(0, 30), Vector2.new(2147483647, 30), UI.SavedScriptsSearchFrame)
 
-UI.SavedScriptsSearchFrameCorner = Instance.new("UICorner")
-UI.SavedScriptsSearchFrameCorner.CornerRadius = UDim.new(0, 6)
-UI.SavedScriptsSearchFrameCorner.Parent = UI.SavedScriptsSearchFrame
+MkCorner(6, UI.SavedScriptsSearchFrame)
 
-UI.SavedScriptsSearchFrameStroke = Instance.new("UIStroke")
+UI.SavedScriptsSearchFrameStroke = MkStroke(Color3.fromRGB(36, 36, 36), UI.SavedScriptsSearchFrame)
 UI.SavedScriptsSearchFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.SavedScriptsSearchFrameStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.SavedScriptsSearchFrameStroke.Parent = UI.SavedScriptsSearchFrame
 
-UI.SearchBox2 = Instance.new("TextBox")
-UI.SearchBox2.BackgroundTransparency = 1
-UI.SearchBox2.BorderSizePixel = 0
-UI.SearchBox2.FontFace = GothamMedium
-UI.SearchBox2.LayoutOrder = 1
-UI.SearchBox2.Name = "SearchBox2"
-UI.SearchBox2.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
-UI.SearchBox2.PlaceholderText = "Search saved scripts..."
-UI.SearchBox2.Size = UDim2.new(0.95, 0, 1, 0)
-UI.SearchBox2.Text = ""
-UI.SearchBox2.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.SearchBox2.TextScaled = true
-UI.SearchBox2.TextWrapped = true
-UI.SearchBox2.TextXAlignment = Enum.TextXAlignment.Left
-UI.SearchBox2.Parent = UI.SavedScriptsSearchFrame
+UI.SearchBox2 = MkEl("TextBox", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium,
+    LayoutOrder = 1, Name = "SearchBox2",
+    PlaceholderColor3 = Color3.fromRGB(255, 255, 255),
+    PlaceholderText = "Search saved scripts...",
+    Size = UDim2.new(0.95, 0, 1, 0), Text = "",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left}, UI.SavedScriptsSearchFrame)
 
-UI.SearchBox2Padding = Instance.new("UIPadding")
-UI.SearchBox2Padding.PaddingBottom = UDim.new(0, 6)
-UI.SearchBox2Padding.PaddingLeft = UDim.new(0, 6)
-UI.SearchBox2Padding.PaddingRight = UDim.new(0, 6)
-UI.SearchBox2Padding.PaddingTop = UDim.new(0, 6)
-UI.SearchBox2Padding.Parent = UI.SearchBox2
+MkPad(6, 6, 6, 6, UI.SearchBox2)
 
-UI.NewScriptBtn = Instance.new("TextButton")
-UI.NewScriptBtn.BackgroundTransparency = 1
-UI.NewScriptBtn.BorderSizePixel = 0
-UI.NewScriptBtn.FontFace = GothamMedium
-UI.NewScriptBtn.LayoutOrder = 2
-UI.NewScriptBtn.Name = "NewScriptBtn"
-UI.NewScriptBtn.Size = UDim2.new(0.05, 0, 1, 0)
-UI.NewScriptBtn.Text = "+"
-UI.NewScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.NewScriptBtn.TextScaled = true
-UI.NewScriptBtn.TextWrapped = true
-UI.NewScriptBtn.Parent = UI.SavedScriptsSearchFrame
+UI.NewScriptBtn = MkEl("TextButton", {BackgroundTransparency = 1, BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 2, Name = "NewScriptBtn",
+    Size = UDim2.new(0.05, 0, 1, 0), Text = "+",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.SavedScriptsSearchFrame)
 
-UI.NewScriptBtnStroke = Instance.new("UIStroke")
+UI.NewScriptBtnStroke = MkStroke(Color3.fromRGB(36, 36, 36), UI.NewScriptBtn)
 UI.NewScriptBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.NewScriptBtnStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.NewScriptBtnStroke.Parent = UI.NewScriptBtn
 
-UI.NewScriptBtnRatio = Instance.new("UIAspectRatioConstraint")
-UI.NewScriptBtnRatio.Parent = UI.NewScriptBtn
+MkAspect(1, UI.NewScriptBtn)
 
-UI.NewScriptBtnCorner = Instance.new("UICorner")
-UI.NewScriptBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.NewScriptBtnCorner.Parent = UI.NewScriptBtn
+MkCorner(6, UI.NewScriptBtn)
 
-UI.SavedScriptsScroll = Instance.new("ScrollingFrame")
-UI.SavedScriptsScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-UI.SavedScriptsScroll.BackgroundTransparency = 1
-UI.SavedScriptsScroll.BorderSizePixel = 0
-UI.SavedScriptsScroll.LayoutOrder = 2
-UI.SavedScriptsScroll.Name = "SavedScriptsScroll"
-UI.SavedScriptsScroll.ScrollBarThickness = 0
-UI.SavedScriptsScroll.ScrollingDirection = Enum.ScrollingDirection.Y
-UI.SavedScriptsScroll.Size = UDim2.new(1, 0, 1, 0)
-UI.SavedScriptsScroll.Parent = UI.ScriptsContent
+UI.SavedScriptsScroll = MkEl("ScrollingFrame", {AutomaticCanvasSize = Enum.AutomaticSize.Y,
+    BackgroundTransparency = 1, BorderSizePixel = 0,
+    LayoutOrder = 2, Name = "SavedScriptsScroll",
+    ScrollBarThickness = 0,
+    ScrollingDirection = Enum.ScrollingDirection.Y,
+    Size = UDim2.new(1, 0, 1, 0)}, UI.ScriptsContent)
 
-UI.SavedScriptsScrollPadding = Instance.new("UIPadding")
-UI.SavedScriptsScrollPadding.PaddingBottom = UDim.new(0, 2)
-UI.SavedScriptsScrollPadding.PaddingLeft = UDim.new(0, 2)
-UI.SavedScriptsScrollPadding.PaddingRight = UDim.new(0, 2)
-UI.SavedScriptsScrollPadding.PaddingTop = UDim.new(0, 2)
-UI.SavedScriptsScrollPadding.Parent = UI.SavedScriptsScroll
+UI.SavedScriptsScrollPadding = MkPad(2, 2, 2, 2, UI.SavedScriptsScroll)
 
-UI.SavedScriptsScrollLayout = Instance.new("UIListLayout")
+UI.SavedScriptsScrollLayout = MkList(Enum.FillDirection.Vertical, 8, UI.SavedScriptsScroll)
 UI.SavedScriptsScrollLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SavedScriptsScrollLayout.Padding = UDim.new(0, 8)
-UI.SavedScriptsScrollLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UI.SavedScriptsScrollLayout.Parent = UI.SavedScriptsScroll
 
-UI.NoSavedScriptsLabel = Instance.new("TextLabel")
-UI.NoSavedScriptsLabel.BackgroundTransparency = 1
-UI.NoSavedScriptsLabel.BorderSizePixel = 0
-UI.NoSavedScriptsLabel.FontFace = GothamMedium
-UI.NoSavedScriptsLabel.Name = "NoSavedScriptsLabel"
-UI.NoSavedScriptsLabel.Size = UDim2.new(1, 0, 0, 60)
-UI.NoSavedScriptsLabel.Text = "No Saved Scripts\n\nSave some scripts to see them here."
-UI.NoSavedScriptsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.NoSavedScriptsLabel.TextScaled = true
-UI.NoSavedScriptsLabel.TextWrapped = true
-UI.NoSavedScriptsLabel.Visible = false
-UI.NoSavedScriptsLabel.Parent = UI.SavedScriptsScroll
+UI.NoSavedScriptsLabel = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0,
+    FontFace = GothamMedium, Name = "NoSavedScriptsLabel",
+    Size = UDim2.new(1, 0, 0, 60),
+    Text = "No Saved Scripts\n\nSave some scripts to see them here.",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true, Visible = false}, UI.SavedScriptsScroll)
 
-UI.NoSavedScriptsLabelStroke = Instance.new("UIStroke")
-UI.NoSavedScriptsLabelStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.NoSavedScriptsLabelStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.NoSavedScriptsLabel)
 UI.NoSavedScriptsLabelStroke.Name = "NoSavedScriptsLabelStroke"
-UI.NoSavedScriptsLabelStroke.Parent = UI.NoSavedScriptsLabel
 
-UI.SavedScriptTemplate = Instance.new("Frame")
-UI.SavedScriptTemplate.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.SavedScriptTemplate.BorderSizePixel = 0
-UI.SavedScriptTemplate.Name = "SavedScriptTemplate"
-UI.SavedScriptTemplate.Size = UDim2.new(0, 166, 0, 64)
-UI.SavedScriptTemplate.Visible = false
-UI.SavedScriptTemplate.Parent = UI.SavedScriptsScroll
+UI.SavedScriptTemplate = MkEl("Frame", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+    Name = "SavedScriptTemplate", Size = UDim2.new(0, 166, 0, 64),
+    Visible = false}, UI.SavedScriptsScroll)
 
-UI.SavedScriptTemplateCorner = Instance.new("UICorner")
-UI.SavedScriptTemplateCorner.CornerRadius = UDim.new(0, 6)
-UI.SavedScriptTemplateCorner.Parent = UI.SavedScriptTemplate
+MkCorner(6, UI.SavedScriptTemplate)
 
-UI.SavedScriptTemplateStroke = Instance.new("UIStroke")
+UI.SavedScriptTemplateStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.SavedScriptTemplate)
 UI.SavedScriptTemplateStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.SavedScriptTemplateStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.SavedScriptTemplateStroke.Name = "SavedScriptTemplateStroke"
-UI.SavedScriptTemplateStroke.Parent = UI.SavedScriptTemplate
 
-UI.SavedScriptTemplateLayout = Instance.new("UIListLayout")
-UI.SavedScriptTemplateLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.SavedScriptTemplateLayout = MkList(Enum.FillDirection.Horizontal, 2, UI.SavedScriptTemplate)
 UI.SavedScriptTemplateLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SavedScriptTemplateLayout.Padding = UDim.new(0, 2)
-UI.SavedScriptTemplateLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.SavedScriptTemplateLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.SavedScriptTemplateLayout.Parent = UI.SavedScriptTemplate
 
-UI.SavedScriptInfo = Instance.new("Frame")
-UI.SavedScriptInfo.BackgroundTransparency = 1
-UI.SavedScriptInfo.BorderSizePixel = 0
-UI.SavedScriptInfo.LayoutOrder = 1
-UI.SavedScriptInfo.Name = "SavedScriptInfo"
-UI.SavedScriptInfo.Size = UDim2.new(0, 380, 0, 12)
-UI.SavedScriptInfo.Parent = UI.SavedScriptTemplate
+UI.SavedScriptInfo = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 1,
+    Name = "SavedScriptInfo", Size = UDim2.new(0, 380, 0, 12)}, UI.SavedScriptTemplate)
 
-UI.SavedScriptInfoPadding = Instance.new("UIPadding")
-UI.SavedScriptInfoPadding.PaddingBottom = UDim.new(0, 6)
-UI.SavedScriptInfoPadding.PaddingLeft = UDim.new(0, 6)
-UI.SavedScriptInfoPadding.PaddingRight = UDim.new(0, 6)
-UI.SavedScriptInfoPadding.PaddingTop = UDim.new(0, 6)
-UI.SavedScriptInfoPadding.Parent = UI.SavedScriptInfo
+MkPad(6, 6, 6, 6, UI.SavedScriptInfo)
 
-UI.SavedScriptInfoLayout = Instance.new("UIListLayout")
+UI.SavedScriptInfoLayout = MkList(Enum.FillDirection.Vertical, 2, UI.SavedScriptInfo)
 UI.SavedScriptInfoLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SavedScriptInfoLayout.Padding = UDim.new(0, 2)
-UI.SavedScriptInfoLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.SavedScriptInfoLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.SavedScriptInfoLayout.Parent = UI.SavedScriptInfo
 
-UI.SavedScriptTitle = Instance.new("TextLabel")
-UI.SavedScriptTitle.BackgroundTransparency = 1
-UI.SavedScriptTitle.BorderSizePixel = 0
-UI.SavedScriptTitle.FontFace = GothamBold
-UI.SavedScriptTitle.LayoutOrder = 1
-UI.SavedScriptTitle.Name = "SavedScriptTitle"
-UI.SavedScriptTitle.Size = UDim2.new(1, 0, 0.6, 0)
-UI.SavedScriptTitle.Text = "Script name"
-UI.SavedScriptTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.SavedScriptTitle.TextScaled = true
-UI.SavedScriptTitle.TextWrapped = true
-UI.SavedScriptTitle.TextXAlignment = Enum.TextXAlignment.Left
-UI.SavedScriptTitle.Parent = UI.SavedScriptInfo
+MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamBold, LayoutOrder = 1,
+    Name = "SavedScriptTitle", Size = UDim2.new(1, 0, 0.6, 0), Text = "Script name",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true, TextWrapped = true,
+    TextXAlignment = Enum.TextXAlignment.Left}, UI.SavedScriptInfo)
 
-UI.SavedScriptDesc = Instance.new("TextLabel")
-UI.SavedScriptDesc.BackgroundTransparency = 1
-UI.SavedScriptDesc.BorderSizePixel = 0
-UI.SavedScriptDesc.FontFace = GothamMedium
-UI.SavedScriptDesc.LayoutOrder = 2
-UI.SavedScriptDesc.Name = "SavedScriptDesc"
-UI.SavedScriptDesc.Size = UDim2.new(1, 0, 0.4, 0)
-UI.SavedScriptDesc.Text = "Script description"
-UI.SavedScriptDesc.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.SavedScriptDesc.TextScaled = true
-UI.SavedScriptDesc.TextWrapped = true
-UI.SavedScriptDesc.TextXAlignment = Enum.TextXAlignment.Left
-UI.SavedScriptDesc.Parent = UI.SavedScriptInfo
+MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium, LayoutOrder = 2,
+    Name = "SavedScriptDesc", Size = UDim2.new(1, 0, 0.4, 0), Text = "Script description",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true, TextWrapped = true,
+    TextXAlignment = Enum.TextXAlignment.Left}, UI.SavedScriptInfo)
 
-UI.SavedScriptActions = Instance.new("Frame")
-UI.SavedScriptActions.BackgroundTransparency = 1
-UI.SavedScriptActions.BorderSizePixel = 0
-UI.SavedScriptActions.LayoutOrder = 2
-UI.SavedScriptActions.Name = "SavedScriptActions"
-UI.SavedScriptActions.Size = UDim2.new(0, 0, 0, 12)
-UI.SavedScriptActions.Parent = UI.SavedScriptTemplate
+UI.SavedScriptActions = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 2,
+    Name = "SavedScriptActions", Size = UDim2.new(0, 0, 0, 12)}, UI.SavedScriptTemplate)
 
-UI.SavedScriptActionsPadding = Instance.new("UIPadding")
-UI.SavedScriptActionsPadding.PaddingBottom = UDim.new(0, 4)
-UI.SavedScriptActionsPadding.PaddingLeft = UDim.new(0, 4)
-UI.SavedScriptActionsPadding.PaddingRight = UDim.new(0, 4)
-UI.SavedScriptActionsPadding.PaddingTop = UDim.new(0, 4)
-UI.SavedScriptActionsPadding.Parent = UI.SavedScriptActions
+MkPad(4, 4, 4, 4, UI.SavedScriptActions)
 
-UI.SavedScriptActionsLayout = Instance.new("UIListLayout")
+UI.SavedScriptActionsLayout = MkList(Enum.FillDirection.Vertical, 6, UI.SavedScriptActions)
 UI.SavedScriptActionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SavedScriptActionsLayout.Padding = UDim.new(0, 6)
-UI.SavedScriptActionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.SavedScriptActionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.SavedScriptActionsLayout.Parent = UI.SavedScriptActions
 
-UI.RunSavedScript = Instance.new("TextButton")
-UI.RunSavedScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.RunSavedScript.BorderSizePixel = 0
-UI.RunSavedScript.FontFace = GothamMedium
-UI.RunSavedScript.LayoutOrder = 1
-UI.RunSavedScript.Name = "RunSavedScript"
-UI.RunSavedScript.Size = UDim2.new(0.2, 0, 0.3, 0)
-UI.RunSavedScript.Text = "Run"
-UI.RunSavedScript.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.RunSavedScript.TextScaled = true
-UI.RunSavedScript.TextWrapped = true
-UI.RunSavedScript.Parent = UI.SavedScriptActions
+UI.RunSavedScript = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 1, Name = "RunSavedScript",
+    Size = UDim2.new(0.2, 0, 0.3, 0), Text = "Run",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.SavedScriptActions)
 
-UI.RunSavedScriptStroke = Instance.new("UIStroke")
+UI.RunSavedScriptStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.RunSavedScript)
 UI.RunSavedScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.RunSavedScriptStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.RunSavedScriptStroke.Name = "RunSavedScriptStroke"
-UI.RunSavedScriptStroke.Parent = UI.RunSavedScript
 
-UI.RunSavedScriptCorner = Instance.new("UICorner")
-UI.RunSavedScriptCorner.CornerRadius = UDim.new(0, 6)
-UI.RunSavedScriptCorner.Parent = UI.RunSavedScript
+MkCorner(6, UI.RunSavedScript)
 
-UI.RunSavedScriptPadding = Instance.new("UIPadding")
-UI.RunSavedScriptPadding.PaddingBottom = UDim.new(0, 2)
-UI.RunSavedScriptPadding.PaddingLeft = UDim.new(0, 2)
-UI.RunSavedScriptPadding.PaddingRight = UDim.new(0, 2)
-UI.RunSavedScriptPadding.PaddingTop = UDim.new(0, 2)
-UI.RunSavedScriptPadding.Parent = UI.RunSavedScript
+MkPad(2, 2, 2, 2, UI.RunSavedScript)
 
-UI.DeleteSavedScript = Instance.new("TextButton")
-UI.DeleteSavedScript.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.DeleteSavedScript.BorderSizePixel = 0
-UI.DeleteSavedScript.FontFace = GothamMedium
-UI.DeleteSavedScript.LayoutOrder = 2
-UI.DeleteSavedScript.Name = "DeleteSavedScript"
-UI.DeleteSavedScript.Size = UDim2.new(0.2, 0, 0.3, 0)
-UI.DeleteSavedScript.Text = "Delete"
-UI.DeleteSavedScript.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.DeleteSavedScript.TextScaled = true
-UI.DeleteSavedScript.TextWrapped = true
-UI.DeleteSavedScript.Parent = UI.SavedScriptActions
+UI.DeleteSavedScript = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255),
+    BorderSizePixel = 0, FontFace = GothamMedium, LayoutOrder = 2,
+    Name = "DeleteSavedScript", Size = UDim2.new(0.2, 0, 0.3, 0),
+    Text = "Delete", TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true, TextWrapped = true}, UI.SavedScriptActions)
 
-UI.DeleteSavedScriptCorner = Instance.new("UICorner")
-UI.DeleteSavedScriptCorner.CornerRadius = UDim.new(0, 6)
-UI.DeleteSavedScriptCorner.Parent = UI.DeleteSavedScript
+MkCorner(6, UI.DeleteSavedScript)
 
-UI.DeleteSavedScriptStroke = Instance.new("UIStroke")
+UI.DeleteSavedScriptStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.DeleteSavedScript)
 UI.DeleteSavedScriptStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.DeleteSavedScriptStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.DeleteSavedScriptStroke.Name = "DeleteSavedScriptStroke"
-UI.DeleteSavedScriptStroke.Parent = UI.DeleteSavedScript
 
-UI.DeleteSavedScriptPadding = Instance.new("UIPadding")
-UI.DeleteSavedScriptPadding.PaddingBottom = UDim.new(0, 2)
-UI.DeleteSavedScriptPadding.PaddingLeft = UDim.new(0, 2)
-UI.DeleteSavedScriptPadding.PaddingRight = UDim.new(0, 2)
-UI.DeleteSavedScriptPadding.PaddingTop = UDim.new(0, 2)
-UI.DeleteSavedScriptPadding.Parent = UI.DeleteSavedScript
+MkPad(2, 2, 2, 2, UI.DeleteSavedScript)
 
-UI.MusicContent = Instance.new("CanvasGroup")
-UI.MusicContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-UI.MusicContent.BorderSizePixel = 0
-UI.MusicContent.LayoutOrder = 5
-UI.MusicContent.Name = "MusicContent"
-UI.MusicContent.Size = UDim2.new(1, 0, 1, 0)
-UI.MusicContent.Visible = false
-UI.MusicContent.Parent = UI.Pages
+UI.MusicContent = MkEl("CanvasGroup", {BackgroundColor3 = Color3.fromRGB(18, 18, 18), BorderSizePixel = 0,
+    LayoutOrder = 5, Name = "MusicContent", Size = UDim2.new(1, 0, 1, 0),
+    Visible = false}, UI.Pages)
 
-UI.MusicContentCorner = Instance.new("UICorner")
-UI.MusicContentCorner.CornerRadius = UDim.new(0, 6)
-UI.MusicContentCorner.Parent = UI.MusicContent
+MkCorner(6, UI.MusicContent)
 
-UI.MusicContentStroke = Instance.new("UIStroke")
+UI.MusicContentStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.MusicContent)
 UI.MusicContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.MusicContentStroke.Color = Color3.fromRGB(0, 99, 255)
 UI.MusicContentStroke.Name = "MusicContentStroke"
-UI.MusicContentStroke.Parent = UI.MusicContent
 
-UI.MusicContentLayout = Instance.new("UIListLayout")
+UI.MusicContentLayout = MkList(Enum.FillDirection.Vertical, 6, UI.MusicContent)
 UI.MusicContentLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.MusicContentLayout.Padding = UDim.new(0, 6)
-UI.MusicContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.MusicContentLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.MusicContentLayout.Parent = UI.MusicContent
 
-UI.MusicContentPadding = Instance.new("UIPadding")
-UI.MusicContentPadding.PaddingBottom = UDim.new(0, 8)
-UI.MusicContentPadding.PaddingLeft = UDim.new(0, 8)
-UI.MusicContentPadding.PaddingRight = UDim.new(0, 8)
-UI.MusicContentPadding.PaddingTop = UDim.new(0, 8)
-UI.MusicContentPadding.Parent = UI.MusicContent
+MkPad(8, 8, 8, 8, UI.MusicContent)
 
-UI.MusicNowPlaying = Instance.new("TextLabel")
-UI.MusicNowPlaying.AutomaticSize = Enum.AutomaticSize.Y
-UI.MusicNowPlaying.BackgroundTransparency = 1
-UI.MusicNowPlaying.BorderSizePixel = 0
-UI.MusicNowPlaying.FontFace = GothamBold
-UI.MusicNowPlaying.LayoutOrder = 1
-UI.MusicNowPlaying.Name = "MusicNowPlaying"
-UI.MusicNowPlaying.Size = UDim2.new(1, 0, 0, 24)
-UI.MusicNowPlaying.Text = "No song playing"
-UI.MusicNowPlaying.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.MusicNowPlaying.TextScaled = false
-UI.MusicNowPlaying.TextSize = 24
-UI.MusicNowPlaying.TextWrapped = true
-UI.MusicNowPlaying.TextXAlignment = Enum.TextXAlignment.Center
-UI.MusicNowPlaying.Parent = UI.MusicContent
+UI.MusicNowPlaying = MkEl("TextLabel", {AutomaticSize = Enum.AutomaticSize.Y, BackgroundTransparency = 1,
+    BorderSizePixel = 0, FontFace = GothamBold, LayoutOrder = 1,
+    Name = "MusicNowPlaying", Size = UDim2.new(1, 0, 0, 24),
+    Text = "No song playing", TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = false, TextSize = 24, TextWrapped = true,
+    TextXAlignment = Enum.TextXAlignment.Center}, UI.MusicContent)
 
-UI.MusicNowPlayingStroke = Instance.new("UIStroke")
-UI.MusicNowPlayingStroke.Color = Color3.fromRGB(0, 64, 180)
-UI.MusicNowPlayingStroke.Parent = UI.MusicNowPlaying
+UI.MusicNowPlayingStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.MusicNowPlaying)
 
-UI.MusicSliderArea = Instance.new("Frame")
-UI.MusicSliderArea.BackgroundTransparency = 1
-UI.MusicSliderArea.BorderSizePixel = 0
-UI.MusicSliderArea.LayoutOrder = 2
-UI.MusicSliderArea.Name = "MusicSliderArea"
-UI.MusicSliderArea.Size = UDim2.new(1, 0, 0, 20)
-UI.MusicSliderArea.Parent = UI.MusicContent
+UI.MusicSliderArea = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 2,
+    Name = "MusicSliderArea", Size = UDim2.new(1, 0, 0, 20)}, UI.MusicContent)
 
-UI.MusicSliderAreaSizeCons = Instance.new("UISizeConstraint")
-UI.MusicSliderAreaSizeCons.MaxSize = Vector2.new(2147483647, 20)
-UI.MusicSliderAreaSizeCons.Parent = UI.MusicSliderArea
+MkSize(nil, Vector2.new(2147483647, 20), UI.MusicSliderArea)
 
-UI.MusicSliderBar = Instance.new("Frame")
-UI.MusicSliderBar.AnchorPoint = Vector2.new(0, 0.5)
-UI.MusicSliderBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-UI.MusicSliderBar.BorderSizePixel = 0
-UI.MusicSliderBar.Name = "MusicSliderBar"
-UI.MusicSliderBar.Position = UDim2.new(0, 0, 0.5, 0)
-UI.MusicSliderBar.Size = UDim2.new(1, 0, 0, 6)
-UI.MusicSliderBar.Parent = UI.MusicSliderArea
+UI.MusicSliderBar = MkEl("Frame", {AnchorPoint = Vector2.new(0, 0.5),
+    BackgroundColor3 = Color3.fromRGB(30, 30, 30), BorderSizePixel = 0,
+    Name = "MusicSliderBar", Position = UDim2.new(0, 0, 0.5, 0),
+    Size = UDim2.new(1, 0, 0, 6)}, UI.MusicSliderArea)
 
-UI.MusicSliderBarCorner = Instance.new("UICorner")
-UI.MusicSliderBarCorner.CornerRadius = UDim.new(0, 3)
-UI.MusicSliderBarCorner.Parent = UI.MusicSliderBar
+MkCorner(3, UI.MusicSliderBar)
 
-UI.MusicSliderFill = Instance.new("Frame")
-UI.MusicSliderFill.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.MusicSliderFill.BorderSizePixel = 0
-UI.MusicSliderFill.Name = "MusicSliderFill"
-UI.MusicSliderFill.Size = UDim2.new(0, 0, 1, 0)
-UI.MusicSliderFill.Parent = UI.MusicSliderBar
+UI.MusicSliderFill = MkEl("Frame", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    Name = "MusicSliderFill", Size = UDim2.new(0, 0, 1, 0)}, UI.MusicSliderBar)
 
-UI.MusicSliderFillCorner = Instance.new("UICorner")
-UI.MusicSliderFillCorner.CornerRadius = UDim.new(0, 3)
-UI.MusicSliderFillCorner.Parent = UI.MusicSliderFill
+MkCorner(3, UI.MusicSliderFill)
 
-UI.MusicSliderKnob = Instance.new("Frame")
-UI.MusicSliderKnob.AnchorPoint = Vector2.new(0, 0)
-UI.MusicSliderKnob.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.MusicSliderKnob.BorderSizePixel = 0
-UI.MusicSliderKnob.Name = "MusicSliderKnob"
-UI.MusicSliderKnob.Position = UDim2.new(0, -6, 0.5, -6)
-UI.MusicSliderKnob.Size = UDim2.new(0, 12, 0, 12)
-UI.MusicSliderKnob.Parent = UI.MusicSliderBar
+UI.MusicSliderKnob = MkEl("Frame", {AnchorPoint = Vector2.new(0, 0),
+    BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    Name = "MusicSliderKnob", Position = UDim2.new(0, -6, 0.5, -6),
+    Size = UDim2.new(0, 12, 0, 12)}, UI.MusicSliderBar)
 
-UI.MusicSliderKnobCorner = Instance.new("UICorner")
+UI.MusicSliderKnobCorner = MkCorner(0, UI.MusicSliderKnob)
 UI.MusicSliderKnobCorner.CornerRadius = UDim.new(1, 0)
-UI.MusicSliderKnobCorner.Parent = UI.MusicSliderKnob
 
-UI.MusicTimeLabel = Instance.new("TextLabel")
-UI.MusicTimeLabel.BackgroundTransparency = 1
-UI.MusicTimeLabel.BorderSizePixel = 0
-UI.MusicTimeLabel.FontFace = GothamMedium
-UI.MusicTimeLabel.LayoutOrder = 3
-UI.MusicTimeLabel.Name = "MusicTimeLabel"
-UI.MusicTimeLabel.Size = UDim2.new(1, 0, 0, 16)
-UI.MusicTimeLabel.Text = "0:00 / 0:00"
-UI.MusicTimeLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
-UI.MusicTimeLabel.TextScaled = true
-UI.MusicTimeLabel.TextXAlignment = Enum.TextXAlignment.Center
-UI.MusicTimeLabel.Parent = UI.MusicContent
+UI.MusicTimeLabel = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 3, Name = "MusicTimeLabel",
+    Size = UDim2.new(1, 0, 0, 16), Text = "0:00 / 0:00",
+    TextColor3 = Color3.fromRGB(160, 160, 160), TextScaled = true,
+    TextXAlignment = Enum.TextXAlignment.Center}, UI.MusicContent)
 
-UI.MusicTimeLabelSizeCons = Instance.new("UISizeConstraint")
-UI.MusicTimeLabelSizeCons.MaxSize = Vector2.new(2147483647, 16)
-UI.MusicTimeLabelSizeCons.Parent = UI.MusicTimeLabel
+MkSize(nil, Vector2.new(2147483647, 16), UI.MusicTimeLabel)
 
-UI.MusicControls = Instance.new("Frame")
-UI.MusicControls.BackgroundTransparency = 1
-UI.MusicControls.BorderSizePixel = 0
-UI.MusicControls.LayoutOrder = 4
-UI.MusicControls.Name = "MusicControls"
-UI.MusicControls.Size = UDim2.new(1, 0, 0, 36)
-UI.MusicControls.Parent = UI.MusicContent
+UI.MusicControls = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 4,
+    Name = "MusicControls", Size = UDim2.new(1, 0, 0, 36)}, UI.MusicContent)
 
-UI.MusicControlsSizeCons = Instance.new("UISizeConstraint")
-UI.MusicControlsSizeCons.MaxSize = Vector2.new(2147483647, 36)
-UI.MusicControlsSizeCons.Parent = UI.MusicControls
+MkSize(nil, Vector2.new(2147483647, 36), UI.MusicControls)
 
-UI.MusicControlsLayout = Instance.new("UIListLayout")
-UI.MusicControlsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.MusicControlsLayout = MkList(Enum.FillDirection.Horizontal, 8, UI.MusicControls)
 UI.MusicControlsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-UI.MusicControlsLayout.Padding = UDim.new(0, 8)
-UI.MusicControlsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.MusicControlsLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-UI.MusicControlsLayout.Parent = UI.MusicControls
 
-UI.MusicPrevBtn = Instance.new("TextButton")
-UI.MusicPrevBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.MusicPrevBtn.BorderSizePixel = 0
-UI.MusicPrevBtn.FontFace = GothamBold
-UI.MusicPrevBtn.LayoutOrder = 1
-UI.MusicPrevBtn.Name = "MusicPrevBtn"
-UI.MusicPrevBtn.Size = UDim2.new(0, 60, 1, 0)
-UI.MusicPrevBtn.Text = "⏮"
-UI.MusicPrevBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.MusicPrevBtn.TextScaled = true
-UI.MusicPrevBtn.Parent = UI.MusicControls
+UI.MusicPrevBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamBold, LayoutOrder = 1, Name = "MusicPrevBtn",
+    Size = UDim2.new(0, 60, 1, 0), Text = "I<<",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true}, UI.MusicControls)
 
-UI.MusicPrevBtnCorner = Instance.new("UICorner")
-UI.MusicPrevBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.MusicPrevBtnCorner.Parent = UI.MusicPrevBtn
+MkCorner(6, UI.MusicPrevBtn)
 
-UI.MusicPrevBtnStroke = Instance.new("UIStroke")
+UI.MusicPrevBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.MusicPrevBtn)
 UI.MusicPrevBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.MusicPrevBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.MusicPrevBtnStroke.Name = "MusicPrevBtnStroke"
-UI.MusicPrevBtnStroke.Parent = UI.MusicPrevBtn
 
-UI.MusicPlayBtn = Instance.new("TextButton")
-UI.MusicPlayBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.MusicPlayBtn.BorderSizePixel = 0
-UI.MusicPlayBtn.FontFace = GothamBold
-UI.MusicPlayBtn.LayoutOrder = 2
-UI.MusicPlayBtn.Name = "MusicPlayBtn"
-UI.MusicPlayBtn.Size = UDim2.new(0, 80, 1, 0)
-UI.MusicPlayBtn.Text = "▶"
-UI.MusicPlayBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.MusicPlayBtn.TextScaled = true
-UI.MusicPlayBtn.Parent = UI.MusicControls
+UI.MusicPlayBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamBold, LayoutOrder = 2, Name = "MusicPlayBtn",
+    Size = UDim2.new(0, 80, 1, 0), Text = "▶",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true}, UI.MusicControls)
 
-UI.MusicPlayBtnCorner = Instance.new("UICorner")
-UI.MusicPlayBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.MusicPlayBtnCorner.Parent = UI.MusicPlayBtn
+MkCorner(6, UI.MusicPlayBtn)
 
-UI.MusicPlayBtnStroke = Instance.new("UIStroke")
+UI.MusicPlayBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.MusicPlayBtn)
 UI.MusicPlayBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.MusicPlayBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.MusicPlayBtnStroke.Name = "MusicPlayBtnStroke"
-UI.MusicPlayBtnStroke.Parent = UI.MusicPlayBtn
 
-UI.MusicNextBtn = Instance.new("TextButton")
-UI.MusicNextBtn.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.MusicNextBtn.BorderSizePixel = 0
-UI.MusicNextBtn.FontFace = GothamBold
-UI.MusicNextBtn.LayoutOrder = 3
-UI.MusicNextBtn.Name = "MusicNextBtn"
-UI.MusicNextBtn.Size = UDim2.new(0, 60, 1, 0)
-UI.MusicNextBtn.Text = "⏭"
-UI.MusicNextBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.MusicNextBtn.TextScaled = true
-UI.MusicNextBtn.Parent = UI.MusicControls
+UI.MusicNextBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamBold, LayoutOrder = 3, Name = "MusicNextBtn",
+    Size = UDim2.new(0, 60, 1, 0), Text = ">>I",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true}, UI.MusicControls)
 
-UI.MusicNextBtnCorner = Instance.new("UICorner")
-UI.MusicNextBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.MusicNextBtnCorner.Parent = UI.MusicNextBtn
+MkCorner(6, UI.MusicNextBtn)
 
-UI.MusicNextBtnStroke = Instance.new("UIStroke")
+UI.MusicNextBtnStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.MusicNextBtn)
 UI.MusicNextBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.MusicNextBtnStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.MusicNextBtnStroke.Name = "MusicNextBtnStroke"
-UI.MusicNextBtnStroke.Parent = UI.MusicNextBtn
 
-UI.MusicSettingsFrame = Instance.new("Frame")
-UI.MusicSettingsFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.MusicSettingsFrame.BorderSizePixel = 0
-UI.MusicSettingsFrame.LayoutOrder = 5
-UI.MusicSettingsFrame.Name = "MusicSettingsFrame"
-UI.MusicSettingsFrame.Size = UDim2.new(1, 0, 0, 70)
-UI.MusicSettingsFrame.Parent = UI.MusicContent
+UI.MusicSettingsFrame = MkEl("Frame", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+    LayoutOrder = 5, Name = "MusicSettingsFrame",
+    Size = UDim2.new(1, 0, 0, 70)}, UI.MusicContent)
 
-UI.MusicSettingsFrameSizeCons = Instance.new("UISizeConstraint")
-UI.MusicSettingsFrameSizeCons.MaxSize = Vector2.new(2147483647, 70)
-UI.MusicSettingsFrameSizeCons.Parent = UI.MusicSettingsFrame
+MkSize(nil, Vector2.new(2147483647, 70), UI.MusicSettingsFrame)
 
-UI.MusicSettingsFrameCorner = Instance.new("UICorner")
-UI.MusicSettingsFrameCorner.CornerRadius = UDim.new(0, 6)
-UI.MusicSettingsFrameCorner.Parent = UI.MusicSettingsFrame
+MkCorner(6, UI.MusicSettingsFrame)
 
-UI.MusicSettingsFrameStroke = Instance.new("UIStroke")
+UI.MusicSettingsFrameStroke = MkStroke(Color3.fromRGB(36, 36, 36), UI.MusicSettingsFrame)
 UI.MusicSettingsFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.MusicSettingsFrameStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.MusicSettingsFrameStroke.Parent = UI.MusicSettingsFrame
 
-UI.MusicSettingsFrameLayout = Instance.new("UIListLayout")
-UI.MusicSettingsFrameLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.MusicSettingsFrameLayout = MkList(Enum.FillDirection.Horizontal, 8, UI.MusicSettingsFrame)
 UI.MusicSettingsFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.MusicSettingsFrameLayout.Padding = UDim.new(0, 8)
-UI.MusicSettingsFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.MusicSettingsFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.MusicSettingsFrameLayout.Parent = UI.MusicSettingsFrame
 
-UI.MusicSettingsFramePadding = Instance.new("UIPadding")
-UI.MusicSettingsFramePadding.PaddingBottom = UDim.new(0, 6)
-UI.MusicSettingsFramePadding.PaddingLeft = UDim.new(0, 10)
-UI.MusicSettingsFramePadding.PaddingRight = UDim.new(0, 10)
-UI.MusicSettingsFramePadding.PaddingTop = UDim.new(0, 6)
-UI.MusicSettingsFramePadding.Parent = UI.MusicSettingsFrame
+MkPad(10, 10, 6, 6, UI.MusicSettingsFrame)
 
 local function MakeMusicSetting(labelText, defaultVal, layoutOrder, name)
-    local col = Instance.new("Frame")
-    col.BackgroundTransparency = 1
-    col.BorderSizePixel = 0
-    col.LayoutOrder = layoutOrder
-    col.Name = name .. "Col"
-    col.Size = UDim2.new(0.28, 0, 1, 0)
-    col.Parent = UI.MusicSettingsFrame
+    local col = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = layoutOrder,
+        Name = name .. "Col", Size = UDim2.new(0.28, 0, 1, 0)}, UI.MusicSettingsFrame)
 
-    local colLayout = Instance.new("UIListLayout")
+    local colLayout = MkList(Enum.FillDirection.Vertical, 2, col)
     colLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-    colLayout.Padding = UDim.new(0, 2)
-    colLayout.SortOrder = Enum.SortOrder.LayoutOrder
     colLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-    colLayout.Parent = col
 
-    local lbl = Instance.new("TextLabel")
-    lbl.BackgroundTransparency = 1
-    lbl.BorderSizePixel = 0
-    lbl.FontFace = GothamMedium
-    lbl.LayoutOrder = 1
-    lbl.Size = UDim2.new(1, 0, 0.5, 0)
-    lbl.Text = labelText
-    lbl.TextColor3 = Color3.fromRGB(180, 180, 180)
-    lbl.TextScaled = true
-    lbl.Parent = col
+    local lbl = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium,
+        LayoutOrder = 1, Size = UDim2.new(1, 0, 0.5, 0), Text = labelText,
+        TextColor3 = Color3.fromRGB(180, 180, 180), TextScaled = true}, col)
 
-    local box = Instance.new("TextBox")
-    box.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-    box.BorderSizePixel = 0
-    box.FontFace = GothamMedium
-    box.LayoutOrder = 2
-    box.Name = name .. "Box"
-    box.Size = UDim2.new(1, 0, 0.5, 0)
-    box.Text = defaultVal
-    box.TextColor3 = Color3.fromRGB(255, 255, 255)
-    box.TextScaled = true
-    box.Parent = col
+    local box = MkEl("TextBox", {BackgroundColor3 = Color3.fromRGB(26, 26, 26), BorderSizePixel = 0,
+        FontFace = GothamMedium, LayoutOrder = 2, Name = name .. "Box",
+        Size = UDim2.new(1, 0, 0.5, 0), Text = defaultVal,
+        TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true}, col)
 
-    local boxCorner = Instance.new("UICorner")
-    boxCorner.CornerRadius = UDim.new(0, 4)
-    boxCorner.Parent = box
+    MkCorner(4, box)
 
-    local boxStroke = Instance.new("UIStroke")
-    boxStroke.Color = Color3.fromRGB(36, 36, 36)
-    boxStroke.Parent = box
+    MkStroke(Color3.fromRGB(36, 36, 36), box)
 
     UI[name .. "Box"] = box
     return box
@@ -3212,633 +2359,294 @@ end
 MakeMusicSetting("Volume", "1", 1, "MusicVolume")
 MakeMusicSetting("Speed", "1", 2, "MusicSpeed")
 
-UI.MusicLoopCol = Instance.new("Frame")
-UI.MusicLoopCol.BackgroundTransparency = 1
-UI.MusicLoopCol.BorderSizePixel = 0
-UI.MusicLoopCol.LayoutOrder = 3
-UI.MusicLoopCol.Name = "MusicLoopCol"
-UI.MusicLoopCol.Size = UDim2.new(0.28, 0, 1, 0)
-UI.MusicLoopCol.Parent = UI.MusicSettingsFrame
+UI.MusicLoopCol = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 3,
+    Name = "MusicLoopCol", Size = UDim2.new(0.28, 0, 1, 0)}, UI.MusicSettingsFrame)
 
-UI.MusicLoopColLayout = Instance.new("UIListLayout")
+UI.MusicLoopColLayout = MkList(Enum.FillDirection.Vertical, 2, UI.MusicLoopCol)
 UI.MusicLoopColLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.MusicLoopColLayout.Padding = UDim.new(0, 2)
-UI.MusicLoopColLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.MusicLoopColLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.MusicLoopColLayout.Parent = UI.MusicLoopCol
 
-UI.MusicLoopLabel = Instance.new("TextLabel")
-UI.MusicLoopLabel.BackgroundTransparency = 1
-UI.MusicLoopLabel.BorderSizePixel = 0
-UI.MusicLoopLabel.FontFace = GothamMedium
-UI.MusicLoopLabel.LayoutOrder = 1
-UI.MusicLoopLabel.Size = UDim2.new(1, 0, 0.5, 0)
-UI.MusicLoopLabel.Text = "Loop"
-UI.MusicLoopLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
-UI.MusicLoopLabel.TextScaled = true
-UI.MusicLoopLabel.Parent = UI.MusicLoopCol
+MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium, LayoutOrder = 1,
+    Size = UDim2.new(1, 0, 0.5, 0), Text = "Loop", TextColor3 = Color3.fromRGB(180, 180, 180),
+    TextScaled = true}, UI.MusicLoopCol)
 
-UI.MusicLoopToggle = Instance.new("TextButton")
-UI.MusicLoopToggle.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-UI.MusicLoopToggle.BorderSizePixel = 0
-UI.MusicLoopToggle.FontFace = GothamMedium
-UI.MusicLoopToggle.LayoutOrder = 2
-UI.MusicLoopToggle.Name = "MusicLoopToggle"
-UI.MusicLoopToggle.Size = UDim2.new(1, 0, 0.5, 0)
-UI.MusicLoopToggle.Text = ""
-UI.MusicLoopToggle.Parent = UI.MusicLoopCol
+UI.MusicLoopToggle = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(26, 26, 26), BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 2, Name = "MusicLoopToggle",
+    Size = UDim2.new(1, 0, 0.5, 0), Text = ""}, UI.MusicLoopCol)
 
-UI.MusicLoopToggleCorner = Instance.new("UICorner")
-UI.MusicLoopToggleCorner.CornerRadius = UDim.new(0, 4)
-UI.MusicLoopToggleCorner.Parent = UI.MusicLoopToggle
+MkCorner(4, UI.MusicLoopToggle)
 
-UI.MusicLoopToggleStroke = Instance.new("UIStroke")
-UI.MusicLoopToggleStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.MusicLoopToggleStroke.Parent = UI.MusicLoopToggle
+MkStroke(Color3.fromRGB(36, 36, 36), UI.MusicLoopToggle)
 
-UI.MusicLoopState = Instance.new("Frame")
-UI.MusicLoopState.AnchorPoint = Vector2.new(0.5, 0.5)
-UI.MusicLoopState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-UI.MusicLoopState.BorderSizePixel = 0
-UI.MusicLoopState.Name = "LoopState"
-UI.MusicLoopState.Position = UDim2.new(0.5, 0, 0.5, 0)
-UI.MusicLoopState.Size = UDim2.new(0.7, 0, 0.6, 0)
-UI.MusicLoopState.Parent = UI.MusicLoopToggle
+UI.MusicLoopState = MkEl("Frame", {AnchorPoint = Vector2.new(0.5, 0.5),
+    BackgroundColor3 = Color3.fromRGB(255, 0, 0), BorderSizePixel = 0,
+    Name = "LoopState", Position = UDim2.new(0.5, 0, 0.5, 0),
+    Size = UDim2.new(0.7, 0, 0.6, 0)}, UI.MusicLoopToggle)
 
-UI.MusicLoopStateCorner = Instance.new("UICorner")
-UI.MusicLoopStateCorner.CornerRadius = UDim.new(0, 4)
-UI.MusicLoopStateCorner.Parent = UI.MusicLoopState
+MkCorner(4, UI.MusicLoopState)
 
-UI.MusicListScroll = Instance.new("ScrollingFrame")
-UI.MusicListScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-UI.MusicListScroll.BackgroundTransparency = 1
-UI.MusicListScroll.BorderSizePixel = 0
-UI.MusicListScroll.LayoutOrder = 6
-UI.MusicListScroll.Name = "MusicListScroll"
-UI.MusicListScroll.ScrollBarThickness = 4
-UI.MusicListScroll.ScrollingDirection = Enum.ScrollingDirection.Y
-UI.MusicListScroll.Size = UDim2.new(1, 0, 1, 0)
-UI.MusicListScroll.Parent = UI.MusicContent
+UI.MusicListScroll = MkEl("ScrollingFrame", {AutomaticCanvasSize = Enum.AutomaticSize.Y,
+    BackgroundTransparency = 1, BorderSizePixel = 0,
+    LayoutOrder = 6, Name = "MusicListScroll",
+    ScrollBarThickness = 4,
+    ScrollingDirection = Enum.ScrollingDirection.Y,
+    Size = UDim2.new(1, 0, 1, 0)}, UI.MusicContent)
 
-UI.MusicListLayout = Instance.new("UIListLayout")
+UI.MusicListLayout = MkList(Enum.FillDirection.Vertical, 4, UI.MusicListScroll)
 UI.MusicListLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
 UI.MusicListLayout.Name = "MusicListLayout"
-UI.MusicListLayout.Padding = UDim.new(0, 4)
-UI.MusicListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UI.MusicListLayout.Parent = UI.MusicListScroll
 
-UI.MusicListPadding = Instance.new("UIPadding")
+UI.MusicListPadding = MkPad(0, 0, 4, 4, UI.MusicListScroll)
 UI.MusicListPadding.Name = "MusicListPadding"
-UI.MusicListPadding.PaddingBottom = UDim.new(0, 4)
-UI.MusicListPadding.PaddingTop = UDim.new(0, 4)
-UI.MusicListPadding.Parent = UI.MusicListScroll
 
-UI.NoMusicLabel = Instance.new("TextLabel")
-UI.NoMusicLabel.BackgroundTransparency = 1
-UI.NoMusicLabel.BorderSizePixel = 0
-UI.NoMusicLabel.FontFace = GothamMedium
-UI.NoMusicLabel.Name = "NoMusicLabel"
-UI.NoMusicLabel.Size = UDim2.new(1, 0, 0, 60)
-UI.NoMusicLabel.Text = "No music found.\n\nPlace audio files in Lucid/Music/"
-UI.NoMusicLabel.TextColor3 = Color3.fromRGB(160, 160, 160)
-UI.NoMusicLabel.TextScaled = true
-UI.NoMusicLabel.TextWrapped = true
-UI.NoMusicLabel.Visible = false
-UI.NoMusicLabel.Parent = UI.MusicListScroll
+UI.NoMusicLabel = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0,
+    FontFace = GothamMedium, Name = "NoMusicLabel",
+    Size = UDim2.new(1, 0, 0, 60),
+    Text = "No music found.\n\nPlace audio files in Lucid/Music/",
+    TextColor3 = Color3.fromRGB(160, 160, 160), TextScaled = true,
+    TextWrapped = true, Visible = false}, UI.MusicListScroll)
 
-UI.SettingsContent = Instance.new("CanvasGroup")
-UI.SettingsContent.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-UI.SettingsContent.BorderSizePixel = 0
-UI.SettingsContent.LayoutOrder = 1
-UI.SettingsContent.Name = "SettingsContent"
-UI.SettingsContent.Size = UDim2.new(1, 0, 1, 0)
-UI.SettingsContent.Visible = false
-UI.SettingsContent.Parent = UI.Pages
+UI.SettingsContent = MkEl("CanvasGroup", {BackgroundColor3 = Color3.fromRGB(18, 18, 18), BorderSizePixel = 0,
+    LayoutOrder = 1, Name = "SettingsContent",
+    Size = UDim2.new(1, 0, 1, 0), Visible = false}, UI.Pages)
 
-UI.SettingsContentCorner = Instance.new("UICorner")
-UI.SettingsContentCorner.CornerRadius = UDim.new(0, 6)
-UI.SettingsContentCorner.Parent = UI.SettingsContent
+MkCorner(6, UI.SettingsContent)
 
-UI.SettingsContentStroke = Instance.new("UIStroke")
+UI.SettingsContentStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.SettingsContent)
 UI.SettingsContentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.SettingsContentStroke.Color = Color3.fromRGB(0, 99, 255)
 UI.SettingsContentStroke.Name = "SettingsContentStroke"
-UI.SettingsContentStroke.Parent = UI.SettingsContent
 
-UI.SettingsFrame = Instance.new("ScrollingFrame")
-UI.SettingsFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
-UI.SettingsFrame.BackgroundTransparency = 1
-UI.SettingsFrame.BorderSizePixel = 0
-UI.SettingsFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-UI.SettingsFrame.Name = "SettingsFrame"
-UI.SettingsFrame.Size = UDim2.new(1, 0, 1, 0)
-UI.SettingsFrame.Parent = UI.SettingsContent
+UI.SettingsFrame = MkEl("ScrollingFrame", {AutomaticCanvasSize = Enum.AutomaticSize.Y,
+    BackgroundTransparency = 1, BorderSizePixel = 0,
+    CanvasSize = UDim2.new(0, 0, 0, 0), Name = "SettingsFrame",
+    Size = UDim2.new(1, 0, 1, 0)}, UI.SettingsContent)
 
-UI.SettingsFramePadding = Instance.new("UIPadding")
-UI.SettingsFramePadding.PaddingBottom = UDim.new(0, 5)
-UI.SettingsFramePadding.PaddingLeft = UDim.new(0, 5)
-UI.SettingsFramePadding.PaddingRight = UDim.new(0, 5)
-UI.SettingsFramePadding.PaddingTop = UDim.new(0, 5)
-UI.SettingsFramePadding.Parent = UI.SettingsFrame
+MkPad(5, 5, 5, 5, UI.SettingsFrame)
 
-UI.SettingsFrameLayout = Instance.new("UIListLayout")
+UI.SettingsFrameLayout = MkList(Enum.FillDirection.Vertical, 6, UI.SettingsFrame)
 UI.SettingsFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SettingsFrameLayout.Padding = UDim.new(0, 6)
-UI.SettingsFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UI.SettingsFrameLayout.Parent = UI.SettingsFrame
 
-UI.AnimsToggle = Instance.new("TextButton")
-UI.AnimsToggle.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.AnimsToggle.BorderSizePixel = 0
-UI.AnimsToggle.LayoutOrder = 1
-UI.AnimsToggle.Name = "AnimsToggle"
-UI.AnimsToggle.Size = UDim2.new(1, 0, 0, 38)
-UI.AnimsToggle.Text = ""
-UI.AnimsToggle.Parent = UI.SettingsFrame
+UI.AnimsToggle = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+    LayoutOrder = 1, Name = "AnimsToggle", Size = UDim2.new(1, 0, 0, 38),
+    Text = ""}, UI.SettingsFrame)
 
-UI.AnimsToggleCorner = Instance.new("UICorner")
-UI.AnimsToggleCorner.CornerRadius = UDim.new(0, 6)
-UI.AnimsToggleCorner.Parent = UI.AnimsToggle
+MkCorner(6, UI.AnimsToggle)
 
-UI.AnimsToggleStroke = Instance.new("UIStroke")
+UI.AnimsToggleStroke = MkStroke(Color3.fromRGB(36, 36, 36), UI.AnimsToggle)
 UI.AnimsToggleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.AnimsToggleStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.AnimsToggleStroke.Parent = UI.AnimsToggle
 
-UI.AnimsTogglePadding = Instance.new("UIPadding")
-UI.AnimsTogglePadding.PaddingBottom = UDim.new(0, 8)
-UI.AnimsTogglePadding.PaddingLeft = UDim.new(0, 8)
-UI.AnimsTogglePadding.PaddingRight = UDim.new(0, 8)
-UI.AnimsTogglePadding.PaddingTop = UDim.new(0, 8)
-UI.AnimsTogglePadding.Parent = UI.AnimsToggle
+MkPad(8, 8, 8, 8, UI.AnimsToggle)
 
-UI.AnimsToggleLayout = Instance.new("UIListLayout")
-UI.AnimsToggleLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.AnimsToggleLayout = MkList(Enum.FillDirection.Horizontal, 6, UI.AnimsToggle)
 UI.AnimsToggleLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.AnimsToggleLayout.Padding = UDim.new(0, 6)
-UI.AnimsToggleLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.AnimsToggleLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.AnimsToggleLayout.Parent = UI.AnimsToggle
 
-UI.AnimsToggleLabel = Instance.new("TextLabel")
-UI.AnimsToggleLabel.BackgroundTransparency = 1
-UI.AnimsToggleLabel.BorderSizePixel = 0
-UI.AnimsToggleLabel.FontFace = GothamMedium
-UI.AnimsToggleLabel.LayoutOrder = 1
-UI.AnimsToggleLabel.Name = "AnimsToggleLabel"
-UI.AnimsToggleLabel.Size = UDim2.new(0.8, 0, 1, 0)
-UI.AnimsToggleLabel.Text = "Animations"
-UI.AnimsToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.AnimsToggleLabel.TextScaled = true
-UI.AnimsToggleLabel.TextWrapped = true
-UI.AnimsToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
-UI.AnimsToggleLabel.Parent = UI.AnimsToggle
+MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium, LayoutOrder = 1,
+    Name = "AnimsToggleLabel", Size = UDim2.new(0.8, 0, 1, 0), Text = "Animations",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true, TextWrapped = true,
+    TextXAlignment = Enum.TextXAlignment.Left}, UI.AnimsToggle)
 
-UI.ToggleState = Instance.new("Frame")
-UI.ToggleState.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-UI.ToggleState.BorderSizePixel = 0
-UI.ToggleState.LayoutOrder = 2
-UI.ToggleState.Name = "ToggleState"
-UI.ToggleState.Size = UDim2.new(0.2, 0, 0.6, 0)
-UI.ToggleState.Parent = UI.AnimsToggle
+UI.ToggleState = MkEl("Frame", {BackgroundColor3 = Color3.fromRGB(255, 0, 0), BorderSizePixel = 0,
+    LayoutOrder = 2, Name = "ToggleState", Size = UDim2.new(0.2, 0, 0.6, 0)}, UI.AnimsToggle)
 
-UI.ToggleStateCorner = Instance.new("UICorner")
-UI.ToggleStateCorner.CornerRadius = UDim.new(0, 6)
-UI.ToggleStateCorner.Parent = UI.ToggleState
+MkCorner(6, UI.ToggleState)
 
-UI.ToggleStateRatio = Instance.new("UIAspectRatioConstraint")
-UI.ToggleStateRatio.Parent = UI.ToggleState
+MkAspect(1, UI.ToggleState)
 
-UI.ToggleStateStroke = Instance.new("UIStroke")
-UI.ToggleStateStroke.Color = Color3.fromRGB(255, 0, 0)
+UI.ToggleStateStroke = MkStroke(Color3.fromRGB(255, 0, 0), UI.ToggleState)
 UI.ToggleStateStroke.Transparency = 0.5
-UI.ToggleStateStroke.Parent = UI.ToggleState
 
-UI.SidebarContainer = Instance.new("Frame")
-UI.SidebarContainer.BackgroundTransparency = 1
-UI.SidebarContainer.BorderSizePixel = 0
-UI.SidebarContainer.LayoutOrder = 2
-UI.SidebarContainer.Name = "SidebarContainer"
-UI.SidebarContainer.Size = UDim2.new(0.2, 0, 0.3, 0)
-UI.SidebarContainer.Parent = UI.MainFrame
+UI.SidebarContainer = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 2,
+    Name = "SidebarContainer", Size = UDim2.new(0.2, 0, 0.3, 0)}, UI.MainFrame)
 
-UI.Sidebar = Instance.new("Frame")
-UI.Sidebar.AnchorPoint = Vector2.new(1, 0.5)
-UI.Sidebar.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-UI.Sidebar.BorderSizePixel = 0
-UI.Sidebar.Name = "Sidebar"
-UI.Sidebar.Position = UDim2.new(1, 8, 0.5, 0)
-UI.Sidebar.Size = UDim2.new(1, 0, 1, -10)
-UI.Sidebar.Parent = UI.SidebarContainer
+UI.Sidebar = MkEl("Frame", {AnchorPoint = Vector2.new(1, 0.5), BackgroundColor3 = Color3.fromRGB(18, 18, 18),
+    BorderSizePixel = 0, Name = "Sidebar", Position = UDim2.new(1, 8, 0.5, 0),
+    Size = UDim2.new(1, 0, 1, -10)}, UI.SidebarContainer)
 
-UI.SidebarCorner = Instance.new("UICorner")
-UI.SidebarCorner.CornerRadius = UDim.new(0, 6)
-UI.SidebarCorner.Parent = UI.Sidebar
+MkCorner(6, UI.Sidebar)
 
-UI.SidebarStroke = Instance.new("UIStroke")
-UI.SidebarStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.SidebarStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.Sidebar)
 UI.SidebarStroke.Name = "SidebarStroke"
-UI.SidebarStroke.Parent = UI.Sidebar
 
-UI.SidebarPadding = Instance.new("UIPadding")
-UI.SidebarPadding.PaddingBottom = UDim.new(0, 8)
-UI.SidebarPadding.PaddingLeft = UDim.new(0, 8)
-UI.SidebarPadding.PaddingRight = UDim.new(0, 18)
-UI.SidebarPadding.PaddingTop = UDim.new(0, 8)
-UI.SidebarPadding.Parent = UI.Sidebar
+MkPad(8, 18, 8, 8, UI.Sidebar)
 
-UI.SidebarLayout = Instance.new("UIListLayout")
+UI.SidebarLayout = MkList(Enum.FillDirection.Vertical, 3, UI.Sidebar)
 UI.SidebarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.SidebarLayout.Padding = UDim.new(0, 3)
-UI.SidebarLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.SidebarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.SidebarLayout.Parent = UI.Sidebar
 
-UI.Topbar = Instance.new("Frame")
-UI.Topbar.BackgroundTransparency = 1
-UI.Topbar.BorderSizePixel = 0
-UI.Topbar.Name = "Topbar"
-UI.Topbar.Size = UDim2.new(1, 0, 0, 30)
-UI.Topbar.Parent = UI.Sidebar
+UI.Topbar = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, Name = "Topbar",
+    Size = UDim2.new(1, 0, 0, 30)}, UI.Sidebar)
 
-UI.TopbarSizeCons = Instance.new("UISizeConstraint")
-UI.TopbarSizeCons.MaxSize = Vector2.new(2147483647, 30)
-UI.TopbarSizeCons.MinSize = Vector2.new(0, 28)
-UI.TopbarSizeCons.Parent = UI.Topbar
+MkSize(Vector2.new(0, 28), Vector2.new(2147483647, 30), UI.Topbar)
 
-UI.TopbarLayout = Instance.new("UIListLayout")
-UI.TopbarLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.TopbarLayout = MkList(Enum.FillDirection.Horizontal, 4, UI.Topbar)
 UI.TopbarLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.TopbarLayout.Padding = UDim.new(0, 4)
-UI.TopbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.TopbarLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.TopbarLayout.Parent = UI.Topbar
 
-UI.Logo = Instance.new("ImageLabel")
-UI.Logo.BackgroundTransparency = 1
-UI.Logo.BorderSizePixel = 0
-UI.Logo.Image = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png")
-UI.Logo.ImageColor3 = Color3.fromRGB(0, 64, 180)
-UI.Logo.LayoutOrder = 1
-UI.Logo.Name = "Logo"
-UI.Logo.Size = UDim2.new(0, 30, 0, 30)
-UI.Logo.Parent = UI.Topbar
+UI.Logo = MkEl("ImageLabel", {BackgroundTransparency = 1, BorderSizePixel = 0,
+    Image = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png"),
+    ImageColor3 = Color3.fromRGB(0, 64, 180), LayoutOrder = 1, Name = "Logo",
+    Size = UDim2.new(0, 30, 0, 30)}, UI.Topbar)
 
-UI.LogoRatio = Instance.new("UIAspectRatioConstraint")
-UI.LogoRatio.Parent = UI.Logo
+MkAspect(1, UI.Logo)
 
-UI.Icon = Instance.new("ImageLabel")
-UI.Icon.AnchorPoint = Vector2.new(0.5, 0.5)
-UI.Icon.BackgroundTransparency = 1
-UI.Icon.BorderSizePixel = 0
-UI.Icon.Image = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png")
-UI.Icon.ImageColor3 = Color3.fromRGB(0, 99, 255)
-UI.Icon.LayoutOrder = 1
-UI.Icon.Name = "Icon"
-UI.Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
-UI.Icon.Size = UDim2.new(1, -2, 1, -2)
-UI.Icon.Parent = UI.Logo
+UI.Icon = MkEl("ImageLabel", {AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1,
+    BorderSizePixel = 0, Image = Funcs.GetAsset("Lucid/Assets/Lucid_Logo.png"),
+    ImageColor3 = Color3.fromRGB(0, 99, 255), LayoutOrder = 1, Name = "Icon",
+    Position = UDim2.new(0.5, 0, 0.5, 0), Size = UDim2.new(1, -2, 1, -2)}, UI.Logo)
 
-UI.Title = Instance.new("TextLabel")
-UI.Title.BackgroundTransparency = 1
-UI.Title.BorderSizePixel = 0
-UI.Title.FontFace = BuilderSans
-UI.Title.LayoutOrder = 2
-UI.Title.Name = "Title"
-UI.Title.Size = UDim2.new(0, 60, 0, 30)
-UI.Title.Text = "Lucid"
-UI.Title.TextColor3 = Color3.fromRGB(0, 99, 255)
-UI.Title.TextScaled = true
-UI.Title.TextWrapped = true
-UI.Title.TextXAlignment = Enum.TextXAlignment.Left
-UI.Title.Parent = UI.Topbar
+UI.Title = MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = BuilderSans,
+    LayoutOrder = 2, Name = "Title", Size = UDim2.new(0, 60, 0, 30),
+    Text = "Lucid", TextColor3 = Color3.fromRGB(0, 99, 255), TextScaled = true,
+    TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left}, UI.Topbar)
 
-UI.TitleStroke = Instance.new("UIStroke")
-UI.TitleStroke.Color = Color3.fromRGB(0, 99, 255)
+UI.TitleStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.Title)
 UI.TitleStroke.Transparency = 0.6
 UI.TitleStroke.Name = "TitleStroke"
-UI.TitleStroke.Parent = UI.Title
 
-UI.TitlePadding = Instance.new("UIPadding")
-UI.TitlePadding.PaddingBottom = UDim.new(0, 2)
-UI.TitlePadding.PaddingTop = UDim.new(0, 2)
-UI.TitlePadding.Parent = UI.Title
+MkPad(0, 0, 2, 2, UI.Title)
 
-UI.CloseTab = Instance.new("TextButton")
-UI.CloseTab.BackgroundTransparency = 1
-UI.CloseTab.BorderSizePixel = 0
-UI.CloseTab.LayoutOrder = 100
-UI.CloseTab.Name = "CloseTab"
-UI.CloseTab.Size = UDim2.new(0, 30, 0, 58)
-UI.CloseTab.Text = ""
-UI.CloseTab.Parent = UI.Sidebar
+UI.CloseTab = MkEl("TextButton", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 100,
+    Name = "CloseTab", Size = UDim2.new(0, 30, 0, 58), Text = ""}, UI.Sidebar)
 
-UI.CloseTabLayout = Instance.new("UIListLayout")
-UI.CloseTabLayout.Padding = UDim.new(0, 4)
-UI.CloseTabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UI.CloseTabLayout = MkList(Enum.FillDirection.Vertical, 4, UI.CloseTab)
 UI.CloseTabLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.CloseTabLayout.Parent = UI.CloseTab
 
-UI.CloseTabSizeCons = Instance.new("UISizeConstraint")
-UI.CloseTabSizeCons.MaxSize = Vector2.new(2147483647, 34)
-UI.CloseTabSizeCons.MinSize = Vector2.new(0, 28)
-UI.CloseTabSizeCons.Parent = UI.CloseTab
+MkSize(Vector2.new(0, 28), Vector2.new(2147483647, 34), UI.CloseTab)
 
-UI.CloseTabPadding = Instance.new("UIPadding")
-UI.CloseTabPadding.PaddingBottom = UDim.new(0, 3)
-UI.CloseTabPadding.PaddingTop = UDim.new(0, 3)
-UI.CloseTabPadding.Parent = UI.CloseTab
+MkPad(0, 0, 3, 3, UI.CloseTab)
 
-UI.TabContainer6 = Instance.new("Frame")
-UI.TabContainer6.BackgroundTransparency = 1
-UI.TabContainer6.BorderSizePixel = 0
-UI.TabContainer6.LayoutOrder = 1
-UI.TabContainer6.Name = "TabContainer6"
-UI.TabContainer6.Size = UDim2.new(1, 0, 0, 22)
-UI.TabContainer6.Parent = UI.CloseTab
+UI.TabContainer6 = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 1,
+    Name = "TabContainer6", Size = UDim2.new(1, 0, 0, 22)}, UI.CloseTab)
 
-UI.TabContainer6Layout = Instance.new("UIListLayout")
-UI.TabContainer6Layout.FillDirection = Enum.FillDirection.Horizontal
+UI.TabContainer6Layout = MkList(Enum.FillDirection.Horizontal, 4, UI.TabContainer6)
 UI.TabContainer6Layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.TabContainer6Layout.Padding = UDim.new(0, 4)
-UI.TabContainer6Layout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.TabContainer6Layout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.TabContainer6Layout.Parent = UI.TabContainer6
 
-UI.TabIcon6 = Instance.new("ImageLabel")
-UI.TabIcon6.BackgroundTransparency = 1
-UI.TabIcon6.BorderSizePixel = 0
-UI.TabIcon6.Image = Funcs.GetAsset("Lucid/Assets/Lucid_Close.png")
-UI.TabIcon6.LayoutOrder = 1
-UI.TabIcon6.Name = "TabIcon6"
-UI.TabIcon6.Size = UDim2.new(0, 30, 0, 30)
-UI.TabIcon6.Parent = UI.TabContainer6
+UI.TabIcon6 = MkEl("ImageLabel", {BackgroundTransparency = 1, BorderSizePixel = 0,
+    Image = Funcs.GetAsset("Lucid/Assets/Lucid_Close.png"), LayoutOrder = 1,
+    Name = "TabIcon6", Size = UDim2.new(0, 30, 0, 30)}, UI.TabContainer6)
 
-UI.TabIcon6Ratio = Instance.new("UIAspectRatioConstraint")
-UI.TabIcon6Ratio.Parent = UI.TabIcon6
+MkAspect(1, UI.TabIcon6)
 
-UI.TabLabel6 = Instance.new("TextLabel")
-UI.TabLabel6.BackgroundTransparency = 1
-UI.TabLabel6.BorderSizePixel = 0
-UI.TabLabel6.FontFace = BuilderSans
-UI.TabLabel6.LayoutOrder = 2
-UI.TabLabel6.Name = "TabLabel6"
-UI.TabLabel6.Size = UDim2.new(0, 60, 0, 30)
-UI.TabLabel6.Text = "Close"
-UI.TabLabel6.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.TabLabel6.TextScaled = true
-UI.TabLabel6.TextWrapped = true
-UI.TabLabel6.TextXAlignment = Enum.TextXAlignment.Left
-UI.TabLabel6.Parent = UI.TabContainer6
+MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = BuilderSans, LayoutOrder = 2,
+    Name = "TabLabel6", Size = UDim2.new(0, 60, 0, 30), Text = "Close",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true, TextWrapped = true,
+    TextXAlignment = Enum.TextXAlignment.Left}, UI.TabContainer6)
 
-UI.TabUnderline6Close = Instance.new("Frame")
-UI.TabUnderline6Close.BackgroundTransparency = 1
-UI.TabUnderline6Close.BorderSizePixel = 0
-UI.TabUnderline6Close.LayoutOrder = 2
-UI.TabUnderline6Close.Name = "TabUnderline6Close"
-UI.TabUnderline6Close.Size = UDim2.new(0, 0, 0, 1)
-UI.TabUnderline6Close.Parent = UI.CloseTab
+MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 2, Name = "TabUnderline6Close",
+    Size = UDim2.new(0, 0, 0, 1)}, UI.CloseTab)
 
-UI.NewScriptFrame = Instance.new("Frame")
-UI.NewScriptFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-UI.NewScriptFrame.BackgroundColor3 = Color3.fromRGB(11, 11, 11)
-UI.NewScriptFrame.BorderSizePixel = 0
-UI.NewScriptFrame.Name = "NewScriptFrame"
-UI.NewScriptFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-UI.NewScriptFrame.Size = UDim2.new(0, 408, 0, 214)
-UI.NewScriptFrame.Visible = false
-UI.NewScriptFrame.ZIndex = 2
-UI.NewScriptFrame.Parent = UI.ScreenGui
+UI.NewScriptFrame = MkEl("Frame", {AnchorPoint = Vector2.new(0.5, 0.5),
+    BackgroundColor3 = Color3.fromRGB(11, 11, 11), BorderSizePixel = 0,
+    Name = "NewScriptFrame", Position = UDim2.new(0.5, 0, 0.5, 0),
+    Size = UDim2.new(0, 408, 0, 214), Visible = false, ZIndex = 2}, UI.ScreenGui)
 
-UI.NewScriptFrameStroke = Instance.new("UIStroke")
+UI.NewScriptFrameStroke = MkStroke(Color3.fromRGB(0, 99, 255), UI.NewScriptFrame)
 UI.NewScriptFrameStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.NewScriptFrameStroke.Color = Color3.fromRGB(0, 99, 255)
 UI.NewScriptFrameStroke.Name = "NewScriptFrameStroke"
-UI.NewScriptFrameStroke.Parent = UI.NewScriptFrame
 
-UI.NewScriptFramePadding = Instance.new("UIPadding")
-UI.NewScriptFramePadding.PaddingBottom = UDim.new(0, 6)
-UI.NewScriptFramePadding.PaddingLeft = UDim.new(0, 6)
-UI.NewScriptFramePadding.PaddingRight = UDim.new(0, 6)
-UI.NewScriptFramePadding.PaddingTop = UDim.new(0, 6)
-UI.NewScriptFramePadding.Parent = UI.NewScriptFrame
+MkPad(6, 6, 6, 6, UI.NewScriptFrame)
 
-UI.NewScriptFrameLayout = Instance.new("UIListLayout")
+UI.NewScriptFrameLayout = MkList(Enum.FillDirection.Vertical, 8, UI.NewScriptFrame)
 UI.NewScriptFrameLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.NewScriptFrameLayout.Padding = UDim.new(0, 8)
-UI.NewScriptFrameLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.NewScriptFrameLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.NewScriptFrameLayout.Parent = UI.NewScriptFrame
 
-UI.NewScriptFrameCorner = Instance.new("UICorner")
-UI.NewScriptFrameCorner.CornerRadius = UDim.new(0, 6)
-UI.NewScriptFrameCorner.Parent = UI.NewScriptFrame
+MkCorner(6, UI.NewScriptFrame)
 
-UI.NameBox = Instance.new("TextBox")
-UI.NameBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.NameBox.BorderSizePixel = 0
-UI.NameBox.FontFace = GothamMedium
-UI.NameBox.LayoutOrder = 1
-UI.NameBox.Name = "NameBox"
-UI.NameBox.PlaceholderText = "Enter script name..."
-UI.NameBox.Size = UDim2.new(0, 76, 0, 30)
-UI.NameBox.Text = ""
-UI.NameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.NameBox.TextScaled = true
-UI.NameBox.TextWrapped = true
-UI.NameBox.TextXAlignment = Enum.TextXAlignment.Left
-UI.NameBox.Parent = UI.NewScriptFrame
+UI.NameBox = MkEl("TextBox", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 1, Name = "NameBox",
+    PlaceholderText = "Enter script name...", Size = UDim2.new(0, 76, 0, 30),
+    Text = "", TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left}, UI.NewScriptFrame)
 
-UI.NameBoxPadding = Instance.new("UIPadding")
-UI.NameBoxPadding.PaddingBottom = UDim.new(0, 4)
-UI.NameBoxPadding.PaddingLeft = UDim.new(0, 4)
-UI.NameBoxPadding.PaddingRight = UDim.new(0, 4)
-UI.NameBoxPadding.PaddingTop = UDim.new(0, 4)
-UI.NameBoxPadding.Parent = UI.NameBox
+MkPad(4, 4, 4, 4, UI.NameBox)
 
-UI.NameBoxStroke = Instance.new("UIStroke")
+UI.NameBoxStroke = MkStroke(Color3.fromRGB(36, 36, 36), UI.NameBox)
 UI.NameBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.NameBoxStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.NameBoxStroke.Parent = UI.NameBox
 
-UI.NameBoxCorner = Instance.new("UICorner")
-UI.NameBoxCorner.CornerRadius = UDim.new(0, 6)
-UI.NameBoxCorner.Parent = UI.NameBox
+MkCorner(6, UI.NameBox)
 
-UI.DescBox = Instance.new("TextBox")
-UI.DescBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.DescBox.BorderSizePixel = 0
-UI.DescBox.FontFace = GothamMedium
-UI.DescBox.LayoutOrder = 2
-UI.DescBox.Name = "DescBox"
-UI.DescBox.PlaceholderText = "Enter script description..."
-UI.DescBox.Size = UDim2.new(0, 76, 0, 30)
-UI.DescBox.Text = ""
-UI.DescBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.DescBox.TextScaled = true
-UI.DescBox.TextWrapped = true
-UI.DescBox.TextXAlignment = Enum.TextXAlignment.Left
-UI.DescBox.Parent = UI.NewScriptFrame
+UI.DescBox = MkEl("TextBox", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 2, Name = "DescBox",
+    PlaceholderText = "Enter script description...",
+    Size = UDim2.new(0, 76, 0, 30), Text = "",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left}, UI.NewScriptFrame)
 
-UI.DescBoxCorner = Instance.new("UICorner")
-UI.DescBoxCorner.CornerRadius = UDim.new(0, 6)
-UI.DescBoxCorner.Parent = UI.DescBox
+MkCorner(6, UI.DescBox)
 
-UI.DescBoxPadding = Instance.new("UIPadding")
-UI.DescBoxPadding.PaddingBottom = UDim.new(0, 4)
-UI.DescBoxPadding.PaddingLeft = UDim.new(0, 4)
-UI.DescBoxPadding.PaddingRight = UDim.new(0, 4)
-UI.DescBoxPadding.PaddingTop = UDim.new(0, 4)
-UI.DescBoxPadding.Parent = UI.DescBox
+MkPad(4, 4, 4, 4, UI.DescBox)
 
-UI.DescBoxStroke = Instance.new("UIStroke")
+UI.DescBoxStroke = MkStroke(Color3.fromRGB(36, 36, 36), UI.DescBox)
 UI.DescBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.DescBoxStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.DescBoxStroke.Parent = UI.DescBox
 
-UI.ScriptBox = Instance.new("TextBox")
-UI.ScriptBox.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.ScriptBox.BorderSizePixel = 0
-UI.ScriptBox.FontFace = Inconsolata
-UI.ScriptBox.LayoutOrder = 3
-UI.ScriptBox.Name = "ScriptBox"
-UI.ScriptBox.PlaceholderText = "Enter script..."
-UI.ScriptBox.Size = UDim2.new(0, 76, 0, 80)
-UI.ScriptBox.Text = ""
-UI.ScriptBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.ScriptBox.TextSize = 20
-UI.ScriptBox.TextWrapped = true
-UI.ScriptBox.TextXAlignment = Enum.TextXAlignment.Left
-UI.ScriptBox.TextYAlignment = Enum.TextYAlignment.Top
-UI.ScriptBox.Parent = UI.NewScriptFrame
+UI.ScriptBox = MkEl("TextBox", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+    FontFace = Inconsolata, LayoutOrder = 3, Name = "ScriptBox",
+    PlaceholderText = "Enter script...", Size = UDim2.new(0, 76, 0, 80),
+    Text = "", TextColor3 = Color3.fromRGB(255, 255, 255), TextSize = 20,
+    TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left,
+    TextYAlignment = Enum.TextYAlignment.Top}, UI.NewScriptFrame)
 
-UI.ScriptBoxPadding = Instance.new("UIPadding")
-UI.ScriptBoxPadding.PaddingBottom = UDim.new(0, 4)
-UI.ScriptBoxPadding.PaddingLeft = UDim.new(0, 4)
-UI.ScriptBoxPadding.PaddingRight = UDim.new(0, 4)
-UI.ScriptBoxPadding.PaddingTop = UDim.new(0, 4)
-UI.ScriptBoxPadding.Parent = UI.ScriptBox
+MkPad(4, 4, 4, 4, UI.ScriptBox)
 
-UI.ScriptBoxCorner = Instance.new("UICorner")
-UI.ScriptBoxCorner.CornerRadius = UDim.new(0, 6)
-UI.ScriptBoxCorner.Parent = UI.ScriptBox
+MkCorner(6, UI.ScriptBox)
 
-UI.ScriptBoxStroke = Instance.new("UIStroke")
+UI.ScriptBoxStroke = MkStroke(Color3.fromRGB(36, 36, 36), UI.ScriptBox)
 UI.ScriptBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.ScriptBoxStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.ScriptBoxStroke.Parent = UI.ScriptBox
 
-UI.Options = Instance.new("Frame")
-UI.Options.BackgroundTransparency = 1
-UI.Options.BorderSizePixel = 0
-UI.Options.LayoutOrder = 4
-UI.Options.Name = "Options"
-UI.Options.Size = UDim2.new(0, 76, 0, 34)
-UI.Options.Parent = UI.NewScriptFrame
+UI.Options = MkEl("Frame", {BackgroundTransparency = 1, BorderSizePixel = 0, LayoutOrder = 4,
+    Name = "Options", Size = UDim2.new(0, 76, 0, 34)}, UI.NewScriptFrame)
 
-UI.OptionsCorner = Instance.new("UICorner")
-UI.OptionsCorner.CornerRadius = UDim.new(0, 6)
-UI.OptionsCorner.Parent = UI.Options
+MkCorner(6, UI.Options)
 
-UI.OptionsLayout = Instance.new("UIListLayout")
-UI.OptionsLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.OptionsLayout = MkList(Enum.FillDirection.Horizontal, 8, UI.Options)
 UI.OptionsLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.OptionsLayout.Padding = UDim.new(0, 8)
-UI.OptionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.OptionsLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.OptionsLayout.Parent = UI.Options
 
-UI.Save = Instance.new("TextButton")
-UI.Save.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.Save.BorderSizePixel = 0
-UI.Save.FontFace = GothamMedium
-UI.Save.LayoutOrder = 1
-UI.Save.Name = "Save"
-UI.Save.Size = UDim2.new(0.2, 0, 0.3, 0)
-UI.Save.Text = "Save"
-UI.Save.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.Save.TextScaled = true
-UI.Save.TextWrapped = true
-UI.Save.Parent = UI.Options
+UI.Save = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 1, Name = "Save",
+    Size = UDim2.new(0.2, 0, 0.3, 0), Text = "Save",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.Options)
 
-UI.SaveStroke = Instance.new("UIStroke")
+UI.SaveStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.Save)
 UI.SaveStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.SaveStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.SaveStroke.Name = "SaveStroke"
-UI.SaveStroke.Parent = UI.Save
 
-UI.SaveCorner = Instance.new("UICorner")
-UI.SaveCorner.CornerRadius = UDim.new(0, 6)
-UI.SaveCorner.Parent = UI.Save
+MkCorner(6, UI.Save)
 
-UI.Cancel = Instance.new("TextButton")
-UI.Cancel.BackgroundColor3 = Color3.fromRGB(0, 99, 255)
-UI.Cancel.BorderSizePixel = 0
-UI.Cancel.FontFace = GothamMedium
-UI.Cancel.LayoutOrder = 2
-UI.Cancel.Name = "Cancel"
-UI.Cancel.Size = UDim2.new(0.2, 0, 0.3, 0)
-UI.Cancel.Text = "Cancel"
-UI.Cancel.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.Cancel.TextScaled = true
-UI.Cancel.TextWrapped = true
-UI.Cancel.Parent = UI.Options
+UI.Cancel = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(0, 99, 255), BorderSizePixel = 0,
+    FontFace = GothamMedium, LayoutOrder = 2, Name = "Cancel",
+    Size = UDim2.new(0.2, 0, 0.3, 0), Text = "Cancel",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true,
+    TextWrapped = true}, UI.Options)
 
-UI.CancelCorner = Instance.new("UICorner")
-UI.CancelCorner.CornerRadius = UDim.new(0, 6)
-UI.CancelCorner.Parent = UI.Cancel
+MkCorner(6, UI.Cancel)
 
-UI.CancelStroke = Instance.new("UIStroke")
+UI.CancelStroke = MkStroke(Color3.fromRGB(0, 64, 180), UI.Cancel)
 UI.CancelStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.CancelStroke.Color = Color3.fromRGB(0, 64, 180)
 UI.CancelStroke.Name = "CancelStroke"
-UI.CancelStroke.Parent = UI.Cancel
 
-UI.ResetThemeBtn = Instance.new("TextButton")
-UI.ResetThemeBtn.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-UI.ResetThemeBtn.BorderSizePixel = 0
-UI.ResetThemeBtn.LayoutOrder = 6
-UI.ResetThemeBtn.Name = "ResetThemeBtn"
-UI.ResetThemeBtn.Size = UDim2.new(1, 0, 0, 38)
-UI.ResetThemeBtn.Text = ""
-UI.ResetThemeBtn.Parent = UI.SettingsFrame
+UI.ResetThemeBtn = MkEl("TextButton", {BackgroundColor3 = Color3.fromRGB(19, 19, 19), BorderSizePixel = 0,
+    LayoutOrder = 6, Name = "ResetThemeBtn",
+    Size = UDim2.new(1, 0, 0, 38), Text = ""}, UI.SettingsFrame)
 
-UI.ResetThemeBtnCorner = Instance.new("UICorner")
-UI.ResetThemeBtnCorner.CornerRadius = UDim.new(0, 6)
-UI.ResetThemeBtnCorner.Parent = UI.ResetThemeBtn
+MkCorner(6, UI.ResetThemeBtn)
 
-UI.ResetThemeBtnStroke = Instance.new("UIStroke")
+UI.ResetThemeBtnStroke = MkStroke(Color3.fromRGB(36, 36, 36), UI.ResetThemeBtn)
 UI.ResetThemeBtnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UI.ResetThemeBtnStroke.Color = Color3.fromRGB(36, 36, 36)
-UI.ResetThemeBtnStroke.Parent = UI.ResetThemeBtn
 
-UI.ResetThemeBtnLayout = Instance.new("UIListLayout")
-UI.ResetThemeBtnLayout.FillDirection = Enum.FillDirection.Horizontal
+UI.ResetThemeBtnLayout = MkList(Enum.FillDirection.Horizontal, 6, UI.ResetThemeBtn)
 UI.ResetThemeBtnLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-UI.ResetThemeBtnLayout.Padding = UDim.new(0, 6)
-UI.ResetThemeBtnLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UI.ResetThemeBtnLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
-UI.ResetThemeBtnLayout.Parent = UI.ResetThemeBtn
 
-UI.ResetThemeBtnPadding = Instance.new("UIPadding")
-UI.ResetThemeBtnPadding.PaddingBottom = UDim.new(0, 8)
-UI.ResetThemeBtnPadding.PaddingLeft = UDim.new(0, 8)
-UI.ResetThemeBtnPadding.PaddingRight = UDim.new(0, 8)
-UI.ResetThemeBtnPadding.PaddingTop = UDim.new(0, 8)
-UI.ResetThemeBtnPadding.Parent = UI.ResetThemeBtn
+MkPad(8, 8, 8, 8, UI.ResetThemeBtn)
 
-UI.ResetThemeBtnLabel = Instance.new("TextLabel")
-UI.ResetThemeBtnLabel.BackgroundTransparency = 1
-UI.ResetThemeBtnLabel.BorderSizePixel = 0
-UI.ResetThemeBtnLabel.FontFace = GothamMedium
-UI.ResetThemeBtnLabel.LayoutOrder = 1
-UI.ResetThemeBtnLabel.Size = UDim2.new(0.8, 0, 1, 0)
-UI.ResetThemeBtnLabel.Text = "Reset Theme"
-UI.ResetThemeBtnLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-UI.ResetThemeBtnLabel.TextScaled = true
-UI.ResetThemeBtnLabel.TextWrapped = true
-UI.ResetThemeBtnLabel.TextXAlignment = Enum.TextXAlignment.Left
-UI.ResetThemeBtnLabel.Parent = UI.ResetThemeBtn
+MkEl("TextLabel", {BackgroundTransparency = 1, BorderSizePixel = 0, FontFace = GothamMedium, LayoutOrder = 1,
+    Size = UDim2.new(0.8, 0, 1, 0), Text = "Reset Theme",
+    TextColor3 = Color3.fromRGB(255, 255, 255), TextScaled = true, TextWrapped = true,
+    TextXAlignment = Enum.TextXAlignment.Left}, UI.ResetThemeBtn)
 
 UI.HomeTab = Funcs.CreateTab("Lucid/Assets/Lucid_Home.png", "Home", UI.HomeContent, 1, "TabUnderline")
 UI.ExeTab = Funcs.CreateTab("Lucid/Assets/Lucid_Executor.png", "Executor", UI.ExeContent, 2, "TabUnderline2")
@@ -3877,7 +2685,7 @@ UI.Save.MouseButton1Click:Connect(function()
     local scriptDesc = UI.DescBox.Text
     local scriptCode = UI.ScriptBox.Text
     if scriptName == "" then return end
-    Funcs.SaveScript({ Name = scriptName, Description = scriptDesc, Code = scriptCode })
+    Funcs.SaveScript({ Name = scriptName, Description = scriptDesc, Source = scriptCode })
     UI.NewScriptFrame.Visible = false
     UI.NameBox.Text = ""
     UI.DescBox.Text = ""
@@ -3992,7 +2800,7 @@ UI.MusicPlayBtn.MouseButton1Click:Connect(function()
     else
         MusicSound:Resume()
         MusicPlaying = true
-        UI.MusicPlayBtn.Text = "⏸"
+        UI.MusicPlayBtn.Text = "I I"
     end
 end)
 
