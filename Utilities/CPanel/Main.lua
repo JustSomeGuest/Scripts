@@ -5529,33 +5529,34 @@ function Funcs.Shutdown()
 end
 
 function Gui.ApplyRoundedCorners(enabled)
-	if not UI.Screen then return end
-	
-	local screenDescendants = UI.Screen:GetDescendants()
-	
-	if enabled then
-		for _, instance in ipairs(screenDescendants) do
-			if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
-				local originalRadius = instance:GetAttribute("CPN_OriginalRadius")
-				if originalRadius then
-					local target = TweenService:Create(instance, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-						CornerRadius = UDim.new(0, originalRadius)
-					})
-					target:Play()
-				end
-		end
-	else
-		for _, instance in ipairs(screenDescendants) do
-			if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
-				local originalRadius = instance.CornerRadius.Offset
-				instance:SetAttribute("CPN_OriginalRadius", originalRadius)
-				local target = TweenService:Create(instance, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-					CornerRadius = UDim.new(0, 0)
-				})
-				target:Play()
-			end
-		end
-	end
+    if not UI.Screen then return end
+
+    local screenDescendants = UI.Screen:GetDescendants()
+
+    if enabled then
+        for _, instance in ipairs(screenDescendants) do
+            if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
+                local originalRadius = instance:GetAttribute("CPN_OriginalRadius")
+                if originalRadius then
+                    local target = TweenService:Create(instance, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                        CornerRadius = UDim.new(0, originalRadius)
+                    })
+                    target:Play()
+                end
+            end
+        end
+    else
+        for _, instance in ipairs(screenDescendants) do
+            if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
+                local originalRadius = instance.CornerRadius.Offset
+                instance:SetAttribute("CPN_OriginalRadius", originalRadius)
+                local target = TweenService:Create(instance, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                    CornerRadius = UDim.new(0, 0)
+                })
+                target:Play()
+            end
+        end
+    end
 end
 
 function InitializeCornerRadii()
