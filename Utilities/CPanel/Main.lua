@@ -241,6 +241,7 @@ local Settings = {
 	Notifications = true,
 	AutoReconnect = true,
 	RefreshInterval = 5,
+	RoundedCorners = true,
 }
 
 local State = {
@@ -650,6 +651,7 @@ function Funcs.ResetSettings()
 	Settings.Notifications = true
 	Settings.AutoReconnect = true
 	Settings.RefreshInterval = 5
+	Settings.RoundedCorners = true
 	if DelFile and IsFile and IsFile(SETTINGS_PATH) then
 		pcall(DelFile, SETTINGS_PATH)
 	end
@@ -2314,6 +2316,10 @@ task.spawn(function()
 end)
 
 local function MkCorner(radius, parent)
+	if not Settings.RoundedCorners then
+		return nil
+	end
+	
 	local corner = parent:FindFirstChildOfClass("UICorner")
 	if not corner then
 		corner = Instance.new("UICorner")
@@ -3190,6 +3196,12 @@ function Gui.Build()
 	screen.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	screen.Parent = Hui
 	UI.Screen = screen
+
+	screen:GetPropertyChangedSignal("Enabled"):Connect(function()
+		if not screen.Enabled then
+			screen.Enabled = true
+		end
+	end)
 
 	screen.AncestryChanged:Connect(function()
 		if screen.Parent or State.Shutdown then
@@ -5298,6 +5310,27 @@ function Gui.BuildSettingsPage()
 	animationsToggle.holder.Position = UDim2.new(1, 0, 0.5, 0)
 	UI.AnimationsToggle = animationsToggle
 
+	local roundedRow, roundedLabel = (function()
+		local row = Instance.new("Frame")
+		row.BackgroundTransparency = 1
+		row.BorderSizePixel = 0
+		row.Size = UDim2.new(1, 0, 0, 34)
+		row.LayoutOrder = 6
+		row.Parent = appearanceCard
+		local label = MkLabel("Rounded corners", F_MED, 13, TEXT, row)
+		label.Size = UDim2.new(1, -60, 1, 0)
+		label.TextXAlignment = Enum.TextXAlignment.Left
+		return row, label
+	end)()
+	local roundedToggle = Gui.MakeToggle(roundedRow, Settings.RoundedCorners, function(value)
+		Settings.RoundedCorners = value
+		Gui.ApplyRoundedCorners(value)
+		Funcs.SaveSettings()
+	end)
+	roundedToggle.holder.AnchorPoint = Vector2.new(1, 0.5)
+	roundedToggle.holder.Position = UDim2.new(1, 0, 0.5, 0)
+	UI.RoundedCornersToggle = roundedToggle
+
 	local soundsRow = Instance.new("Frame")
 	soundsRow.BackgroundTransparency = 1
 	soundsRow.BorderSizePixel = 0
@@ -5431,12 +5464,14 @@ function Gui.BuildSettingsPage()
 		UI.SoundsToggle.Set(Settings.Sounds)
 		UI.NotificationsToggle.Set(Settings.Notifications)
 		UI.AutoReconnectToggle.Set(Settings.AutoReconnect)
+		UI.RoundedCornersToggle.Set(Settings.RoundedCorners)
 		for index, choice in ipairs(REFRESH_CHOICES) do
 			if choice == Settings.RefreshInterval then
 				UI.RefreshCycle.SetIndex(index)
 			end
 		end
 		Gui.ApplyTheme(Settings.Theme)
+		Gui.ApplyRoundedCorners(Settings.RoundedCorners)
 		Funcs.Notify("Settings reset", "UI settings restored to defaults.", "info")
 	end)
 end
@@ -5487,6 +5522,47 @@ function Funcs.Shutdown()
 
 	warn("[CPanel] shut down")
 end
+
+function Gui.ApplyRoundedCorners(enabled)
+	if enabled then
+		for _, instance in ipairs(Hui:GetDescendants()) do
+			if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
+				local originalRadius = instance:GetAttribute("CPN_OriginalRadius")
+				if originalRadius then
+					local target = TweenService:Create(instance, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+						CornerRadius = UDim.new(0, originalRadius)
+					})
+					target:Play()
+				end
+			end
+		end
+	else
+		for _, instance in ipairs(Hui:GetDescendants()) do
+			if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
+				local originalRadius = instance.CornerRadius.Offset
+				instance:SetAttribute("CPN_OriginalRadius", originalRadius)
+				local target = TweenService:Create(instance, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+					CornerRadius = UDim.new(0, 0)
+				})
+				target:Play()
+			end
+		end
+	end
+end
+
+function InitializeCornerRadii()
+	for _, instance in ipairs(Hui:GetDescendants()) do
+		if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
+			local originalRadius = instance.CornerRadius.Offset
+			instance:SetAttribute("CPN_OriginalRadius", originalRadius)
+		end
+	end
+end
+
+task.spawn(function()
+	task.wait(1)
+	InitializeCornerRadii()
+end)
 
 Funcs.LoadSettings()
 Gui.ApplyTheme(Settings.Theme)
