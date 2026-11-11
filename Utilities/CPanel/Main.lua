@@ -3321,10 +3321,9 @@ function Gui.Build()
 		dot.Parent = traffic
 		dot:SetAttribute("CPN_Immutable", true)
 		
-		if name == "Close" or name == "Minimize" or name == "Maximize" then
-			MkCorner(6, dot)
-		else
-			MkCorner(6, dot)
+		if Settings.RoundedCorners then
+			MkCorner(6, dot) 
+    else
 		end
 
 		local dim = color:Lerp(Color3.fromRGB(20, 20, 24), 0.18)
