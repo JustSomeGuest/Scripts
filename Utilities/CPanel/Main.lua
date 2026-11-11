@@ -5529,8 +5529,12 @@ function Funcs.Shutdown()
 end
 
 function Gui.ApplyRoundedCorners(enabled)
+	if not UI.Screen then return end
+	
+	local screenDescendants = UI.Screen:GetDescendants()
+	
 	if enabled then
-		for _, instance in ipairs(Hui:GetDescendants()) do
+		for _, instance in ipairs(screenDescendants) do
 			if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
 				local originalRadius = instance:GetAttribute("CPN_OriginalRadius")
 				if originalRadius then
@@ -5539,10 +5543,9 @@ function Gui.ApplyRoundedCorners(enabled)
 					})
 					target:Play()
 				end
-			end
 		end
 	else
-		for _, instance in ipairs(Hui:GetDescendants()) do
+		for _, instance in ipairs(screenDescendants) do
 			if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
 				local originalRadius = instance.CornerRadius.Offset
 				instance:SetAttribute("CPN_OriginalRadius", originalRadius)
@@ -5556,7 +5559,11 @@ function Gui.ApplyRoundedCorners(enabled)
 end
 
 function InitializeCornerRadii()
-	for _, instance in ipairs(Hui:GetDescendants()) do
+	if not UI.Screen then return end
+	
+	local screenDescendants = UI.Screen:GetDescendants()
+	
+	for _, instance in ipairs(screenDescendants) do
 		if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
 			local originalRadius = instance.CornerRadius.Offset
 			instance:SetAttribute("CPN_OriginalRadius", originalRadius)
