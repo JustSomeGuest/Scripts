@@ -3323,7 +3323,7 @@ function Gui.Build()
 		
 		if name == "Close" or name == "Minimize" or name == "Maximize" then
 		else
-			MkCorner(6, dot)
+			MkCorner(6, dot) 
 		end
 
 		local dim = color:Lerp(Color3.fromRGB(20, 20, 24), 0.18)
