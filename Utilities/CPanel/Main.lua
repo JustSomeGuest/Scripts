@@ -2153,6 +2153,10 @@ function Net.Route(text)
 			Funcs.Notify("Server error", Funcs.Truncate(tostring(message.message), 120), "error")
 		end
 		ResolveAllWaiters(message)
+		
+		if message.code == "duplicate_session" then
+			Funcs.Shutdown()
+		end
 	else
 		warn("[CPanel] unknown message type from server: " .. msgType)
 	end
@@ -2224,6 +2228,7 @@ function Net.TryConnectOnce()
 		placeVersion = game.PlaceVersion,
 		devToken = DevToken,
 	})
+	
 	if not registered then
 		Net.HandleClose()
 		return false
