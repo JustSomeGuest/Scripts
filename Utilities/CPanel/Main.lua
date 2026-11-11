@@ -3320,7 +3320,12 @@ function Gui.Build()
 		dot.LayoutOrder = name == "Close" and 2 or 1
 		dot.Parent = traffic
 		dot:SetAttribute("CPN_Immutable", true)
-		MkCorner(6, dot)
+		-- Window control buttons (minimize, close, maximize) should be sharp-cornered
+		if name == "Close" or name == "Minimize" or name == "Maximize" then
+			dot.CornerRadius = UDim.new(0, 0)  -- Make these buttons sharp
+		else
+			MkCorner(6, dot)  -- Other traffic dots keep rounded corners
+		end
 
 		local dim = color:Lerp(Color3.fromRGB(20, 20, 24), 0.18)
 		dot.MouseEnter:Connect(function()
