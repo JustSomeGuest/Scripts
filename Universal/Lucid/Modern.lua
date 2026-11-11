@@ -14,7 +14,28 @@ local TweenService = GetService("TweenService")
 local StarterGui = GetService("StarterGui")
 local RunService = GetService("RunService")
 
-if not Env.__Lucid then Env.__Lucid = {} end
+local LucidLoaded = false
+do
+	local prev = Env.__Lucid
+	if prev ~= nil then
+		local ok, wasLoaded = pcall(function() return prev.IsLoaded end)
+		if ok and wasLoaded == true then LucidLoaded = true end
+	end
+	local proxy
+	if type(newproxy) == "function" then
+		local ok, pr = pcall(newproxy, true)
+		if ok and type(pr) == "userdata" then
+			local mt = getmetatable(pr)
+			mt.__index = function(_, k) if k == "IsLoaded" then return LucidLoaded end return nil end
+			mt.__newindex = function() end
+			proxy = pr
+		end
+	end
+	Env.__Lucid = proxy or setmetatable({}, {
+		__index = function(_, k) if k == "IsLoaded" then return LucidLoaded end return nil end,
+		__newindex = function() end
+	})
+end
 if Env.__Lucid.IsLoaded then
 	StarterGui:SetCore("SendNotification", {
 		Title = "Lucid",
@@ -23,7 +44,7 @@ if Env.__Lucid.IsLoaded then
 	})
 	return
 end
-Env.__Lucid.IsLoaded = true
+LucidLoaded = true
 
 local WriteFile = writefile or function() end
 local ReadFile = readfile or function() end
@@ -56,47 +77,40 @@ local HL = {
 	Identifier="#E6E6E6", Operator="#D4D4D4"
 }
 
-Env.__Lucid = {
-	UI = {}, Funcs = {},
-	Assets = {
-		["Lucid/Assets/Lucid_Logo.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Logo.png",
-		["Lucid/Assets/Lucid_Home.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Home.png",
-		["Lucid/Assets/Lucid_Controller.png"]    = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Controller.png",
-		["Lucid/Assets/Lucid_Execute.png"]       = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Execute.png",
-		["Lucid/Assets/Lucid_Search.png"]        = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Search.png",
-		["Lucid/Assets/Lucid_LocalFile.png"]     = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/LocalFile.png",
-		["Lucid/Assets/Lucid_Music.png"]         = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Music.png",
-		["Lucid/Assets/Lucid_Settings.png"]      = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Settings.png",
-		["Lucid/Assets/Lucid_Console.png"]       = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Console.png",
-		["Lucid/Assets/Lucid_Close.png"]         = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Close.png",
-		["Lucid/Assets/Lucid_Clear.png"]         = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clear.png",
-		["Lucid/Assets/Lucid_Clipboard.png"]     = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clipboard.png",
-		["Lucid/Assets/Lucid_AddFile.png"]       = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/AddFile.png",
-		["Lucid/Assets/Lucid_Wifi.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Wifi.png",
-		["Lucid/Assets/Lucid_Bolt.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Bolt.png",
-		["Lucid/Assets/Lucid_Play.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Play.png",
-		["Lucid/Assets/Lucid_Pause.png"]         = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Pause.png",
-		["Lucid/Assets/Lucid_Next.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Next.png",
-		["Lucid/Assets/Lucid_Previous.png"]      = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Previous.png",
-		["Lucid/Assets/Lucid_Save.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Save.png",
-		["Lucid/Assets/Lucid_Star.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Star.png",
-		["Lucid/Assets/Lucid_Filter.png"]        = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Filter.png",
-		["Lucid/Assets/Lucid_Discord.png"]       = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Discord.png",
-	},
-	Settings = {
-		Animations = true,
-		ThemePreset = "Default Dark",
-		AccentColor = Color3.fromRGB(60, 130, 255),
-		BGColor = Color3.fromRGB(15, 15, 18),
-		BG2Color = Color3.fromRGB(22, 22, 27),
-	},
-	IsLoaded = false
+local UI = {}
+local Funcs = {}
+local Assets = {
+	["Lucid/Assets/Lucid_Logo.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Logo.png",
+	["Lucid/Assets/Lucid_Home.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Home.png",
+	["Lucid/Assets/Lucid_Controller.png"]    = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Controller.png",
+	["Lucid/Assets/Lucid_Execute.png"]       = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Execute.png",
+	["Lucid/Assets/Lucid_Search.png"]        = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Search.png",
+	["Lucid/Assets/Lucid_LocalFile.png"]     = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/LocalFile.png",
+	["Lucid/Assets/Lucid_Music.png"]         = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Music.png",
+	["Lucid/Assets/Lucid_Settings.png"]      = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Settings.png",
+	["Lucid/Assets/Lucid_Console.png"]       = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Console.png",
+	["Lucid/Assets/Lucid_Close.png"]         = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Close.png",
+	["Lucid/Assets/Lucid_Clear.png"]         = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clear.png",
+	["Lucid/Assets/Lucid_Clipboard.png"]     = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Clipboard.png",
+	["Lucid/Assets/Lucid_AddFile.png"]       = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/AddFile.png",
+	["Lucid/Assets/Lucid_Wifi.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Wifi.png",
+	["Lucid/Assets/Lucid_Bolt.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Bolt.png",
+	["Lucid/Assets/Lucid_Play.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Play.png",
+	["Lucid/Assets/Lucid_Pause.png"]         = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Pause.png",
+	["Lucid/Assets/Lucid_Next.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Next.png",
+	["Lucid/Assets/Lucid_Previous.png"]      = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Previous.png",
+	["Lucid/Assets/Lucid_Save.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Save.png",
+	["Lucid/Assets/Lucid_Star.png"]          = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Star.png",
+	["Lucid/Assets/Lucid_Filter.png"]        = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Filter.png",
+	["Lucid/Assets/Lucid_Discord.png"]       = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Universal/Lucid/Assets/Discord.png",
 }
-
-local UI = Env.__Lucid.UI
-local Funcs = Env.__Lucid.Funcs
-local Assets = Env.__Lucid.Assets
-local Settings = Env.__Lucid.Settings
+local Settings = {
+	Animations = true,
+	ThemePreset = "Default Dark",
+	AccentColor = Color3.fromRGB(60, 130, 255),
+	BGColor = Color3.fromRGB(15, 15, 18),
+	BG2Color = Color3.fromRGB(22, 22, 27),
+}
 
 local ExeTabs, ExeActiveTab = {}, nil
 local currentPage, totalPages, currentQuery = 1, 1, ""
@@ -413,13 +427,25 @@ end
 
 function Funcs.SaveSettings()
 	if not IsFolder("Lucid") then MakeFolder("Lucid") end
+	local acc = Settings.AccentColor
+	local k = 0.65
 	local data = {
 		Animations = Settings.Animations,
 		ThemePreset = Settings.ThemePreset,
-		AccentColor = {R=math.floor(Settings.AccentColor.R*255), G=math.floor(Settings.AccentColor.G*255), B=math.floor(Settings.AccentColor.B*255)},
+		AccentColor = {R=math.floor(acc.R*255), G=math.floor(acc.G*255), B=math.floor(acc.B*255)},
+		SecondaryAccentColor = {R=math.floor(acc.R*255*k), G=math.floor(acc.G*255*k), B=math.floor(acc.B*255*k)},
 		BGColor = {R=math.floor(Settings.BGColor.R*255), G=math.floor(Settings.BGColor.G*255), B=math.floor(Settings.BGColor.B*255)},
 		BG2Color = {R=math.floor(Settings.BG2Color.R*255), G=math.floor(Settings.BG2Color.G*255), B=math.floor(Settings.BG2Color.B*255)},
 	}
+	local ok, existing = pcall(function()
+		if not IsFile("Lucid/Settings.json") then return nil end
+		return HttpService:JSONDecode(ReadFile("Lucid/Settings.json"))
+	end)
+	if ok and type(existing) == "table" then
+		for key, val in pairs(existing) do
+			if data[key] == nil then data[key] = val end
+		end
+	end
 	WriteFile("Lucid/Settings.json", HttpService:JSONEncode(data))
 end
 
@@ -485,30 +511,110 @@ function Funcs.FetchScripts(query, page)
 	return scripts, pages
 end
 
+local ScriptsFolder = "Lucid/Scripts"
+local BuiltInFolder = ScriptsFolder.."/BuiltIn"
+
+local BuiltInScripts = {
+	{
+		Name        = "Dexium (Built-In)",
+		File        = "Dexium.json",
+		Description = "A fast instance viewer that lets you browse, inspect and search every object in the game in real time.",
+		Source      = 'loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/dexium"))()'
+	},
+	{
+		Name        = "Mobile Keyboard (Built-In)",
+		File        = "Keyboard.json",
+		Description = "An on-screen keyboard that lets mobile users send keyboard inputs by clicking the corresponding keys on the UI.",
+		Source      = 'loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/deltakd"))()'
+	},
+	{
+		Name        = "Cobalt (Built-In)",
+		File        = "Cobalt.json",
+		Description = "A remote spy that shows every remote you fire and every remote you receive.",
+		Source      = 'loadstring(game:HttpGet("https://gitlab.com/upio/cobalt/-/releases/permalink/latest/downloads/Cobalt.luau"))()'
+	},
+	{
+		Name        = "IY Reborn (Built-In)",
+		File        = "IYReborn.json",
+		Description = "Infinite Yield Reborn, an admin script packed with 500+ admin commands.",
+		Source      = 'loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/infinite-yield-reborn"))()'
+	},
+	{
+		Name        = "PShade Ultimate (Built-In)",
+		File        = "PShadeUltimate.json",
+		Description = "One of the best shader scripts you could find.",
+		Source      = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/randomstring0/pshade-ultimate/main/src/cd.lua"))()'
+	}
+}
+for _, sd in ipairs(BuiltInScripts) do
+	sd.File = sd.File or sd.Name:gsub("[^%w]", "_")..".json"
+end
+
+local function EncodeScriptJSON(sd)
+	return "{\n"
+		..'    "Name": '..HttpService:JSONEncode(tostring(sd.Name or ""))..",\n"
+		..'    "Description": '..HttpService:JSONEncode(tostring(sd.Description or ""))..",\n"
+		..'    "Source": '..HttpService:JSONEncode(tostring(sd.Source or "")).."\n"
+		.."}"
+end
+
+local function NormalizeScript(data)
+	return {
+		Name = tostring(data.Name or ""),
+		Description = tostring(data.Description or ""),
+		Source = tostring(data.Source or data.Code or data.Script or "")
+	}
+end
+
 function Funcs.LoadSavedScripts()
-	if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") return {} end
-	local files = ListFiles("Lucid/Scripts")
+	Funcs.InitDefaultScripts()
 	local scripts = {}
-	for _, file in ipairs(files) do
-		local content = ReadFile(file)
-		local ok, data = pcall(function() return HttpService:JSONDecode(content) end)
-		if ok and data then
-			if data.Script and not data.Code then data.Code = data.Script end
-			table.insert(scripts, data)
+	local function readFolder(folder, builtIn)
+		if not IsFolder(folder) then return end
+		for _, file in ipairs(ListFiles(folder) or {}) do
+			local readOk, content = pcall(ReadFile, file)
+			if readOk then
+				local ok, data = pcall(function() return HttpService:JSONDecode(content) end)
+				if ok and type(data) == "table" and data.Name then
+					local sd = NormalizeScript(data)
+					if builtIn then sd.BuiltIn = true end
+					local encoded = EncodeScriptJSON(sd)
+					if content ~= encoded then pcall(WriteFile, file, encoded) end
+					table.insert(scripts, sd)
+				end
+			end
 		end
 	end
+	readFolder(ScriptsFolder, false)
+	readFolder(BuiltInFolder, true)
 	return scripts
 end
 
+local function StripBuiltIn(name)
+	name = tostring(name or "")
+	name = name:gsub("%f[%a][Bb]uilt[%s%-_]*[Ii]n%f[%A]", "")
+	name = name:gsub("%(%s*%)", "")
+	name = name:gsub("%s+", " ")
+	name = name:gsub("^%s+", ""):gsub("%s+$", "")
+	return name ~= "" and name or "Untitled Script"
+end
+
 function Funcs.SaveScript(scriptData)
-	if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") end
-	local fileName = "Lucid/Scripts/"..scriptData.Name:gsub("[^%w]","_")..".json"
-	WriteFile(fileName, HttpService:JSONEncode(scriptData))
+	if not IsFolder(ScriptsFolder) then MakeFolder(ScriptsFolder) end
+	local sd = NormalizeScript(scriptData)
+	sd.Name = StripBuiltIn(sd.Name)
+	WriteFile(ScriptsFolder.."/"..sd.Name:gsub("[^%w]", "_")..".json", EncodeScriptJSON(sd))
 end
 
 function Funcs.DeleteScript(scriptName)
-	local fileName = "Lucid/Scripts/"..scriptName:gsub("[^%w]","_")..".json"
+	local fileName = ScriptsFolder.."/"..scriptName:gsub("[^%w]", "_")..".json"
 	if IsFile(fileName) then DelFile(fileName) end
+	for _, sd in ipairs(BuiltInScripts) do
+		if sd.Name == scriptName then
+			local path = BuiltInFolder.."/"..sd.File
+			if IsFile(path) then DelFile(path) end
+		end
+	end
 end
 
 function Funcs.ClearCache()
@@ -518,16 +624,21 @@ function Funcs.ClearCache()
 	end
 end
 
-local BuiltInScripts = {
-	{Name="Dexium (Built-In)", Description="Explore game instances.", Code='loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/dexium"))()'},
-	{Name="Keyboard (Built-In)", Description="Virtual keyboard for mobile.", Code='loadstring(game:HttpGet("https://rbxscriptz.pages.dev/scripts/deltakd"))()'}
-}
-
 function Funcs.InitDefaultScripts()
-	if not IsFolder("Lucid/Scripts") then MakeFolder("Lucid/Scripts") end
+	if not IsFolder(ScriptsFolder) then MakeFolder(ScriptsFolder) end
+	if not IsFolder(BuiltInFolder) then MakeFolder(BuiltInFolder) end
+	for _, file in ipairs(ListFiles(ScriptsFolder) or {}) do
+		local base = file:match("([^/\\]+)$") or file
+		if base:find("_Built_In_%.json$") or base:find("Built%-In") then pcall(DelFile, file) end
+  end
 	for _, sd in ipairs(BuiltInScripts) do
-		local fn = "Lucid/Scripts/"..sd.Name:gsub("[^%w]","_")..".json"
-		if not IsFile(fn) then Funcs.SaveScript(sd) end
+		local path = BuiltInFolder.."/"..sd.File
+		local expected = EncodeScriptJSON(sd)
+		local readOk, content = pcall(ReadFile, path)
+		if not readOk or content ~= expected then
+			pcall(DelFile, path)
+			WriteFile(path, expected)
+		end
 	end
 end
 
@@ -560,8 +671,6 @@ function Funcs.FormatTime(seconds)
 	seconds = math.floor(seconds)
 	return string.format("%d:%02d", math.floor(seconds/60), seconds%60)
 end
-
-Env.__Lucid.IsLoaded = true
 
 Funcs.PreloadAssets()
 Funcs.LoadSettings()
@@ -973,7 +1082,7 @@ Use the search bar to quickly find saved scripts, or create a new one with:
 
 • <b>Title</b>
 • <b>Description</b>
-• <b>Code</b>
+• <b>Source</b>
 
 Saved scripts can be <b>executed</b> or <b>deleted</b> whenever you want.
 
@@ -1725,7 +1834,7 @@ do
 				if saveB then saveB.MouseButton1Click:Connect(function()
 					local code = ResolveCode()
 					if code then
-						Funcs.SaveScript({Name=title, Description=data.description or "", Code=code})
+						Funcs.SaveScript({Name=title, Description=data.description or "", Source=code})
 						local lbl = saveB:FindFirstChildOfClass("TextLabel")
 						if lbl then
 							lbl.Text="✓ Saved"
@@ -1898,7 +2007,8 @@ do
 		table.sort(normal, function(a,b) return (a.Name or ""):lower()<(b.Name or ""):lower() end)
 
 		local function MakeCard(sd)
-			local card = MkFrame(BG2, UDim2.new(1,0,0,66), savedScroll)
+			local card = MkFrame(BG2, UDim2.new(1,0,0,0), savedScroll)
+			card.AutomaticSize = Enum.AutomaticSize.Y
 			card.Name = Funcs.SanitizeName(sd.Name)
 			MkCorner(10, card)
 			MkStroke(Color3.fromRGB(40,40,50),1,card)
@@ -1915,9 +2025,22 @@ do
 			nameLbl.TextXAlignment = Enum.TextXAlignment.Left
 			nameLbl.TextTruncate = Enum.TextTruncate.AtEnd
 
+			local desc = sd.Description
+			local descLbl = MkLabel((desc and desc ~= "") and desc or "No description.", GothamMed, 12, SUBTEXT, card)
+			descLbl.LayoutOrder = 2
+			descLbl.Size = UDim2.new(1,0,0,0)
+			descLbl.AutomaticSize = Enum.AutomaticSize.Y
+			descLbl.TextXAlignment = Enum.TextXAlignment.Left
+			descLbl.TextYAlignment = Enum.TextYAlignment.Top
+			descLbl.TextWrapped = true
+			descLbl.ClipsDescendants = true
+			local descMax = Instance.new("UISizeConstraint")
+			descMax.MaxSize = Vector2.new(100000, 46)
+			descMax.Parent = descLbl
+
 			local actRow = MkFrame(Color3.fromRGB(0,0,0), UDim2.new(1,0,0,26), card)
 			actRow.BackgroundTransparency = 1
-			actRow.LayoutOrder = 2
+			actRow.LayoutOrder = 3
 			local actLayout = MkList(Enum.FillDirection.Horizontal, 6, actRow)
 
 			local function MkCardBtn(label, iconPath, bgCol, textCol)
@@ -1959,7 +2082,7 @@ do
 			local delClick = MkCardBtn("Delete", nil, Color3.fromRGB(50,20,20), Color3.fromRGB(220,80,80))
 
 			runClick.MouseButton1Click:Connect(function()
-				local code = sd.Code or sd.Script
+				local code = sd.Source
 				if code and code ~= "" then pcall(loadstring(code)) end
 			end)
 			delClick.MouseButton1Click:Connect(function()
@@ -2019,7 +2142,7 @@ do
 
 	local nameBox3 = MkInputField("Script name...", 1, false)
 	local descBox3 = MkInputField("Description...", 2, false)
-	local codeBox3 = MkInputField("-- Code here...", 3, true)
+	local codeBox3 = MkInputField("-- Source here...", 3, true)
 
 	local popupBtns = MkFrame(Color3.fromRGB(0,0,0), UDim2.new(1,0,0,32), NewScriptPopup)
 	popupBtns.BackgroundTransparency = 1
@@ -2048,7 +2171,7 @@ do
 	cancelPopupBtn.MouseButton1Click:Connect(function() NewScriptPopup.Visible=false end)
 	savePopupBtn.MouseButton1Click:Connect(function()
 		if nameBox3.Text=="" then return end
-		Funcs.SaveScript({Name=nameBox3.Text, Description=descBox3.Text, Code=codeBox3.Text})
+		Funcs.SaveScript({Name=nameBox3.Text, Description=descBox3.Text, Source=codeBox3.Text})
 		NewScriptPopup.Visible=false
 		Funcs.RefreshSavedScripts(sbox2.Text)
 	end)
@@ -2608,7 +2731,7 @@ do
 	MkStroke(Color3.fromRGB(45,45,55), 1, destroyBtn)
 	MkPad(8,8,4,4,destroyBtn)
 	destroyBtn.MouseButton1Click:Connect(function()
-		Env.__Lucid.IsLoaded = false
+		LucidLoaded = false
 		if MusicSound then pcall(function() MusicSound:Stop() MusicSound:Destroy() end) end
 		pcall(function() Screen:Destroy() end)
 		pcall(function() ShowBtn:Destroy() end)
