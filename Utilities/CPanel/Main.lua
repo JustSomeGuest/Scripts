@@ -2913,7 +2913,6 @@ function Gui.ApplyTheme(presetName)
 	BG3 = theme.BG3
 	ACCENT = theme.ACCENT
 
-	-- Theme-specific text colors
 	if presetName == "Minimal" then
 		TEXT = WHITE
 		SUBTEXT = WHITE
@@ -2938,7 +2937,6 @@ function Gui.ApplyTheme(presetName)
 						object.TextColor3 = SUBTEXT
 					end
 				
-					# Apply theme-specific text colors
 					if presetName == "Minimal" and object:GetAttribute("CPN_Selected") ~= true then
 						object.TextColor3 = WHITE
 					end
@@ -2994,14 +2992,13 @@ function Gui.ApplyTheme(presetName)
 			end
 		end
 		
-		-- Handle selected elements for Minimal theme
 		if presetName == "Minimal" then
 			for _, object in ipairs(UI.Screen:GetDescendants()) do
 				if object:GetAttribute("CPN_Selected") == true then
 					if object:IsA("TextLabel") or object:IsA("TextButton") then
-						object.TextColor3 = Color3.fromRGB(0, 0, 0) -- Black text
+						object.TextColor3 = Color3.fromRGB(0, 0, 0)
 					elseif object:IsA("Frame") or object:IsA("GuiObject") then
-						object.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White background
+						object.BackgroundColor3 = Color3.fromRGB(255, 255, 255) 
 					end
 				end
 			end
@@ -3357,7 +3354,6 @@ function Gui.Build()
 		if Settings.RoundedCorners then
 			MkCorner(6, dot) 
     else
-			-- Make sure traffic dots have no rounded corners
 			local corner = dot:FindFirstChildOfClass("UICorner")
 			if corner then
 				corner.CornerRadius = UDim.new(0, 0)
@@ -5600,11 +5596,9 @@ function Gui.ApplyRoundedCorners(enabled)
         end
     end
     
-    -- Special handling for traffic dots and other small UI elements
     if not enabled and UI.traffic then
         for _, dot in ipairs(UI.traffic:GetChildren()) do
             if dot:IsA("TextButton") and dot:GetAttribute("CPN_Immutable") then
-                -- Remove all corner radii from traffic dots
                 local corner = dot:FindFirstChildOfClass("UICorner")
                 if corner then
                     local originalRadius = corner.CornerRadius.Offset
