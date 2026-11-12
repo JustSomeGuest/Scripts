@@ -211,6 +211,7 @@ local Themes = {
 	["Crimson"]      = { BG = Color3.fromRGB(22, 12, 14), BG2 = Color3.fromRGB(36, 20, 24), BG3 = Color3.fromRGB(46, 28, 32), ACCENT = Color3.fromRGB(230, 60, 80) },
 	["Emerald"]      = { BG = Color3.fromRGB(12, 20, 16), BG2 = Color3.fromRGB(20, 34, 26), BG3 = Color3.fromRGB(28, 44, 34), ACCENT = Color3.fromRGB(46, 204, 113) },
 	["Ocean"]        = { BG = Color3.fromRGB(12, 18, 26), BG2 = Color3.fromRGB(20, 30, 44), BG3 = Color3.fromRGB(28, 40, 56), ACCENT = Color3.fromRGB(0, 180, 216) },
+	["Minimal"]      = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(255, 255, 255), BG3 = Color3.fromRGB(255, 255, 255), ACCENT = Color3.fromRGB(255, 255, 255) },
 }
 
 local BG = Color3.fromRGB(15, 15, 18)
