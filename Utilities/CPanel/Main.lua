@@ -2916,6 +2916,11 @@ function Gui.ApplyTheme(presetName)
 	if presetName == "Minimal" then
 		TEXT = WHITE
 		SUBTEXT = WHITE
+		ACCENT = WHITE
+		oldBG = BG
+		oldBG2 = BG2
+		oldBG3 = BG3
+		oldAccent = ACCENT
 	else
 		TEXT = oldTEXT
 		SUBTEXT = oldSUBTEXT
@@ -2937,9 +2942,13 @@ function Gui.ApplyTheme(presetName)
 						object.TextColor3 = SUBTEXT
 					end
 				
-					if presetName == "Minimal" and object:GetAttribute("CPN_Selected") ~= true then
+					if presetName == "Minimal" then
+					if object:GetAttribute("CPN_Selected") ~= true then
 						object.TextColor3 = WHITE
+					else
+						object.TextColor3 = Color3.fromRGB(0, 0, 0)
 					end
+			end
 				end
 
 				if object:IsA("GuiObject") then
@@ -2992,17 +3001,7 @@ function Gui.ApplyTheme(presetName)
 			end
 		end
 		
-		if presetName == "Minimal" then
-			for _, object in ipairs(UI.Screen:GetDescendants()) do
-				if object:GetAttribute("CPN_Selected") == true then
-					if object:IsA("TextLabel") or object:IsA("TextButton") then
-						object.TextColor3 = Color3.fromRGB(0, 0, 0)
-					elseif object:IsA("Frame") or object:IsA("GuiObject") then
-						object.BackgroundColor3 = Color3.fromRGB(255, 255, 255) 
-					end
-				end
-			end
-		end
+		
 		
 		Gui.ApplyTransparency()
 	end
