@@ -2904,115 +2904,118 @@ function Gui.ApplyTransparency()
 end
 
 function Gui.ApplyTheme(presetName)
-	local theme = Themes[presetName] or Themes["Default Dark"]
-	local oldBG, oldBG2, oldBG3, oldAccent, oldTEXT, oldSUBTEXT = BG, BG2, BG3, ACCENT, TEXT, SUBTEXT
+    local theme = Themes[presetName] or Themes["Default Dark"]
+    local oldBG, oldBG2, oldBG3, oldAccent, oldTEXT, oldSUBTEXT = BG, BG2, BG3, ACCENT, TEXT, SUBTEXT
 
-	Settings.Theme = Themes[presetName] and presetName or "Default Dark"
-	BG = theme.BG
-	BG2 = theme.BG2
-	BG3 = theme.BG3
-	ACCENT = theme.ACCENT
+    Settings.Theme = Themes[presetName] and presetName or "Default Dark"
+    BG = theme.BG
+    BG2 = theme.BG2
+    BG3 = theme.BG3
+    ACCENT = theme.ACCENT
 
-	if presetName == "Minimal" then
-		TEXT = WHITE
-		SUBTEXT = WHITE
-		ACCENT = WHITE
-	else
-		TEXT = oldTEXT
-		SUBTEXT = oldSUBTEXT
-	end
+    if presetName == "Minimal" then
+        TEXT = WHITE
+        SUBTEXT = WHITE
+        ACCENT = WHITE
+    else
+        TEXT = oldTEXT
+        SUBTEXT = oldSUBTEXT
+    end
 
-	if UI.Screen then
-		for _, object in ipairs(UI.Screen:GetDescendants()) do
-			if object:GetAttribute("CPN_Immutable") ~= true then
-				if object:IsA("TextLabel") or object:IsA("TextButton") then
-					if object.TextColor3 == oldAccent then
-						object.TextColor3 = ACCENT
-					elseif object.TextColor3 == oldBG3 then
-						object.TextColor3 = BG3
-					elseif object.TextColor3 == oldBG2 then
-						object.TextColor3 = BG2
-					elseif object.TextColor3 == oldTEXT then
-						object.TextColor3 = TEXT
-					elseif object.TextColor3 == oldSUBTEXT then
-						object.TextColor3 = SUBTEXT
-					end
-				
-					if presetName == "Minimal" then
-					if object:GetAttribute("CPN_Selected") ~= true then
-						object.TextColor3 = WHITE
-					else
-						object.TextColor3 = Color3.fromRGB(0, 0, 0)
-					end
-				end
-				
-				if object:IsA("GuiObject") then
-					if object:IsA("ScrollingFrame") and object:GetAttribute("CPN_ThemedBar") then
-						object.ScrollBarImageColor3 = BG3:Lerp(WHITE, 0.35)
-					end
+    if UI.Screen then
+        for _, object in ipairs(UI.Screen:GetDescendants()) do
+            if object:GetAttribute("CPN_Immutable") ~= true then
+                if object:IsA("TextLabel") or object:IsA("TextButton") then
+                    if object.TextColor3 == oldAccent then
+                        object.TextColor3 = ACCENT
+                    elseif object.TextColor3 == oldBG3 then
+                        object.TextColor3 = BG3
+                    elseif object.TextColor3 == oldBG2 then
+                        object.TextColor3 = BG2
+                    elseif object.TextColor3 == oldTEXT then
+                        object.TextColor3 = TEXT
+                    elseif object.TextColor3 == oldSUBTEXT then
+                        object.TextColor3 = SUBTEXT
+                    end
 
-					local stored = object:GetAttribute("CPN_BaseBg")
-					if typeof(stored) == "Color3" then
-						local mapped = stored
-						if stored == oldAccent then
-							mapped = ACCENT
-						elseif stored == oldBG3 then
-							mapped = BG3
-						elseif stored == oldBG2 then
-							mapped = BG2
-						elseif stored == oldBG then
-							mapped = BG
-						end
-						if mapped ~= stored then
-							object:SetAttribute("CPN_BaseBg", mapped)
-							if object:GetAttribute("CPN_Selected") ~= true then
-								object.BackgroundColor3 = mapped
-							end
-						end
-					elseif object.BackgroundColor3 == oldBG then
-						object.BackgroundColor3 = BG
-					elseif object.BackgroundColor3 == oldBG2 then
-						object.BackgroundColor3 = BG2
-					elseif object.BackgroundColor3 == oldBG3 then
-						object.BackgroundColor3 = BG3
-					elseif object.BackgroundColor3 == oldAccent then
-						object.BackgroundColor3 = ACCENT
-					end
-				elseif object:IsA("UIStroke") then
-					if object.Color == oldAccent then
-						object.Color = ACCENT
-					elseif object.Color == oldBG3 then
-						object.Color = BG3
-					end
-				end
-			end
-		end
-		if UI.ActiveNavName and UI.NavButtons and UI.NavButtons[UI.ActiveNavName] then
-			UI.NavButtons[UI.ActiveNavName].button.BackgroundColor3 = ACCENT
-		end
-		for _, slider in pairs(UI.Sliders or {}) do
-			if slider.fill then
-				slider.fill.BackgroundColor3 = ACCENT
-			end
-		end
-		
-		if presetName == "Minimal" then
-			for _, object in ipairs(UI.Screen:GetDescendants()) do
-				if object:GetAttribute("CPN_Selected") == true and object:GetAttribute("CPN_Immutable") ~= true then
-					if object:IsA("TextLabel") or object:IsA("TextButton") then
-						object.TextColor3 = Color3.fromRGB(0, 0, 0)
-						object.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					elseif object:IsA("Frame") or object:IsA("ScrollingFrame") then
-						object.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					end
-				end
-			end
-		end
-		
-		Gui.ApplyTransparency()
-	end
+                    if presetName == "Minimal" then
+                        if object:GetAttribute("CPN_Selected") ~= true then
+                            object.TextColor3 = WHITE
+                        else
+                            object.TextColor3 = Color3.fromRGB(0, 0, 0)
+                        end
+                    end
+                end
 
-	Funcs.SaveSettings()
+                if object:IsA("GuiObject") then
+                    if object:IsA("ScrollingFrame") and object:GetAttribute("CPN_ThemedBar") then
+                        object.ScrollBarImageColor3 = BG3:Lerp(WHITE, 0.35)
+                    end
+
+                    local stored = object:GetAttribute("CPN_BaseBg")
+                    if typeof(stored) == "Color3" then
+                        local mapped = stored
+                        if stored == oldAccent then
+                            mapped = ACCENT
+                        elseif stored == oldBG3 then
+                            mapped = BG3
+                        elseif stored == oldBG2 then
+                            mapped = BG2
+                        elseif stored == oldBG then
+                            mapped = BG
+                        end
+                        if mapped ~= stored then
+                            object:SetAttribute("CPN_BaseBg", mapped)
+                            if object:GetAttribute("CPN_Selected") ~= true then
+                                object.BackgroundColor3 = mapped
+                            end
+                        end
+                    elseif object.BackgroundColor3 == oldBG then
+                        object.BackgroundColor3 = BG
+                    elseif object.BackgroundColor3 == oldBG2 then
+                        object.BackgroundColor3 = BG2
+                    elseif object.BackgroundColor3 == oldBG3 then
+                        object.BackgroundColor3 = BG3
+                    elseif object.BackgroundColor3 == oldAccent then
+                        object.BackgroundColor3 = ACCENT
+                    end
+                elseif object:IsA("UIStroke") then
+                    if object.Color == oldAccent then
+                        object.Color = ACCENT
+                    elseif object.Color == oldBG3 then
+                        object.Color = BG3
+                    end
+                end
+            end
+        end
+
+        if UI.ActiveNavName and UI.NavButtons and UI.NavButtons[UI.ActiveNavName] then
+            UI.NavButtons[UI.ActiveNavName].button.BackgroundColor3 = ACCENT
+        end
+
+        for _, slider in pairs(UI.Sliders or {}) do
+            if slider.fill then
+                slider.fill.BackgroundColor3 = ACCENT
+            end
+        end
+
+        if presetName == "Minimal" then
+            for _, object in ipairs(UI.Screen:GetDescendants()) do
+                if object:GetAttribute("CPN_Selected") == true and object:GetAttribute("CPN_Immutable") ~= true then
+                    if object:IsA("TextLabel") or object:IsA("TextButton") then
+                        object.TextColor3 = Color3.fromRGB(0, 0, 0)
+                        object.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    elseif object:IsA("Frame") or object:IsA("ScrollingFrame") then
+                        object.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    end
+                end
+            end
+        end
+
+        Gui.ApplyTransparency()
+    end
+
+    Funcs.SaveSettings()
 end
 
 local NAV_PAGES = {
