@@ -2905,13 +2905,22 @@ end
 
 function Gui.ApplyTheme(presetName)
 	local theme = Themes[presetName] or Themes["Default Dark"]
-	local oldBG, oldBG2, oldBG3, oldAccent = BG, BG2, BG3, ACCENT
+	local oldBG, oldBG2, oldBG3, oldAccent, oldTEXT, oldSUBTEXT = BG, BG2, BG3, ACCENT, TEXT, SUBTEXT
 
 	Settings.Theme = Themes[presetName] and presetName or "Default Dark"
 	BG = theme.BG
 	BG2 = theme.BG2
 	BG3 = theme.BG3
 	ACCENT = theme.ACCENT
+
+	-- Theme-specific text colors
+	if presetName == "Minimal" then
+		TEXT = WHITE
+		SUBTEXT = WHITE
+	else
+		TEXT = oldTEXT
+		SUBTEXT = oldSUBTEXT
+	end
 
 	if UI.Screen then
 		for _, object in ipairs(UI.Screen:GetDescendants()) do
@@ -2923,6 +2932,15 @@ function Gui.ApplyTheme(presetName)
 						object.TextColor3 = BG3
 					elseif object.TextColor3 == oldBG2 then
 						object.TextColor3 = BG2
+					elseif object.TextColor3 == oldTEXT then
+						object.TextColor3 = TEXT
+					elseif object.TextColor3 == oldSUBTEXT then
+						object.TextColor3 = SUBTEXT
+					end
+				
+					# Apply theme-specific text colors
+					if presetName == "Minimal" and object:GetAttribute("CPN_Selected") ~= true then
+						object.TextColor3 = WHITE
 					end
 				end
 
@@ -2975,6 +2993,20 @@ function Gui.ApplyTheme(presetName)
 				slider.fill.BackgroundColor3 = ACCENT
 			end
 		end
+		
+		-- Handle selected elements for Minimal theme
+		if presetName == "Minimal" then
+			for _, object in ipairs(UI.Screen:GetDescendants()) do
+				if object:GetAttribute("CPN_Selected") == true then
+					if object:IsA("TextLabel") or object:IsA("TextButton") then
+						object.TextColor3 = Color3.fromRGB(0, 0, 0) -- Black text
+					elseif object:IsA("Frame") or object:IsA("GuiObject") then
+						object.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White background
+					end
+				end
+			end
+		end
+		
 		Gui.ApplyTransparency()
 	end
 
@@ -3325,6 +3357,11 @@ function Gui.Build()
 		if Settings.RoundedCorners then
 			MkCorner(6, dot) 
     else
+			-- Make sure traffic dots have no rounded corners
+			local corner = dot:FindFirstChildOfClass("UICorner")
+			if corner then
+				corner.CornerRadius = UDim.new(0, 0)
+			end
 		end
 
 		local dim = color:Lerp(Color3.fromRGB(20, 20, 24), 0.18)
@@ -5559,6 +5596,24 @@ function Gui.ApplyRoundedCorners(enabled)
                     CornerRadius = UDim.new(0, 0)
                 })
                 target:Play()
+            end
+        end
+    end
+    
+    -- Special handling for traffic dots and other small UI elements
+    if not enabled and UI.traffic then
+        for _, dot in ipairs(UI.traffic:GetChildren()) do
+            if dot:IsA("TextButton") and dot:GetAttribute("CPN_Immutable") then
+                -- Remove all corner radii from traffic dots
+                local corner = dot:FindFirstChildOfClass("UICorner")
+                if corner then
+                    local originalRadius = corner.CornerRadius.Offset
+                    dot:SetAttribute("CPN_OriginalRadius", originalRadius)
+                    local target = TweenService:Create(corner, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                        CornerRadius = UDim.new(0, 0)
+                    })
+                    target:Play()
+                end
             end
         end
     end
