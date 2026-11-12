@@ -2917,10 +2917,6 @@ function Gui.ApplyTheme(presetName)
 		TEXT = WHITE
 		SUBTEXT = WHITE
 		ACCENT = WHITE
-		oldBG = BG
-		oldBG2 = BG2
-		oldBG3 = BG3
-		oldAccent = ACCENT
 	else
 		TEXT = oldTEXT
 		SUBTEXT = oldSUBTEXT
@@ -2948,9 +2944,8 @@ function Gui.ApplyTheme(presetName)
 					else
 						object.TextColor3 = Color3.fromRGB(0, 0, 0)
 					end
-			end
 				end
-
+				
 				if object:IsA("GuiObject") then
 					if object:IsA("ScrollingFrame") and object:GetAttribute("CPN_ThemedBar") then
 						object.ScrollBarImageColor3 = BG3:Lerp(WHITE, 0.35)
@@ -3001,7 +2996,18 @@ function Gui.ApplyTheme(presetName)
 			end
 		end
 		
-		
+		if presetName == "Minimal" then
+			for _, object in ipairs(UI.Screen:GetDescendants()) do
+				if object:GetAttribute("CPN_Selected") == true and object:GetAttribute("CPN_Immutable") ~= true then
+					if object:IsA("TextLabel") or object:IsA("TextButton") then
+						object.TextColor3 = Color3.fromRGB(0, 0, 0)
+						object.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					elseif object:IsA("Frame") or object:IsA("ScrollingFrame") then
+						object.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					end
+				end
+			end
+		end
 		
 		Gui.ApplyTransparency()
 	end
@@ -3147,12 +3153,24 @@ function Gui.SwitchPage(pageKey)
 		end
 		SetButtonSelected(entry.button, active)
 		local target = active and ACCENT or BG3
+		local textColor = active and WHITE or SUBTEXT
+		
+		if Settings.Theme == "Minimal" then
+			if active then
+				target = Color3.fromRGB(255, 255, 255)
+				textColor = Color3.fromRGB(0, 0, 0)
+			else
+				target = Color3.fromRGB(0, 0, 0)
+				textColor = Color3.fromRGB(255, 255, 255)
+			end
+		end
+		
 		TweenService:Create(
 			entry.button,
 			TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
 			{ BackgroundColor3 = target }
 		):Play()
-		entry.label.TextColor3 = active and WHITE or SUBTEXT
+		entry.label.TextColor3 = textColor
 	end
 
 	paintNav(oldNav, false)
@@ -3334,6 +3352,7 @@ function Gui.Build()
 	traffic.Position = UDim2.new(1, -16, 0.5, 0)
 	traffic.Parent = topbar
 	MkList(Enum.FillDirection.Horizontal, 8, traffic)
+	UI.traffic = traffic
 
 	local function TrafficDot(name, color, glyph, onClick)
 		local dot = Instance.new("TextButton")
@@ -3352,11 +3371,6 @@ function Gui.Build()
 		
 		if Settings.RoundedCorners then
 			MkCorner(6, dot) 
-    else
-			local corner = dot:FindFirstChildOfClass("UICorner")
-			if corner then
-				corner.CornerRadius = UDim.new(0, 0)
-			end
 		end
 
 		local dim = color:Lerp(Color3.fromRGB(20, 20, 24), 0.18)
@@ -5595,17 +5609,20 @@ function Gui.ApplyRoundedCorners(enabled)
         end
     end
     
-    if not enabled and UI.traffic then
+    if UI.traffic then
         for _, dot in ipairs(UI.traffic:GetChildren()) do
-            if dot:IsA("TextButton") and dot:GetAttribute("CPN_Immutable") then
+            if dot:IsA("TextButton") then
                 local corner = dot:FindFirstChildOfClass("UICorner")
-                if corner then
-                    local originalRadius = corner.CornerRadius.Offset
-                    dot:SetAttribute("CPN_OriginalRadius", originalRadius)
-                    local target = TweenService:Create(corner, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                        CornerRadius = UDim.new(0, 0)
-                    })
-                    target:Play()
+                if enabled then
+                    if not corner then
+                        corner = Instance.new("UICorner")
+                        corner.Parent = dot
+                    end
+                    corner.CornerRadius = UDim.new(0, 6)
+                else
+                    if corner then
+                        corner:Destroy()
+                    end
                 end
             end
         end
