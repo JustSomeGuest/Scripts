@@ -1,4 +1,3 @@
-
 local Base = "https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/"
 local MainUrl = Base .. "Main.lua"
 local InitUrl = Base .. "Init.lua"
