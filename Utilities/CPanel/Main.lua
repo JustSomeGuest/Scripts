@@ -251,6 +251,7 @@ local Settings = {
 	AutoReconnect = true,
 	RefreshInterval = 5,
 	RoundedCorners = true,
+	StartMinimized = true,
 }
 
 local State = {
@@ -594,6 +595,8 @@ function Funcs.ValidateSettings(candidate)
 	Settings.Sounds = Funcs.ParseBool(candidate.Sounds, Settings.Sounds)
 	Settings.Notifications = Funcs.ParseBool(candidate.Notifications, Settings.Notifications)
 	Settings.AutoReconnect = Funcs.ParseBool(candidate.AutoReconnect, Settings.AutoReconnect)
+	Settings.RoundedCorners = Funcs.ParseBool(candidate.RoundedCorners, Settings.RoundedCorners)
+	Settings.StartMinimized = Funcs.ParseBool(candidate.StartMinimized, Settings.StartMinimized)
 	if type(candidate.RefreshInterval) == "number" then
 		local found = false
 		for _, choice in ipairs(REFRESH_CHOICES) do
@@ -641,6 +644,8 @@ function Funcs.SaveSettings()
 		Notifications = Settings.Notifications,
 		AutoReconnect = Settings.AutoReconnect,
 		RefreshInterval = Settings.RefreshInterval,
+		RoundedCorners = Settings.RoundedCorners,
+		StartMinimized = Settings.StartMinimized,
 	}
 	local okEncode, encoded = pcall(function()
 		return HttpService:JSONEncode(payload)
@@ -661,6 +666,7 @@ function Funcs.ResetSettings()
 	Settings.AutoReconnect = true
 	Settings.RefreshInterval = 5
 	Settings.RoundedCorners = true
+	Settings.StartMinimized = true
 	if DelFile and IsFile and IsFile(SETTINGS_PATH) then
 		pcall(DelFile, SETTINGS_PATH)
 	end
@@ -2330,17 +2336,45 @@ task.spawn(function()
 	end
 end)
 
-local function MkCorner(radius, parent)
-	if not Settings.RoundedCorners then
+local function ReadCornerState(corner)
+	return string.format(
+		"%d,%d,%d,%d",
+		corner.TopLeftRadius.Offset,
+		corner.TopRightRadius.Offset,
+		corner.BottomLeftRadius.Offset,
+		corner.BottomRightRadius.Offset
+	)
+end
+
+local function ParseCornerState(state)
+	local tl, tr, bl, br = tostring(state):match("^(%-?%d+),(%-?%d+),(%-?%d+),(%-?%d+)$")
+	if not tl then
 		return nil
 	end
-	
+	return tonumber(tl), tonumber(tr), tonumber(bl), tonumber(br)
+end
+
+local function SetCornerRadii(corner, tl, tr, bl, br)
+	corner.TopLeftRadius = UDim.new(0, tl)
+	corner.TopRightRadius = UDim.new(0, tr)
+	corner.BottomLeftRadius = UDim.new(0, bl)
+	corner.BottomRightRadius = UDim.new(0, br)
+	corner:SetAttribute("CPN_CornerState", ReadCornerState(corner))
+	if Settings.RoundedCorners == false then
+		corner.TopLeftRadius = UDim.new(0, 0)
+		corner.TopRightRadius = UDim.new(0, 0)
+		corner.BottomLeftRadius = UDim.new(0, 0)
+		corner.BottomRightRadius = UDim.new(0, 0)
+	end
+end
+
+local function MkCorner(radius, parent)
 	local corner = parent:FindFirstChildOfClass("UICorner")
 	if not corner then
 		corner = Instance.new("UICorner")
 		corner.Parent = parent
 	end
-	corner.CornerRadius = UDim.new(0, radius)
+	SetCornerRadii(corner, radius, radius, radius, radius)
 	return corner
 end
 
@@ -3353,11 +3387,7 @@ function Gui.Build()
 	UI.Topbar = topbar
 	Funcs.Dragify(topbar, window)
 	local topCorner = MkCorner(16, topbar)
-	topCorner.CornerRadius = UDim.new(0, 0)
-	topCorner.TopLeftRadius = UDim.new(0, 16)
-	topCorner.TopRightRadius = UDim.new(0, 16)
-	topCorner.BottomLeftRadius = UDim.new(0, 0)
-	topCorner.BottomRightRadius = UDim.new(0, 0)
+	SetCornerRadii(topCorner, 16, 16, 0, 0)
 
 	local logo = MkImg(Funcs.GetAsset("CPanel/CPN_Logo.png") or Assets["CPanel/CPN_Logo.png"], WHITE, topbar)
 	logo.Size = UDim2.new(0, 28, 0, 28)
@@ -3448,7 +3478,7 @@ function Gui.Build()
 	sidebar.BorderSizePixel = 0
 	sidebar.LayoutOrder = 2
 	local sideCorner = MkCorner(0, sidebar)
-	sideCorner.BottomLeftRadius = UDim.new(0, 16)
+	SetCornerRadii(sideCorner, 0, 0, 16, 0)
 	UI.Sidebar = sidebar
 	MkList(Enum.FillDirection.Vertical, 6, sidebar)
 	MkPadding(10, 10, 12, 12, sidebar)
@@ -3557,6 +3587,9 @@ function Gui.Build()
 	Gui.RenderParticipants()
 	Gui.RenderSelection()
 	Gui.FlushQueuedToasts()
+	if Settings.StartMinimized then
+		Gui.Minimize()
+	end
 end
 
 function Gui.CloseDashboard(reason)
@@ -5440,6 +5473,26 @@ function Gui.BuildSettingsPage()
 	roundedToggle.holder.Position = UDim2.new(1, 0, 0.5, 0)
 	UI.RoundedCornersToggle = roundedToggle
 
+	local startRow, startLabel = (function()
+		local row = Instance.new("Frame")
+		row.BackgroundTransparency = 1
+		row.BorderSizePixel = 0
+		row.Size = UDim2.new(1, 0, 0, 34)
+		row.LayoutOrder = 7
+		row.Parent = appearanceCard
+		local label = MkLabel("Start minimized", F_MED, 13, TEXT, row)
+		label.Size = UDim2.new(1, -60, 1, 0)
+		label.TextXAlignment = Enum.TextXAlignment.Left
+		return row, label
+	end)()
+	local startToggle = Gui.MakeToggle(startRow, Settings.StartMinimized, function(value)
+		Settings.StartMinimized = value
+		Funcs.SaveSettings()
+	end)
+	startToggle.holder.AnchorPoint = Vector2.new(1, 0.5)
+	startToggle.holder.Position = UDim2.new(1, 0, 0.5, 0)
+	UI.StartMinimizedToggle = startToggle
+
 	local soundsRow = Instance.new("Frame")
 	soundsRow.BackgroundTransparency = 1
 	soundsRow.BorderSizePixel = 0
@@ -5574,6 +5627,7 @@ function Gui.BuildSettingsPage()
 		UI.NotificationsToggle.Set(Settings.Notifications)
 		UI.AutoReconnectToggle.Set(Settings.AutoReconnect)
 		UI.RoundedCornersToggle.Set(Settings.RoundedCorners)
+		UI.StartMinimizedToggle.Set(Settings.StartMinimized)
 		for index, choice in ipairs(REFRESH_CHOICES) do
 			if choice == Settings.RefreshInterval then
 				UI.RefreshCycle.SetIndex(index)
@@ -5637,28 +5691,28 @@ function Gui.ApplyRoundedCorners(enabled)
 
     local screenDescendants = UI.Screen:GetDescendants()
 
-    if enabled then
-        for _, instance in ipairs(screenDescendants) do
-            if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
-                local originalRadius = instance:GetAttribute("CPN_OriginalRadius")
-                if originalRadius then
-                    local target = TweenService:Create(instance, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                        CornerRadius = UDim.new(0, originalRadius)
-                    })
-                    target:Play()
+    local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+    for _, instance in ipairs(screenDescendants) do
+        if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
+            local state = instance:GetAttribute("CPN_CornerState")
+            if not enabled and not state then
+                state = ReadCornerState(instance)
+                instance:SetAttribute("CPN_CornerState", state)
+            end
+            local tl, tr, bl, br = 0, 0, 0, 0
+            if enabled and state then
+                local ctl, ctr, cbl, cbr = ParseCornerState(state)
+                if ctl then
+                    tl, tr, bl, br = ctl, ctr, cbl, cbr
                 end
             end
-        end
-    else
-        for _, instance in ipairs(screenDescendants) do
-            if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
-                local originalRadius = instance.CornerRadius.Offset
-                instance:SetAttribute("CPN_OriginalRadius", originalRadius)
-                local target = TweenService:Create(instance, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                    CornerRadius = UDim.new(0, 0)
-                })
-                target:Play()
-            end
+            TweenService:Create(instance, tweenInfo, {
+                TopLeftRadius = UDim.new(0, tl),
+                TopRightRadius = UDim.new(0, tr),
+                BottomLeftRadius = UDim.new(0, bl),
+                BottomRightRadius = UDim.new(0, br),
+            }):Play()
         end
     end
     
@@ -5689,8 +5743,9 @@ function InitializeCornerRadii()
 	
 	for _, instance in ipairs(screenDescendants) do
 		if instance:IsA("UICorner") and instance.Parent and not instance.Parent:GetAttribute("CPN_Immutable") then
-			local originalRadius = instance.CornerRadius.Offset
-			instance:SetAttribute("CPN_OriginalRadius", originalRadius)
+			if not instance:GetAttribute("CPN_CornerState") then
+				instance:SetAttribute("CPN_CornerState", ReadCornerState(instance))
+			end
 		end
 	end
 end
