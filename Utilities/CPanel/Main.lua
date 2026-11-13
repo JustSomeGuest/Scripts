@@ -211,6 +211,12 @@ local Themes = {
 	["Crimson"]      = { BG = Color3.fromRGB(22, 12, 14), BG2 = Color3.fromRGB(36, 20, 24), BG3 = Color3.fromRGB(46, 28, 32), ACCENT = Color3.fromRGB(230, 60, 80) },
 	["Emerald"]      = { BG = Color3.fromRGB(12, 20, 16), BG2 = Color3.fromRGB(20, 34, 26), BG3 = Color3.fromRGB(28, 44, 34), ACCENT = Color3.fromRGB(46, 204, 113) },
 	["Ocean"]        = { BG = Color3.fromRGB(12, 18, 26), BG2 = Color3.fromRGB(20, 30, 44), BG3 = Color3.fromRGB(28, 40, 56), ACCENT = Color3.fromRGB(0, 180, 216) },
+	["OLED Blue"]    = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(5, 7, 13), BG3 = Color3.fromRGB(10, 14, 24), ACCENT = Color3.fromRGB(90, 155, 255) },
+	["OLED Purple"]  = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(7, 6, 14), BG3 = Color3.fromRGB(14, 12, 26), ACCENT = Color3.fromRGB(165, 95, 255) },
+	["OLED Amethyst"] = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(12, 6, 16), BG3 = Color3.fromRGB(22, 13, 28), ACCENT = Color3.fromRGB(200, 115, 255) },
+	["OLED Crimson"] = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(14, 5, 8), BG3 = Color3.fromRGB(26, 11, 15), ACCENT = Color3.fromRGB(255, 80, 100) },
+	["OLED Emerald"] = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(4, 13, 9), BG3 = Color3.fromRGB(9, 23, 16), ACCENT = Color3.fromRGB(65, 240, 145) },
+	["OLED Ocean"]   = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(4, 11, 17), BG3 = Color3.fromRGB(9, 20, 31), ACCENT = Color3.fromRGB(0, 220, 255) },
 	["Minimal"]      = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(8, 8, 8), BG3 = Color3.fromRGB(16, 16, 16), ACCENT = Color3.fromRGB(255, 255, 255) },
 }
 
