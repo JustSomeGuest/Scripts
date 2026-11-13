@@ -211,7 +211,7 @@ local Themes = {
 	["Crimson"]      = { BG = Color3.fromRGB(22, 12, 14), BG2 = Color3.fromRGB(36, 20, 24), BG3 = Color3.fromRGB(46, 28, 32), ACCENT = Color3.fromRGB(230, 60, 80) },
 	["Emerald"]      = { BG = Color3.fromRGB(12, 20, 16), BG2 = Color3.fromRGB(20, 34, 26), BG3 = Color3.fromRGB(28, 44, 34), ACCENT = Color3.fromRGB(46, 204, 113) },
 	["Ocean"]        = { BG = Color3.fromRGB(12, 18, 26), BG2 = Color3.fromRGB(20, 30, 44), BG3 = Color3.fromRGB(28, 40, 56), ACCENT = Color3.fromRGB(0, 180, 216) },
-	["Minimal"]      = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(255, 255, 255), BG3 = Color3.fromRGB(255, 255, 255), ACCENT = Color3.fromRGB(255, 255, 255) },
+	["Minimal"]      = { BG = Color3.fromRGB(0, 0, 0), BG2 = Color3.fromRGB(8, 8, 8), BG3 = Color3.fromRGB(16, 16, 16), ACCENT = Color3.fromRGB(255, 255, 255) },
 }
 
 local BG = Color3.fromRGB(15, 15, 18)
@@ -226,6 +226,14 @@ local GREEN = Color3.fromRGB(70, 200, 130)
 local RED = Color3.fromRGB(240, 90, 90)
 local YELLOW = Color3.fromRGB(250, 190, 80)
 local OVERLAY_BG = Color3.fromRGB(0, 0, 0)
+local BLACK = Color3.fromRGB(0, 0, 0)
+
+local function Contrast(color)
+	if color.R + color.G + color.B > 2.4 then
+		return BLACK
+	end
+	return WHITE
+end
 
 local UI = {}
 local Funcs = {}
@@ -1324,7 +1332,7 @@ function Fun.Nameplate(args)
 	label.Position = UDim2.new(0, 6, 0, 0)
 	label.FontFace = F_BOLD
 	label.TextSize = 14
-	label.TextColor3 = WHITE
+	label.TextColor3 = Contrast(ACCENT)
 	label.Text = text
 	label.Parent = plate
 
@@ -2444,7 +2452,7 @@ local function MkBtn(text, font, size, color, background, parent)
 	local function hoverOf()
 		local bg = baseBg()
 		if bg.R + bg.G + bg.B < 0.2 then
-			return BG3
+			return bg:Lerp(WHITE, 0.12)
 		end
 		return bg:Lerp(WHITE, 0.1)
 	end
@@ -2567,16 +2575,21 @@ function Gui.MakeToggle(parent, initialValue, onChange)
 	knob.Position = UDim2.new(0, 3, 0.5, -9)
 	MkCorner(9, knob)
 
+	UI.Toggles = UI.Toggles or {}
+	UI.Toggles[#UI.Toggles + 1] = { holder = holder, knob = knob }
+
 	local enabled = (initialValue == true)
 
 	local function paint(animate)
 		local targetPosition = enabled and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9)
 		local targetColor = enabled and ACCENT or Color3.fromRGB(45, 45, 56)
+		local knobColor = enabled and Contrast(ACCENT) or WHITE
 		if animate and Settings.Animations then
-			TweenService:Create(knob, TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = targetPosition }):Play()
+			TweenService:Create(knob, TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = targetPosition, BackgroundColor3 = knobColor }):Play()
 			TweenService:Create(holder, TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = targetColor }):Play()
 		else
 			knob.Position = targetPosition
+			knob.BackgroundColor3 = knobColor
 			holder.BackgroundColor3 = targetColor
 		end
 	end
@@ -2620,7 +2633,7 @@ function Gui.MakeSlider(parent, min, max, value, order, onChange)
 	fill.BorderSizePixel = 0
 	MkCorner(3, fill)
 
-	local knob = MkFrame(WHITE, UDim2.new(0, 14, 0, 14), track)
+	local knob = MkFrame(Contrast(ACCENT), UDim2.new(0, 14, 0, 14), track)
 	knob.AnchorPoint = Vector2.new(0.5, 0.5)
 	knob.BorderSizePixel = 0
 	MkCorner(7, knob)
@@ -2906,15 +2919,16 @@ end
 
 function Gui.ApplyTheme(presetName)
     local theme = Themes[presetName] or Themes["Default Dark"]
-    local oldBG, oldBG2, oldBG3, oldAccent, oldTEXT, oldSUBTEXT = BG, BG2, BG3, ACCENT, TEXT, SUBTEXT
+    local oldBG, oldBG2, oldBG3, oldAccent, oldTEXT, oldSUBTEXT, oldBorder = BG, BG2, BG3, ACCENT, TEXT, SUBTEXT, BORDER
 
     Settings.Theme = Themes[presetName] and presetName or "Default Dark"
     BG = theme.BG
     BG2 = theme.BG2
     BG3 = theme.BG3
     ACCENT = theme.ACCENT
+    BORDER = (Settings.Theme == "Minimal") and WHITE or Color3.fromRGB(34, 34, 42)
 
-    if presetName == "Minimal" then
+    if Settings.Theme == "Minimal" then
         TEXT = WHITE
         SUBTEXT = WHITE
         ACCENT = WHITE
@@ -2937,14 +2951,6 @@ function Gui.ApplyTheme(presetName)
                         object.TextColor3 = TEXT
                     elseif object.TextColor3 == oldSUBTEXT then
                         object.TextColor3 = SUBTEXT
-                    end
-
-                    if presetName == "Minimal" then
-                        if object:GetAttribute("CPN_Selected") ~= true then
-                            object.TextColor3 = WHITE
-                        else
-                            object.TextColor3 = Color3.fromRGB(0, 0, 0)
-                        end
                     end
                 end
 
@@ -2981,7 +2987,9 @@ function Gui.ApplyTheme(presetName)
                         object.BackgroundColor3 = ACCENT
                     end
                 elseif object:IsA("UIStroke") then
-                    if object.Color == oldAccent then
+                    if object.Color == oldBorder then
+                        object.Color = BORDER
+                    elseif object.Color == oldAccent then
                         object.Color = ACCENT
                     elseif object.Color == oldBG3 then
                         object.Color = BG3
@@ -2998,16 +3006,54 @@ function Gui.ApplyTheme(presetName)
             if slider.fill then
                 slider.fill.BackgroundColor3 = ACCENT
             end
+            pcall(function()
+                if slider.knob then
+                    slider.knob.BackgroundColor3 = Contrast(slider.fill.BackgroundColor3)
+                end
+            end)
         end
 
-        if presetName == "Minimal" then
+        pcall(function()
+            for _, toggle in ipairs(UI.Toggles or {}) do
+                if toggle.knob and toggle.holder then
+                    toggle.knob.BackgroundColor3 = Contrast(toggle.holder.BackgroundColor3)
+                end
+            end
+        end)
+
+        if Settings.Theme == "Minimal" then
             for _, object in ipairs(UI.Screen:GetDescendants()) do
                 if object:GetAttribute("CPN_Selected") == true and object:GetAttribute("CPN_Immutable") ~= true then
                     if object:IsA("TextLabel") or object:IsA("TextButton") then
-                        object.TextColor3 = Color3.fromRGB(0, 0, 0)
-                        object.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                        object.TextColor3 = BLACK
+                        object.BackgroundColor3 = WHITE
                     elseif object:IsA("Frame") or object:IsA("ScrollingFrame") then
-                        object.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                        object.BackgroundColor3 = WHITE
+                    end
+                end
+            end
+
+            for _, object in ipairs(UI.Screen:GetDescendants()) do
+                if object:GetAttribute("CPN_Immutable") ~= true and (object:IsA("TextLabel") or object:IsA("TextButton")) then
+                    local bgc = nil
+                    if object.BackgroundTransparency < 0.5 then
+                        bgc = object.BackgroundColor3
+                    else
+                        local ancestor = object.Parent
+                        while ancestor and ancestor ~= UI.Screen do
+                            if ancestor:IsA("GuiObject") and ancestor.BackgroundTransparency < 0.5 then
+                                bgc = ancestor.BackgroundColor3
+                                break
+                            end
+                            ancestor = ancestor.Parent
+                        end
+                    end
+                    bgc = bgc or BG
+                    local current = object.TextColor3
+                    if bgc.R + bgc.G + bgc.B > 2.4 then
+                        object.TextColor3 = BLACK
+                    elseif current ~= RED and current ~= GREEN and current ~= YELLOW then
+                        object.TextColor3 = WHITE
                     end
                 end
             end
@@ -3834,11 +3880,11 @@ local function ParticipantRow(parent, entry, order)
 	local chipRight = joinable and 158 or 30
 	local labelGutter = 55 + chipRight + chipWidth + 10
 
-	local row = MkFrame(BG3, UDim2.new(1, 0, 0, 56), parent)
+	local row = MkFrame(isSelected and WHITE or BG3, UDim2.new(1, 0, 0, 56), parent)
 	row.BorderSizePixel = 0
 	row.LayoutOrder = order or 0
 	MkCorner(10, row)
-	local stroke = MkStroke(isSelected and ACCENT or BORDER, isSelected and 1.6 or 1, row)
+	local stroke = MkStroke(isSelected and BLACK or BORDER, isSelected and 1.6 or 1, row)
 
 	local avatar = Instance.new("ImageLabel")
 	avatar.BackgroundTransparency = 1
@@ -3853,20 +3899,24 @@ local function ParticipantRow(parent, entry, order)
 	if isSelf then
 		usernameText = usernameText .. " (you)"
 	end
-	local nameLabel = MkLabel(usernameText, F_BOLD, 13, TEXT, row)
+	local nameLabel = MkLabel(usernameText, F_BOLD, 13, isSelected and BLACK or TEXT, row)
 	nameLabel.Size = UDim2.new(1, -labelGutter, 0, 17)
 	nameLabel.Position = UDim2.new(0, 55, 0, 9)
 	nameLabel.TextXAlignment = Enum.TextXAlignment.Left
 	nameLabel.TextTruncate = Enum.TextTruncate.AtEnd
 
-	local detailLabel = MkLabel(entry.displayName .. "  ·  " .. tostring(entry.userId) .. "  ·  " .. entry.jobId:sub(1, 8), F_REG, 11, SUBTEXT, row)
+	local detailLabel = MkLabel(entry.displayName .. "  ·  " .. tostring(entry.userId) .. "  ·  " .. entry.jobId:sub(1, 8), F_REG, 11, isSelected and BLACK or SUBTEXT, row)
 	detailLabel.Size = UDim2.new(1, -labelGutter, 0, 15)
 	detailLabel.Position = UDim2.new(0, 55, 0, 30)
 	detailLabel.TextXAlignment = Enum.TextXAlignment.Left
 	detailLabel.TextTruncate = Enum.TextTruncate.AtEnd
 
 	local chip = Instance.new("Frame")
-	chip.BackgroundColor3 = (entry.role == "developer") and ACCENT or Color3.fromRGB(38, 64, 50)
+	local chipBg = (entry.role == "developer") and ACCENT or Color3.fromRGB(38, 64, 50)
+	if isSelected and entry.role == "developer" then
+		chipBg = BLACK
+	end
+	chip.BackgroundColor3 = chipBg
 	chip.BorderSizePixel = 0
 	chip.AnchorPoint = Vector2.new(1, 0.5)
 	chip.Position = UDim2.new(1, -chipRight, 0.5, 0)
@@ -3875,7 +3925,7 @@ local function ParticipantRow(parent, entry, order)
 	MkCorner(10, chip)
 	MkPadding(8, 8, 0, 0, chip)
 	local chipText = (entry.role == "developer") and "DEVELOPER" or "ONLINE"
-	local chipLabel = MkLabel(chipText, F_BOLD, 9, WHITE, chip)
+	local chipLabel = MkLabel(chipText, F_BOLD, 9, Contrast(chip.BackgroundColor3), chip)
 	chipLabel.Size = UDim2.new(1, 0, 1, 0)
 	chipLabel.TextWrapped = false
 	chipLabel.TextTruncate = Enum.TextTruncate.AtEnd
@@ -3898,7 +3948,8 @@ local function ParticipantRow(parent, entry, order)
 	end)
 
 	if joinable then
-		local joinBtn = MkBtn("Join", F_BOLD, 11, WHITE, ACCENT, row)
+		local joinBg = isSelected and BLACK or ACCENT
+		local joinBtn = MkBtn("Join", F_BOLD, 11, Contrast(joinBg), joinBg, row)
 		joinBtn.Name = "Join"
 		joinBtn.Size = UDim2.new(0, 56, 0, 26)
 		joinBtn.AnchorPoint = Vector2.new(1, 0.5)
@@ -4060,7 +4111,7 @@ local function AddSelectionBanner(pageKey, order)
 	label.TextXAlignment = Enum.TextXAlignment.Left
 	label.TextTruncate = Enum.TextTruncate.AtEnd
 
-	local button = MkBtn("Open Dashboard", F_MED, 12, WHITE, ACCENT, card)
+	local button = MkBtn("Open Dashboard", F_MED, 12, Contrast(ACCENT), ACCENT, card)
 	button.Size = UDim2.new(0, 124, 0, 28)
 	button.AnchorPoint = Vector2.new(1, 0.5)
 	button.Position = UDim2.new(1, -9, 0.5, 0)
@@ -4575,7 +4626,7 @@ function Gui.BuildAudioPage()
 	volumeBox.Text = "1.00"
 	UI.AudioVolumeBox = volumeBox
 
-	local playBtn = MkBtn("Play", F_BOLD, 13, WHITE, ACCENT, volRow)
+	local playBtn = MkBtn("Play", F_BOLD, 13, Contrast(ACCENT), ACCENT, volRow)
 	playBtn.Size = UDim2.new(0, 106, 0, 34)
 	playBtn.AnchorPoint = Vector2.new(1, 0.5)
 	playBtn.Position = UDim2.new(1, 0, 0.5, 0)
@@ -4825,7 +4876,7 @@ function Gui.BuildFunPage()
 			UI.FlingValue.Text = "Force " .. tostring(State.FlingForce) .. " / 10"
 		end
 	end)
-	UI.Sliders["flingForce"] = { fill = flingSlider.fill }
+	UI.Sliders["flingForce"] = { fill = flingSlider.fill, knob = flingSlider.knob }
 
 	local flingAction
 	flingAction = AddActionCard(scroll, 3, "Fling", "Launch them — power comes from the slider above", function()
@@ -5271,7 +5322,7 @@ function Gui.BuildChatLogsPage()
 	sendBox.Position = UDim2.new(0, 0, 0, 0)
 	UI.ChatSendBox = sendBox
 
-	local sendBtn = MkBtn("Send", F_BOLD, 13, WHITE, ACCENT, sendRow)
+	local sendBtn = MkBtn("Send", F_BOLD, 13, Contrast(ACCENT), ACCENT, sendRow)
 	sendBtn.Size = UDim2.new(0, 106, 0, 34)
 	sendBtn.AnchorPoint = Vector2.new(1, 0.5)
 	sendBtn.Position = UDim2.new(1, 0, 0.5, 0)
@@ -5346,7 +5397,7 @@ function Gui.BuildSettingsPage()
 	end)
 	UI.TransparencySlider = transparencySlider
 	UI.Sliders = UI.Sliders or {}
-	UI.Sliders["transparency"] = { fill = transparencySlider.fill }
+	UI.Sliders["transparency"] = { fill = transparencySlider.fill, knob = transparencySlider.knob }
 
 	local animationsRow, animationsLabel = (function()
 		local row = Instance.new("Frame")
