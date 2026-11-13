@@ -20,7 +20,6 @@ local function FailBoot(message)
 end
 
 local WS_PATH = "CPanel/.websocketUrl"
-local LEGACY_WS_PATH = ".websocketUrl"
 
 local function ValidWs(url)
 	return type(url) == "string" and url:match("^wss?://") ~= nil
@@ -45,7 +44,7 @@ local function ReadWs(path)
 	return nil
 end
 
-WebsocketUrl = ReadWs(WS_PATH) or ReadWs(LEGACY_WS_PATH)
+WebsocketUrl = ReadWs(WS_PATH)
 
 do
 	local seeded = nil
@@ -83,46 +82,47 @@ if not ValidWs(WebsocketUrl) then
 	return
 end
 
-local DEV_TOKEN_PATH = "CPanel/.devToken"
+local LEGACY_DEV_TOKEN_PATH = "CPanel/.devToken"
 
-local function ReadToken(path)
-	if type(readfile) ~= "function" then
-		return nil
+do
+	local exists = false
+	if type(isfile) == "function" then
+		pcall(function()
+			exists = isfile(LEGACY_DEV_TOKEN_PATH) == true
+		end)
+	else
+		exists = type(delfile) == "function"
 	end
-	local ok, stored = pcall(readfile, path)
-	if not ok then
-		return nil
+	if exists and type(delfile) == "function" then
+		if pcall(delfile, LEGACY_DEV_TOKEN_PATH) then
+			warn("[CPanel] deleted leftover " .. LEGACY_DEV_TOKEN_PATH .. " — the token must be set via getgenv().CPanelDevToken each run")
+		end
 	end
-	stored = tostring(stored):match("^%s*(.-)%s*$")
-	if stored == "" then
-		return nil
-	end
-	return stored
 end
 
-local DevToken = ReadToken(DEV_TOKEN_PATH)
+local DevToken = nil
 
 do
 	local seeded = nil
 	pcall(function()
 		seeded = Env.CPanelDevToken
 	end)
-	pcall(function()
-		Env.CPanelDevToken = nil
-	end)
-	if not DevToken and type(seeded) == "string" then
+	if type(seeded) == "string" then
 		seeded = seeded:match("^%s*(.-)%s*$")
 		if seeded ~= "" then
 			DevToken = seeded
-			if type(writefile) == "function" then
-				pcall(writefile, DEV_TOKEN_PATH, DevToken)
-			end
 		end
 	end
 end
 
+local function ClearDevTokenFromEnv()
+	pcall(function()
+		Env.CPanelDevToken = nil
+	end)
+end
+
 if not DevToken then
-	warn("[CPanel] no developer token configured — this session registers as a participant (set getgenv().CPanelDevToken before loading, or create " .. DEV_TOKEN_PATH .. ")")
+	warn("[CPanel] no developer token configured — this session registers as a participant (set getgenv().CPanelDevToken before loading)")
 end
 
 local function GetService(name)
@@ -2104,6 +2104,7 @@ end
 function Net.OnWelcome(message)
 	Net.sessionId = message.sessionId
 	Net.role = message.role
+	ClearDevTokenFromEnv()
 	if message.role == "developer" and not DevToken then
 		warn("[CPanel] server granted a developer role but no developer token is configured — refusing developer UI")
 		Net.role = "participant"
@@ -3391,7 +3392,6 @@ function Gui.Build()
 
 	TrafficDot("Minimize", Color3.fromRGB(255, 189, 46), "–", Gui.Minimize)
 	TrafficDot("Close", Color3.fromRGB(255, 95, 86), "×", Funcs.Shutdown)
-
 
 	local sidebar = MkScroll(window, Enum.ScrollingDirection.Y)
 	sidebar.Name = "CPN_Sidebar"
@@ -4967,7 +4967,6 @@ function Gui.BuildFunPage()
 		end
 	end
 end
-
 
 local CHAT_KEEP_MAX = 200
 local CHAT_RENDER_MAX = 40
