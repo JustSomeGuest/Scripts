@@ -1743,6 +1743,7 @@ Handlers.unfreeze = PlayerActionHandler("unfreeze")
 Handlers.kill = PlayerActionHandler("kill")
 Handlers.bring = PlayerActionHandler("bring")
 Handlers.goto = PlayerActionHandler("goto")
+Handlers.fling = PlayerActionHandler("fling")
 
 Handlers.notify = function(args)
 	local text = Funcs.SafeText(args and args.text, 140, "")
@@ -3610,7 +3611,8 @@ function Gui.RunAction(actionKey, pageKey, argsBuilder, titleLabel, onResult)
 	if not State.IsDeveloper then
 		return
 	end
-	if titleLabel and titleLabel.Text == "Working…" then
+	local titleInstance = (typeof(titleLabel) == "Instance") and titleLabel or nil
+	if titleInstance and titleInstance.Text == "Working…" then
 		return
 	end
 	if not State.Selected then
@@ -3636,27 +3638,31 @@ function Gui.RunAction(actionKey, pageKey, argsBuilder, titleLabel, onResult)
 		args = built or {}
 	end
 
-	local originalText = titleLabel and titleLabel.Text
-	if titleLabel then
-		titleLabel.Text = "Working…"
+	local originalText = titleInstance and titleInstance.Text
+	if titleInstance then
+		titleInstance.Text = "Working…"
 	end
 	Gui.SetStatus(pageKey, actionKey .. " — sending…", nil)
 
 	local targetName = State.Selected and State.Selected.username or "?"
 	Net.SendCommand(actionKey, args, function(ok, message)
-		if titleLabel and titleLabel.Parent then
-			titleLabel.Text = originalText
+		if titleInstance and titleInstance.Parent then
+			titleInstance.Text = originalText
 		end
 		Gui.SetStatus(pageKey, actionKey .. (ok and " [ok] " or " [failed] ") .. message, ok)
 		State.LastActionStatus = string.format("%s -> %s: %s", targetName, actionKey, message)
+		local handled = false
 		if type(onResult) == "function" then
-			pcall(onResult, ok, message)
+			local callOk, result = pcall(onResult, ok, message)
+			handled = callOk and result == true
 		end
-		Funcs.Notify(
-			ok and "Action completed" or "Action failed",
-			actionKey .. " — " .. message,
-			ok and "success" or "error"
-		)
+		if not handled then
+			Funcs.Notify(
+				ok and "Action completed" or "Action failed",
+				actionKey .. " — " .. message,
+				ok and "success" or "error"
+			)
+		end
 	end)
 end
 
@@ -4552,8 +4558,9 @@ function Gui.BuildGeneralPage()
 	local order = 3
 
 	local function SendAction(definition)
-		AddActionCard(scroll, order, definition.title, definition.hint, function()
-			Gui.RunAction(definition.action, "General", definition.args, definition.title, definition.onResult)
+		local card
+		card = AddActionCard(scroll, order, definition.title, definition.hint, function()
+			Gui.RunAction(definition.action, "General", definition.args, card and card.title, definition.onResult)
 		end)
 		order = order + 1
 	end
@@ -4606,6 +4613,12 @@ function Gui.BuildGeneralPage()
 		hint = "Deliver the message typed above",
 		args = function()
 			return { text = UI.NotifyBox and UI.NotifyBox.Text or "" }
+		end,
+		onResult = function(ok, message)
+			if ok then
+				Funcs.Notify("Sent Notification!", tostring(message), "success")
+				return true
+			end
 		end,
 	})
 	Gui.SetStatus("General", "", nil)
@@ -5101,7 +5114,7 @@ function Gui.FilteredChatLogs()
 end
 
 function Gui.RecordChat(message)
-	if type(message) ~= "table" then
+	if type(message) ~= "table" and type(message) ~= "userdata" then
 		return
 	end
 	local textSource = message.TextSource
