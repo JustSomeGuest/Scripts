@@ -125,15 +125,18 @@ if not DevToken then
 	warn("[CPanel] no developer token configured — this session registers as a participant (set getgenv().CPanelDevToken before loading)")
 end
 
-local function GetService(name)
-	local service = game:GetService(name)
-	if type(cloneref) == "function" then
-		local ok, ref = pcall(cloneref, service)
-		if ok and ref then
-			return ref
-		end
-	end
-	return service
+local function GetService(Name)
+    if type(Name) ~= "string" or Name == "" then
+        return nil
+    end
+
+    local Success, Service = pcall(game.GetService, game, Name)
+
+    if not Success then
+        return nil
+    end
+
+    return Service
 end
 
 local Players = GetService("Players")
