@@ -2,18 +2,25 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/Notifs.lua"))
-
 task.spawn(function()
-getgenv().CPanelWebsocket="wss://cpanelwebsocket.onrender.com"
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/Init.lua"))()
+    getgenv().CPanelWebsocket = "wss://cpanelwebsocket.onrender.com"
+    loadstring(game:HttpGet("https://getcpanel.pages.dev/raw"))()
 end)
 
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
 local function GetService(Name)
-    local Svc = game:GetService(Name)
-    return cloneref and cloneref(Svc) or Svc
+    if type(Name) ~= "string" or Name == "" then
+        return nil
+    end
+
+    local Success, Service = pcall(game.GetService, game, Name)
+
+    if not Success then
+        return nil
+    end
+
+    return Service
 end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
