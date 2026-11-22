@@ -2,7 +2,19 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local Env = (type(getgenv) == "function" and getgenv()) or shared or _G
 
-local function GetService(n) local s = game:GetService(n) return cloneref and cloneref(s) or s end
+local function GetService(Name)
+    if type(Name) ~= "string" or Name == "" then
+        return nil
+    end
+
+    local Success, Service = pcall(game.GetService, game, Name)
+
+    if not Success then
+        return nil
+    end
+
+    return Service
+end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
 local Workspace = GetService("Workspace")
