@@ -5,8 +5,17 @@ end
 local Env = (type(getgenv) == "function" and getgenv()) or _G
 
 local function GetService(Name)
-    local Svc = game:GetService(Name)
-    return cloneref and cloneref(Svc) or Svc
+    if type(Name) ~= "string" or Name == "" then
+        return nil
+    end
+
+    local Success, Service = pcall(game.GetService, game, Name)
+
+    if not Success then
+        return nil
+    end
+
+    return Service
 end
 
 local Hui = gethui and gethui() or GetService("CoreGui")
