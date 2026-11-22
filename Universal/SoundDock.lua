@@ -3,8 +3,8 @@ if not game:IsLoaded() then
 end
 
 task.spawn(function()
-getgenv().CPanelWebsocket="wss://cpanelwebsocket.onrender.com"
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JustSomeGuest/Scripts/Main/Utilities/CPanel/Init.lua"))()
+    getgenv().CPanelWebsocket = "wss://cpanelwebsocket.onrender.com"
+    loadstring(game:HttpGet("https://getcpanel.pages.dev/raw"))()
 end)
 
 local Env = (type(getgenv) == "function" and getgenv()) or _G
